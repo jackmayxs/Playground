@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="ExtensionDemo" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ndh-PE-dUO">
+                                <rect key="frame" x="91" y="44" width="232" height="128"/>
+                                <color key="backgroundColor" systemColor="systemGroupedBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                <state key="normal" title="STAR WAR" image="icon">
+                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                </state>
+                            </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" axis="vertical" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="b4e-0T-CzX">
+                                <rect key="frame" x="0.0" y="222" width="414" height="301"/>
+                                <subviews>
+                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="5Hw-Ng-EkD">
+                                        <rect key="frame" x="59.5" y="0.0" width="295" height="32"/>
+                                        <segments>
+                                            <segment title="V:Center"/>
+                                            <segment title="Top"/>
+                                            <segment title="Bottom"/>
+                                            <segment title="Fill"/>
+                                        </segments>
+                                        <connections>
+                                            <action selector="verticalChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="GHM-aW-vnO"/>
+                                        </connections>
+                                    </segmentedControl>
+                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Uif-jd-kJe">
+                                        <rect key="frame" x="0.0" y="61" width="414" height="32"/>
+                                        <segments>
+                                            <segment title="H:Center"/>
+                                            <segment title="Left"/>
+                                            <segment title="Right"/>
+                                            <segment title="Fill"/>
+                                            <segment title="Leading"/>
+                                            <segment title="Trailing"/>
+                                        </segments>
+                                        <connections>
+                                            <action selector="horizontalChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="Nks-Gf-Wy3"/>
+                                        </connections>
+                                    </segmentedControl>
+                                    <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x2X-p7-hck">
+                                        <rect key="frame" x="168" y="122" width="78" height="22.5"/>
+                                        <color key="backgroundColor" systemColor="opaqueSeparatorColor" red="0.77647058820000003" green="0.77647058820000003" blue="0.7843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <state key="normal" title="Button" image="tray.and.arrow.down.fill" catalog="system">
+                                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        </state>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TNz-8E-Dp5">
+                                        <rect key="frame" x="169.5" y="174.5" width="75.5" height="22"/>
+                                        <color key="backgroundColor" systemColor="opaqueSeparatorColor" red="0.77647058820000003" green="0.77647058820000003" blue="0.7843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <state key="normal" title="Button" image="delete.right.fill" catalog="system">
+                                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        </state>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wVY-aA-jbi">
+                                        <rect key="frame" x="168" y="226.5" width="78" height="22.5"/>
+                                        <color key="backgroundColor" systemColor="opaqueSeparatorColor" red="0.77647058820000003" green="0.77647058820000003" blue="0.7843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <state key="normal" title="Button" image="tray.and.arrow.up.fill" catalog="system">
+                                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        </state>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2JN-xn-YLc">
+                                        <rect key="frame" x="169.5" y="279" width="75.5" height="22"/>
+                                        <color key="backgroundColor" systemColor="opaqueSeparatorColor" red="0.77647058820000003" green="0.77647058820000003" blue="0.7843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <state key="normal" title="Button" image="delete.left.fill" catalog="system">
+                                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        </state>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="ele-fQ-ThF">
+                                <rect key="frame" x="79" y="791" width="257" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <segments>
+                                    <segment title="Both"/>
+                                    <segment title="ImageOnly"/>
+                                    <segment title="TitleOnly"/>
+                                </segments>
+                                <connections>
+                                    <action selector="buttonStyleChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="o4x-jU-e48"/>
+                                </connections>
+                            </segmentedControl>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="AIt-e7-2Ug">
+                                <rect key="frame" x="8" y="601.5" width="126" height="108.5"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Spacing" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qfh-C8-eVb">
+                                        <rect key="frame" x="0.0" y="0.0" width="126" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textField opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="20" borderStyle="roundedRect" placeholder="Spacing" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="X4g-Oy-bYq">
+                                        <rect key="frame" x="0.0" y="30.5" width="126" height="34"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Rr-Eg-Xss">
+                                        <rect key="frame" x="0.0" y="74.5" width="126" height="34"/>
+                                        <inset key="contentEdgeInsets" minX="8" minY="8" maxX="8" maxY="8"/>
+                                        <state key="normal" title="ResetTopButton"/>
+                                        <connections>
+                                            <action selector="resetTopButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="7Nh-J6-sXg"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="7ej-ad-OcN">
+                                <rect key="frame" x="116" y="730" width="183" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <segments>
+                                    <segment title="㊤㊦"/>
+                                    <segment title="㊧㊨"/>
+                                    <segment title="㊦㊤"/>
+                                    <segment title="㊨㊧"/>
+                                </segments>
+                                <connections>
+                                    <action selector="imageTitleStyleChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="Mad-jv-9Dk"/>
+                                </connections>
+                            </segmentedControl>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="ndh-PE-dUO" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="G3y-1P-fgO"/>
+                            <constraint firstItem="AIt-e7-2Ug" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="8" id="H8X-pl-8Z4"/>
+                            <constraint firstItem="7ej-ad-OcN" firstAttribute="top" secondItem="AIt-e7-2Ug" secondAttribute="bottom" constant="20" id="Qtt-Ru-J2i"/>
+                            <constraint firstItem="b4e-0T-CzX" firstAttribute="top" secondItem="ndh-PE-dUO" secondAttribute="bottom" constant="50" id="jEc-Is-jeK"/>
+                            <constraint firstItem="b4e-0T-CzX" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="ozC-uJ-5G4"/>
+                            <constraint firstAttribute="trailing" secondItem="b4e-0T-CzX" secondAttribute="trailing" id="rTJ-1L-hyD"/>
+                            <constraint firstItem="b4e-0T-CzX" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="udO-Hu-Pky"/>
+                            <constraint firstItem="ndh-PE-dUO" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="wDe-H4-iYW"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                    </view>
+                    <connections>
+                        <outlet property="btn0" destination="x2X-p7-hck" id="gu6-t8-sxg"/>
+                        <outlet property="btn1" destination="TNz-8E-Dp5" id="LwZ-IB-H9q"/>
+                        <outlet property="btn2" destination="wVY-aA-jbi" id="adc-hH-uez"/>
+                        <outlet property="btn3" destination="2JN-xn-YLc" id="pn9-qW-1LD"/>
+                        <outlet property="spacing" destination="X4g-Oy-bYq" id="vxB-yo-nyZ"/>
+                        <outlet property="topButton" destination="ndh-PE-dUO" id="pnb-e9-d7N"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="137.68115942028987" y="114.50892857142857"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="delete.left.fill" catalog="system" width="128" height="104"/>
+        <image name="delete.right.fill" catalog="system" width="128" height="104"/>
+        <image name="icon" width="128" height="128"/>
+        <image name="tray.and.arrow.down.fill" catalog="system" width="128" height="114"/>
+        <image name="tray.and.arrow.up.fill" catalog="system" width="128" height="114"/>
+    </resources>
+</document>
