@@ -7,15 +7,6 @@
 
 import UIKit
 
-extension CGSize {
-    static func << (lhs: CGSize, rhs: UIEdgeInsets) -> CGSize {
-        var output = lhs
-        output.width += rhs.left + rhs.right
-        output.height += rhs.top + rhs.bottom
-        return output
-    }
-}
-
 extension UIButton {
     
     enum ImageTitleStyle: Int {
@@ -29,6 +20,8 @@ extension UIButton {
         static var ImageTitleSpacingKey = "ImageTitleSpacingKey"
         static var ImageTitleStyleKey = "ImageTitleStyleKey"
     }
+    
+    // MARK: - Properties
     
     private(set) var imageTitleStyle: ImageTitleStyle {
         set(style) {
@@ -52,32 +45,49 @@ extension UIButton {
     }
     
     var imageWidth: CGFloat {
-        get { imageView?.image?.size.width ?? 0 }
+        imageView?.image?.size.width ?? 0
     }
     
     var imageHeight: CGFloat {
-        get { imageView?.image?.size.height ?? 0 }
+        imageView?.image?.size.height ?? 0
     }
     
     var titleWidth: CGFloat {
-        get {
-            if #available(iOS 8.0, *) {
-                return titleLabel?.intrinsicContentSize.width ?? 0
-            } else {
-                return titleLabel?.frame.size.width ?? 0
-            }
+        if #available(iOS 8.0, *) {
+            return titleLabel?.intrinsicContentSize.width ?? 0
+        } else {
+            return titleLabel?.frame.size.width ?? 0
         }
     }
     
     var titleHeight: CGFloat {
-        get {
-            if #available(iOS 8.0, *) {
-                return titleLabel?.intrinsicContentSize.height ?? 0
-            } else {
-                return titleLabel?.frame.size.height ?? 0
-            }
+        if #available(iOS 8.0, *) {
+            return titleLabel?.intrinsicContentSize.height ?? 0
+        } else {
+            return titleLabel?.frame.size.height ?? 0
         }
     }
+    
+    /// 可以根据contentEdgeInsets自动适配自身大小
+    open override var intrinsicContentSize: CGSize {
+
+        var intrinsicWidth: CGFloat = 0.0
+        var intrinsicHeight: CGFloat = 0.0
+
+        // 计算按钮宽高
+        switch imageTitleStyle  {
+        case .㊤㊦, .㊦㊤:
+            intrinsicWidth = max(imageWidth, titleWidth)
+            intrinsicHeight = imageHeight + spacing + titleHeight
+        case .㊧㊨, .㊨㊧:
+            intrinsicWidth = imageWidth + spacing + titleWidth
+            intrinsicHeight = max(imageHeight, titleHeight)
+        }
+
+        return CGSize(width: intrinsicWidth, height: intrinsicHeight) << contentEdgeInsets
+    }
+    
+    // MARK: - Interface
     
     /// 调整ImageTitle样式
     /// - Parameters:
@@ -182,23 +192,13 @@ extension UIButton {
         
         invalidateIntrinsicContentSize()
     }
-    
-    /// 可以根据contentEdgeInsets自动适配自身大小
-    open override var intrinsicContentSize: CGSize {
+}
 
-        var intrinsicWidth: CGFloat = 0.0
-        var intrinsicHeight: CGFloat = 0.0
-
-        // 计算按钮宽高
-        switch imageTitleStyle  {
-        case .㊤㊦, .㊦㊤:
-            intrinsicWidth = max(imageWidth, titleWidth)
-            intrinsicHeight = imageHeight + spacing + titleHeight
-        case .㊧㊨, .㊨㊧:
-            intrinsicWidth = imageWidth + spacing + titleWidth
-            intrinsicHeight = max(imageHeight, titleHeight)
-        }
-
-        return CGSize(width: intrinsicWidth, height: intrinsicHeight) << contentEdgeInsets
+extension CGSize {
+    static func << (lhs: CGSize, rhs: UIEdgeInsets) -> CGSize {
+        var output = lhs
+        output.width += rhs.left + rhs.right
+        output.height += rhs.top + rhs.bottom
+        return output
     }
 }
