@@ -44,13 +44,9 @@ extension UIButton {
         }
     }
     
-    var imageWidth: CGFloat {
-        imageView?.image?.size.width ?? 0
-    }
+    var imageWidth: CGFloat { imageView?.image?.size.width ?? 0 }
     
-    var imageHeight: CGFloat {
-        imageView?.image?.size.height ?? 0
-    }
+    var imageHeight: CGFloat { imageView?.image?.size.height ?? 0 }
     
     var titleWidth: CGFloat {
         if #available(iOS 8.0, *) {

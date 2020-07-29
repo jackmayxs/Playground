@@ -15,6 +15,8 @@
 		DE66D8B424C7F935003B9206 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE66D8B224C7F935003B9206 /* LaunchScreen.storyboard */; };
 		DE66D8BD24C7F982003B9206 /* UIButtonPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE66D8BC24C7F982003B9206 /* UIButtonPlus.swift */; };
 		DE66D8BF24C81432003B9206 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = DE66D8BE24C81432003B9206 /* README.md */; };
+		DE6E150024D16A320053CC44 /* UIImagePlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6E14FF24D16A320053CC44 /* UIImagePlus.swift */; };
+		DE6E150224D16AA60053CC44 /* BlankViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6E150124D16AA60053CC44 /* BlankViewController.swift */; };
 		DE93781224D124B200D89D4C /* DispatchOnce.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE93781124D124B200D89D4C /* DispatchOnce.swift */; };
 		DE93781424D1480300D89D4C /* NSObjectPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE93781324D1480300D89D4C /* NSObjectPlus.swift */; };
 /* End PBXBuildFile section */
@@ -30,6 +32,8 @@
 		DE66D8B524C7F935003B9206 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DE66D8BC24C7F982003B9206 /* UIButtonPlus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIButtonPlus.swift; sourceTree = "<group>"; };
 		DE66D8BE24C81432003B9206 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		DE6E14FF24D16A320053CC44 /* UIImagePlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImagePlus.swift; sourceTree = "<group>"; };
+		DE6E150124D16AA60053CC44 /* BlankViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlankViewController.swift; sourceTree = "<group>"; };
 		DE93781124D124B200D89D4C /* DispatchOnce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DispatchOnce.swift; sourceTree = "<group>"; };
 		DE93781324D1480300D89D4C /* NSObjectPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSObjectPlus.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -69,6 +73,7 @@
 				DE66D8A724C7F931003B9206 /* AppDelegate.swift */,
 				DE66D8A924C7F931003B9206 /* SceneDelegate.swift */,
 				DE66D8AB24C7F931003B9206 /* ViewController.swift */,
+				DE6E150124D16AA60053CC44 /* BlankViewController.swift */,
 				DE66D8AD24C7F931003B9206 /* Main.storyboard */,
 				DE66D8B024C7F935003B9206 /* Assets.xcassets */,
 				DE66D8B224C7F935003B9206 /* LaunchScreen.storyboard */,
@@ -92,6 +97,7 @@
 			isa = PBXGroup;
 			children = (
 				DE66D8BC24C7F982003B9206 /* UIButtonPlus.swift */,
+				DE6E14FF24D16A320053CC44 /* UIImagePlus.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -187,6 +193,8 @@
 				DE66D8AC24C7F931003B9206 /* ViewController.swift in Sources */,
 				DE93781424D1480300D89D4C /* NSObjectPlus.swift in Sources */,
 				DE66D8BD24C7F982003B9206 /* UIButtonPlus.swift in Sources */,
+				DE6E150224D16AA60053CC44 /* BlankViewController.swift in Sources */,
+				DE6E150024D16A320053CC44 /* UIImagePlus.swift in Sources */,
 				DE66D8A824C7F931003B9206 /* AppDelegate.swift in Sources */,
 				DE93781224D124B200D89D4C /* DispatchOnce.swift in Sources */,
 				DE66D8AA24C7F931003B9206 /* SceneDelegate.swift in Sources */,

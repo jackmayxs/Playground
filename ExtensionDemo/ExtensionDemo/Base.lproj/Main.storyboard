@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="fDv-O9-eN6">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
@@ -158,10 +158,53 @@
             </objects>
             <point key="canvasLocation" x="137.68115942028987" y="114.50892857142857"/>
         </scene>
+        <!--Blank View Controller-->
+        <scene sceneID="23d-l0-NY6">
+            <objects>
+                <viewController id="fDv-O9-eN6" customClass="BlankViewController" customModule="ExtensionDemo" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="db9-WB-09W">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="hei" translatesAutoresizingMaskIntoConstraints="NO" id="WmS-MO-4cT">
+                                <rect key="frame" x="107" y="353" width="200" height="200"/>
+                                <color key="backgroundColor" systemColor="opaqueSeparatorColor" red="0.77647058820000003" green="0.77647058820000003" blue="0.7843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="200" id="CPn-Ql-J3p"/>
+                                    <constraint firstAttribute="height" constant="200" id="jWA-bv-RT2"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hak-mh-wcj">
+                                <rect key="frame" x="183.5" y="220" width="47" height="34"/>
+                                <inset key="contentEdgeInsets" minX="8" minY="8" maxX="8" maxY="8"/>
+                                <state key="normal" title="圆角"/>
+                                <connections>
+                                    <action selector="makeRoundCorners:" destination="fDv-O9-eN6" eventType="touchUpInside" id="rMk-OB-xxW"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="WmS-MO-4cT" firstAttribute="top" secondItem="hak-mh-wcj" secondAttribute="bottom" constant="99" id="OtK-3h-yUV"/>
+                            <constraint firstItem="WmS-MO-4cT" firstAttribute="centerX" secondItem="MKV-Aq-z3g" secondAttribute="centerX" id="Phb-ad-iXl"/>
+                            <constraint firstItem="WmS-MO-4cT" firstAttribute="centerY" secondItem="MKV-Aq-z3g" secondAttribute="centerY" id="Wzz-Op-fft"/>
+                            <constraint firstItem="hak-mh-wcj" firstAttribute="centerX" secondItem="MKV-Aq-z3g" secondAttribute="centerX" id="iu4-5F-wnx"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="MKV-Aq-z3g"/>
+                    </view>
+                    <connections>
+                        <outlet property="imageView" destination="WmS-MO-4cT" id="e5v-nR-hrb"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4WS-gc-W76" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1000" y="115"/>
+        </scene>
     </scenes>
     <resources>
         <image name="delete.left.fill" catalog="system" width="128" height="104"/>
         <image name="delete.right.fill" catalog="system" width="128" height="104"/>
+        <image name="hei" width="200" height="200"/>
         <image name="icon" width="128" height="128"/>
         <image name="tray.and.arrow.down.fill" catalog="system" width="128" height="114"/>
         <image name="tray.and.arrow.up.fill" catalog="system" width="128" height="114"/>
