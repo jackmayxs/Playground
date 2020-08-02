@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0CD71F3424D6707A005FDE67 /* FoundationPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD71F3324D6707A005FDE67 /* FoundationPlus.swift */; };
 		DE66D8A824C7F931003B9206 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE66D8A724C7F931003B9206 /* AppDelegate.swift */; };
 		DE66D8AA24C7F931003B9206 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE66D8A924C7F931003B9206 /* SceneDelegate.swift */; };
 		DE66D8AC24C7F931003B9206 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE66D8AB24C7F931003B9206 /* ViewController.swift */; };
@@ -22,6 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0CD71F3324D6707A005FDE67 /* FoundationPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoundationPlus.swift; sourceTree = "<group>"; };
 		DE66D8A424C7F931003B9206 /* ExtensionDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExtensionDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DE66D8A724C7F931003B9206 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DE66D8A924C7F931003B9206 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 			isa = PBXGroup;
 			children = (
 				DE93781324D1480300D89D4C /* NSObjectPlus.swift */,
+				0CD71F3324D6707A005FDE67 /* FoundationPlus.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -193,6 +196,7 @@
 				DE66D8AC24C7F931003B9206 /* ViewController.swift in Sources */,
 				DE93781424D1480300D89D4C /* NSObjectPlus.swift in Sources */,
 				DE66D8BD24C7F982003B9206 /* UIButtonPlus.swift in Sources */,
+				0CD71F3424D6707A005FDE67 /* FoundationPlus.swift in Sources */,
 				DE6E150224D16AA60053CC44 /* BlankViewController.swift in Sources */,
 				DE6E150024D16A320053CC44 /* UIImagePlus.swift in Sources */,
 				DE66D8A824C7F931003B9206 /* AppDelegate.swift in Sources */,
