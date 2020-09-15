@@ -8,6 +8,7 @@
 
 import Foundation
 
+// MARK: - __________ Optional __________
 extension Optional where Wrapped == String {
     var safeValue: String { self ?? "" }
 	
@@ -20,6 +21,7 @@ extension Optional where Wrapped == String {
 	}
 }
 
+// MARK: - __________ Date __________
 extension Date {
 	
 	/// 计算两个日期之间相差的DateComponents
@@ -44,4 +46,24 @@ extension Date {
 		components.nanosecond = 0
 		return cal.date(from: components).unsafelyUnwrapped
 	}
+}
+
+// MARK: - __________ String __________
+infix operator <-- : MultiplicationPrecedence
+infix operator --> : MultiplicationPrecedence
+extension String {
+	
+	/// 使用右侧的字符串
+	/// - Parameters:
+	///   - lhs: 左操作对象
+	///   - rhs: 右操作对象
+	/// - Note: 以下两个方法对于字典类型在合并其他字典时的回调闭包里使用语法糖时较为有用
+	/// - Example:　aDict.merging(anotherOne) { $0 <-- $1 } // 使用当前值(如果直接返回$0会触发编译器错误)
+	static func --> (lhs: String, rhs: String) -> String { rhs }
+	
+	/// 使用左侧的字符串
+	/// - Parameters:
+	///   - lhs: 左操作对象
+	///   - rhs: 右操作对象
+	static func <-- (lhs: String, rhs: String) -> String { lhs }
 }
