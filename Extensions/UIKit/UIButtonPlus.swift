@@ -80,7 +80,7 @@ extension UIButton {
             intrinsicHeight = max(imageHeight, titleHeight)
         }
 
-        return CGSize(width: intrinsicWidth, height: intrinsicHeight) << contentEdgeInsets
+        return CGSize(width: intrinsicWidth, height: intrinsicHeight) + contentEdgeInsets
     }
     
     // MARK: - Interface
@@ -191,7 +191,7 @@ extension UIButton {
 }
 
 extension CGSize {
-    static func << (lhs: CGSize, rhs: UIEdgeInsets) -> CGSize {
+    static func + (lhs: CGSize, rhs: UIEdgeInsets) -> CGSize {
         var output = lhs
         output.width += rhs.left + rhs.right
         output.height += rhs.top + rhs.bottom
