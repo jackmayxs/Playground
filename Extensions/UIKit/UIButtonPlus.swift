@@ -189,12 +189,3 @@ extension UIButton {
         invalidateIntrinsicContentSize()
     }
 }
-
-extension CGSize {
-    static func + (lhs: CGSize, rhs: UIEdgeInsets) -> CGSize {
-        var output = lhs
-        output.width += rhs.left + rhs.right
-        output.height += rhs.top + rhs.bottom
-        return output
-    }
-}
