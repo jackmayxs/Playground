@@ -19,6 +19,11 @@ extension Optional where Wrapped == String {
 		case .none: return true
 		}
 	}
+	
+	/// 返回不为空字符串的Optional<String>
+	var validString: Self {
+		isEmptyString ? .none : unsafelyUnwrapped
+	}
 }
 
 // MARK: - __________ Date __________
