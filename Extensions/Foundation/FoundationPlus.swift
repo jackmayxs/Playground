@@ -10,13 +10,13 @@ import Foundation
 
 // MARK: - __________ Optional __________
 extension Optional where Wrapped == String {
-    var safeValue: String { self ?? "" }
+	var safeValue: String { self ?? "" }
 	
 	/// 判断Optional<String>类型是否为空
 	var isEmptyString: Bool {
 		switch self {
-		case .some(let unwrapped): return unwrapped.isEmpty
-		case .none: return true
+			case .some(let unwrapped): return unwrapped.isEmpty
+			case .none: return true
 		}
 	}
 	
@@ -36,8 +36,8 @@ extension Date {
 	///   - rhs: 结束时间
 	/// - Returns: DateComponents
 	static func >> (lhs: Date, rhs: Date) -> DateComponents {
-        Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: lhs, to: rhs)
-    }
+		Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: lhs, to: rhs)
+	}
 	
 	/// 返回当前时间
 	static var now: Date { Date() }

@@ -34,10 +34,10 @@ extension CGSize {
 	///   - lhs: CGSize
 	///   - rhs: 遵循了ExtendableBySize协议的对象
 	/// - Returns: A new CGSize
-    static func + (lhs: CGSize, rhs: ExtendableBySize) -> CGSize {
-        var size = lhs
-        size.width += rhs.horizontal
+	static func + (lhs: CGSize, rhs: ExtendableBySize) -> CGSize {
+		var size = lhs
+		size.width += rhs.horizontal
 		size.height += rhs.vertical
-        return size
-    }
+		return size
+	}
 }
