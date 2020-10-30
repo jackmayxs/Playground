@@ -88,7 +88,7 @@ extension UIButton {
     /// 调整ImageTitle样式
     /// - Parameters:
     ///   - style: 样式
-    ///   - spacing: Image-Title间距(大于等于0)
+    ///   - spacing: Image-Title间距(大于等于0; 最好是偶数,否则按钮显示可能会有小小误差)
     func adjustImageTitleStyle(_ style: ImageTitleStyle, spacing: CGFloat = 0) {
         
         assert(spacing >= 0, "A sane person will never do that🤪,right?")
