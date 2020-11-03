@@ -178,6 +178,20 @@ extension UIButton {
 						imageInsets = UIEdgeInsets(top: 0, left: titleWidth, bottom: 0, right: -titleWidth)
 						titleInsets = UIEdgeInsets(top: 0, left: -imageWidth-spacing, bottom: 0, right: imageWidth+spacing)
 				}
+			case (.center, .left):
+				switch style {
+					case .㊤㊦:
+						imageInsets = UIEdgeInsets(top: -titleHeight-spacing, left: 0, bottom: 0, right: -titleWidth)
+						titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: -imageHeight-spacing, right: 0)
+					case .㊧㊨:
+						titleInsets = UIEdgeInsets(top: 0, left: spacing, bottom: 0, right: -spacing)
+					case .㊦㊤:
+						imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: -titleHeight-spacing, right: -titleWidth)
+						titleInsets = UIEdgeInsets(top: -imageHeight-spacing, left: -imageWidth, bottom: 0, right: 0)
+					case .㊨㊧:
+						imageInsets = UIEdgeInsets(top: 0, left: titleWidth+spacing, bottom: 0, right: -titleWidth-spacing)
+						titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: 0, right: imageWidth)
+				}
 			default:
 				break
 		}
