@@ -17,11 +17,6 @@ protocol ExtendableBySize {
 	var horizontal: CGFloat { get }
 }
 
-extension UIEdgeInsets: ExtendableBySize {
-	var vertical: CGFloat { left + right }
-	var horizontal: CGFloat { top + bottom }
-}
-
 extension CGSize: ExtendableBySize {
 	var vertical: CGFloat { width }
 	var horizontal: CGFloat { height }

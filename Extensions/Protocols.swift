@@ -38,6 +38,3 @@ extension Actionable where Self: UIControl {
         objc_setAssociatedObject(self, String(events.rawValue), sleeve, .OBJC_ASSOCIATION_RETAIN)
     }
 }
-
-// MARK: - __________ UIControl Extension __________
-extension UIControl: Actionable {}
