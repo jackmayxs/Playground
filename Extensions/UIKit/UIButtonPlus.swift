@@ -49,18 +49,24 @@ extension UIButton {
 	var imageHeight: CGFloat { imageView?.image?.size.height ?? 0 }
 	
 	var titleWidth: CGFloat {
+		// 适配iOS14,否则此属性会按照字体的Font返回一个值,从而影响intrinsicContentSize的计算
+		guard titleLabel?.text != .none else { return 0 }
+		guard let titleLabel = titleLabel else { return 0 }
 		if #available(iOS 8.0, *) {
-			return titleLabel?.intrinsicContentSize.width ?? 0
+			return titleLabel.intrinsicContentSize.width
 		} else {
-			return titleLabel?.frame.size.width ?? 0
+			return titleLabel.frame.size.width
 		}
 	}
 	
 	var titleHeight: CGFloat {
+		// 适配iOS14,否则此属性会按照字体的Font返回一个值,从而影响intrinsicContentSize的计算
+		guard titleLabel?.text != .none else { return 0 }
+		guard let titleLabel = titleLabel else { return 0 }
 		if #available(iOS 8.0, *) {
-			return titleLabel?.intrinsicContentSize.height ?? 0
+			return titleLabel.intrinsicContentSize.height
 		} else {
-			return titleLabel?.frame.size.height ?? 0
+			return titleLabel.frame.size.height
 		}
 	}
 	
