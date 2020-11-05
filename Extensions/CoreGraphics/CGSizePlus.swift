@@ -18,8 +18,8 @@ protocol ExtendableBySize {
 }
 
 extension CGSize: ExtendableBySize {
-	var vertical: CGFloat { width }
-	var horizontal: CGFloat { height }
+	var vertical: CGFloat { height }
+	var horizontal: CGFloat { width }
 }
 
 extension CGSize {
