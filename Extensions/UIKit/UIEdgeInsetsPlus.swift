@@ -14,7 +14,7 @@ extension UIEdgeInsets {
 	}
 }
 
-extension UIEdgeInsets: ExtendableBySize {
+extension UIEdgeInsets: SizeExtendable {
 	var vertical: CGFloat { top + bottom }
 	var horizontal: CGFloat { left + right }
 }

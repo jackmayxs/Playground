@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol ExtendableBySize {
+protocol SizeExtendable {
 	
 	/// 垂直方向扩展
 	var vertical: CGFloat { get }
@@ -17,7 +17,7 @@ protocol ExtendableBySize {
 	var horizontal: CGFloat { get }
 }
 
-extension CGSize: ExtendableBySize {
+extension CGSize: SizeExtendable {
 	var vertical: CGFloat { height }
 	var horizontal: CGFloat { width }
 }
@@ -29,7 +29,7 @@ extension CGSize {
 	///   - lhs: CGSize
 	///   - rhs: 遵循了ExtendableBySize协议的对象
 	/// - Returns: A new CGSize
-	static func + (lhs: CGSize, rhs: ExtendableBySize) -> CGSize {
+	static func + (lhs: CGSize, rhs: SizeExtendable) -> CGSize {
 		var size = lhs
 		size.width += rhs.horizontal
 		size.height += rhs.vertical
