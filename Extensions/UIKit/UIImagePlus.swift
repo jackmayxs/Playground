@@ -10,6 +10,32 @@ import UIKit
 
 extension UIImage {
 	
+	/// 启动图截图
+	static var launchScreenSnapshot: UIImage? {
+		guard let infoDict = Bundle.main.infoDictionary else { return .none }
+		guard let nameValue = infoDict["UILaunchStoryboardName"] else { return .none }
+		guard let name = nameValue as? String else { return .none }
+		let storyboard = UIStoryboard(name: name, bundle: .none)
+		guard let vc = storyboard.instantiateInitialViewController() else { return .none }
+		let screenSize = UIScreen.main.bounds.size
+		let screenScale = UIScreen.main.scale
+		UIGraphicsBeginImageContextWithOptions(screenSize, false, screenScale)
+		guard let context = UIGraphicsGetCurrentContext() else { return .none }
+		vc.view.layer.render(in: context)
+		return UIGraphicsGetImageFromCurrentImageContext()
+	}
+	
+	/// 图片二进制类型
+	var data: Data? {
+		if let data = pngData() {
+			return data
+		} else if let data = jpegData(compressionQuality: 1) {
+			return data
+		} else {
+			return .none
+		}
+	}
+	
 	/// 圆角图片
 	var roundImage: UIImage? {
 		UIGraphicsBeginImageContextWithOptions(size, false, UIScreen.main.scale)

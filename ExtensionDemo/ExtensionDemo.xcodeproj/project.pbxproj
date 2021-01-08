@@ -23,6 +23,7 @@
 		DE66D8BF24C81432003B9206 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = DE66D8BE24C81432003B9206 /* README.md */; };
 		DE6E150024D16A320053CC44 /* UIImagePlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6E14FF24D16A320053CC44 /* UIImagePlus.swift */; };
 		DE6E150224D16AA60053CC44 /* BlankViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6E150124D16AA60053CC44 /* BlankViewController.swift */; };
+		DE743CCD25A7F9E7001764A5 /* DataPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE743CCC25A7F9E7001764A5 /* DataPlus.swift */; };
 		DE93781224D124B200D89D4C /* DispatchOnce.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE93781124D124B200D89D4C /* DispatchOnce.swift */; };
 		DE93781424D1480300D89D4C /* NSObjectPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE93781324D1480300D89D4C /* NSObjectPlus.swift */; };
 		DE94533A2508A5050082E5E5 /* UIApplicationPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9453392508A5050082E5E5 /* UIApplicationPlus.swift */; };
@@ -50,6 +51,7 @@
 		DE66D8BE24C81432003B9206 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		DE6E14FF24D16A320053CC44 /* UIImagePlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImagePlus.swift; sourceTree = "<group>"; };
 		DE6E150124D16AA60053CC44 /* BlankViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlankViewController.swift; sourceTree = "<group>"; };
+		DE743CCC25A7F9E7001764A5 /* DataPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataPlus.swift; sourceTree = "<group>"; };
 		DE93781124D124B200D89D4C /* DispatchOnce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DispatchOnce.swift; sourceTree = "<group>"; };
 		DE93781324D1480300D89D4C /* NSObjectPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSObjectPlus.swift; sourceTree = "<group>"; };
 		DE9453392508A5050082E5E5 /* UIApplicationPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplicationPlus.swift; sourceTree = "<group>"; };
@@ -143,6 +145,7 @@
 				0CD71F3324D6707A005FDE67 /* FoundationPlus.swift */,
 				DEB225A025A7182D00859117 /* StringPlus.swift */,
 				DEB225A325A7199300859117 /* DatePlus.swift */,
+				DE743CCC25A7F9E7001764A5 /* DataPlus.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -191,7 +194,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1160;
-				LastUpgradeCheck = 1160;
+				LastUpgradeCheck = 1230;
 				ORGANIZATIONNAME = Choi;
 				TargetAttributes = {
 					DE66D8A324C7F931003B9206 = {
@@ -247,6 +250,7 @@
 				0CD71F3424D6707A005FDE67 /* FoundationPlus.swift in Sources */,
 				DE6E150224D16AA60053CC44 /* BlankViewController.swift in Sources */,
 				DE6E150024D16A320053CC44 /* UIImagePlus.swift in Sources */,
+				DE743CCD25A7F9E7001764A5 /* DataPlus.swift in Sources */,
 				DE1DD9652552B95F00E08A8B /* Protocols.swift in Sources */,
 				DE66D8A824C7F931003B9206 /* AppDelegate.swift in Sources */,
 				DEB225A425A7199300859117 /* DatePlus.swift in Sources */,
@@ -305,6 +309,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -365,6 +370,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
