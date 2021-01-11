@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0CD71F3424D6707A005FDE67 /* FoundationPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD71F3324D6707A005FDE67 /* FoundationPlus.swift */; };
+		3E7B586F25AC743A00EE65B7 /* UIColorPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7B586E25AC743A00EE65B7 /* UIColorPlus.swift */; };
+		3E7B587225AC763C00EE65B7 /* CGColorPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7B587125AC763C00EE65B7 /* CGColorPlus.swift */; };
 		DE1DD9622552B8B700E08A8B /* UIEdgeInsetsPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1DD9612552B8B700E08A8B /* UIEdgeInsetsPlus.swift */; };
 		DE1DD9652552B95F00E08A8B /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1DD9642552B95F00E08A8B /* Protocols.swift */; };
 		DE1DD9682552B9AC00E08A8B /* UIControlPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1DD9672552B9AC00E08A8B /* UIControlPlus.swift */; };
@@ -34,6 +36,8 @@
 
 /* Begin PBXFileReference section */
 		0CD71F3324D6707A005FDE67 /* FoundationPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoundationPlus.swift; sourceTree = "<group>"; };
+		3E7B586E25AC743A00EE65B7 /* UIColorPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorPlus.swift; sourceTree = "<group>"; };
+		3E7B587125AC763C00EE65B7 /* CGColorPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGColorPlus.swift; sourceTree = "<group>"; };
 		DE1DD9612552B8B700E08A8B /* UIEdgeInsetsPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIEdgeInsetsPlus.swift; sourceTree = "<group>"; };
 		DE1DD9642552B95F00E08A8B /* Protocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		DE1DD9672552B9AC00E08A8B /* UIControlPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIControlPlus.swift; sourceTree = "<group>"; };
@@ -134,6 +138,7 @@
 				DE1DD9612552B8B700E08A8B /* UIEdgeInsetsPlus.swift */,
 				DE6E14FF24D16A320053CC44 /* UIImagePlus.swift */,
 				DE243812253188CC006CF000 /* UIStackViewPlus.swift */,
+				3E7B586E25AC743A00EE65B7 /* UIColorPlus.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -163,6 +168,7 @@
 			isa = PBXGroup;
 			children = (
 				DEA34B742511DBE500B4697C /* CGSizePlus.swift */,
+				3E7B587125AC763C00EE65B7 /* CGColorPlus.swift */,
 			);
 			path = CoreGraphics;
 			sourceTree = "<group>";
@@ -240,11 +246,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				DE94533A2508A5050082E5E5 /* UIApplicationPlus.swift in Sources */,
+				3E7B586F25AC743A00EE65B7 /* UIColorPlus.swift in Sources */,
 				DE1DD9622552B8B700E08A8B /* UIEdgeInsetsPlus.swift in Sources */,
 				DE1DD96C2552BA2800E08A8B /* InsetsLabel.swift in Sources */,
 				DE66D8AC24C7F931003B9206 /* ViewController.swift in Sources */,
 				DEA34B752511DBE500B4697C /* CGSizePlus.swift in Sources */,
 				DEB225A125A7182D00859117 /* StringPlus.swift in Sources */,
+				3E7B587225AC763C00EE65B7 /* CGColorPlus.swift in Sources */,
 				DE93781424D1480300D89D4C /* NSObjectPlus.swift in Sources */,
 				DE66D8BD24C7F982003B9206 /* UIButtonPlus.swift in Sources */,
 				0CD71F3424D6707A005FDE67 /* FoundationPlus.swift in Sources */,

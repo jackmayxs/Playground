@@ -10,12 +10,16 @@ import UIKit
 
 extension UIStackView {
 	
-	/// 添加StackView背景视图颜色
-	/// - Parameter color: 背景View颜色
-	func addBackground(_ color: UIColor) {
-		let subView = UIView(frame: bounds)
-		subView.backgroundColor = color
-		subView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-		insertSubview(subView, at: 0)
-	}
+    func addBackgroundView(_ backgroundView: UIView) {
+        backgroundView.frame = bounds
+        backgroundView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        insertSubview(backgroundView, at: 0)
+    }
+    /// 添加StackView背景视图颜色
+    /// - Parameter color: 背景View颜色
+    func addBackground(_ color: UIColor) {
+        let backgroundView = UIView(frame: bounds)
+        backgroundView.backgroundColor = color
+        addBackgroundView(backgroundView)
+    }
 }

@@ -23,7 +23,10 @@ extension CGSize: SizeExtendable {
 }
 
 extension CGSize {
-	
+    
+    init(size: CGFloat) {
+        self.init(width: size, height: size)
+    }
 	/// 给CGSize加另外的宽高
 	/// - Parameters:
 	///   - lhs: CGSize
@@ -35,4 +38,15 @@ extension CGSize {
 		size.height += rhs.vertical
 		return size
 	}
+    
+    var ratio: CGFloat {
+        height / width
+    }
+    
+    func multiplied(by: CGFloat) -> CGSize {
+        var size = self
+        size.width *= by
+        size.height *= by
+        return size
+    }
 }

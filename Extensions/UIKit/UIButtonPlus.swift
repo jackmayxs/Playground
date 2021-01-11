@@ -44,14 +44,24 @@ extension UIButton {
 		}
 	}
 	
-	var imageWidth: CGFloat { imageView?.image?.size.width ?? 0 }
-	
-	var imageHeight: CGFloat { imageView?.image?.size.height ?? 0 }
+    var imageWidth: CGFloat {
+        guard let image = imageView?.image else {
+            return currentBackgroundImage?.size.width ?? 0
+        }
+        return image.size.width
+    }
+    
+    var imageHeight: CGFloat {
+        guard let image = imageView?.image else {
+            return currentBackgroundImage?.size.height ?? 0
+        }
+        return image.size.height
+    }
 	
 	var titleWidth: CGFloat {
-		// 适配iOS14,否则此属性会按照字体的Font返回一个值,从而影响intrinsicContentSize的计算
-		guard titleLabel?.text != .none else { return 0 }
-		guard let titleLabel = titleLabel else { return 0 }
+        // 以下两行: 适配iOS14,否则此属性会按照字体的Font返回一个值,从而影响intrinsicContentSize的计算
+        guard let titleLabel = titleLabel else { return 0 }
+        guard titleLabel.text != .none else { return 0 }
 		if #available(iOS 8.0, *) {
 			return titleLabel.intrinsicContentSize.width
 		} else {
@@ -60,9 +70,9 @@ extension UIButton {
 	}
 	
 	var titleHeight: CGFloat {
-		// 适配iOS14,否则此属性会按照字体的Font返回一个值,从而影响intrinsicContentSize的计算
-		guard titleLabel?.text != .none else { return 0 }
-		guard let titleLabel = titleLabel else { return 0 }
+        // 以下两行: 适配iOS14,否则此属性会按照字体的Font返回一个值,从而影响intrinsicContentSize的计算
+        guard let titleLabel = titleLabel else { return 0 }
+        guard titleLabel.text != .none else { return 0 }
 		if #available(iOS 8.0, *) {
 			return titleLabel.intrinsicContentSize.height
 		} else {
