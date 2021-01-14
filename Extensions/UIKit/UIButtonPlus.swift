@@ -44,19 +44,25 @@ extension UIButton {
 		}
 	}
 	
-    var imageWidth: CGFloat {
-        guard let image = imageView?.image else {
-            return currentBackgroundImage?.size.width ?? 0
-        }
-        return image.size.width
-    }
-    
-    var imageHeight: CGFloat {
-        guard let image = imageView?.image else {
-            return currentBackgroundImage?.size.height ?? 0
-        }
-        return image.size.height
-    }
+	var imageWidth: CGFloat {
+		guard let image = imageView?.image else {
+			// 确保title 为空 | 否则返回 0
+			guard titleLabel?.text?.isEmpty ?? true else { return 0 }
+			// 返回背景图的宽度
+			return currentBackgroundImage?.size.width ?? 0
+		}
+		return image.size.width
+	}
+	
+	var imageHeight: CGFloat {
+		guard let image = imageView?.image else {
+			// 确保title 为空 | 否则返回 0
+			guard titleLabel?.text?.isEmpty ?? true else { return 0 }
+			// 返回背景图的高度
+			return currentBackgroundImage?.size.height ?? 0
+		}
+		return image.size.height
+	}
 	
 	var titleWidth: CGFloat {
         // 以下两行: 适配iOS14,否则此属性会按照字体的Font返回一个值,从而影响intrinsicContentSize的计算
