@@ -94,6 +94,7 @@
 				DE66D8A524C7F931003B9206 /* Products */,
 			);
 			sourceTree = "<group>";
+			usesTabs = 1;
 		};
 		DE66D8A524C7F931003B9206 /* Products */ = {
 			isa = PBXGroup;
