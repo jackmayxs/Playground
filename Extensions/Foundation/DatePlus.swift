@@ -17,7 +17,10 @@ extension Date {
 	///   - rhs: 结束时间
 	/// - Returns: DateComponents
 	static func >> (lhs: Date, rhs: Date) -> DateComponents {
-		Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: lhs, to: rhs)
+		let requiredComponents: Set<Calendar.Component> = [
+			.year, .month, .day, .hour, .minute, .second, .nanosecond
+		]
+		return Calendar.current.dateComponents(requiredComponents, from: lhs, to: rhs)
 	}
 	
 	/// 返回当前时间

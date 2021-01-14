@@ -32,6 +32,7 @@
 		DEA34B752511DBE500B4697C /* CGSizePlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA34B742511DBE500B4697C /* CGSizePlus.swift */; };
 		DEB225A125A7182D00859117 /* StringPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB225A025A7182D00859117 /* StringPlus.swift */; };
 		DEB225A425A7199300859117 /* DatePlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB225A325A7199300859117 /* DatePlus.swift */; };
+		DEF40F5E25B02C2900ADA57D /* UIViewPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF40F5D25B02C2900ADA57D /* UIViewPlus.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -62,6 +63,7 @@
 		DEA34B742511DBE500B4697C /* CGSizePlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGSizePlus.swift; sourceTree = "<group>"; };
 		DEB225A025A7182D00859117 /* StringPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringPlus.swift; sourceTree = "<group>"; };
 		DEB225A325A7199300859117 /* DatePlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePlus.swift; sourceTree = "<group>"; };
+		DEF40F5D25B02C2900ADA57D /* UIViewPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewPlus.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,6 +141,7 @@
 				DE6E14FF24D16A320053CC44 /* UIImagePlus.swift */,
 				DE243812253188CC006CF000 /* UIStackViewPlus.swift */,
 				3E7B586E25AC743A00EE65B7 /* UIColorPlus.swift */,
+				DEF40F5D25B02C2900ADA57D /* UIViewPlus.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -251,6 +254,7 @@
 				DE1DD96C2552BA2800E08A8B /* InsetsLabel.swift in Sources */,
 				DE66D8AC24C7F931003B9206 /* ViewController.swift in Sources */,
 				DEA34B752511DBE500B4697C /* CGSizePlus.swift in Sources */,
+				DEF40F5E25B02C2900ADA57D /* UIViewPlus.swift in Sources */,
 				DEB225A125A7182D00859117 /* StringPlus.swift in Sources */,
 				3E7B587225AC763C00EE65B7 /* CGColorPlus.swift in Sources */,
 				DE93781424D1480300D89D4C /* NSObjectPlus.swift in Sources */,
