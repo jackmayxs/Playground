@@ -7,6 +7,16 @@
 
 import UIKit
 
+extension Sequence {
+	
+	/// 转换自身为另一种类型
+	/// - Parameter transformer: 具体转换的实现过程
+	/// - Returns: 返回转换之后的实例
+	func transform<T>(_ transformer: (Self) -> T) -> T {
+		transformer(self)
+	}
+}
+
 // MARK: - __________ Add Selector for UIControl Events Using a Closure __________
 protocol Actionable {
     associatedtype T = Self

@@ -10,6 +10,15 @@ import Foundation
 
 extension Date {
 	
+	fileprivate static var CurrentCalendar: Calendar = {
+		var cal = Calendar.current
+		cal.locale = Locale.current
+		return cal
+	}()
+	fileprivate static var DefaultCalendarComponents: Set<Calendar.Component> {
+		[.year, .month, .day, .hour, .minute, .second, .nanosecond]
+	}
+	
 	/// 计算两个日期之间相差的DateComponents
 	/// - 注意：两个日期的先后顺序，如果开始日期晚于结束日期，返回的DateComponents里的元素将为负数
 	/// - Parameters:
@@ -17,10 +26,9 @@ extension Date {
 	///   - rhs: 结束时间
 	/// - Returns: DateComponents
 	static func >> (lhs: Date, rhs: Date) -> DateComponents {
-		let requiredComponents: Set<Calendar.Component> = [
-			.year, .month, .day, .hour, .minute, .second, .nanosecond
-		]
-		return Calendar.current.dateComponents(requiredComponents, from: lhs, to: rhs)
+		DefaultCalendarComponents.transform { components -> DateComponents in
+			CurrentCalendar.dateComponents(components, from: lhs, to: rhs)
+		}
 	}
 	
 	/// 返回当前时间
