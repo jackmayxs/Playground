@@ -7,15 +7,25 @@
 
 import UIKit
 
-extension Sequence {
-	
-	/// 转换自身为另一种类型
-	/// - Parameter transformer: 具体转换的实现过程
-	/// - Returns: 返回转换之后的实例
+// MARK: - __________ Transformable Protocol __________
+/// 转换自身为另一种类型
+/// - Parameter transformer: 具体转换的实现过程
+/// - Returns: 返回转换之后的实例
+protocol Transformable {
+	associatedtype E
+	func transform<T>(_ transformer: (E) -> T) -> T
+}
+
+extension Transformable {
 	func transform<T>(_ transformer: (Self) -> T) -> T {
 		transformer(self)
 	}
 }
+
+extension NSObject: Transformable {}
+extension Set: Transformable {}
+extension Array: Transformable {}
+extension Dictionary: Transformable {}
 
 // MARK: - __________ Add Selector for UIControl Events Using a Closure __________
 protocol Actionable {
