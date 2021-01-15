@@ -7,6 +7,51 @@
 
 import UIKit
 
+// MARK: - __________ Configurable __________
+protocol SimpleInitializer {
+	init()
+}
+protocol Configurable {
+	@discardableResult
+	mutating func configure(_ configurator: (inout Self) -> Void) -> Self
+}
+typealias SimpleConfigurable = SimpleInitializer & Configurable
+extension Configurable {
+	@discardableResult
+	mutating func configure(_ configurator: (inout Self) -> Void) -> Self {
+		configurator(&self)
+		return self
+	}
+}
+protocol InstanceFactory {
+	static func new(_ configurator: (inout Self) -> Void) -> Self
+}
+extension InstanceFactory where Self: SimpleConfigurable {
+	static func new(_ configurator: (inout Self) -> Void) -> Self {
+		var retval = Self()
+		return retval.configure(configurator)
+	}
+}
+
+protocol ClassConfigurable: class {}
+extension ClassConfigurable {
+	@discardableResult
+	func configure(_ configurator: (Self) -> Void) -> Self {
+		configurator(self)
+		return self
+	}
+}
+typealias SimpleClassConfigurable = SimpleInitializer & ClassConfigurable
+protocol ClassNewInstanceConfigurable: SimpleClassConfigurable {}
+extension ClassNewInstanceConfigurable {
+	static func new(_ configurator: (Self) -> Void) -> Self {
+		let retval = Self()
+		return retval.configure(configurator)
+	}
+}
+
+extension NSObject: ClassNewInstanceConfigurable {}
+
 // MARK: - __________ Transformable Protocol __________
 /// 转换自身为另一种类型
 /// - Parameter transformer: 具体转换的实现过程
