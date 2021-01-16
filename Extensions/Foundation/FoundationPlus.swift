@@ -12,6 +12,20 @@ import UIKit
 infix operator <-- : MultiplicationPrecedence
 infix operator --> : MultiplicationPrecedence
 
+extension Int {
+	
+	// 获取一个整形数字个十百千...位上的数字. 例如:
+	// 746381295[0] == 5 个位数字
+	// 746381295[1] == 9 十位数字...
+	subscript(digitIndex: Int) -> Int {
+		var decimalBase = 1
+		for _ in 0 ..< digitIndex {
+			decimalBase *= 10
+		}
+		return (self / decimalBase) % 10
+	}
+}
+
 // MARK: - __________ Optional __________
 extension Optional {
 	

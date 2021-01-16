@@ -16,7 +16,7 @@ extension UIButton {
 		case ㊨㊧
 	}
 	
-	private enum Property {
+	private enum Key {
 		static var imageTitleStyle = UUID()
 		static var imageTitleSpacing = UUID()
 		static var useBackgroundImageSize = UUID()
@@ -25,60 +25,25 @@ extension UIButton {
 	// MARK: - Properties
 	
 	var useBackgroundImageSize: Bool {
-		set {
-			objc_setAssociatedObject(self, &Property.useBackgroundImageSize, newValue, .OBJC_ASSOCIATION_ASSIGN)
-		}
-		get {
-			guard let boolValue = objc_getAssociatedObject(self, &Property.useBackgroundImageSize) as? Bool else {
-				return false
-			}
-			return boolValue
-		}
+		set { objc_setAssociatedObject(self, &Key.useBackgroundImageSize, newValue, .OBJC_ASSOCIATION_ASSIGN) }
+		get { objc_getAssociatedObject(self, &Key.useBackgroundImageSize) as? Bool ?? false }
 	}
 	
 	private(set) var imageTitleStyle: ImageTitleStyle {
-		set(style) {
-			objc_setAssociatedObject(self, &Property.imageTitleStyle, style.rawValue, .OBJC_ASSOCIATION_ASSIGN)
-		}
+		set { objc_setAssociatedObject(self, &Key.imageTitleStyle, newValue.rawValue, .OBJC_ASSOCIATION_ASSIGN) }
 		get {
-			guard let rawValue = objc_getAssociatedObject(self, &Property.imageTitleStyle) as? Int else {
-				return .㊧㊨
-			}
-			return ImageTitleStyle(rawValue: rawValue)!
+			guard let rawValue = objc_getAssociatedObject(self, &Key.imageTitleStyle) as? Int else { return .㊧㊨ }
+			return ImageTitleStyle(rawValue: rawValue).unsafelyUnwrapped
 		}
 	}
 	
 	private(set) var imageTitleSpacing: CGFloat {
-		set {
-			objc_setAssociatedObject(self, &Property.imageTitleSpacing, newValue, .OBJC_ASSOCIATION_ASSIGN)
-		}
-		get {
-			objc_getAssociatedObject(self, &Property.imageTitleSpacing) as? CGFloat ?? 0
-		}
+		set { objc_setAssociatedObject(self, &Key.imageTitleSpacing, newValue, .OBJC_ASSOCIATION_ASSIGN) }
+		get { objc_getAssociatedObject(self, &Key.imageTitleSpacing) as? CGFloat ?? 0 }
 	}
 	
-	var imageWidth: CGFloat {
-		guard let image = imageView?.image else {
-			if useBackgroundImageSize {
-				return currentBackgroundImage?.size.width ?? 0
-			} else {
-				return 0
-			}
-		}
-		return image.size.width
-	}
-	
-	var imageHeight: CGFloat {
-		guard let image = imageView?.image else {
-			if useBackgroundImageSize {
-				return currentBackgroundImage?.size.height ?? 0
-			} else {
-				return 0
-			}
-		}
-		return image.size.height
-	}
-	
+	var imageWidth: CGFloat { imageView?.image?.size.width ?? 0 }
+	var imageHeight: CGFloat { imageView?.image?.size.height ?? 0 }
 	var titleWidth: CGFloat {
 		// 以下两行: 适配iOS14,否则此属性会按照字体的Font返回一个值,从而影响intrinsicContentSize的计算
 		guard let titleLabel = titleLabel else { return 0 }
@@ -89,7 +54,6 @@ extension UIButton {
 			return titleLabel.frame.size.width
 		}
 	}
-	
 	var titleHeight: CGFloat {
 		// 以下两行: 适配iOS14,否则此属性会按照字体的Font返回一个值,从而影响intrinsicContentSize的计算
 		guard let titleLabel = titleLabel else { return 0 }
@@ -104,20 +68,26 @@ extension UIButton {
 	/// 可以根据contentEdgeInsets自动适配自身大小
 	open override var intrinsicContentSize: CGSize {
 		
-		var intrinsicWidth: CGFloat = 0.0
-		var intrinsicHeight: CGFloat = 0.0
-		
-		// 计算按钮宽高
-		switch imageTitleStyle  {
-		case .㊤㊦, .㊦㊤:
-			intrinsicWidth = max(imageWidth, titleWidth)
-			intrinsicHeight = imageHeight + imageTitleSpacing + titleHeight
-		case .㊧㊨, .㊨㊧:
-			intrinsicWidth = imageWidth + imageTitleSpacing + titleWidth
-			intrinsicHeight = max(imageHeight, titleHeight)
+		var regularSize: CGSize {
+			// 初始化size
+			var size = CGSize.zero
+			// 计算宽高
+			switch imageTitleStyle  {
+			case .㊤㊦, .㊦㊤:
+				size.width = max(imageWidth, titleWidth)
+				size.height = imageHeight + imageTitleSpacing + titleHeight
+			case .㊧㊨, .㊨㊧:
+				size.width = imageWidth + imageTitleSpacing + titleWidth
+				size.height = max(imageHeight, titleHeight)
+			}
+			return size + contentEdgeInsets
 		}
 		
-		return CGSize(width: intrinsicWidth, height: intrinsicHeight) + contentEdgeInsets
+		var backgroundImageSize: CGSize {
+			currentBackgroundImage?.size ?? .zero
+		}
+		
+		return useBackgroundImageSize ? backgroundImageSize : regularSize
 	}
 	
 	// MARK: - Interface
@@ -126,7 +96,7 @@ extension UIButton {
 	/// - Parameters:
 	///   - style: 样式
 	///   - spacing: Image-Title间距(大于等于0; 最好是偶数,否则按钮显示可能会有小小误差)
-	func adjustImageTitleStyle(_ style: ImageTitleStyle, spacing: CGFloat = 0) {
+	func adjustImageTitleStyle(_ style: ImageTitleStyle = .㊧㊨, spacing: CGFloat = 0) {
 		
 		assert(spacing >= 0, "A sane person will never do that🤪,right?")
 		

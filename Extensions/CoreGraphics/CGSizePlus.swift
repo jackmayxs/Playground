@@ -24,9 +24,11 @@ extension CGSize: SizeExtendable {
 
 extension CGSize {
     
-    init(size: CGFloat) {
-        self.init(width: size, height: size)
-    }
+	init(_ edges: CGFloat...) {
+		guard let width = edges.first else { self.init(width: 0, height: 0); return }
+		guard let height = edges.last else { self.init(width: 0, height: 0); return }
+		self.init(width: width, height: height)
+	}
 	/// 给CGSize加另外的宽高
 	/// - Parameters:
 	///   - lhs: CGSize
