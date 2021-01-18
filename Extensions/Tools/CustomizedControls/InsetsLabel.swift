@@ -17,11 +17,15 @@ class InsetsLabel: UILabel {
 		}
 	}
 	
-	override func textRect(forBounds bounds: CGRect,
-						   limitedToNumberOfLines numberOfLines: Int) -> CGRect {
-		super.textRect(forBounds: bounds.inset(by: textEdgeInsets),
-					   limitedToNumberOfLines: numberOfLines)
-			.inset(by: textEdgeInsets.reverse)
+	override func textRect(forBounds bounds: CGRect, limitedToNumberOfLines numberOfLines: Int) -> CGRect {
+		super.textRect(forBounds: bounds.inset(by: textEdgeInsets), limitedToNumberOfLines: numberOfLines)
+			.inset(by: textEdgeInsets.reversed)
+	}
+	
+	// Or, you can override this property.
+	override var preferredMaxLayoutWidth: CGFloat {
+		get { super.preferredMaxLayoutWidth }
+		set { super.preferredMaxLayoutWidth = newValue }
 	}
 	
 	override func drawText(in rect: CGRect) {

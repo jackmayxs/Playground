@@ -9,7 +9,7 @@
 import UIKit
 
 extension UIEdgeInsets {
-	var reverse: UIEdgeInsets {
+	var reversed: UIEdgeInsets {
 		UIEdgeInsets(top: -top, left: -left, bottom: -bottom, right: -right)
 	}
 }

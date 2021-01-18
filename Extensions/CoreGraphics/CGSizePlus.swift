@@ -8,15 +8,6 @@
 
 import UIKit
 
-protocol SizeExtendable {
-	
-	/// 垂直方向扩展
-	var vertical: CGFloat { get }
-	
-	/// 水平方向扩展
-	var horizontal: CGFloat { get }
-}
-
 extension CGSize: SizeExtendable {
 	var vertical: CGFloat { height }
 	var horizontal: CGFloat { width }

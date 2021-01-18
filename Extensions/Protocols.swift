@@ -103,3 +103,12 @@ extension Actionable where Self: UIControl {
         objc_setAssociatedObject(self, String(events.rawValue), sleeve, .OBJC_ASSOCIATION_RETAIN)
     }
 }
+
+protocol SizeExtendable {
+	
+	/// 垂直方向扩展
+	var vertical: CGFloat { get }
+	
+	/// 水平方向扩展
+	var horizontal: CGFloat { get }
+}
