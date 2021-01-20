@@ -24,6 +24,10 @@ extension Int {
 		}
 		return (self / decimalBase) % 10
 	}
+	
+	var cgFloat: CGFloat {
+		CGFloat(self)
+	}
 }
 
 // MARK: - __________ Optional __________

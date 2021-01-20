@@ -42,4 +42,14 @@ extension CGSize {
         size.height *= by
         return size
     }
+	
+	func chopEqually(times: Int, direction: NSLayoutConstraint.Axis) -> CGSize {
+		var size = self
+		switch direction {
+		case .vertical: size.width /= times.cgFloat
+		case .horizontal: size.height /= times.cgFloat
+		@unknown default: break
+		}
+		return size
+	}
 }
