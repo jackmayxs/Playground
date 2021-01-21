@@ -10,6 +10,19 @@ import Foundation
 
 extension Date {
 	
+	var beijingTimeString: String {
+		DateFormatter.new { make in
+			make.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+			// 使用identifier
+			make.timeZone = TimeZone(identifier: "Asia/Shanghai")
+			// 使用缩写
+			make.timeZone = TimeZone(abbreviation: "GMT+8")
+			// 💋使用东八区偏移秒数
+			make.timeZone = TimeZone(secondsFromGMT: 8.hours)
+		}
+		.string(from: self)
+	}
+	
 	fileprivate static var CurrentCalendar: Calendar = {
 		var cal = Calendar.current
 		cal.locale = Locale.current

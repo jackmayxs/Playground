@@ -28,6 +28,11 @@ extension Int {
 	var cgFloat: CGFloat {
 		CGFloat(self)
 	}
+	// MARK: - __________ Date __________
+	var days: Int { 24 * hours }
+	var hours: Int { self * 60.minutes }
+	var minutes: Int { self * 60.seconds }
+	var seconds: Int { self }
 }
 
 // MARK: - __________ Optional __________
