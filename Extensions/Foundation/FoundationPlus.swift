@@ -12,27 +12,13 @@ import UIKit
 infix operator <-- : MultiplicationPrecedence
 infix operator --> : MultiplicationPrecedence
 
-extension Int {
+// MARK: - __________ ArraySlice __________
+extension ArraySlice {
 	
-	// 获取一个整形数字个十百千...位上的数字. 例如:
-	// 746381295[0] == 5 个位数字
-	// 746381295[1] == 9 十位数字...
-	subscript(digitIndex: Int) -> Int {
-		var decimalBase = 1
-		for _ in 0 ..< digitIndex {
-			decimalBase *= 10
-		}
-		return (self / decimalBase) % 10
+	/// 转换为Array
+	var array: Array<Element> {
+		Array(self)
 	}
-	
-	var cgFloat: CGFloat {
-		CGFloat(self)
-	}
-	// MARK: - __________ Date __________
-	var days: Int { 24 * hours }
-	var hours: Int { self * 60.minutes }
-	var minutes: Int { self * 60.seconds }
-	var seconds: Int { self }
 }
 
 // MARK: - __________ Optional __________

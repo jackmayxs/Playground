@@ -10,6 +10,12 @@ import UIKit
 
 extension UIColor {
     // MARK: - __________ Static __________
+	
+	/// 使用十六进制数字创建UIColor
+	/// - Parameters:
+	///   - hex: 十六进制数字颜色
+	///   - alpha: 透明度
+	/// - Returns: A new UIColor
     static func hex(_ hex: UInt32, alpha: CGFloat = 1) -> UIColor {
         let divisor = CGFloat(255)
         let red     = CGFloat((hex & 0xFF0000) >> 16) / divisor
@@ -17,11 +23,10 @@ extension UIColor {
         let blue    = CGFloat( hex & 0x0000FF       ) / divisor
         return UIColor(red: red, green: green, blue: blue, alpha: alpha)
     }
+	
+	/// 生成一个随机颜色
     static var random: UIColor {
-        UIColor(red: .random(in: 0...1),
-                green: .random(in: 0...1),
-                blue: .random(in: 0...1),
-                alpha: 1)
+        UIColor(red: .random, green: .random, blue: .random, alpha: 1)
     }
     // MARK: - __________ Instance __________
     func viewWithSize(_ size: CGFloat) -> UIView {

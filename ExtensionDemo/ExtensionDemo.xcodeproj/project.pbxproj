@@ -12,6 +12,7 @@
 		3E7B586F25AC743A00EE65B7 /* UIColorPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7B586E25AC743A00EE65B7 /* UIColorPlus.swift */; };
 		3E7B587225AC763C00EE65B7 /* CGColorPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7B587125AC763C00EE65B7 /* CGColorPlus.swift */; };
 		3EB2D05125B8770D00C70FE7 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EB2D05025B8770D00C70FE7 /* Constants.swift */; };
+		DE0819BD25BAD5D300950784 /* NumberPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0819BC25BAD5D300950784 /* NumberPlus.swift */; };
 		DE1DD9622552B8B700E08A8B /* UIEdgeInsetsPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1DD9612552B8B700E08A8B /* UIEdgeInsetsPlus.swift */; };
 		DE1DD9652552B95F00E08A8B /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1DD9642552B95F00E08A8B /* Protocols.swift */; };
 		DE1DD9682552B9AC00E08A8B /* UIControlPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1DD9672552B9AC00E08A8B /* UIControlPlus.swift */; };
@@ -34,6 +35,7 @@
 		DEA34B752511DBE500B4697C /* CGSizePlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA34B742511DBE500B4697C /* CGSizePlus.swift */; };
 		DEB225A125A7182D00859117 /* StringPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB225A025A7182D00859117 /* StringPlus.swift */; };
 		DEB225A425A7199300859117 /* DatePlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB225A325A7199300859117 /* DatePlus.swift */; };
+		DEF0553E25BBD31700093261 /* UIWindowPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF0553D25BBD31700093261 /* UIWindowPlus.swift */; };
 		DEF40F5E25B02C2900ADA57D /* UIViewPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF40F5D25B02C2900ADA57D /* UIViewPlus.swift */; };
 /* End PBXBuildFile section */
 
@@ -43,6 +45,7 @@
 		3E7B586E25AC743A00EE65B7 /* UIColorPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorPlus.swift; sourceTree = "<group>"; };
 		3E7B587125AC763C00EE65B7 /* CGColorPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGColorPlus.swift; sourceTree = "<group>"; };
 		3EB2D05025B8770D00C70FE7 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		DE0819BC25BAD5D300950784 /* NumberPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberPlus.swift; sourceTree = "<group>"; };
 		DE1DD9612552B8B700E08A8B /* UIEdgeInsetsPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIEdgeInsetsPlus.swift; sourceTree = "<group>"; };
 		DE1DD9642552B95F00E08A8B /* Protocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		DE1DD9672552B9AC00E08A8B /* UIControlPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIControlPlus.swift; sourceTree = "<group>"; };
@@ -67,6 +70,7 @@
 		DEA34B742511DBE500B4697C /* CGSizePlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGSizePlus.swift; sourceTree = "<group>"; };
 		DEB225A025A7182D00859117 /* StringPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringPlus.swift; sourceTree = "<group>"; };
 		DEB225A325A7199300859117 /* DatePlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePlus.swift; sourceTree = "<group>"; };
+		DEF0553D25BBD31700093261 /* UIWindowPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIWindowPlus.swift; sourceTree = "<group>"; };
 		DEF40F5D25B02C2900ADA57D /* UIViewPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewPlus.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -147,6 +151,7 @@
 				DE243812253188CC006CF000 /* UIStackViewPlus.swift */,
 				3E7B586E25AC743A00EE65B7 /* UIColorPlus.swift */,
 				DEF40F5D25B02C2900ADA57D /* UIViewPlus.swift */,
+				DEF0553D25BBD31700093261 /* UIWindowPlus.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -156,6 +161,7 @@
 			children = (
 				DE93781324D1480300D89D4C /* NSObjectPlus.swift */,
 				0CD71F3324D6707A005FDE67 /* FoundationPlus.swift */,
+				DE0819BC25BAD5D300950784 /* NumberPlus.swift */,
 				DEB225A025A7182D00859117 /* StringPlus.swift */,
 				DEB225A325A7199300859117 /* DatePlus.swift */,
 				DE743CCC25A7F9E7001764A5 /* DataPlus.swift */,
@@ -264,6 +270,7 @@
 				DEF40F5E25B02C2900ADA57D /* UIViewPlus.swift in Sources */,
 				DEB225A125A7182D00859117 /* StringPlus.swift in Sources */,
 				3E7B587225AC763C00EE65B7 /* CGColorPlus.swift in Sources */,
+				DEF0553E25BBD31700093261 /* UIWindowPlus.swift in Sources */,
 				DE93781424D1480300D89D4C /* NSObjectPlus.swift in Sources */,
 				DE66D8BD24C7F982003B9206 /* UIButtonPlus.swift in Sources */,
 				0CD71F3424D6707A005FDE67 /* FoundationPlus.swift in Sources */,
@@ -278,6 +285,7 @@
 				3E58A84525B5D4D000B0D2E3 /* CGRectPlus.swift in Sources */,
 				DE66D8AA24C7F931003B9206 /* SceneDelegate.swift in Sources */,
 				DE243813253188CC006CF000 /* UIStackViewPlus.swift in Sources */,
+				DE0819BD25BAD5D300950784 /* NumberPlus.swift in Sources */,
 				3EB2D05125B8770D00C70FE7 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

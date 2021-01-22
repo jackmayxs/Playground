@@ -49,3 +49,25 @@ extension String {
 		trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
 	}
 }
+
+extension Locale {
+	
+	init(_ language: Language) {
+		self.init(identifier: language.identifier)
+	}
+	
+	// MARK: - __________ Languages __________
+	enum Language {
+		case chinese(Chinese)
+		
+		var identifier: String {
+			switch self {
+				case .chinese(let type): return type.rawValue
+			}
+		}
+		// MARK: - __________ Chinese Type __________
+		enum Chinese: String {
+			case simplified = "zh_Hans"
+		}
+	}
+}

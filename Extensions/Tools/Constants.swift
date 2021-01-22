@@ -10,13 +10,7 @@ import UIKit
 
 enum Size {
 	
-	var commonSafeAreaInsets: UIEdgeInsets {
-		if #available(iOS 13.0, *) {
-			return UIApplication.shared.windows.filter(\.isKeyWindow).first?.safeAreaInsets ?? .zero
-		}
-		else if #available(iOS 11.0, *) {
-			return UIApplication.shared.keyWindow?.safeAreaInsets ?? .zero
-		}
-		return .zero
+	static var commonSafeAreaInsets: UIEdgeInsets {
+		UIWindow.keyWindow?.safeAreaInsets ?? .zero
 	}
 }

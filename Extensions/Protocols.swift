@@ -71,6 +71,8 @@ extension NSObject: Transformable {}
 extension Set: Transformable {}
 extension Array: Transformable {}
 extension Dictionary: Transformable {}
+extension DateComponents: Transformable {}
+extension Calendar: Transformable {}
 
 // MARK: - __________ Add Selector for UIControl Events Using a Closure __________
 protocol Actionable {

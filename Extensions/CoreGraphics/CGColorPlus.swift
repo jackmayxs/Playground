@@ -9,7 +9,14 @@
 import UIKit
 
 extension CGColor {
-    static func hex(_ hex: UInt32, alpha: CGFloat = 1) -> CGColor {
+	
+	
+	/// 使用十六进制数字创建CGColor
+	/// - Parameters:
+	///   - hex: 十六进制数字颜色
+	///   - alpha: 透明度
+	/// - Returns: A new CGColor
+	static func hex(_ hex: UInt32, alpha: CGFloat = 1) -> CGColor {
         UIColor.hex(hex, alpha: alpha).cgColor
     }
 }
