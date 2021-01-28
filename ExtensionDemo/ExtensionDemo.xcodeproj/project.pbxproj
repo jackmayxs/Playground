@@ -12,8 +12,8 @@
 		3E7B586F25AC743A00EE65B7 /* UIColorPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7B586E25AC743A00EE65B7 /* UIColorPlus.swift */; };
 		3E7B587225AC763C00EE65B7 /* CGColorPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7B587125AC763C00EE65B7 /* CGColorPlus.swift */; };
 		3EB2D05125B8770D00C70FE7 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EB2D05025B8770D00C70FE7 /* Constants.swift */; };
-		DE0819BD25BAD5D300950784 /* NumberPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0819BC25BAD5D300950784 /* NumberPlus.swift */; };
 		3EBEDB2625BD9C740067D02F /* UIDevicePlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBEDB2525BD9C740067D02F /* UIDevicePlus.swift */; };
+		DE0819BD25BAD5D300950784 /* NumberPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0819BC25BAD5D300950784 /* NumberPlus.swift */; };
 		DE1DD9622552B8B700E08A8B /* UIEdgeInsetsPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1DD9612552B8B700E08A8B /* UIEdgeInsetsPlus.swift */; };
 		DE1DD9652552B95F00E08A8B /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1DD9642552B95F00E08A8B /* Protocols.swift */; };
 		DE1DD96C2552BA2800E08A8B /* InsetsLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1DD96B2552BA2700E08A8B /* InsetsLabel.swift */; };
@@ -32,6 +32,7 @@
 		DE93781224D124B200D89D4C /* DispatchOnce.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE93781124D124B200D89D4C /* DispatchOnce.swift */; };
 		DE93781424D1480300D89D4C /* NSObjectPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE93781324D1480300D89D4C /* NSObjectPlus.swift */; };
 		DE94533A2508A5050082E5E5 /* UIApplicationPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9453392508A5050082E5E5 /* UIApplicationPlus.swift */; };
+		DE9E8D8425C24ED300FB3C46 /* UITabBarItemPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9E8D8325C24ED300FB3C46 /* UITabBarItemPlus.swift */; };
 		DEA34B752511DBE500B4697C /* CGSizePlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA34B742511DBE500B4697C /* CGSizePlus.swift */; };
 		DEB225A125A7182D00859117 /* StringPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB225A025A7182D00859117 /* StringPlus.swift */; };
 		DEB225A425A7199300859117 /* DatePlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB225A325A7199300859117 /* DatePlus.swift */; };
@@ -45,8 +46,8 @@
 		3E7B586E25AC743A00EE65B7 /* UIColorPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorPlus.swift; sourceTree = "<group>"; };
 		3E7B587125AC763C00EE65B7 /* CGColorPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGColorPlus.swift; sourceTree = "<group>"; };
 		3EB2D05025B8770D00C70FE7 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		DE0819BC25BAD5D300950784 /* NumberPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberPlus.swift; sourceTree = "<group>"; };
 		3EBEDB2525BD9C740067D02F /* UIDevicePlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDevicePlus.swift; sourceTree = "<group>"; };
+		DE0819BC25BAD5D300950784 /* NumberPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberPlus.swift; sourceTree = "<group>"; };
 		DE1DD9612552B8B700E08A8B /* UIEdgeInsetsPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIEdgeInsetsPlus.swift; sourceTree = "<group>"; };
 		DE1DD9642552B95F00E08A8B /* Protocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		DE1DD96B2552BA2700E08A8B /* InsetsLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsetsLabel.swift; sourceTree = "<group>"; };
@@ -67,6 +68,7 @@
 		DE93781124D124B200D89D4C /* DispatchOnce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DispatchOnce.swift; sourceTree = "<group>"; };
 		DE93781324D1480300D89D4C /* NSObjectPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSObjectPlus.swift; sourceTree = "<group>"; };
 		DE9453392508A5050082E5E5 /* UIApplicationPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplicationPlus.swift; sourceTree = "<group>"; };
+		DE9E8D8325C24ED300FB3C46 /* UITabBarItemPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITabBarItemPlus.swift; sourceTree = "<group>"; };
 		DEA34B742511DBE500B4697C /* CGSizePlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGSizePlus.swift; sourceTree = "<group>"; };
 		DEB225A025A7182D00859117 /* StringPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringPlus.swift; sourceTree = "<group>"; };
 		DEB225A325A7199300859117 /* DatePlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePlus.swift; sourceTree = "<group>"; };
@@ -152,6 +154,7 @@
 				DE243812253188CC006CF000 /* UIStackViewPlus.swift */,
 				DEF40F5D25B02C2900ADA57D /* UIViewPlus.swift */,
 				DEF0553D25BBD31700093261 /* UIWindowPlus.swift */,
+				DE9E8D8325C24ED300FB3C46 /* UITabBarItemPlus.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -282,6 +285,7 @@
 				DE66D8A824C7F931003B9206 /* AppDelegate.swift in Sources */,
 				DEB225A425A7199300859117 /* DatePlus.swift in Sources */,
 				DE93781224D124B200D89D4C /* DispatchOnce.swift in Sources */,
+				DE9E8D8425C24ED300FB3C46 /* UITabBarItemPlus.swift in Sources */,
 				3E58A84525B5D4D000B0D2E3 /* CGRectPlus.swift in Sources */,
 				DE66D8AA24C7F931003B9206 /* SceneDelegate.swift in Sources */,
 				DE243813253188CC006CF000 /* UIStackViewPlus.swift in Sources */,

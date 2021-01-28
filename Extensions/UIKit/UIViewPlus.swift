@@ -8,6 +8,21 @@
 
 import UIKit
 
+extension UIView {
+	
+	convenience init(_ color: UIColor) {
+		self.init(frame: .zero)
+		backgroundColor = color
+	}
+	
+	static func cornerRadius(_ cornerRadius: CGFloat, color: UIColor = .white) -> UIView {
+		UIView.new { make in
+			make.backgroundColor = color
+			make.layer.cornerRadius = cornerRadius
+		}
+	}
+}
+
 // MARK: - __________ Array<UIView> __________
 extension Array where Element: UIView {
 	
