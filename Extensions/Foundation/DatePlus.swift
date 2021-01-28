@@ -21,7 +21,7 @@ extension Date {
 		}
 		.string(from: self)
 	}
-	
+
 	fileprivate static var DefaultCalendarComponents: Set<Calendar.Component> {
 		[.year, .month, .day, .hour, .minute, .second, .nanosecond]
 	}

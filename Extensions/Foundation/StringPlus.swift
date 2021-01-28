@@ -6,7 +6,7 @@
 //  Copyright © 2021 Choi. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 extension Optional where Wrapped == String {
 	
@@ -15,14 +15,28 @@ extension Optional where Wrapped == String {
 	/// 判断Optional<String>类型是否为空
 	var isEmptyString: Bool {
 		switch self {
-			case .some(let string): return string.isEmptyString
+			case .some(let wrapped): return wrapped.isEmptyString
 			case .none: return true
 		}
 	}
 	
 	/// 返回不为空字符串的Optional<String>
-	var validString: Self {
-		isEmptyString ? .none : unsafelyUnwrapped
+	var validString: String {
+		isEmptyString ? "" : unsafelyUnwrapped
+	}
+}
+
+// MARK: - __________ Transform __________
+extension String {
+	
+	var cgFloat: CGFloat {
+		CGFloat(double)
+	}
+	var int: Int {
+		Int(double)
+	}
+	var double: Double {
+		Double(self).unwrap(ifNone: 0.0)
 	}
 }
 
