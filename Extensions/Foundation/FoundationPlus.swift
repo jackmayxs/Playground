@@ -43,10 +43,16 @@ extension Optional {
 	/// - Parameter defaultValue: 自动闭包
 	/// - Returns: Wrapped Value
 	func unwrap(ifNone defaultValue: @autoclosure () -> Wrapped) -> Wrapped {
-		guard let unwrapped = try? unwrap() else {
+		guard let wrapped = try? unwrap() else {
 			return defaultValue()
 		}
-		return unwrapped
+		return wrapped
+	}
+	func unwrap<T>(ifNone defaultValue: T, or transform: (Wrapped) -> T) -> T {
+		guard let wrapped = try? unwrap() else {
+			return defaultValue
+		}
+		return transform(wrapped)
 	}
 	
 	/// Optional Error
