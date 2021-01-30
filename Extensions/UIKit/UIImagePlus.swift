@@ -10,6 +10,16 @@ import UIKit
 
 extension UIImage {
 	
+	func expandedImage(with insets: UIEdgeInsets) -> UIImage {
+		UIGraphicsBeginImageContextWithOptions(size + insets, false, scale)
+		let origin = CGPoint(x: insets.left, y: insets.top)
+		draw(at: origin)
+		defer {
+			UIGraphicsEndImageContext()
+		}
+		return UIGraphicsGetImageFromCurrentImageContext().unwrap(ifNone: self)
+	}
+	
 	/// 启动图截图
 	static var launchScreenSnapshot: UIImage? {
 		guard let infoDict = Bundle.main.infoDictionary else { return .none }
