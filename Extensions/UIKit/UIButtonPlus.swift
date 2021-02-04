@@ -73,12 +73,12 @@ extension UIButton {
 			var size = CGSize.zero
 			// 计算宽高
 			switch imageTitleAxis  {
-			case .down, .up:
-				size.width = max(imageWidth, titleWidth)
-				size.height = imageHeight + imageTitleGap + titleHeight
-			case .right, .left:
-				size.width = imageWidth + imageTitleGap + titleWidth
-				size.height = max(imageHeight, titleHeight)
+				case .down, .up:
+					size.width = max(imageWidth, titleWidth)
+					size.height = imageHeight + imageTitleGap + titleHeight
+				case .right, .left:
+					size.width = imageWidth + imageTitleGap + titleWidth
+					size.height = max(imageHeight, titleHeight)
 			}
 			return size + contentEdgeInsets
 		}
@@ -112,95 +112,146 @@ extension UIButton {
 		/// 以及ImageTitleStyle确定最终的Image/Title的EdgeInsets
 		/// - 说明:
 		///  - 平时使用最多的就是水平和垂直方向都居中的情况了,其他情况只为了加深印象
-		switch (contentVerticalAlignment, contentHorizontalAlignment) {
-		case (.center, .center):
-			switch axis {
-			case .down:
-				imageInsets = UIEdgeInsets(top: -titleHeight-gap, left: 0, bottom: 0, right: -titleWidth)
-				titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: -imageHeight-gap, right: 0)
-			case .right:
-				let offset = gap/2
-				imageInsets = UIEdgeInsets(top: 0, left: -offset, bottom: 0, right: offset)
-				titleInsets = UIEdgeInsets(top: 0, left: offset, bottom: 0, right: -offset)
-			case .up:
-				imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: -titleHeight-gap, right: -titleWidth)
-				titleInsets = UIEdgeInsets(top: -imageHeight-gap, left: -imageWidth, bottom: 0, right: 0)
-			case .left:
-				let imageOffset = titleWidth + gap/2
-				let titleOffset = imageWidth + gap/2
-				imageInsets = UIEdgeInsets(top: 0, left: imageOffset, bottom: 0, right: -imageOffset)
-				titleInsets = UIEdgeInsets(top: 0, left: -titleOffset, bottom: 0, right: titleOffset)
-			}
-		case (.top, .left):
-			switch axis {
-			case .down:
-				titleInsets = UIEdgeInsets(top: imageHeight+gap, left: -imageWidth, bottom: 0, right: 0)
-			case .right:
-				titleInsets = UIEdgeInsets(top: 0, left: gap, bottom: 0, right: -gap)
-			case .up:
-				imageInsets = UIEdgeInsets(top: titleHeight+gap, left: 0, bottom: -titleHeight-gap, right: 0)
-				titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: 0, right: 0)
-			case .left:
-				imageInsets = UIEdgeInsets(top: 0, left: titleWidth+gap, bottom: 0, right: -titleWidth-gap)
-				titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: 0, right: 0)
-			}
-		case (.top, .right):
-			switch axis {
-			case .down:
-				imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -titleWidth)
-				titleInsets = UIEdgeInsets(top: imageHeight+gap, left: -imageWidth-gap, bottom: 0, right: 0)
-			case .right:
-				imageInsets = UIEdgeInsets(top: 0, left: -gap, bottom: 0, right: gap)
-			case .up:
-				imageInsets = UIEdgeInsets(top: titleHeight+gap, left: 0, bottom: -titleHeight-gap, right: -titleWidth)
-				titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: 0, right: 0)
-			case .left:
-				imageInsets = UIEdgeInsets(top: 0, left: titleWidth, bottom: 0, right: -titleWidth)
-				titleInsets = UIEdgeInsets(top: 0, left: -imageWidth-gap, bottom: 0, right: imageWidth+gap)
-			}
-		case (.bottom, .left):
-			switch axis {
-			case .down:
-				imageInsets = UIEdgeInsets(top: -titleHeight-gap, left: 0, bottom: titleHeight+gap, right: 0)
-				titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: 0, right: 0)
-			case .right:
-				titleInsets = UIEdgeInsets(top: 0, left: gap, bottom: 0, right: -gap)
-			case .up:
-				titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: imageHeight+gap, right: 0)
-			case .left:
-				imageInsets = UIEdgeInsets(top: 0, left: titleWidth+gap, bottom: 0, right: -titleWidth-gap)
-				titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: 0, right: imageWidth)
-			}
-		case (.bottom, .right):
-			switch axis {
-			case .down:
-				imageInsets = UIEdgeInsets(top: -titleHeight-gap, left: 0, bottom: titleHeight+gap, right: -titleWidth)
-				titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: 0, right: 0)
-			case .right:
-				imageInsets = UIEdgeInsets(top: 0, left: -gap, bottom: 0, right: gap)
-			case .up:
-				imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -titleWidth)
-				titleInsets = UIEdgeInsets(top: -imageHeight-gap, left: -imageWidth, bottom: imageHeight+gap, right: 0)
-			case .left:
-				imageInsets = UIEdgeInsets(top: 0, left: titleWidth, bottom: 0, right: -titleWidth)
-				titleInsets = UIEdgeInsets(top: 0, left: -imageWidth-gap, bottom: 0, right: imageWidth+gap)
-			}
-		case (.center, .left):
-			switch axis {
-			case .down:
-				imageInsets = UIEdgeInsets(top: -titleHeight-gap, left: 0, bottom: 0, right: -titleWidth)
-				titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: -imageHeight-gap, right: 0)
-			case .right:
-				titleInsets = UIEdgeInsets(top: 0, left: gap, bottom: 0, right: -gap)
-			case .up:
-				imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: -titleHeight-gap, right: -titleWidth)
-				titleInsets = UIEdgeInsets(top: -imageHeight-gap, left: -imageWidth, bottom: 0, right: 0)
-			case .left:
-				imageInsets = UIEdgeInsets(top: 0, left: titleWidth+gap, bottom: 0, right: -titleWidth-gap)
-				titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: 0, right: imageWidth)
-			}
-		default:
-			break
+		switch (contentVerticalAlignment, effectiveContentHorizontalAlignment) {
+			
+			case (.center, .center):
+				switch axis {
+					case .down:
+						imageInsets = UIEdgeInsets(top: -titleHeight-gap, left: 0, bottom: 0, right: -titleWidth)
+						titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: -imageHeight-gap, right: 0)
+					case .right:
+						let offset = gap/2
+						imageInsets = UIEdgeInsets(top: 0, left: -offset, bottom: 0, right: offset)
+						titleInsets = UIEdgeInsets(top: 0, left: offset, bottom: 0, right: -offset)
+					case .up:
+						imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: -titleHeight-gap, right: -titleWidth)
+						titleInsets = UIEdgeInsets(top: -imageHeight-gap, left: -imageWidth, bottom: 0, right: 0)
+					case .left:
+						let imageOffset = titleWidth + gap/2
+						let titleOffset = imageWidth + gap/2
+						imageInsets = UIEdgeInsets(top: 0, left: imageOffset, bottom: 0, right: -imageOffset)
+						titleInsets = UIEdgeInsets(top: 0, left: -titleOffset, bottom: 0, right: titleOffset)
+				}
+			case (.center, .left):
+				switch axis {
+					case .down:
+						imageInsets = UIEdgeInsets(top: -titleHeight-gap, left: 0, bottom: 0, right: -titleWidth)
+						titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: -imageHeight-gap, right: 0)
+					case .right:
+						titleInsets = UIEdgeInsets(top: 0, left: gap, bottom: 0, right: -gap)
+					case .up:
+						imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: -titleHeight-gap, right: -titleWidth)
+						titleInsets = UIEdgeInsets(top: -imageHeight-gap, left: -imageWidth, bottom: 0, right: 0)
+					case .left:
+						imageInsets = UIEdgeInsets(top: 0, left: titleWidth+gap, bottom: 0, right: -titleWidth-gap)
+						titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: 0, right: imageWidth)
+				}
+			case (.center, .right):
+				switch axis {
+					case .down:
+						imageInsets = UIEdgeInsets(top: -titleHeight-gap, left: 0, bottom: 0, right: -titleWidth)
+						titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: -imageHeight-gap, right: 0)
+					case .right:
+						imageInsets = UIEdgeInsets(top: 0, left: -gap, bottom: 0, right: gap)
+					case .up:
+						imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: -titleHeight-gap, right: -titleWidth)
+						titleInsets = UIEdgeInsets(top: -imageHeight-gap, left: -imageWidth, bottom: 0, right: 0)
+					case .left:
+						imageInsets = UIEdgeInsets(top: 0, left: titleWidth, bottom: 0, right: -titleWidth)
+						titleInsets = UIEdgeInsets(top: 0, left: -imageWidth-gap, bottom: 0, right: imageWidth+gap)
+				}
+			case (.top, .left):
+				switch axis {
+					case .down:
+						titleInsets = UIEdgeInsets(top: imageHeight+gap, left: -imageWidth, bottom: 0, right: 0)
+					case .right:
+						titleInsets = UIEdgeInsets(top: 0, left: gap, bottom: 0, right: -gap)
+					case .up:
+						imageInsets = UIEdgeInsets(top: titleHeight+gap, left: 0, bottom: -titleHeight-gap, right: 0)
+						titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: 0, right: 0)
+					case .left:
+						imageInsets = UIEdgeInsets(top: 0, left: titleWidth+gap, bottom: 0, right: -titleWidth-gap)
+						titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: 0, right: 0)
+				}
+			case (.top, .center):
+				switch axis {
+					case .down:
+						imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -titleWidth)
+						titleInsets = UIEdgeInsets(top: imageHeight+gap, left: -imageWidth, bottom: 0, right: 0)
+					case .right:
+						let offset = gap/2
+						imageInsets = UIEdgeInsets(top: 0, left: -offset, bottom: 0, right: offset)
+						titleInsets = UIEdgeInsets(top: 0, left: offset, bottom: 0, right: -offset)
+					case .up:
+						imageInsets = UIEdgeInsets(top: titleHeight+gap, left: 0, bottom: -titleHeight-gap, right: -titleWidth)
+						titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: 0, right: 0)
+					case .left:
+						let imageOffset = titleWidth + gap/2
+						let titleOffset = imageWidth + gap/2
+						imageInsets = UIEdgeInsets(top: 0, left: imageOffset, bottom: 0, right: -imageOffset)
+						titleInsets = UIEdgeInsets(top: 0, left: -titleOffset, bottom: 0, right: titleOffset)
+				}
+			case (.top, .right):
+				switch axis {
+					case .down:
+						imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -titleWidth)
+						titleInsets = UIEdgeInsets(top: imageHeight+gap, left: -imageWidth-gap, bottom: 0, right: 0)
+					case .right:
+						imageInsets = UIEdgeInsets(top: 0, left: -gap, bottom: 0, right: gap)
+					case .up:
+						imageInsets = UIEdgeInsets(top: titleHeight+gap, left: 0, bottom: -titleHeight-gap, right: -titleWidth)
+						titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: 0, right: 0)
+					case .left:
+						imageInsets = UIEdgeInsets(top: 0, left: titleWidth, bottom: 0, right: -titleWidth)
+						titleInsets = UIEdgeInsets(top: 0, left: -imageWidth-gap, bottom: 0, right: imageWidth+gap)
+				}
+			case (.bottom, .left):
+				switch axis {
+					case .down:
+						imageInsets = UIEdgeInsets(top: -titleHeight-gap, left: 0, bottom: titleHeight+gap, right: 0)
+						titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: 0, right: 0)
+					case .right:
+						titleInsets = UIEdgeInsets(top: 0, left: gap, bottom: 0, right: -gap)
+					case .up:
+						titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: imageHeight+gap, right: 0)
+					case .left:
+						imageInsets = UIEdgeInsets(top: 0, left: titleWidth+gap, bottom: 0, right: -titleWidth-gap)
+						titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: 0, right: imageWidth)
+				}
+			case (.bottom, .center):
+				switch axis {
+					case .down:
+						imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: titleHeight+gap, right: -titleWidth)
+						titleInsets = UIEdgeInsets(top: imageHeight+gap, left: -imageWidth, bottom: 0, right: 0)
+					case .right:
+						let offset = gap/2
+						imageInsets = UIEdgeInsets(top: 0, left: -offset, bottom: 0, right: offset)
+						titleInsets = UIEdgeInsets(top: 0, left: offset, bottom: 0, right: -offset)
+					case .up:
+						imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -titleWidth)
+						titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: imageHeight+gap, right: 0)
+					case .left:
+						let imageOffset = titleWidth + gap/2
+						let titleOffset = imageWidth + gap/2
+						imageInsets = UIEdgeInsets(top: 0, left: imageOffset, bottom: 0, right: -imageOffset)
+						titleInsets = UIEdgeInsets(top: 0, left: -titleOffset, bottom: 0, right: titleOffset)
+				}
+			case (.bottom, .right):
+				switch axis {
+					case .down:
+						imageInsets = UIEdgeInsets(top: -titleHeight-gap, left: 0, bottom: titleHeight+gap, right: -titleWidth)
+						titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: 0, right: 0)
+					case .right:
+						imageInsets = UIEdgeInsets(top: 0, left: -gap, bottom: 0, right: gap)
+					case .up:
+						imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -titleWidth)
+						titleInsets = UIEdgeInsets(top: -imageHeight-gap, left: -imageWidth, bottom: imageHeight+gap, right: 0)
+					case .left:
+						imageInsets = UIEdgeInsets(top: 0, left: titleWidth, bottom: 0, right: -titleWidth)
+						titleInsets = UIEdgeInsets(top: 0, left: -imageWidth-gap, bottom: 0, right: imageWidth+gap)
+				}
+			default:
+				break
 		}
 		
 		// 赋值

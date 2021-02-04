@@ -1,11 +1,11 @@
 {
   "images" : [
     {
-      "filename" : "hei.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "hei@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },

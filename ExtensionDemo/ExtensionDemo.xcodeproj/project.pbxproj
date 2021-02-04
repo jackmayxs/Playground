@@ -153,9 +153,7 @@
 				3EBEDB2525BD9C740067D02F /* UIDevicePlus.swift */,
 				DE1DD9612552B8B700E08A8B /* UIEdgeInsetsPlus.swift */,
 				DE6E14FF24D16A320053CC44 /* UIImagePlus.swift */,
-				DE9E8E0425C5568000FB3C46 /* UIImageViewPlus.swift */,
 				DE243812253188CC006CF000 /* UIStackViewPlus.swift */,
-				DE9E8D8325C24ED300FB3C46 /* UITabBarItemPlus.swift */,
 				DEF40F5D25B02C2900ADA57D /* UIViewPlus.swift */,
 				DEF0553D25BBD31700093261 /* UIWindowPlus.swift */,
 				DE9E8D8325C24ED300FB3C46 /* UITabBarItemPlus.swift */,
@@ -380,6 +378,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -434,6 +433,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -450,7 +450,6 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = test.ExtensionDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -467,7 +466,6 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = test.ExtensionDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

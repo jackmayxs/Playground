@@ -10,15 +10,17 @@ import UIKit
 
 class ViewController: UIViewController {
 	
-	@IBOutlet weak var topButton: UIButton!
+    @IBOutlet weak var axisSegment: UISegmentedControl!
+    @IBOutlet weak var topButton: UIButton!
 	@IBOutlet weak var spacing: UITextField!
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		topButton.titleLabel?.backgroundColor = UIColor(red: 0, green: 0, blue: 1, alpha: 0.2)
-		topButton.imageView?.backgroundColor = UIColor(red: 0, green: 1, blue: 0, alpha: 0.2)
+		topButton.titleLabel?.backgroundColor = UIColor.systemYellow.withAlphaComponent(0.3)
 	}
 	@IBAction func horizontalChanged(_ sender: UISegmentedControl) {
+		topButton.setImageTitleAxis()
+        axisSegment.selectedSegmentIndex = 1
 		switch sender.selectedSegmentIndex {
 			case 0: topButton.contentHorizontalAlignment = .center
 			case 1: topButton.contentHorizontalAlignment = .left
@@ -28,11 +30,13 @@ class ViewController: UIViewController {
 			default:
 				return
 		}
-		UIView.animate(withDuration: 1) {
-			self.topButton.layoutIfNeeded()
+		UIView.animate(withDuration: 1.0) {
+			self.view.layoutIfNeeded()
 		}
 	}
 	@IBAction func verticalChanged(_ sender: UISegmentedControl) {
+		topButton.setImageTitleAxis()
+        axisSegment.selectedSegmentIndex = 1
 		switch sender.selectedSegmentIndex {
 			case 0: topButton.contentVerticalAlignment = .center
 			case 1: topButton.contentVerticalAlignment = .top
@@ -42,18 +46,18 @@ class ViewController: UIViewController {
 				return
 		}
 		topButton.setNeedsLayout()
-		UIView.animate(withDuration: 1) {
-			self.topButton.layoutIfNeeded()
+		UIView.animate(withDuration: 1.0) {
+			self.view.layoutIfNeeded()
 		}
 	}
 	@IBAction func buttonStyleChanged(_ sender: UISegmentedControl) {
 		switch sender.selectedSegmentIndex {
 			case 0:
 				topButton.setTitle("Button", for: .normal)
-				topButton.setImage(UIImage(named: "icon"), for: .normal)
+				topButton.setImage(UIImage(named: "hei"), for: .normal)
 			case 1:
 				topButton.setTitle(nil, for: .normal)
-				topButton.setImage(UIImage(named: "icon"), for: .normal)
+				topButton.setImage(UIImage(named: "hei"), for: .normal)
 			case 2:
 				topButton.setTitle("Button", for: .normal)
 				topButton.setImage(nil, for: .normal)
@@ -70,8 +74,8 @@ class ViewController: UIViewController {
 			case 3: topButton.setImageTitleAxis(.left, gap: gap)
 			default: break
 		}
-		UIView.animate(withDuration: 1) {
-			self.topButton.layoutIfNeeded()
+		UIView.animate(withDuration: 1.0) {
+			self.view.layoutIfNeeded()
 		}
 	}
 	@IBAction func resetTopButton(_ sender: UIButton) {
