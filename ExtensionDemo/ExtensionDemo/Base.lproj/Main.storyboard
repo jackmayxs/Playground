@@ -48,8 +48,8 @@
                                     </segmentedControl>
                                 </subviews>
                             </stackView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ndh-PE-dUO" userLabel="The Button">
-                                <rect key="frame" x="0.0" y="253" width="414" height="400"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ndh-PE-dUO" userLabel="The Button">
+                                <rect key="frame" x="86.5" y="403" width="241" height="100"/>
                                 <color key="backgroundColor" systemColor="systemGroupedBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="400" id="QYr-hX-wlT"/>
@@ -58,30 +58,38 @@
                                 <state key="normal" title="HHHHHHHHH" image="hei">
                                     <color key="titleColor" systemColor="darkTextColor"/>
                                 </state>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="QYr-hX-wlT"/>
+                                    </mask>
+                                </variation>
+                                <connections>
+                                    <action selector="toggleFixedSize:" destination="BYZ-38-t0r" eventType="touchUpInside" id="9Mc-fN-YRP"/>
+                                </connections>
                             </button>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yyc-hK-L5l" userLabel="vLine">
-                                <rect key="frame" x="206.5" y="253" width="1" height="400"/>
+                            <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yyc-hK-L5l" userLabel="vLine">
+                                <rect key="frame" x="206.5" y="403" width="1" height="100"/>
                                 <color key="backgroundColor" systemColor="systemPinkColor"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="1" id="AE7-MF-erv"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ng2-um-Gkz" userLabel="hLine1">
-                                <rect key="frame" x="0.0" y="252" width="414" height="1"/>
+                            <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ng2-um-Gkz" userLabel="hLine1">
+                                <rect key="frame" x="0.0" y="402" width="414" height="1"/>
                                 <color key="backgroundColor" systemColor="systemPinkColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="rry-pH-XSw"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y64-Xc-JAP" userLabel="hLine2">
+                            <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y64-Xc-JAP" userLabel="hLine2">
                                 <rect key="frame" x="0.0" y="452.5" width="414" height="1"/>
                                 <color key="backgroundColor" systemColor="systemPinkColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="X8A-6n-WSW"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="73b-En-Z99" userLabel="hLine3">
-                                <rect key="frame" x="0.0" y="653" width="414" height="1"/>
+                            <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="73b-En-Z99" userLabel="hLine3">
+                                <rect key="frame" x="0.0" y="503" width="414" height="1"/>
                                 <color key="backgroundColor" systemColor="systemPinkColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="JIK-wi-vd5"/>
@@ -141,6 +149,12 @@
                                     </segmentedControl>
                                 </subviews>
                             </stackView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="* Tap the button to toggle button size fixed or not." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Guc-2O-Jfg" userLabel="Tip Lable">
+                                <rect key="frame" x="8" y="134" width="398" height="14.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -155,6 +169,8 @@
                             <constraint firstAttribute="trailing" secondItem="Ng2-um-Gkz" secondAttribute="trailing" id="KHh-Ch-tFC"/>
                             <constraint firstItem="Yyc-hK-L5l" firstAttribute="centerX" secondItem="ndh-PE-dUO" secondAttribute="centerX" id="Lp6-zv-lfa"/>
                             <constraint firstItem="Yyc-hK-L5l" firstAttribute="bottom" secondItem="ndh-PE-dUO" secondAttribute="bottom" id="M3v-NG-WkK"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Guc-2O-Jfg" secondAttribute="trailing" constant="8" id="YPJ-b7-P9e"/>
+                            <constraint firstItem="Guc-2O-Jfg" firstAttribute="top" secondItem="b4e-0T-CzX" secondAttribute="bottom" constant="8" id="Z9J-1I-hgz"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="fO2-lZ-PZH" secondAttribute="trailing" id="ZLJ-0G-88S"/>
                             <constraint firstItem="Ng2-um-Gkz" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="a9E-yA-ohr"/>
                             <constraint firstItem="73b-En-Z99" firstAttribute="top" secondItem="ndh-PE-dUO" secondAttribute="bottom" id="giR-5Z-Yuy"/>
@@ -165,13 +181,21 @@
                             <constraint firstAttribute="trailing" secondItem="73b-En-Z99" secondAttribute="trailing" id="qzy-DB-90H"/>
                             <constraint firstItem="fO2-lZ-PZH" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="xkb-Zw-6oZ"/>
                             <constraint firstItem="Y64-Xc-JAP" firstAttribute="centerY" secondItem="ndh-PE-dUO" secondAttribute="centerY" id="yFu-qi-0DR"/>
+                            <constraint firstItem="Guc-2O-Jfg" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="8" id="yTG-02-mkf"/>
                             <constraint firstItem="b4e-0T-CzX" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="yuV-TE-XDI"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="jIB-Rc-r8W"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
                         <outlet property="axisSegment" destination="7ej-ad-OcN" id="b7C-vP-lLC"/>
-                        <outlet property="spacing" destination="X4g-Oy-bYq" id="vxB-yo-nyZ"/>
+                        <outlet property="spacingTF" destination="X4g-Oy-bYq" id="hlG-yp-9nG"/>
                         <outlet property="topButton" destination="ndh-PE-dUO" id="pnb-e9-d7N"/>
+                        <outletCollection property="buttonSizeConstraints" destination="QYr-hX-wlT" collectionClass="NSMutableArray" id="lgs-fy-DOx"/>
+                        <outletCollection property="buttonSizeConstraints" destination="jIB-Rc-r8W" collectionClass="NSMutableArray" id="eM8-vf-bqE"/>
                         <segue destination="fDv-O9-eN6" kind="show" identifier="show" id="hwc-ho-R8d"/>
                     </connections>
                 </viewController>

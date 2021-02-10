@@ -10,9 +10,10 @@ import UIKit
 
 class ViewController: UIViewController {
 	
-    @IBOutlet weak var axisSegment: UISegmentedControl!
+	@IBOutlet var buttonSizeConstraints: [NSLayoutConstraint]!
+	@IBOutlet weak var axisSegment: UISegmentedControl!
     @IBOutlet weak var topButton: UIButton!
-	@IBOutlet weak var spacing: UITextField!
+	@IBOutlet weak var spacingTF: UITextField!
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
@@ -25,8 +26,9 @@ class ViewController: UIViewController {
 			case 0: topButton.contentHorizontalAlignment = .center
 			case 1: topButton.contentHorizontalAlignment = .left
 			case 2: topButton.contentHorizontalAlignment = .right
-			case 3: topButton.contentHorizontalAlignment = .leading
-			case 4: topButton.contentHorizontalAlignment = .trailing
+			case 3: topButton.contentHorizontalAlignment = .fill
+			case 4: topButton.contentHorizontalAlignment = .leading
+			case 5: topButton.contentHorizontalAlignment = .trailing
 			default:
 				return
 		}
@@ -54,10 +56,10 @@ class ViewController: UIViewController {
 		switch sender.selectedSegmentIndex {
 			case 0:
 				topButton.setTitle("Button", for: .normal)
-				topButton.setImage(UIImage(named: "hei"), for: .normal)
+				topButton.setImage(#imageLiteral(resourceName: "hei"), for: .normal)
 			case 1:
 				topButton.setTitle(nil, for: .normal)
-				topButton.setImage(UIImage(named: "hei"), for: .normal)
+				topButton.setImage(#imageLiteral(resourceName: "hei"), for: .normal)
 			case 2:
 				topButton.setTitle("Button", for: .normal)
 				topButton.setImage(nil, for: .normal)
@@ -66,12 +68,12 @@ class ViewController: UIViewController {
 		}
 	}
 	@IBAction func imageTitleStyleChanged(_ sender: UISegmentedControl) {
-		let gap = CGFloat(Double(self.spacing.text ?? "") ?? 0)
+		let spacing = CGFloat(Double(spacingTF.text ?? "") ?? 0)
 		switch sender.selectedSegmentIndex {
-			case 0: topButton.setImageTitleAxis(.down, gap: gap)
-			case 1: topButton.setImageTitleAxis(.right, gap: gap)
-			case 2: topButton.setImageTitleAxis(.up, gap: gap)
-			case 3: topButton.setImageTitleAxis(.left, gap: gap)
+			case 0: topButton.setImageTitleAxis(.down, spacing: spacing)
+			case 1: topButton.setImageTitleAxis(.right, spacing: spacing)
+			case 2: topButton.setImageTitleAxis(.up, spacing: spacing)
+			case 3: topButton.setImageTitleAxis(.left, spacing: spacing)
 			default: break
 		}
 		UIView.animate(withDuration: 1.0) {
@@ -80,6 +82,15 @@ class ViewController: UIViewController {
 	}
 	@IBAction func resetTopButton(_ sender: UIButton) {
 		topButton.setImageTitleAxis(.right)
+	}
+	@IBAction func toggleFixedSize(_ sender: UIButton) {
+		
+		buttonSizeConstraints.forEach { c in
+			c.isActive.toggle()
+		}
+		UIView.animate(withDuration: 0.2) {
+			self.view.layoutIfNeeded()
+		}
 	}
 }
 
