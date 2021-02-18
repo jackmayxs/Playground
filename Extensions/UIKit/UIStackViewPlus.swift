@@ -10,6 +10,14 @@ import UIKit
 
 extension UIStackView {
 	
+	/// Remove all of the arranged subviews
+	func purgeArrangedSubviews() {
+		arrangedSubviews.forEach { sub in
+			removeArrangedSubview(sub)
+			sub.removeFromSuperview()
+		}
+	}
+	
     func addBackgroundView(_ backgroundView: UIView) {
         backgroundView.frame = bounds
         backgroundView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
