@@ -14,6 +14,7 @@
 		3EB2D05125B8770D00C70FE7 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EB2D05025B8770D00C70FE7 /* Constants.swift */; };
 		3EBEDB2625BD9C740067D02F /* UIDevicePlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBEDB2525BD9C740067D02F /* UIDevicePlus.swift */; };
 		DE0819BD25BAD5D300950784 /* NumberPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0819BC25BAD5D300950784 /* NumberPlus.swift */; };
+		DE16716025E7418E00BA5CE9 /* NSObjectProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE16715F25E7418E00BA5CE9 /* NSObjectProxy.swift */; };
 		DE1DD9622552B8B700E08A8B /* UIEdgeInsetsPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1DD9612552B8B700E08A8B /* UIEdgeInsetsPlus.swift */; };
 		DE1DD9652552B95F00E08A8B /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1DD9642552B95F00E08A8B /* Protocols.swift */; };
 		DE1DD96C2552BA2800E08A8B /* InsetsLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1DD96B2552BA2700E08A8B /* InsetsLabel.swift */; };
@@ -50,6 +51,7 @@
 		3EB2D05025B8770D00C70FE7 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		3EBEDB2525BD9C740067D02F /* UIDevicePlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDevicePlus.swift; sourceTree = "<group>"; };
 		DE0819BC25BAD5D300950784 /* NumberPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberPlus.swift; sourceTree = "<group>"; };
+		DE16715F25E7418E00BA5CE9 /* NSObjectProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSObjectProxy.swift; sourceTree = "<group>"; };
 		DE1DD9612552B8B700E08A8B /* UIEdgeInsetsPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIEdgeInsetsPlus.swift; sourceTree = "<group>"; };
 		DE1DD9642552B95F00E08A8B /* Protocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		DE1DD96B2552BA2700E08A8B /* InsetsLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsetsLabel.swift; sourceTree = "<group>"; };
@@ -184,6 +186,7 @@
 				DE1DD96A2552BA0300E08A8B /* CustomizedControls */,
 				DE93781124D124B200D89D4C /* DispatchOnce.swift */,
 				3EB2D05025B8770D00C70FE7 /* Constants.swift */,
+				DE16715F25E7418E00BA5CE9 /* NSObjectProxy.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -297,6 +300,7 @@
 				DE66D8AA24C7F931003B9206 /* SceneDelegate.swift in Sources */,
 				DE243813253188CC006CF000 /* UIStackViewPlus.swift in Sources */,
 				DE0819BD25BAD5D300950784 /* NumberPlus.swift in Sources */,
+				DE16716025E7418E00BA5CE9 /* NSObjectProxy.swift in Sources */,
 				DE8E4F6A25DE75320057D456 /* TouchesDelayedScrollView.swift in Sources */,
 				3EB2D05125B8770D00C70FE7 /* Constants.swift in Sources */,
 			);
