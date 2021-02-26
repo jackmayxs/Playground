@@ -10,8 +10,12 @@ import Foundation
 
 final class GCDTimer {
 	
-	private lazy var lock = DispatchSemaphore(value: 1)
+	typealias GCDTimerClosure = (GCDTimer) -> Void
+	
+	/// GCD定时器
 	private var timerSource: DispatchSourceTimer?
+	
+	/// 返回有效的定时器
 	private var validTimer: DispatchSourceTimer {
 		guard let timer = timerSource else {
 			timerSource = DispatchSource.makeTimerSource(flags: .strict, queue: queue)
@@ -19,78 +23,85 @@ final class GCDTimer {
 		}
 		return timer
 	}
-	private var isValid: Bool {
-		timerSource != nil
-	}
+	
+	/// 是否正运行
+	private var isTicking = false
+	/// 定时器是否有效
+	private var isValid: Bool { timerSource != nil }
 	
 	let timeInterval: DispatchTimeInterval
 	let queue: DispatchQueue
-	let repeats: Bool
-	let block: (GCDTimer) -> Void
-	init(timeInterval: DispatchTimeInterval,
-		 queue: DispatchQueue = .main,
-		 repeats: Bool = true,
-		 block: @escaping (GCDTimer) -> Void)
-	{
+	let closure: GCDTimerClosure
+	
+	/// 定时器初始化方法
+	/// - Parameters:
+	///   - timeInterval: 时间间隔
+	///   - queue: 执行的队列
+	///   - closure: 回调闭包
+	init(timeInterval: DispatchTimeInterval, queue: DispatchQueue = .main, closure: @escaping GCDTimerClosure) {
 		self.timeInterval = timeInterval
 		self.queue = queue
-		self.repeats = repeats
-		self.block = block
+		self.closure = closure
 		
 		validTimer.setEventHandler(handler: tickTock)
 	}
 	
-	/// 创建Timer
+	/// 创建Timer | 根据延迟时间启动定时器⏲
 	/// - Parameters:
-	///   - interval: 时间间隔
+	///   - timeInterval: 时间间隔 | .never代表只执行一次
 	///   - delay: 延迟时间
-	///   - repeats: 是否重复
-	///   - block: 回调方法
+	///   - queue: 调用队列
+	///   - closure: 回调方法
+	/// - Returns: 定时器实列
 	@discardableResult
 	static func scheduledTimer(
-		timeInterval: DispatchTimeInterval,
+		timeInterval: DispatchTimeInterval = .never,
 		delay: DispatchTime = .now(),
 		queue: DispatchQueue = .main,
-		repeats: Bool = true,
-		block: @escaping (GCDTimer) -> Void) -> GCDTimer {
-		let timer = self.init(timeInterval: timeInterval, queue: queue, repeats: repeats, block: block)
+		closure: @escaping GCDTimerClosure)
+	-> GCDTimer {
+		let timer = self.init(timeInterval: timeInterval, queue: queue, closure: closure)
 		timer.fire(delay)
 		return timer
 	}
 	
+	/// 定时器调用方法
 	private func tickTock() {
-		_ = lock.wait(timeout: .distantFuture)
-		if repeats {
-			lock.signal()
-			block(self)
-		} else {
-			lock.signal()
+		closure(self)
+		// 只执行一次
+		if timeInterval == .never {
 			invalidate()
 		}
 	}
 	
+	/// 销毁定时器
 	func invalidate() {
-		_ = lock.wait(timeout: .distantFuture)
 		if isValid {
 			validTimer.cancel()
 			timerSource = .none
 		}
-		lock.signal()
 	}
 	
+	/// 挂起定时器
 	func suspend() {
-		validTimer.suspend()
+		if isValid && isTicking {
+			validTimer.suspend()
+			isTicking = false
+		}
 	}
 	
+	/// 继续执行定时器
 	func resume() {
-		validTimer.resume()
+		if isValid && !isTicking {
+			validTimer.resume()
+			isTicking = true
+		}
 	}
 	
+	/// 启动定时器
+	/// - Parameter delay: 延迟时间
 	func fire(_ delay: DispatchTime = .now()) {
-		validTimer.schedule(
-			deadline: delay,
-			repeating: repeats ? timeInterval : .never
-		)
+		validTimer.schedule(deadline: delay, repeating: timeInterval)
 		resume()
 	}
 	

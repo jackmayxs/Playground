@@ -6,7 +6,7 @@
 //  Copyright © 2021 Choi. All rights reserved.
 //
 
-import UIKit
+import CoreGraphics
 
 extension CGRect {
 	

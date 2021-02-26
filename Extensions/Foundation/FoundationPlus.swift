@@ -8,22 +8,6 @@
 
 import UIKit
 
-// MARK: - __________ DispatchTimeInterval __________
-extension DispatchTimeInterval: ExpressibleByIntegerLiteral {
-	public typealias IntegerLiteralType = Int
-	public init(integerLiteral value: Self.IntegerLiteralType) {
-		self = .seconds(value)
-	}
-}
-
-extension DispatchTimeInterval: ExpressibleByFloatLiteral {
-	public typealias FloatLiteralType = Double
-	public init(floatLiteral value: Self.FloatLiteralType) {
-		let nanoseconds = Int(value * 1_000_000_000)
-		self = .nanoseconds(nanoseconds)
-	}
-}
-
 // MARK: - __________ Operators __________
 infix operator <-- : MultiplicationPrecedence
 infix operator --> : MultiplicationPrecedence
@@ -78,5 +62,41 @@ extension Optional {
 		var errorDescription: String? {
 			"Bad \(Wrapped.self)."
 		}
+	}
+}
+
+// MARK: - __________ DispatchTime __________
+extension DispatchTime: ExpressibleByIntegerLiteral {
+	public typealias IntegerLiteralType = Int
+	public init(integerLiteral value: Self.IntegerLiteralType) {
+		self = .now() + .seconds(value)
+	}
+}
+
+extension DispatchTime: ExpressibleByFloatLiteral {
+	public typealias FloatLiteralType = Double
+	public init(floatLiteral value: Self.FloatLiteralType) {
+		let nanoseconds = Int(value * 1_000_000_000)
+		self = .now() + .nanoseconds(nanoseconds)
+	}
+	
+	static func seconds(_ seconds: Double) -> DispatchTime {
+		self.init(floatLiteral: seconds)
+	}
+}
+
+// MARK: - __________ DispatchTimeInterval __________
+extension DispatchTimeInterval: ExpressibleByIntegerLiteral {
+	public typealias IntegerLiteralType = Int
+	public init(integerLiteral value: Self.IntegerLiteralType) {
+		self = .seconds(value)
+	}
+}
+
+extension DispatchTimeInterval: ExpressibleByFloatLiteral {
+	public typealias FloatLiteralType = Double
+	public init(floatLiteral value: Self.FloatLiteralType) {
+		let nanoseconds = Int(value * 1_000_000_000)
+		self = .nanoseconds(nanoseconds)
 	}
 }

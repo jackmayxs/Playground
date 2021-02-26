@@ -8,30 +8,31 @@
 
 import UIKit
 
-// MARK: - __________ Int __________
-extension Int {
+// MARK: - __________ Common __________
+extension Double {
 	
-	// 获取一个整形数字个十百千...位上的数字. 例如:
-	// 746381295[0] == 5 个位数字
-	// 746381295[1] == 9 十位数字...
-	subscript(digitIndex: Int) -> Int {
-		var decimalBase = 1
-		for _ in 0 ..< digitIndex {
-			decimalBase *= 10
-		}
-		return (self / decimalBase) % 10
+	var nsNumber: NSNumber {
+		NSNumber(value: self)
+	}
+	
+	var int: Int {
+		Int(self)
 	}
 	
 	var cgFloat: CGFloat {
 		CGFloat(self)
 	}
-	// MARK: - __________ Date __________
-	var days: Int { 24 * hours }
-	var hours: Int { self * 60.minutes }
-	var minutes: Int { self * 60.seconds }
-	var seconds: Int { self }
 }
 
+// MARK: - __________ Date __________
+extension Double {
+	var days: Double { 24.0 * hours }
+	var hours: Double { self * 60.0.minutes }
+	var minutes: Double { self * 60.0.seconds }
+	var seconds: Double { self }
+}
+
+// MARK: - __________ Format __________
 extension Double {
 	
 	fileprivate static var sharedNumberFormatter = NumberFormatter()
@@ -64,14 +65,14 @@ extension Double {
 		signedDecimalFormatter.configure { make in
 			make.roundingMode = .halfUp
 		}.transform { fmt -> String in
-			fmt.string(from: number) ?? ""
+			fmt.string(from: nsNumber) ?? ""
 		}
 	}
 	
 	/// 带符号 | 原样输出
 	var signedF: String {
 		signedDecimalFormatter.transform { fmt -> String in
-			fmt.string(from: number) ?? ""
+			fmt.string(from: nsNumber) ?? ""
 		}
 	}
 	
@@ -80,14 +81,14 @@ extension Double {
 		signedDecimalFormatter.configure { make in
 			make.minimumFractionDigits = 2
 		}.transform { fmt -> String in
-			fmt.string(from: number) ?? ""
+			fmt.string(from: nsNumber) ?? ""
 		}
 	}
 	
 	/// 四舍五入 | 原样输出
 	var r2: String {
 		roundDecimalFormatter.transform { fmt -> String in
-			fmt.string(from: number) ?? ""
+			fmt.string(from: nsNumber) ?? ""
 		}
 	}
 	
@@ -96,7 +97,7 @@ extension Double {
 		decimalFormatter.configure { make in
 			make.minimumFractionDigits = 0
 		}.transform { fmt -> String in
-			fmt.string(from: number) ?? ""
+			fmt.string(from: nsNumber) ?? ""
 		}
 	}
 	
@@ -105,23 +106,7 @@ extension Double {
 		decimalFormatter.configure { make in
 			make.minimumFractionDigits = 2
 		}.transform { fmt -> String in
-			fmt.string(from: number) ?? ""
+			fmt.string(from: nsNumber) ?? ""
 		}
-	}
-	
-	/// 转换为NSNumber
-	var number: NSNumber {
-		NSNumber(value: self)
-	}
-	
-	var cgFloat: CGFloat {
-		CGFloat(self)
-	}
-}
-
-extension CGFloat {
-	
-	static var random: CGFloat {
-		CGFloat.random(in: 0.0...1.0)
 	}
 }

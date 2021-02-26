@@ -10,16 +10,30 @@ import Foundation
 
 extension Date {
 	
-	var desc: String {
-		description(with: Locale(.chinese(.simplified)))
+	fileprivate static var commonDateFormatter = DateFormatter()
+	var regularFormatter: DateFormatter {
+		Self.commonDateFormatter.configure { make in
+			make.timeZone = .current
+			make.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+		}
+	}
+	var beijingFormatter: DateFormatter {
+		Self.commonDateFormatter.configure { make in
+			make.timeZone = .beijing
+		}
+	}
+	var debugFormatter: DateFormatter {
+		Self.commonDateFormatter.configure { make in
+			make.dateFormat = "HH:mm:ss.SSS"
+		}
 	}
 	
 	var beijingTimeString: String {
-		DateFormatter.new { make in
-			make.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-			make.timeZone = .beijing
-		}
-		.string(from: self)
+		beijingFormatter.string(from: self)
+	}
+	
+	var debugTimeString: String {
+		debugFormatter.string(from: self)
 	}
 
 	fileprivate static var DefaultCalendarComponents: Set<Calendar.Component> {
@@ -50,6 +64,10 @@ extension Date {
 					calendar.date(from: trimmed).unsafelyUnwrapped
 				}
 			}
+	}
+	
+	var desc: String {
+		description(with: Locale(.chinese(.simplified)))
 	}
 }
 
