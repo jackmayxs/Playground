@@ -18,8 +18,10 @@ final class GCDTimer {
 	/// 返回有效的定时器
 	private var validTimer: DispatchSourceTimer {
 		guard let timer = timerSource else {
-			timerSource = DispatchSource.makeTimerSource(flags: .strict, queue: queue)
-			return timerSource.unsafelyUnwrapped
+			let source = DispatchSource.makeTimerSource(flags: .strict, queue: queue)
+			source.setEventHandler(handler: tickTock)
+			timerSource = source
+			return source
 		}
 		return timer
 	}
@@ -42,8 +44,6 @@ final class GCDTimer {
 		self.timeInterval = timeInterval
 		self.queue = queue
 		self.closure = closure
-		
-		validTimer.setEventHandler(handler: tickTock)
 	}
 	
 	/// 创建Timer | 根据延迟时间启动定时器⏲
@@ -79,6 +79,7 @@ final class GCDTimer {
 		if isValid {
 			validTimer.cancel()
 			timerSource = .none
+			isTicking = false
 		}
 	}
 	
