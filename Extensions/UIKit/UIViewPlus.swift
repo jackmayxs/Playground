@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 extension UIView {
 	
@@ -32,8 +33,8 @@ extension Array where Element: UIView {
 		axis: NSLayoutConstraint.Axis = .vertical,
 		distribution: UIStackView.Distribution = .fill,
 		alignment: UIStackView.Alignment = .leading,
-		spacing: CGFloat = 0) -> UIStackView
-	{
+		spacing: CGFloat = 0)
+	-> UIStackView {
 		let stackView = UIStackView(arrangedSubviews: self)
 		stackView.axis = axis
 		stackView.distribution = distribution
@@ -42,3 +43,35 @@ extension Array where Element: UIView {
 		return stackView
 	}
 }
+
+#if DEBUG
+// MARK: - __________ SwiftUI __________
+extension UIView {
+
+	var previewLayout: PreviewLayout {
+		let previewSize = systemLayoutSizeFitting(
+			CGSize(width: UIScreen.main.bounds.width, height: .greatestFiniteMagnitude),
+			withHorizontalFittingPriority: .required,
+			verticalFittingPriority: .fittingSizeLevel
+		)
+		return .fixed(width: previewSize.width, height: previewSize.height)
+	}
+	
+	private struct Preview: UIViewRepresentable {
+		
+		let view: UIView
+
+		func makeUIView(context: Context) -> UIView { view }
+
+		func updateUIView(_ uiView: UIView, context: Context) { }
+	}
+
+	var preview: some View {
+		// 如何遇见切换UIView和UIView(带设备边框)的情况,可尝试把整个项目关闭在重新打开; 或清除Preview缓存:
+		// .../Xcode/DerivedData/TargetFolder.../Build/Intermediates.noindex/Previews
+		Preview(view: self)
+//			.previewLayout(.device)
+			.previewLayout(previewLayout)
+	}
+}
+#endif

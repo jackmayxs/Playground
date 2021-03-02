@@ -32,7 +32,9 @@ extension UIButton {
 	private(set) var imageTitleAxis: ImageTitleAxis {
 		set { objc_setAssociatedObject(self, &Key.imageTitleAxis, newValue.rawValue, .OBJC_ASSOCIATION_ASSIGN) }
 		get {
-			guard let rawValue = objc_getAssociatedObject(self, &Key.imageTitleAxis) as? Int else { return .right }
+			guard let rawValue = objc_getAssociatedObject(self, &Key.imageTitleAxis) as? Int else {
+				return .right
+			}
 			return ImageTitleAxis(rawValue: rawValue).unsafelyUnwrapped
 		}
 	}

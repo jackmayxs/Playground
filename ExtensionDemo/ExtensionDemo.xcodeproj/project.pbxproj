@@ -21,6 +21,9 @@
 		DE1DD9652552B95F00E08A8B /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1DD9642552B95F00E08A8B /* Protocols.swift */; };
 		DE1DD96C2552BA2800E08A8B /* InsetsLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1DD96B2552BA2700E08A8B /* InsetsLabel.swift */; };
 		DE243813253188CC006CF000 /* UIStackViewPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE243812253188CC006CF000 /* UIStackViewPlus.swift */; };
+		DE4190AF25EF412D00F03D4A /* SwiftUIPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4190AE25EF412D00F03D4A /* SwiftUIPlus.swift */; };
+		DE4190B325EF49BA00F03D4A /* SwiftUIPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4190B225EF49BA00F03D4A /* SwiftUIPreview.swift */; };
+		DE4190B625EF4E9B00F03D4A /* UIViewControllerPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4190B525EF4E9B00F03D4A /* UIViewControllerPlus.swift */; };
 		DE66D8A824C7F931003B9206 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE66D8A724C7F931003B9206 /* AppDelegate.swift */; };
 		DE66D8AA24C7F931003B9206 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE66D8A924C7F931003B9206 /* SceneDelegate.swift */; };
 		DE66D8AC24C7F931003B9206 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE66D8AB24C7F931003B9206 /* ViewController.swift */; };
@@ -62,6 +65,9 @@
 		DE1DD9642552B95F00E08A8B /* Protocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		DE1DD96B2552BA2700E08A8B /* InsetsLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsetsLabel.swift; sourceTree = "<group>"; };
 		DE243812253188CC006CF000 /* UIStackViewPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStackViewPlus.swift; sourceTree = "<group>"; };
+		DE4190AE25EF412D00F03D4A /* SwiftUIPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIPlus.swift; sourceTree = "<group>"; };
+		DE4190B225EF49BA00F03D4A /* SwiftUIPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIPreview.swift; sourceTree = "<group>"; };
+		DE4190B525EF4E9B00F03D4A /* UIViewControllerPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerPlus.swift; sourceTree = "<group>"; };
 		DE66D8A424C7F931003B9206 /* ExtensionDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExtensionDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DE66D8A724C7F931003B9206 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DE66D8A924C7F931003B9206 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -110,6 +116,14 @@
 			path = CustomizedControls;
 			sourceTree = "<group>";
 		};
+		DE4190AD25EF411900F03D4A /* SwiftUI */ = {
+			isa = PBXGroup;
+			children = (
+				DE4190AE25EF412D00F03D4A /* SwiftUIPlus.swift */,
+			);
+			path = SwiftUI;
+			sourceTree = "<group>";
+		};
 		DE66D89B24C7F931003B9206 = {
 			isa = PBXGroup;
 			children = (
@@ -140,6 +154,7 @@
 				DE66D8AD24C7F931003B9206 /* Main.storyboard */,
 				DE66D8A924C7F931003B9206 /* SceneDelegate.swift */,
 				DE66D8AB24C7F931003B9206 /* ViewController.swift */,
+				DE4190B225EF49BA00F03D4A /* SwiftUIPreview.swift */,
 			);
 			path = ExtensionDemo;
 			sourceTree = "<group>";
@@ -147,6 +162,7 @@
 		DE66D8BB24C7F982003B9206 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				DE4190AD25EF411900F03D4A /* SwiftUI */,
 				DEA34B762511DC8D00B4697C /* CoreGraphics */,
 				DE93781624D1483B00D89D4C /* Foundation */,
 				DE1DD9642552B95F00E08A8B /* Protocols.swift */,
@@ -166,11 +182,12 @@
 				3EBEDB2525BD9C740067D02F /* UIDevicePlus.swift */,
 				DE1DD9612552B8B700E08A8B /* UIEdgeInsetsPlus.swift */,
 				DE6E14FF24D16A320053CC44 /* UIImagePlus.swift */,
+				DE9E8E0425C5568000FB3C46 /* UIImageViewPlus.swift */,
 				DE243812253188CC006CF000 /* UIStackViewPlus.swift */,
+				DE9E8D8325C24ED300FB3C46 /* UITabBarItemPlus.swift */,
+				DE4190B525EF4E9B00F03D4A /* UIViewControllerPlus.swift */,
 				DEF40F5D25B02C2900ADA57D /* UIViewPlus.swift */,
 				DEF0553D25BBD31700093261 /* UIWindowPlus.swift */,
-				DE9E8D8325C24ED300FB3C46 /* UITabBarItemPlus.swift */,
-				DE9E8E0425C5568000FB3C46 /* UIImageViewPlus.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -297,6 +314,7 @@
 				3E7B586F25AC743A00EE65B7 /* UIColorPlus.swift in Sources */,
 				DE1DD9622552B8B700E08A8B /* UIEdgeInsetsPlus.swift in Sources */,
 				DE1DD96C2552BA2800E08A8B /* InsetsLabel.swift in Sources */,
+				DE4190B325EF49BA00F03D4A /* SwiftUIPreview.swift in Sources */,
 				3EBEDB2625BD9C740067D02F /* UIDevicePlus.swift in Sources */,
 				DE66D8AC24C7F931003B9206 /* ViewController.swift in Sources */,
 				DEA34B752511DBE500B4697C /* CGSizePlus.swift in Sources */,
@@ -315,6 +333,7 @@
 				DE743CCD25A7F9E7001764A5 /* DataPlus.swift in Sources */,
 				DE1DD9652552B95F00E08A8B /* Protocols.swift in Sources */,
 				DE66D8A824C7F931003B9206 /* AppDelegate.swift in Sources */,
+				DE4190AF25EF412D00F03D4A /* SwiftUIPlus.swift in Sources */,
 				DEB225A425A7199300859117 /* DatePlus.swift in Sources */,
 				DE93781224D124B200D89D4C /* DispatchOnce.swift in Sources */,
 				DE9E8D8425C24ED300FB3C46 /* UITabBarItemPlus.swift in Sources */,
@@ -324,6 +343,7 @@
 				3E58B55725E7D71E0013DE51 /* GlobalFunctions.swift in Sources */,
 				DE243813253188CC006CF000 /* UIStackViewPlus.swift in Sources */,
 				DE0819BD25BAD5D300950784 /* DoublePlus.swift in Sources */,
+				DE4190B625EF4E9B00F03D4A /* UIViewControllerPlus.swift in Sources */,
 				DE16716025E7418E00BA5CE9 /* NSObjectProxy.swift in Sources */,
 				DE8E4F6A25DE75320057D456 /* TouchesDelayedScrollView.swift in Sources */,
 				3EB2D05125B8770D00C70FE7 /* Constants.swift in Sources */,

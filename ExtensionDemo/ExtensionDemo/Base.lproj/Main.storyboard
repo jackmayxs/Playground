@@ -186,7 +186,7 @@
         <!--Blank View Controller-->
         <scene sceneID="23d-l0-NY6">
             <objects>
-                <viewController id="fDv-O9-eN6" customClass="BlankViewController" customModule="ExtensionDemo" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="BlankViewController" id="fDv-O9-eN6" customClass="BlankViewController" customModule="ExtensionDemo" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="db9-WB-09W">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
