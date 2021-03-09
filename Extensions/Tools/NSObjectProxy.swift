@@ -8,69 +8,76 @@
 
 import UIKit
 
-final class _NSObjectProxy: NSObject {
+final class _NSObjectProxy<T: NSObjectProtocol>: NSObject {
 	
-	private weak var target: NSObjectProtocol?
+	private weak var _target: T!
+	var target: T {
+		_target
+	}
 	
-	init(target: NSObjectProtocol){
-		self.target = target
+	init(target: T){
+		_target = target
 		super.init()
 	}
 	
 	//  核心代码
 	override func forwardingTarget(for aSelector: Selector!) -> Any? {
-		target
+		_target
 	}
 	
 	// NSObject 一些方法复写
 	override func isEqual(_ object: Any?) -> Bool {
-		target?.isEqual(object) ?? false
+		_target.isEqual(object)
 	}
 	
 	override var hash: Int {
-		target?.hash ?? -1
+		_target.hash
 	}
 	
 	override var superclass: AnyClass? {
-		target?.superclass ?? nil
+		_target.superclass ?? nil
 	}
 	
-//	override func `self`() -> Self{
-//		return target?.self()
-//	}
+	func `self`() -> T {
+		_target.self
+	}
 	
 	override func isProxy() -> Bool {
 		true
 	}
 	
 	override func isKind(of aClass: AnyClass) -> Bool {
-		target?.isKind(of: aClass) ?? false
+		_target.isKind(of: aClass)
 	}
 	
 	override func isMember(of aClass: AnyClass) -> Bool {
-		target?.isMember(of: aClass) ?? false
+		_target.isMember(of: aClass)
 	}
 	
 	override func conforms(to aProtocol: Protocol) -> Bool {
-		target?.conforms(to: aProtocol) ?? false
+		_target.conforms(to: aProtocol)
 	}
 	
 	override func responds(to aSelector: Selector!) -> Bool {
-		target?.responds(to: aSelector) ?? false
+		_target.responds(to: aSelector)
 	}
 	
 	override var description: String {
-		target?.description ?? "nil"
+		_target.description
 	}
 	
 	override var debugDescription: String {
-		target?.debugDescription ?? "nil"
+		_target.debugDescription
 	}
 }
 
 extension NSObject {
-	
-	var proxy: _NSObjectProxy {
+
+	var proxy: _NSObjectProxy<NSObject> {
 		_NSObjectProxy(target: self)
+	}
+	
+	func proxy<T>(_ target: T) -> _NSObjectProxy<T> where T: NSObjectProtocol {
+		_NSObjectProxy(target: target)
 	}
 }
