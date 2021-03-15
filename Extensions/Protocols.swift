@@ -115,3 +115,13 @@ protocol SizeExtendable {
 	/// 水平方向扩展
 	var horizontal: CGFloat { get }
 }
+
+
+public protocol ReusableView: class {
+	static var reuseIdentifier: String { get }
+}
+extension ReusableView {
+	public static var reuseIdentifier: String {
+		String(describing: self)
+	}
+}

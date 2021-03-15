@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0CD71F3424D6707A005FDE67 /* FoundationPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD71F3324D6707A005FDE67 /* FoundationPlus.swift */; };
+		3E127E3125FF926100EC8C22 /* UICollectionViewPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E127E3025FF926100EC8C22 /* UICollectionViewPlus.swift */; };
+		3E127E3425FF928C00EC8C22 /* UITableViewPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E127E3325FF928C00EC8C22 /* UITableViewPlus.swift */; };
 		3E58A84525B5D4D000B0D2E3 /* CGRectPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E58A84425B5D4D000B0D2E3 /* CGRectPlus.swift */; };
 		3E58B55725E7D71E0013DE51 /* GlobalFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E58B55625E7D71E0013DE51 /* GlobalFunctions.swift */; };
 		3E7B586F25AC743A00EE65B7 /* UIColorPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7B586E25AC743A00EE65B7 /* UIColorPlus.swift */; };
@@ -52,6 +54,8 @@
 
 /* Begin PBXFileReference section */
 		0CD71F3324D6707A005FDE67 /* FoundationPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoundationPlus.swift; sourceTree = "<group>"; };
+		3E127E3025FF926100EC8C22 /* UICollectionViewPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionViewPlus.swift; sourceTree = "<group>"; };
+		3E127E3325FF928C00EC8C22 /* UITableViewPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewPlus.swift; sourceTree = "<group>"; };
 		3E58A84425B5D4D000B0D2E3 /* CGRectPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGRectPlus.swift; sourceTree = "<group>"; };
 		3E58B55625E7D71E0013DE51 /* GlobalFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalFunctions.swift; sourceTree = "<group>"; };
 		3E7B586E25AC743A00EE65B7 /* UIColorPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorPlus.swift; sourceTree = "<group>"; };
@@ -188,6 +192,8 @@
 				DE4190B525EF4E9B00F03D4A /* UIViewControllerPlus.swift */,
 				DEF40F5D25B02C2900ADA57D /* UIViewPlus.swift */,
 				DEF0553D25BBD31700093261 /* UIWindowPlus.swift */,
+				3E127E3025FF926100EC8C22 /* UICollectionViewPlus.swift */,
+				3E127E3325FF928C00EC8C22 /* UITableViewPlus.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -322,6 +328,7 @@
 				DEF40F5E25B02C2900ADA57D /* UIViewPlus.swift in Sources */,
 				DEB225A125A7182D00859117 /* StringPlus.swift in Sources */,
 				3E7B587225AC763C00EE65B7 /* CGColorPlus.swift in Sources */,
+				3E127E3125FF926100EC8C22 /* UICollectionViewPlus.swift in Sources */,
 				DEF0553E25BBD31700093261 /* UIWindowPlus.swift in Sources */,
 				DE93781424D1480300D89D4C /* NSObjectPlus.swift in Sources */,
 				DE66D8BD24C7F982003B9206 /* UIButtonPlus.swift in Sources */,
@@ -338,6 +345,7 @@
 				DE93781224D124B200D89D4C /* DispatchOnce.swift in Sources */,
 				DE9E8D8425C24ED300FB3C46 /* UITabBarItemPlus.swift in Sources */,
 				3E58A84525B5D4D000B0D2E3 /* CGRectPlus.swift in Sources */,
+				3E127E3425FF928C00EC8C22 /* UITableViewPlus.swift in Sources */,
 				DE66D8AA24C7F931003B9206 /* SceneDelegate.swift in Sources */,
 				DEB622FC25E899BB00702C5E /* IntPlus.swift in Sources */,
 				3E58B55725E7D71E0013DE51 /* GlobalFunctions.swift in Sources */,
