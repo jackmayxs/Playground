@@ -51,6 +51,7 @@
 		DEB622FC25E899BB00702C5E /* IntPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB622FB25E899BB00702C5E /* IntPlus.swift */; };
 		DEF0553E25BBD31700093261 /* UIWindowPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF0553D25BBD31700093261 /* UIWindowPlus.swift */; };
 		DEF40F5E25B02C2900ADA57D /* UIViewPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF40F5D25B02C2900ADA57D /* UIViewPlus.swift */; };
+		DEFAD78C2615CCA6008CEBE0 /* TextFieldDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFAD78B2615CCA6008CEBE0 /* TextFieldDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -100,6 +101,7 @@
 		DEB622FB25E899BB00702C5E /* IntPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntPlus.swift; sourceTree = "<group>"; };
 		DEF0553D25BBD31700093261 /* UIWindowPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIWindowPlus.swift; sourceTree = "<group>"; };
 		DEF40F5D25B02C2900ADA57D /* UIViewPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewPlus.swift; sourceTree = "<group>"; };
+		DEFAD78B2615CCA6008CEBE0 /* TextFieldDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,10 +136,11 @@
 		DE66D89B24C7F931003B9206 = {
 			isa = PBXGroup;
 			children = (
-				DE66D8BE24C81432003B9206 /* README.md */,
+				DEFAD78A2615CC55008CEBE0 /* BestPractice */,
 				DE66D8A624C7F931003B9206 /* ExtensionDemo */,
 				DE66D8BB24C7F982003B9206 /* Extensions */,
 				DE66D8A524C7F931003B9206 /* Products */,
+				DE66D8BE24C81432003B9206 /* README.md */,
 			);
 			sourceTree = "<group>";
 			usesTabs = 1;
@@ -245,6 +248,14 @@
 				DEB622FB25E899BB00702C5E /* IntPlus.swift */,
 			);
 			path = Number;
+			sourceTree = "<group>";
+		};
+		DEFAD78A2615CC55008CEBE0 /* BestPractice */ = {
+			isa = PBXGroup;
+			children = (
+				DEFAD78B2615CCA6008CEBE0 /* TextFieldDelegate.swift */,
+			);
+			path = BestPractice;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -358,6 +369,7 @@
 				DE4190B625EF4E9B00F03D4A /* UIViewControllerPlus.swift in Sources */,
 				DE16716025E7418E00BA5CE9 /* NSObjectProxy.swift in Sources */,
 				DE8E4F6A25DE75320057D456 /* TouchesDelayedScrollView.swift in Sources */,
+				DEFAD78C2615CCA6008CEBE0 /* TextFieldDelegate.swift in Sources */,
 				3EB2D05125B8770D00C70FE7 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -56,8 +56,43 @@ extension String {
 	///   - rhs: 右操作对象
 	static func << (lhs: String, rhs: String) -> String { lhs }
 }
+// MARK: - __________ Range __________
+extension RangeExpression where Bound == String.Index  {
+	func nsRange<S: StringProtocol>(in string: S) -> NSRange { .init(self, in: string) }
+}
+extension String {
+	
+	func indices(of occurrence: String) -> [Int] {
+		var indices: [Int] = []
+		var position = startIndex
+		while let range = range(of: occurrence, range: position..<endIndex) {
+			let i = distance(from: startIndex, to: range.lowerBound)
+			indices.append(i)
+			let offset = occurrence.distance(from: occurrence.startIndex, to: occurrence.endIndex) - 1
+			guard let after = index(range.lowerBound, offsetBy: offset, limitedBy: endIndex) else {
+				break
+			}
+			position = index(after: after)
+		}
+		return indices
+	}
+	func ranges(of searchString: String) -> [Range<String.Index>] {
+		let _indices = indices(of: searchString)
+		let count = searchString.count
+		return _indices.map {
+			index(startIndex, offsetBy: $0)..<index(startIndex, offsetBy: $0 + count)
+		}
+	}
+	func nsRanges(of searchString: String) -> [NSRange] {
+		ranges(of: searchString).map { $0.nsRange(in: self) }
+	}
+}
 // MARK: - __________ Verification __________
 extension String {
+	
+	func isValid(for characterSet: CharacterSet) -> Bool {
+		false
+	}
 	
 	var isEmptyString: Bool {
 		trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
