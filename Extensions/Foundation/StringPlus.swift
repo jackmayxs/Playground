@@ -12,7 +12,7 @@ extension Optional where Wrapped == String {
 	
 	var safeValue: String { self ?? "" }
 	
-	/// 判断Optional<String>类型是否为空
+	/// 判断Optional<String>类型是否为空(.none或Wrapped为空字符串)
 	var isEmptyString: Bool {
 		switch self {
 			case .some(let wrapped): return wrapped.isEmptyString
@@ -20,9 +20,19 @@ extension Optional where Wrapped == String {
 		}
 	}
 	
-	/// 返回不为空字符串的Optional<String>
-	var validString: String {
+	/// 判断Optional是否有效(Wrapped非空字符串)
+	var isValidString: Bool {
+		!isEmptyString
+	}
+	
+	/// 返回有效的字符串或空字符串
+	var validString: Wrapped {
 		isEmptyString ? "" : unsafelyUnwrapped
+	}
+	
+	/// 返回有效的字符串或.none
+	var validStringOrNone: Self {
+		isEmptyString ? .none : unsafelyUnwrapped
 	}
 }
 
@@ -94,8 +104,16 @@ extension String {
 		false
 	}
 	
+	var trimmed: String {
+		trimmingCharacters(in: .whitespacesAndNewlines)
+	}
+	
 	var isEmptyString: Bool {
-		trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+		trimmed.isEmpty
+	}
+	
+	var isValidString: Bool {
+		!isEmptyString
 	}
 }
 
