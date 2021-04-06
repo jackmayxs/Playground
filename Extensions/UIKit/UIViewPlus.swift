@@ -44,6 +44,28 @@ extension Array where Element: UIView {
 	}
 }
 
+extension UIView {
+	
+	/// 获取View控制器实例
+	var owner: UIViewController? {
+		owner(UIViewController.self)
+	}
+	
+	/// 获取View的控制器
+	/// - Parameter type: 控制器类型
+	/// - Returns: 控制器实例
+	func owner<VC: UIViewController>(_ type: VC.Type) -> VC? {
+		var parent: UIResponder? = self
+		while parent != nil {
+			parent = parent?.next
+			if let controller = parent as? VC {
+				return controller
+			}
+		}
+		return nil
+	}
+}
+
 #if DEBUG
 // MARK: - __________ SwiftUI __________
 extension UIView {
