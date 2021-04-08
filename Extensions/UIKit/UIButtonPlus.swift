@@ -44,8 +44,8 @@ extension UIButton {
 		get { objc_getAssociatedObject(self, &Key.imageTitleSpacing) as? CGFloat ?? 0 }
 	}
 	
-	var imageWidth: CGFloat { imageView?.image?.size.width ?? 0 }
-	var imageHeight: CGFloat { imageView?.image?.size.height ?? 0 }
+	var imageWidth: CGFloat { currentImage?.size.width ?? 0 }
+	var imageHeight: CGFloat { currentImage?.size.height ?? 0 }
 	var titleWidth: CGFloat {
 		// 以下两行: 适配iOS14,否则此属性会按照字体的Font返回一个值,从而影响intrinsicContentSize的计算
 		guard let titleLabel = titleLabel else { return 0 }
