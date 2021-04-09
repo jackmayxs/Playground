@@ -20,6 +20,7 @@
 		DE13534526170A7D00903FA3 /* AutoResizeTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE13534426170A7D00903FA3 /* AutoResizeTextView.swift */; };
 		DE16716025E7418E00BA5CE9 /* NSObjectProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE16715F25E7418E00BA5CE9 /* NSObjectProxy.swift */; };
 		DE16719F25E7935D00BA5CE9 /* GCDTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE16719E25E7935D00BA5CE9 /* GCDTimer.swift */; };
+		DE1D66A62620316500337652 /* UITextInputPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1D66A52620316500337652 /* UITextInputPlus.swift */; };
 		DE1DD9622552B8B700E08A8B /* UIEdgeInsetsPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1DD9612552B8B700E08A8B /* UIEdgeInsetsPlus.swift */; };
 		DE1DD9652552B95F00E08A8B /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1DD9642552B95F00E08A8B /* Protocols.swift */; };
 		DE1DD96C2552BA2800E08A8B /* InsetsLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1DD96B2552BA2700E08A8B /* InsetsLabel.swift */; };
@@ -69,6 +70,7 @@
 		DE13534426170A7D00903FA3 /* AutoResizeTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoResizeTextView.swift; sourceTree = "<group>"; };
 		DE16715F25E7418E00BA5CE9 /* NSObjectProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSObjectProxy.swift; sourceTree = "<group>"; };
 		DE16719E25E7935D00BA5CE9 /* GCDTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GCDTimer.swift; sourceTree = "<group>"; };
+		DE1D66A52620316500337652 /* UITextInputPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextInputPlus.swift; sourceTree = "<group>"; };
 		DE1DD9612552B8B700E08A8B /* UIEdgeInsetsPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIEdgeInsetsPlus.swift; sourceTree = "<group>"; };
 		DE1DD9642552B95F00E08A8B /* Protocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		DE1DD96B2552BA2700E08A8B /* InsetsLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsetsLabel.swift; sourceTree = "<group>"; };
@@ -203,6 +205,7 @@
 				DEF0553D25BBD31700093261 /* UIWindowPlus.swift */,
 				3E127E3025FF926100EC8C22 /* UICollectionViewPlus.swift */,
 				3E127E3325FF928C00EC8C22 /* UITableViewPlus.swift */,
+				DE1D66A52620316500337652 /* UITextInputPlus.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -339,6 +342,7 @@
 				DE1DD96C2552BA2800E08A8B /* InsetsLabel.swift in Sources */,
 				DE4190B325EF49BA00F03D4A /* SwiftUIPreview.swift in Sources */,
 				3EBEDB2625BD9C740067D02F /* UIDevicePlus.swift in Sources */,
+				DE1D66A62620316500337652 /* UITextInputPlus.swift in Sources */,
 				DE66D8AC24C7F931003B9206 /* ViewController.swift in Sources */,
 				DEA34B752511DBE500B4697C /* CGSizePlus.swift in Sources */,
 				DEB622F925E8995B00702C5E /* CGFloatPlus.swift in Sources */,
