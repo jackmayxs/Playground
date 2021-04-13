@@ -7,8 +7,19 @@
 //
 
 import UIKit
+import Photos
 
 extension UIImage {
+	
+	func saveToPhotoLibrary(completionHandler: @escaping (Bool, Error?) -> Void) {
+		PHPhotoLibrary.shared().performChanges {
+			PHAssetChangeRequest.creationRequestForAsset(from: self)
+		} completionHandler: { result, error in
+			DispatchQueue.main.async {
+				completionHandler(result, error)
+			}
+		}
+	}
 	
 	func expandedImage(with insets: UIEdgeInsets) -> UIImage {
 		UIGraphicsBeginImageContextWithOptions(size + insets, false, scale)
