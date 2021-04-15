@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		76F6FE75FB1C399ACE318154 /* Pods_RxPlayground.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36BF156BDB6E6BBBB2CE9444 /* Pods_RxPlayground.framework */; };
+		DE4E45B92628388900EF9CA5 /* Rx+UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4E45B82628388900EF9CA5 /* Rx+UIViewController.swift */; };
 		DECB6EC42624398000D59C09 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECB6EC32624398000D59C09 /* AppDelegate.swift */; };
 		DECB6EC62624398000D59C09 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECB6EC52624398000D59C09 /* SceneDelegate.swift */; };
 		DECB6EC82624398000D59C09 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECB6EC72624398000D59C09 /* ViewController.swift */; };
@@ -20,6 +21,7 @@
 /* Begin PBXFileReference section */
 		36BF156BDB6E6BBBB2CE9444 /* Pods_RxPlayground.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RxPlayground.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		44286D1295B409A401D9F515 /* Pods-RxPlayground.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxPlayground.release.xcconfig"; path = "Target Support Files/Pods-RxPlayground/Pods-RxPlayground.release.xcconfig"; sourceTree = "<group>"; };
+		DE4E45B82628388900EF9CA5 /* Rx+UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rx+UIViewController.swift"; sourceTree = "<group>"; };
 		DECB6EC02624398000D59C09 /* RxPlayground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RxPlayground.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DECB6EC32624398000D59C09 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DECB6EC52624398000D59C09 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -61,9 +63,18 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		DE4E45B72628385C00EF9CA5 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				DE4E45B82628388900EF9CA5 /* Rx+UIViewController.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		DECB6EB72624398000D59C09 = {
 			isa = PBXGroup;
 			children = (
+				DE4E45B72628385C00EF9CA5 /* Extensions */,
 				DECB6EE926243BC500D59C09 /* BestPractice */,
 				DECB6EC22624398000D59C09 /* RxPlayground */,
 				DECB6EC12624398000D59C09 /* Products */,
@@ -219,6 +230,7 @@
 				DECB6EC82624398000D59C09 /* ViewController.swift in Sources */,
 				DECB6EEE262440E300D59C09 /* BaseViewController.swift in Sources */,
 				DECB6EC42624398000D59C09 /* AppDelegate.swift in Sources */,
+				DE4E45B92628388900EF9CA5 /* Rx+UIViewController.swift in Sources */,
 				DECB6EC62624398000D59C09 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
