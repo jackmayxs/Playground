@@ -37,7 +37,12 @@ extension Optional where Wrapped == String {
 }
 
 // MARK: - __________ Transform __________
-extension String {
+extension StringProtocol {
+	
+	/// 返回一个字符串占用多少字节数
+	var byteCount: Int {
+		utf8.count
+	}
 	
 	var cgFloat: CGFloat {
 		CGFloat(double)
@@ -138,3 +143,4 @@ extension Locale {
 		}
 	}
 }
+
