@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		76F6FE75FB1C399ACE318154 /* Pods_RxPlayground.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36BF156BDB6E6BBBB2CE9444 /* Pods_RxPlayground.framework */; };
 		DE4E45B92628388900EF9CA5 /* Rx+UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4E45B82628388900EF9CA5 /* Rx+UIViewController.swift */; };
+		DE4E45D826296C8800EF9CA5 /* RxPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4E45D726296C8800EF9CA5 /* RxPlus.swift */; };
 		DECB6EC42624398000D59C09 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECB6EC32624398000D59C09 /* AppDelegate.swift */; };
 		DECB6EC62624398000D59C09 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECB6EC52624398000D59C09 /* SceneDelegate.swift */; };
 		DECB6EC82624398000D59C09 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECB6EC72624398000D59C09 /* ViewController.swift */; };
@@ -22,6 +23,7 @@
 		36BF156BDB6E6BBBB2CE9444 /* Pods_RxPlayground.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RxPlayground.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		44286D1295B409A401D9F515 /* Pods-RxPlayground.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxPlayground.release.xcconfig"; path = "Target Support Files/Pods-RxPlayground/Pods-RxPlayground.release.xcconfig"; sourceTree = "<group>"; };
 		DE4E45B82628388900EF9CA5 /* Rx+UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rx+UIViewController.swift"; sourceTree = "<group>"; };
+		DE4E45D726296C8800EF9CA5 /* RxPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxPlus.swift; sourceTree = "<group>"; };
 		DECB6EC02624398000D59C09 /* RxPlayground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RxPlayground.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DECB6EC32624398000D59C09 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DECB6EC52624398000D59C09 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -67,6 +69,7 @@
 			isa = PBXGroup;
 			children = (
 				DE4E45B82628388900EF9CA5 /* Rx+UIViewController.swift */,
+				DE4E45D726296C8800EF9CA5 /* RxPlus.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -232,6 +235,7 @@
 				DECB6EC42624398000D59C09 /* AppDelegate.swift in Sources */,
 				DE4E45B92628388900EF9CA5 /* Rx+UIViewController.swift in Sources */,
 				DECB6EC62624398000D59C09 /* SceneDelegate.swift in Sources */,
+				DE4E45D826296C8800EF9CA5 /* RxPlus.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
