@@ -108,3 +108,10 @@ extension CharacterSet {
 	*/
 	#endif
 }
+
+extension Bool {
+	
+	var isFalse: Bool {
+		self == false
+	}
+}
