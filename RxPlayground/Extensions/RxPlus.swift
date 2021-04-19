@@ -10,10 +10,7 @@ import RxCocoa
 
 extension ObservableType where Element == Bool {
 	
-	var isTrue: Observable<Element> {
-		filter { $0 }
-	}
 	var isFalse: Observable<Element> {
-		filter { !$0 }
+		filter { $0 == false }
 	}
 }

@@ -14,7 +14,7 @@ public extension Reactive where Base: UIViewController {
 		let source = methodInvoked(#selector(Base.viewDidLoad)).map { _ in }
 		return ControlEvent(events: source)
 	}
-	 
+	
 	var viewWillAppear: ControlEvent<Bool> {
 		let source = methodInvoked(#selector(Base.viewWillAppear))
 			.map { $0.first as? Bool ?? false }
@@ -25,7 +25,7 @@ public extension Reactive where Base: UIViewController {
 			.map { $0.first as? Bool ?? false }
 		return ControlEvent(events: source)
 	}
-	 
+	
 	var viewWillDisappear: ControlEvent<Bool> {
 		let source = methodInvoked(#selector(Base.viewWillDisappear))
 			.map { $0.first as? Bool ?? false }
@@ -36,7 +36,7 @@ public extension Reactive where Base: UIViewController {
 			.map { $0.first as? Bool ?? false }
 		return ControlEvent(events: source)
 	}
-	 
+	
 	var viewWillLayoutSubviews: ControlEvent<Void> {
 		let source = methodInvoked(#selector(Base.viewWillLayoutSubviews))
 			.map { _ in }
@@ -47,7 +47,7 @@ public extension Reactive where Base: UIViewController {
 			.map { _ in }
 		return ControlEvent(events: source)
 	}
-	 
+	
 	var willMoveToParentViewController: ControlEvent<UIViewController?> {
 		let source = methodInvoked(#selector(Base.willMove))
 			.map { $0.first as? UIViewController }
@@ -58,13 +58,13 @@ public extension Reactive where Base: UIViewController {
 			.map { $0.first as? UIViewController }
 		return ControlEvent(events: source)
 	}
-	 
+	
 	var didReceiveMemoryWarning: ControlEvent<Void> {
 		let source = methodInvoked(#selector(Base.didReceiveMemoryWarning))
 			.map { _ in }
 		return ControlEvent(events: source)
 	}
-	 
+	
 	//表示视图是否显示的可观察序列，当VC显示状态改变时会触发
 	var isVisible: Observable<Bool> {
 		let viewDidAppearObservable = base.rx.viewDidAppear.map { _ in true }
@@ -73,7 +73,7 @@ public extension Reactive where Base: UIViewController {
 		return Observable<Bool>.merge(viewDidAppearObservable,
 									  viewWillDisappearObservable)
 	}
-	 
+	
 	//表示页面被释放的可观察序列，当VC被dismiss时会触发
 	var isDismissing: ControlEvent<Bool> {
 		let source = sentMessage(#selector(Base.dismiss))
