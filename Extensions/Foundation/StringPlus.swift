@@ -40,8 +40,8 @@ extension Optional where Wrapped == String {
 extension StringProtocol {
 	
 	/// 返回一个字符串占用多少字节数
-	var byteCount: Int {
-		utf8.count
+	var utf8ByteCount: Int {
+		lengthOfBytes(using: .utf8)
 	}
 	
 	var cgFloat: CGFloat {
