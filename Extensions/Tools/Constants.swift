@@ -10,7 +10,13 @@ import UIKit
 
 enum Size {
 	
-	static var commonSafeAreaInsets: UIEdgeInsets {
-		UIWindow.keyWindow?.safeAreaInsets ?? .zero
-	}
+	static let commonSafeAreaInsets = UIWindow.keyWindow?.safeAreaInsets ?? .zero
+	
+	static let screenScale = UIScreen.main.scale
+	
+	static let screenHeight = UIScreen.main.bounds.height
+	
+	static let screenWidth = UIScreen.main.bounds.width
+	
+	static let screenSize = UIScreen.main.bounds.size
 }
