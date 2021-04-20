@@ -141,34 +141,6 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QJr-f4-ZZF" customClass="Super" customModule="ExtensionDemo" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zFH-34-MEA" customClass="GreenSub" customModule="ExtensionDemo" customModuleProvider="target">
-                                        <rect key="frame" x="87" y="296" width="240" height="128"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <subviews>
-                                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1NW-gt-G20" customClass="RedSub" customModule="ExtensionDemo" customModuleProvider="target">
-                                                <rect key="frame" x="52" y="-46" width="240" height="128"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <color key="backgroundColor" systemColor="systemPinkColor"/>
-                                            </view>
-                                        </subviews>
-                                        <color key="backgroundColor" systemColor="systemGreenColor"/>
-                                    </view>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vyb-VU-J0V" customClass="OtherSub" customModule="ExtensionDemo" customModuleProvider="target">
-                                        <rect key="frame" x="87" y="532" width="240" height="128"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" systemColor="systemOrangeColor"/>
-                                    </view>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xgd-mA-SQd" customClass="BlueSub" customModule="ExtensionDemo" customModuleProvider="target">
-                                        <rect key="frame" x="87" y="71" width="240" height="128"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" systemColor="systemBlueColor"/>
-                                    </view>
-                                </subviews>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -177,21 +149,17 @@
                             <constraint firstAttribute="trailing" secondItem="b4e-0T-CzX" secondAttribute="trailing" id="3bh-up-aJL"/>
                             <constraint firstAttribute="trailing" secondItem="Y64-Xc-JAP" secondAttribute="trailing" id="6jw-zS-BS6"/>
                             <constraint firstItem="b4e-0T-CzX" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="ESq-AX-l0F"/>
-                            <constraint firstItem="QJr-f4-ZZF" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="EdZ-wj-ufA"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="fO2-lZ-PZH" secondAttribute="bottom" id="H9G-eQ-jb1"/>
                             <constraint firstItem="Y64-Xc-JAP" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="K2x-x7-iNY"/>
                             <constraint firstItem="Yyc-hK-L5l" firstAttribute="centerX" secondItem="ndh-PE-dUO" secondAttribute="centerX" id="Lp6-zv-lfa"/>
                             <constraint firstItem="Yyc-hK-L5l" firstAttribute="bottom" secondItem="ndh-PE-dUO" secondAttribute="bottom" id="M3v-NG-WkK"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="QJr-f4-ZZF" secondAttribute="trailing" id="XHn-TU-VaA"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Guc-2O-Jfg" secondAttribute="trailing" constant="8" id="YPJ-b7-P9e"/>
                             <constraint firstItem="Guc-2O-Jfg" firstAttribute="top" secondItem="b4e-0T-CzX" secondAttribute="bottom" constant="8" id="Z9J-1I-hgz"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="fO2-lZ-PZH" secondAttribute="trailing" id="ZLJ-0G-88S"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="QJr-f4-ZZF" secondAttribute="bottom" id="ddI-eG-Ijg"/>
                             <constraint firstItem="ndh-PE-dUO" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="hRh-8L-AVb"/>
                             <constraint firstItem="ndh-PE-dUO" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="hr6-8S-3sF"/>
                             <constraint firstItem="ndh-PE-dUO" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="jIB-Rc-r8W"/>
                             <constraint firstItem="fO2-lZ-PZH" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="xkb-Zw-6oZ"/>
-                            <constraint firstItem="QJr-f4-ZZF" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="y3u-jP-Q2c"/>
                             <constraint firstItem="Y64-Xc-JAP" firstAttribute="centerY" secondItem="ndh-PE-dUO" secondAttribute="centerY" id="yFu-qi-0DR"/>
                             <constraint firstItem="Guc-2O-Jfg" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="8" id="yTG-02-mkf"/>
                             <constraint firstItem="b4e-0T-CzX" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="yuV-TE-XDI"/>
@@ -270,17 +238,8 @@
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
-        <systemColor name="systemBlueColor">
-            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="systemGreenColor">
-            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
         <systemColor name="systemGroupedBackgroundColor">
             <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="systemOrangeColor">
-            <color red="1" green="0.58431372549019611" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemPinkColor">
             <color red="1" green="0.17647058823529413" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
