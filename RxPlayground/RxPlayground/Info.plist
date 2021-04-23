@@ -62,5 +62,20 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>定位权限</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>定位权限</string>
+	<key>NSLocationDefaultAccuracyReduced</key>
+	<string>定位权限</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>定位权限</string>
+	<key>NSLocationTemporaryUsageDescriptionDictionary</key>
+	<dict>
+	<key>ExampleUsageDescription</key>
+	<string>This app needs accurate location so it can verify that you're in a supported region.</string>
+	<key>AnotherUsageDescription</key>
+	<string>This app needs accurate location so it can show you relevant results.</string>
+	</dict>
 </dict>
 </plist>
