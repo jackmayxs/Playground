@@ -72,10 +72,14 @@
 	<string>定位权限</string>
 	<key>NSLocationTemporaryUsageDescriptionDictionary</key>
 	<dict>
-	<key>ExampleUsageDescription</key>
-	<string>This app needs accurate location so it can verify that you're in a supported region.</string>
-	<key>AnotherUsageDescription</key>
-	<string>This app needs accurate location so it can show you relevant results.</string>
+		<key>ExampleUsageDescription</key>
+		<string>This app needs accurate location so it can verify that you&apos;re in a supported region.</string>
+		<key>AnotherUsageDescription</key>
+		<string>This app needs accurate location so it can show you relevant results.</string>
 	</dict>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>相册权限</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>相册权限</string>
 </dict>
 </plist>

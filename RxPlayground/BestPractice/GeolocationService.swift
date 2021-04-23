@@ -174,12 +174,23 @@ extension Reactive where Base: CLLocationManager {
 	*/
 	public var didRangeBeaconsInRegion: Observable<(beacons: [CLBeacon],
 													region: CLBeaconRegion)> {
-		delegate.methodInvoked(#selector(CLLocationManagerDelegate.locationManager(_:didRangeBeacons:in:)))
-			.map { a in
-				let beacons = try castOrThrow([CLBeacon].self, a[1])
-				let region = try castOrThrow(CLBeaconRegion.self, a[2])
-				return (beacons: beacons, region: region)
-			}
+		if #available(iOS 13.0, *) {
+			return delegate.methodInvoked(#selector(CLLocationManagerDelegate.locationManager(_:didRange:satisfying:)))
+				.map { a in
+					let id = UUID()
+					let beacons = try castOrThrow([CLBeacon].self, a[1])
+					let constraint = try castOrThrow(CLBeaconIdentityConstraint.self, a[2])
+					let region = CLBeaconRegion(beaconIdentityConstraint: constraint, identifier: id.uuidString)
+					return (beacons: beacons, region: region)
+				}
+		} else {
+			return delegate.methodInvoked(#selector(CLLocationManagerDelegate.locationManager(_:didRangeBeacons:in:)))
+				.map { a in
+					let beacons = try castOrThrow([CLBeacon].self, a[1])
+					let region = try castOrThrow(CLBeaconRegion.self, a[2])
+					return (beacons: beacons, region: region)
+				}
+		}
 	}
 
 	/**
@@ -187,12 +198,23 @@ extension Reactive where Base: CLLocationManager {
 	*/
 	public var rangingBeaconsDidFailForRegionWithError:
 		Observable<(region: CLBeaconRegion, error: Error)> {
-		delegate.methodInvoked(#selector(CLLocationManagerDelegate.locationManager(_:rangingBeaconsDidFailFor:withError:)))
-			.map { a in
-				let region = try castOrThrow(CLBeaconRegion.self, a[1])
-				let error = try castOrThrow(Error.self, a[2])
-				return (region: region, error: error)
-			}
+		if #available(iOS 13, *) {
+			return delegate.methodInvoked(#selector(CLLocationManagerDelegate.locationManager(_:didFailRangingFor:error:)))
+				.map { a in
+					let id = UUID()
+					let constraint = try castOrThrow(CLBeaconIdentityConstraint.self, a[1])
+					let region = CLBeaconRegion(beaconIdentityConstraint: constraint, identifier: id.uuidString)
+					let error = try castOrThrow(Error.self, a[2])
+					return (region: region, error: error)
+				}
+		} else {
+			return delegate.methodInvoked(#selector(CLLocationManagerDelegate.locationManager(_:rangingBeaconsDidFailFor:withError:)))
+				.map { a in
+					let region = try castOrThrow(CLBeaconRegion.self, a[1])
+					let error = try castOrThrow(Error.self, a[2])
+					return (region: region, error: error)
+				}
+		}
 	}
 
 	// MARK: Responding to Visit Events
@@ -216,11 +238,18 @@ extension Reactive where Base: CLLocationManager {
 	Reactive wrapper for `delegate` message.
 	*/
 	public var didChangeAuthorizationStatus: Observable<CLAuthorizationStatus> {
-		delegate.methodInvoked(#selector(CLLocationManagerDelegate.locationManager(_:didChangeAuthorization:)))
-			.map { a in
-				let number = try castOrThrow(NSNumber.self, a[1])
-				return CLAuthorizationStatus(rawValue: Int32(number.intValue)) ?? .notDetermined
-			}
+		if #available(iOS 14, *) {
+			return delegate.methodInvoked(#selector(CLLocationManagerDelegate.locationManagerDidChangeAuthorization(_:)))
+				.map { args in
+					try castOrThrow(CLLocationManager.self, args[0]).authorizationStatus
+				}
+		} else {
+			return delegate.methodInvoked(#selector(CLLocationManagerDelegate.locationManager(_:didChangeAuthorization:)))
+				.map { a in
+					let raw = try castOrThrow(NSNumber.self, a[1])
+					return CLAuthorizationStatus(rawValue: raw.int32Value) ?? .notDetermined
+				}
+		}
 	}
 }
 
@@ -262,18 +291,20 @@ class GeolocationService {
 		return mgr
 	}()
 	
-	private(set) var authorized: Driver<Bool>
-	private(set) var location: Driver<CLLocationCoordinate2D>
+	let authorized: Driver<Bool>
+	let authorizationStatus: Observable<CLAuthorizationStatus>
+	let location: Driver<CLLocationCoordinate2D>
 	
 	private init() {
 		
-		authorized = Observable.deferred { [unowned locationManager] in
-			locationManager.rx.didChangeAuthorizationStatus
-				.startWith(locationManager.authorizationStatus)
-				.distinctUntilChanged()
-		}
-		.map(\.canLocate)
-		.asDriver(onErrorJustReturn: false)
+		let status = locationManager.rx.didChangeAuthorizationStatus
+			.startWith(locationManager.authorizationStatus)
+			.distinctUntilChanged()
+		
+		authorizationStatus = status
+		authorized = status
+			.map(\.canLocate)
+			.asDriver(onErrorJustReturn: false)
 		
 		location = locationManager.rx.didUpdateLocations
 			.asDriver(onErrorJustReturn: [])
