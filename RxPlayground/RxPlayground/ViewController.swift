@@ -11,16 +11,12 @@ import RxCocoa
 import CoreLocation
 
 class ViewController: BaseViewController {
-
-	@IBOutlet weak var b1: UIButton!
-	@IBOutlet weak var b2: UIButton!
-	@IBOutlet weak var b3: UIButton!
-	@IBOutlet weak var imgV: UIImageView!
-	
-	private let segmentControl = UISegmentedControl()
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		let b1 = UIButton()
+		let b2 = UIButton()
+		let b3 = UIButton()
 		
 		// 三个按钮直选中一个按钮 实现看起来有点危险
 		do {
@@ -41,6 +37,7 @@ class ViewController: BaseViewController {
 		
 		// SegmentControl 绑定UIImageView
 		do {
+			let segmentControl = UISegmentedControl()
 			segmentControl.rx.selectedSegmentIndex
 				.compactMap { i -> UIImage? in
 					UIImage(named: "\(i).jpg")
@@ -53,6 +50,7 @@ class ViewController: BaseViewController {
 		}
 		
 		do {
+			let imgV = UIImageView()
 			/// 拍照
 			b1.rx.tap.flatMapLatest {
 				UIImagePickerController.rx.createdWithParent(self, animated: true) { make in
