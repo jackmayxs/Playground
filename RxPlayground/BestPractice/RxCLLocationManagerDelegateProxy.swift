@@ -14,6 +14,7 @@ extension CLLocationManager: HasDelegate {
 	public typealias Delegate = CLLocationManagerDelegate
 }
 
+// MARK: - __________ 代理对象 __________
 public class RxCLLocationManagerDelegateProxy:
 	DelegateProxy<CLLocationManager, CLLocationManagerDelegate>,
 	DelegateProxyType, CLLocationManagerDelegate {
@@ -25,8 +26,11 @@ public class RxCLLocationManagerDelegateProxy:
 		register { RxCLLocationManagerDelegateProxy(locationManager: $0) }
 	}
 
+	// MARK: - __________ 订阅Subject __________
 	internal lazy var didUpdateLocationsSubject = PublishSubject<[CLLocation]>()
 	internal lazy var didFailWithErrorSubject = PublishSubject<Error>()
+	
+	// MARK: - __________ 定位代理实现 __________
 	public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
 		_forwardToDelegate?.locationManager(manager, didUpdateLocations: locations)
 		didUpdateLocationsSubject.onNext(locations)
@@ -35,12 +39,13 @@ public class RxCLLocationManagerDelegateProxy:
 		_forwardToDelegate?.locationManager(manager, didFailWithError: error)
 		didFailWithErrorSubject.onNext(error)
 	}
+	// MARK: - __________ 回收♻️处理 __________
 	deinit {
 		didUpdateLocationsSubject.on(.completed)
 		didFailWithErrorSubject.on(.completed)
 	}
 }
-
+// MARK: - __________ 封装 __________
 extension Reactive where Base: CLLocationManager {
 	
 	public var delegate: RxCLLocationManagerDelegateProxy {

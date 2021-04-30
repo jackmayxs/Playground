@@ -22,15 +22,6 @@ class ViewController: BaseViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		GeolocationService.instance.location
-			.asObservable()
-			.bind { value in
-				print(value)
-			}
-		GeolocationService.instance.authorizationStatus
-			.bind { value in
-				print(value.rawValue)
-			}
 		// 三个按钮直选中一个按钮 实现看起来有点危险
 		do {
 			let buttons = [b1, b2, b3].map { $0! }
@@ -103,6 +94,10 @@ class ViewController: BaseViewController {
 			}
 			.bind(to: imgV.rx.image)
 			.disposed(by: disposeBag)
+		}
+		
+		do {
+			
 		}
 	}
 }
