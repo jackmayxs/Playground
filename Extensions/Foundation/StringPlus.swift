@@ -144,3 +144,9 @@ extension Locale {
 	}
 }
 
+extension Substring {
+	
+	var string: String {
+		String(self)
+	}
+}
