@@ -115,3 +115,29 @@ extension Bool {
 		self == false
 	}
 }
+
+extension DateFormatter {
+	
+	private static let formatterCache: NSCache<NSString, DateFormatter> = {
+		let cache = NSCache<NSString, DateFormatter>()
+		cache.countLimit = 5
+		func clearCache(_ note: Notification) {
+			cache.removeAllObjects()
+		}
+		NotificationCenter.default.addObserver(forName: UIApplication.didReceiveMemoryWarningNotification, object: nil, queue: nil, using: clearCache(_:))
+		NotificationCenter.default.addObserver(forName: NSLocale.currentLocaleDidChangeNotification, object: nil, queue: nil, using: clearCache(_:))
+		return cache
+	}()
+	static func newInstance(withFormat format: String, local: Locale = .current) -> DateFormatter {
+		let key = (format + local.identifier) as NSString
+		let dateFormatter = formatterCache.object(forKey: key)
+		guard let cachedFormatter = dateFormatter else {
+			let newFormatter = DateFormatter()
+			newFormatter.dateFormat = format
+			newFormatter.locale = local
+			formatterCache.setObject(newFormatter, forKey: key)
+			return newFormatter
+		}
+		return cachedFormatter
+	}
+}
