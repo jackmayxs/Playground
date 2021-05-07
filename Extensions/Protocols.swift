@@ -33,7 +33,7 @@ extension InstanceFactory where Self: SimpleConfigurable {
 	}
 }
 
-protocol ClassConfigurable: class {}
+protocol ClassConfigurable: AnyObject {}
 extension ClassConfigurable {
 	@discardableResult
 	func configure(_ configurator: (Self) -> Void) -> Self {
@@ -117,7 +117,7 @@ protocol SizeExtendable {
 }
 
 
-public protocol ReusableView: class {
+public protocol ReusableView: AnyObject {
 	static var reuseIdentifier: String { get }
 }
 extension ReusableView {

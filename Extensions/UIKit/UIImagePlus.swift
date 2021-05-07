@@ -11,6 +11,33 @@ import Photos
 
 extension UIImage {
 	
+	/// 给图片着色
+	/// - Parameters:
+	///   - tintColor: 要改变的颜色
+	///   - blendMode: 着色模式
+	/// - Returns: 着色后的图片
+	func imageWith(tintColor: UIColor, blendMode: CGBlendMode = .overlay) -> UIImage? {
+		UIGraphicsBeginImageContextWithOptions(size, false, UIScreen.main.scale)
+		defer {
+			UIGraphicsEndImageContext()
+		}
+		// 定义画布
+		let canvas = CGRect(origin: .zero, size: size)
+		tintColor.setFill()
+		UIRectFill(canvas)
+		draw(in: canvas, blendMode: blendMode, alpha: 1.0)
+		if blendMode != .destinationIn {
+			draw(in: canvas, blendMode: .destinationIn, alpha: 1.0)
+		}
+		return UIGraphicsGetImageFromCurrentImageContext()
+		/* 备注:
+		因为每次使用此方法绘图时，都使用了CG的绘制方法
+		这就意味着每次调用都会是用到CPU的Offscreen drawing
+		大量使用的话可能导致性能的问题（主要对于iPhone 3GS或之前的设备，可能同时处理大量这样的绘制调用的能力会有不足）。
+		原文地址: https://onevcat.com/2013/04/using-blending-in-ios/
+		*/
+	}
+	
 	//将图片缩放成指定尺寸（多余部分自动删除）
 	func scaled(to newSize: CGSize) -> UIImage? {
 		//计算比例
