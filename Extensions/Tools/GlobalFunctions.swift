@@ -21,3 +21,13 @@ func dePrint<T>(_ message: T, file: String = #fileID, function: String = #functi
 	print("\(time) \(fileName).\(function)[\(line)]\(queue):\(message)\n")
 	#endif
 }
+
+/// 判断是否是主队列
+fileprivate let mainQueueSpecificKey = DispatchSpecificKey<UUID>()
+fileprivate let mainQueueID = UUID()
+var isMainQueue: Bool {
+	Dispatch.once {
+		DispatchQueue.main.setSpecific(key: mainQueueSpecificKey, value: mainQueueID)
+	}
+	return DispatchQueue.getSpecific(key: mainQueueSpecificKey) == mainQueueID
+}
