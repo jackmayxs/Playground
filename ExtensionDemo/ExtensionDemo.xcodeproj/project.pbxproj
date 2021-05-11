@@ -76,6 +76,7 @@
 		DE4190AE25EF412D00F03D4A /* SwiftUIPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIPlus.swift; sourceTree = "<group>"; };
 		DE4190B225EF49BA00F03D4A /* SwiftUIPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIPreview.swift; sourceTree = "<group>"; };
 		DE4190B525EF4E9B00F03D4A /* UIViewControllerPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerPlus.swift; sourceTree = "<group>"; };
+		DE64BA0A264A2ADA009FA78B /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		DE66D8A424C7F931003B9206 /* ExtensionDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExtensionDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DE66D8A724C7F931003B9206 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DE66D8A924C7F931003B9206 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -257,6 +258,7 @@
 			isa = PBXGroup;
 			children = (
 				DEFAD78B2615CCA6008CEBE0 /* TextFieldDelegate.swift */,
+				DE64BA0A264A2ADA009FA78B /* MyPlayground.playground */,
 			);
 			path = BestPractice;
 			sourceTree = "<group>";
