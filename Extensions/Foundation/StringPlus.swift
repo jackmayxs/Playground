@@ -150,3 +150,60 @@ extension Substring {
 		String(self)
 	}
 }
+
+extension String {
+	
+	subscript (_ range: ClosedRange<Int>) -> String {
+		get {
+			guard range.upperBound < count else {
+				return ""
+			}
+			let start = index(startIndex, offsetBy: range.lowerBound)
+			let end = index(startIndex, offsetBy: range.upperBound)
+			return self[start ... end].string
+		}
+		set {
+			guard range.upperBound < count else {
+				return
+			}
+			let start = index(startIndex, offsetBy: range.lowerBound)
+			let end = index(startIndex, offsetBy: range.upperBound)
+			replaceSubrange(start ... end, with: newValue)
+		}
+	}
+	
+	subscript (_ range: PartialRangeFrom<Int>, head head: String = "") -> String {
+		get {
+			guard range.lowerBound < count else {
+				return ""
+			}
+			let start = index(startIndex, offsetBy: range.lowerBound)
+			return head + self[start...].string
+		}
+		set {
+			guard range.lowerBound < count else {
+				return
+			}
+			let start = index(startIndex, offsetBy: range.lowerBound)
+			replaceSubrange(start..., with: newValue)
+		}
+	}
+	
+	subscript (_ range: PartialRangeThrough<Int>, tail tail: String = "") -> String {
+		get {
+			guard range.upperBound < count else {
+				return self
+			}
+			let index = index(startIndex, offsetBy: range.upperBound)
+			let cropped = self[...index].string
+			return cropped + (count > cropped.count ? tail : "")
+		}
+		set {
+			guard range.upperBound < count else {
+				return
+			}
+			let index = index(startIndex, offsetBy: range.upperBound)
+			replaceSubrange(...index, with: newValue)
+		}
+	}
+}
