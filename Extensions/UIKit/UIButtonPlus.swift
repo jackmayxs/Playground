@@ -112,7 +112,11 @@ extension UIButton {
 		/// 以及ImageTitleStyle确定最终的Image/Title的EdgeInsets
 		/// - 说明:
 		///  - 平时使用最多的就是水平和垂直方向都居中的情况了,其他情况只为了加深印象
-		switch (contentVerticalAlignment, effectiveContentHorizontalAlignment) {
+		var alignments = (contentVerticalAlignment, contentHorizontalAlignment)
+		if #available(iOS 11, *) {
+			alignments = (contentVerticalAlignment, effectiveContentHorizontalAlignment)
+		}
+		switch alignments {
 			
 			case (.center, .center):
 				switch axis {
