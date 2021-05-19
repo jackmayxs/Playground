@@ -16,7 +16,7 @@ struct UIViewPreview: PreviewProvider {
 	// 参考链接:
 	// https://developer.apple.com/design/human-interface-guidelines/ios/visual-design/adaptivity-and-layout/
 	static var devices = [
-//		"iPhone 12 mini",   // 360x780 | @3x
+//		"iPhone 12 mini",   // 375x812 | @3x
 		"iPhone 11 Pro",    // 375x812 | @3x
 //		"iPhone 12 Pro",    // 390x844 | @3x
 //		"iPhone 12 Pro Max" // 428x926 | @3x

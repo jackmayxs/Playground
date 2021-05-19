@@ -120,6 +120,17 @@ extension String {
 	var isValidString: Bool {
 		!isEmptyString
 	}
+	
+	mutating func removeCharacters(in notAllowed: CharacterSet) {
+		unicodeScalars.removeAll { scalar in
+			notAllowed.contains(scalar)
+		}
+	}
+	func removingCharacters(in notAllowed: CharacterSet) -> String {
+		var copy = self
+		copy.removeCharacters(in: notAllowed)
+		return copy
+	}
 }
 
 extension Locale {
