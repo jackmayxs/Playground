@@ -35,7 +35,13 @@ extension Double {
 // MARK: - __________ Format __________
 extension Double {
 	
-	fileprivate static var sharedNumberFormatter = NumberFormatter()
+	@Temporary<NumberFormatter>(expireIn: 300)
+	fileprivate static var sharedNumberFormatter = {
+		NumberFormatter.new { make in
+			make.numberStyle = .decimal
+			make.maximumFractionDigits = 2
+		}
+	}
 	
 	// 默认设置
 	fileprivate var decimalFormatter: NumberFormatter {

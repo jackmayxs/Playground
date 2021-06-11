@@ -116,6 +116,31 @@ extension Bool {
 	}
 }
 
+@propertyWrapper
+final class Temporary<T> {
+	
+	typealias ValueBuilder = () -> T
+	
+	private var value: T?
+	private let survivalTime: TimeInterval
+	private let builder: ValueBuilder
+	init(wrappedValue: @escaping ValueBuilder, expireIn survivalTime: TimeInterval) {
+		self.builder = wrappedValue
+		self.survivalTime = survivalTime
+	}
+	var wrappedValue: T {
+		guard let unwrapped = value else {
+			let newValue = builder()
+			value = newValue
+			GCDTimer.scheduledTimer(delay: .now() + survivalTime, queue: .global(qos: .background)) { _ in
+				self.value = .none
+			}
+			return newValue
+		}
+		return unwrapped
+	}
+}
+
 extension DateFormatter {
 	
 	private static let formatterCache: NSCache<NSString, DateFormatter> = {
