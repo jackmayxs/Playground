@@ -17,6 +17,7 @@
 		3EB2D05125B8770D00C70FE7 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EB2D05025B8770D00C70FE7 /* Constants.swift */; };
 		3EBEDB2625BD9C740067D02F /* UIDevicePlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBEDB2525BD9C740067D02F /* UIDevicePlus.swift */; };
 		DE0819BD25BAD5D300950784 /* DoublePlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0819BC25BAD5D300950784 /* DoublePlus.swift */; };
+		DE12399E26784E6A00AB6B18 /* NumberFormatterPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE12399D26784E6A00AB6B18 /* NumberFormatterPlus.swift */; };
 		DE13534526170A7D00903FA3 /* AutoResizeTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE13534426170A7D00903FA3 /* AutoResizeTextView.swift */; };
 		DE16719F25E7935D00BA5CE9 /* GCDTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE16719E25E7935D00BA5CE9 /* GCDTimer.swift */; };
 		DE1D66A62620316500337652 /* UITextInputPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1D66A52620316500337652 /* UITextInputPlus.swift */; };
@@ -66,6 +67,7 @@
 		3EB2D05025B8770D00C70FE7 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		3EBEDB2525BD9C740067D02F /* UIDevicePlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDevicePlus.swift; sourceTree = "<group>"; };
 		DE0819BC25BAD5D300950784 /* DoublePlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoublePlus.swift; sourceTree = "<group>"; };
+		DE12399D26784E6A00AB6B18 /* NumberFormatterPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberFormatterPlus.swift; sourceTree = "<group>"; };
 		DE13534426170A7D00903FA3 /* AutoResizeTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoResizeTextView.swift; sourceTree = "<group>"; };
 		DE16719E25E7935D00BA5CE9 /* GCDTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GCDTimer.swift; sourceTree = "<group>"; };
 		DE1D66A52620316500337652 /* UITextInputPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextInputPlus.swift; sourceTree = "<group>"; };
@@ -218,6 +220,7 @@
 				0CD71F3324D6707A005FDE67 /* FoundationPlus.swift */,
 				DE93781324D1480300D89D4C /* NSObjectPlus.swift */,
 				DEB225A025A7182D00859117 /* StringPlus.swift */,
+				DE12399D26784E6A00AB6B18 /* NumberFormatterPlus.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -350,6 +353,7 @@
 				3E7B587225AC763C00EE65B7 /* CGColorPlus.swift in Sources */,
 				3E127E3125FF926100EC8C22 /* UICollectionViewPlus.swift in Sources */,
 				DEF0553E25BBD31700093261 /* UIWindowPlus.swift in Sources */,
+				DE12399E26784E6A00AB6B18 /* NumberFormatterPlus.swift in Sources */,
 				DE93781424D1480300D89D4C /* NSObjectPlus.swift in Sources */,
 				DE66D8BD24C7F982003B9206 /* UIButtonPlus.swift in Sources */,
 				0CD71F3424D6707A005FDE67 /* FoundationPlus.swift in Sources */,

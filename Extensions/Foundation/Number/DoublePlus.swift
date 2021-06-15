@@ -36,19 +36,16 @@ extension Double {
 extension Double {
 	
 	@Temporary<NumberFormatter>(expireIn: 300)
-	fileprivate static var sharedNumberFormatter = {
-		NumberFormatter.new { make in
-			make.numberStyle = .decimal
-			make.maximumFractionDigits = 2
-		}
-	}
+	fileprivate static var sharedNumberFormatter = NumberFormatter.init
 	
 	// 默认设置
 	fileprivate var decimalFormatter: NumberFormatter {
-		Self.sharedNumberFormatter.configure { make in
-			make.numberStyle = .decimal
-			make.maximumFractionDigits = 2
-		}
+		Self.sharedNumberFormatter
+			.reset()
+			.configure { make in
+				make.numberStyle = .decimal
+				make.maximumFractionDigits = 2
+			}
 	}
 	
 	/// 四舍五入的Formatter
