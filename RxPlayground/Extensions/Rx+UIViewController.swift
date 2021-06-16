@@ -68,10 +68,10 @@ public extension Reactive where Base: UIViewController {
 	//表示视图是否显示的可观察序列，当VC显示状态改变时会触发
 	var isVisible: Observable<Bool> {
 		let viewDidAppearObservable = base.rx.viewDidAppear.map { _ in true }
-		let viewWillDisappearObservable = base.rx.viewWillDisappear
-			.map { _ in false }
-		return Observable<Bool>.merge(viewDidAppearObservable,
-									  viewWillDisappearObservable)
+		let viewWillDisappearObservable = base.rx.viewWillDisappear.map { _ in false }
+		return Observable<Bool>
+            .merge(viewDidAppearObservable, viewWillDisappearObservable)
+            .startWith(false)
 	}
 	
 	//表示页面被释放的可观察序列，当VC被dismiss时会触发
