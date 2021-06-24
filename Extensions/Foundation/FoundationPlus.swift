@@ -8,6 +8,20 @@
 
 import UIKit
 
+// MARK: - __________ Top Level Functions __________
+
+/// 方法转换
+/// - Parameters:
+///   - value: 被引用的对象
+///   - closure: 具体的执行代码
+/// - Returns: A closure
+func combine<A, B>(
+	_ value: A,
+	with closure: @escaping (A) -> B
+) -> () -> B {
+	{ closure(value) }
+}
+
 // MARK: - __________ Operators __________
 infix operator <-- : MultiplicationPrecedence
 infix operator --> : MultiplicationPrecedence
