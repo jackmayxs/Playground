@@ -56,13 +56,13 @@ extension Optional {
 	/// 解包Optional
 	/// - Parameter defaultValue: 自动闭包
 	/// - Returns: Wrapped Value
-	func unwrap(ifNone defaultValue: @autoclosure () -> Wrapped) -> Wrapped {
+	func or(_ defaultValue: @autoclosure () -> Wrapped) -> Wrapped {
 		guard let wrapped = try? unwrap() else {
 			return defaultValue()
 		}
 		return wrapped
 	}
-	func unwrap<T>(ifNone defaultValue: T, or transform: (Wrapped) -> T) -> T {
+	func or<T>(_ defaultValue: T, or transform: (Wrapped) -> T) -> T {
 		guard let wrapped = try? unwrap() else {
 			return defaultValue
 		}
