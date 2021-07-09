@@ -53,3 +53,10 @@ extension CGSize {
 		return size
 	}
 }
+
+extension CGSize: ExpressibleByFloatLiteral {
+	public typealias FloatLiteralType = Double
+	public init(floatLiteral value: Double) {
+		self.init(width: value, height: value)
+	}
+}
