@@ -22,6 +22,13 @@ func combine<A, B>(
 	{ closure(value) }
 }
 
+/// 方法转换
+/// - Parameter output: 默认返回值
+/// - Returns: A Closure which will return the output by default.
+func sink<In, Out>(_ output: Out) -> (In) -> Out {
+	{ _ in output }
+}
+
 // MARK: - __________ Operators __________
 infix operator <-- : MultiplicationPrecedence
 infix operator --> : MultiplicationPrecedence
@@ -127,37 +134,6 @@ extension Bool {
 	
 	var isFalse: Bool {
 		self == false
-	}
-}
-
-@propertyWrapper
-final class Temporary<T> {
-	
-	typealias ValueBuilder = () -> T
-	
-	private var value: T?
-	private lazy var timer = GCDTimer.scheduledTimer(
-		delay: .now() + survivalTime,
-		queue: .global(qos: .background)
-	) { _ in
-		self.value = .none
-	}
-	private let survivalTime: TimeInterval
-	private let builder: ValueBuilder
-	init(wrappedValue: @escaping ValueBuilder, expireIn survivalTime: TimeInterval) {
-		self.builder = wrappedValue
-		self.survivalTime = survivalTime
-	}
-	var wrappedValue: T {
-		defer {
-			// 每次调用都推迟执行
-			timer.fire(.now() + survivalTime)
-		}
-		guard let unwrapped = value else {
-			value = builder()
-			return value.unsafelyUnwrapped
-		}
-		return unwrapped
 	}
 }
 

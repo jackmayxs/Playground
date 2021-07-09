@@ -15,6 +15,18 @@ extension ObservableType where Element == Bool {
 	}
 }
 
+extension Observable where Element == Error {
+    
+    func tryAfter(_ timeInterval: RxTimeInterval, maxRetryCount: Int) -> Observable<Int> {
+        enumerated().flatMap { index, error -> Observable<Int> in
+            guard index < maxRetryCount else {
+                return .error(error).observe(on: MainScheduler.asyncInstance)
+            }
+            return .just(0).delay(timeInterval, scheduler: MainScheduler.asyncInstance)
+        }
+    }
+}
+
 extension ObservableConvertibleType where Element: Equatable {
 	
 	func isEqualOriginValue() -> Observable<(value: Element, isEqualOriginValue: Bool)> {
