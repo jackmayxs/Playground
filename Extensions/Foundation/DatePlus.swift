@@ -66,13 +66,25 @@ extension Date {
 			}
 	}
 	
+	/// 当天日期结束的前一秒
+	var dayEnd: Date {
+		var components = Calendar.current.dateComponents(in: .current, from: self)
+		components.hour = 23
+		components.minute = 59
+		components.second = 59
+		components.nanosecond = 0
+		return components.date ?? self
+	}
+	
 	var desc: String {
 		description(with: Locale(.chinese(.simplified)))
 	}
 }
 
 // Date + DateComponents
-func +(_ lhs: Date, _ rhs: DateComponents) -> Date { Calendar.current.date(byAdding: rhs, to: lhs)! }
+func +(_ lhs: Date, _ rhs: DateComponents) -> Date {
+	Calendar.current.date(byAdding: rhs, to: lhs)!
+}
 
 // DateComponents + Dates
 func +(_ lhs: DateComponents, _ rhs: Date) -> Date { rhs + lhs }
