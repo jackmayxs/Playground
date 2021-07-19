@@ -97,7 +97,7 @@ extension TimeZone {
 	
 	/// 北京时间
 	static var beijing: TimeZone {
-		// 💋使用东八区偏移秒数
+		// 北京时间 GMT+8
 		TimeZone(secondsFromGMT: 8.hours).unsafelyUnwrapped
 		// 使用identifier
 		//TimeZone(identifier: "Asia/Shanghai")

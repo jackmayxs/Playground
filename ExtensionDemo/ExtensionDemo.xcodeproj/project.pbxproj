@@ -52,6 +52,7 @@
 		DEB225A425A7199300859117 /* DatePlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB225A325A7199300859117 /* DatePlus.swift */; };
 		DEB622F925E8995B00702C5E /* CGFloatPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB622F825E8995B00702C5E /* CGFloatPlus.swift */; };
 		DEB622FC25E899BB00702C5E /* IntPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB622FB25E899BB00702C5E /* IntPlus.swift */; };
+		DEE4D4B026A54A5800E5566B /* SuperTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE4D4AF26A54A5800E5566B /* SuperTableViewCell.swift */; };
 		DEF0553E25BBD31700093261 /* UIWindowPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF0553D25BBD31700093261 /* UIWindowPlus.swift */; };
 		DEF40F5E25B02C2900ADA57D /* UIViewPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF40F5D25B02C2900ADA57D /* UIViewPlus.swift */; };
 		DEFAD78C2615CCA6008CEBE0 /* TextFieldDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFAD78B2615CCA6008CEBE0 /* TextFieldDelegate.swift */; };
@@ -106,6 +107,7 @@
 		DEB225A325A7199300859117 /* DatePlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePlus.swift; sourceTree = "<group>"; };
 		DEB622F825E8995B00702C5E /* CGFloatPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGFloatPlus.swift; sourceTree = "<group>"; };
 		DEB622FB25E899BB00702C5E /* IntPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntPlus.swift; sourceTree = "<group>"; };
+		DEE4D4AF26A54A5800E5566B /* SuperTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperTableViewCell.swift; sourceTree = "<group>"; };
 		DEF0553D25BBD31700093261 /* UIWindowPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIWindowPlus.swift; sourceTree = "<group>"; };
 		DEF40F5D25B02C2900ADA57D /* UIViewPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewPlus.swift; sourceTree = "<group>"; };
 		DEFAD78B2615CCA6008CEBE0 /* TextFieldDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldDelegate.swift; sourceTree = "<group>"; };
@@ -129,6 +131,7 @@
 				DE8E4F6925DE75320057D456 /* TouchesDelayedScrollView.swift */,
 				DE764B77260D745C00AA0956 /* DashLine.swift */,
 				DE13534426170A7D00903FA3 /* AutoResizeTextView.swift */,
+				DEE4D4AF26A54A5800E5566B /* SuperTableViewCell.swift */,
 			);
 			path = CustomizedControls;
 			sourceTree = "<group>";
@@ -373,6 +376,7 @@
 				DEB225A425A7199300859117 /* DatePlus.swift in Sources */,
 				DE93781224D124B200D89D4C /* DispatchOnce.swift in Sources */,
 				DE9E8D8425C24ED300FB3C46 /* UITabBarItemPlus.swift in Sources */,
+				DEE4D4B026A54A5800E5566B /* SuperTableViewCell.swift in Sources */,
 				3E58A84525B5D4D000B0D2E3 /* CGRectPlus.swift in Sources */,
 				3E127E3425FF928C00EC8C22 /* UITableViewPlus.swift in Sources */,
 				DE66D8AA24C7F931003B9206 /* SceneDelegate.swift in Sources */,
