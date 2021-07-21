@@ -7,6 +7,22 @@
 
 import UIKit
 
+// MARK: - __________ Storyboarded __________
+protocol Storyboarded {
+	static var storyboardName: String { get }
+	static func instantiate() -> Self
+}
+extension Storyboarded where Self: UIViewController {
+	static var storyboardName: String { "Main" }
+	static func instantiate() -> Self {
+		let id = String(describing: self)
+		let storyboard = UIStoryboard(name: storyboardName, bundle: .main)
+		return storyboard.instantiateViewController(withIdentifier: id) as! Self
+	}
+}
+extension UIViewController: Storyboarded {
+}
+
 // MARK: - __________ Configurable __________
 protocol SimpleInitializer {
 	init()
