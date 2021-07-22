@@ -33,7 +33,7 @@ class InsetsLabel: UILabel {
 	
 	override func drawText(in rect: CGRect) {
 		if let option = roundCornersOption {
-			roundCorners(corners: option.0, radius: option.1)
+			roundCorners(corners: option.0, cornerRadius: option.1)
 		}
 		super.drawText(in: rect.inset(by: textEdgeInsets))
 	}

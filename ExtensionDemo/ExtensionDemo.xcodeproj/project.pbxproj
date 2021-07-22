@@ -52,6 +52,7 @@
 		DEB225A425A7199300859117 /* DatePlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB225A325A7199300859117 /* DatePlus.swift */; };
 		DEB622F925E8995B00702C5E /* CGFloatPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB622F825E8995B00702C5E /* CGFloatPlus.swift */; };
 		DEB622FC25E899BB00702C5E /* IntPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB622FB25E899BB00702C5E /* IntPlus.swift */; };
+		DEE48CF626AA64D600391508 /* ShadowPlayground.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE48CF526AA64D600391508 /* ShadowPlayground.swift */; };
 		DEE4D4B026A54A5800E5566B /* SuperTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE4D4AF26A54A5800E5566B /* SuperTableViewCell.swift */; };
 		DEF0553E25BBD31700093261 /* UIWindowPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF0553D25BBD31700093261 /* UIWindowPlus.swift */; };
 		DEF40F5E25B02C2900ADA57D /* UIViewPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF40F5D25B02C2900ADA57D /* UIViewPlus.swift */; };
@@ -107,6 +108,7 @@
 		DEB225A325A7199300859117 /* DatePlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePlus.swift; sourceTree = "<group>"; };
 		DEB622F825E8995B00702C5E /* CGFloatPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGFloatPlus.swift; sourceTree = "<group>"; };
 		DEB622FB25E899BB00702C5E /* IntPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntPlus.swift; sourceTree = "<group>"; };
+		DEE48CF526AA64D600391508 /* ShadowPlayground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowPlayground.swift; sourceTree = "<group>"; };
 		DEE4D4AF26A54A5800E5566B /* SuperTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperTableViewCell.swift; sourceTree = "<group>"; };
 		DEF0553D25BBD31700093261 /* UIWindowPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIWindowPlus.swift; sourceTree = "<group>"; };
 		DEF40F5D25B02C2900ADA57D /* UIViewPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewPlus.swift; sourceTree = "<group>"; };
@@ -268,6 +270,7 @@
 			children = (
 				DEFAD78B2615CCA6008CEBE0 /* TextFieldDelegate.swift */,
 				DE64BA0A264A2ADA009FA78B /* MyPlayground.playground */,
+				DEE48CF526AA64D600391508 /* ShadowPlayground.swift */,
 			);
 			path = BestPractice;
 			sourceTree = "<group>";
@@ -374,6 +377,7 @@
 				DE13534526170A7D00903FA3 /* AutoResizeTextView.swift in Sources */,
 				DE4190AF25EF412D00F03D4A /* SwiftUIPlus.swift in Sources */,
 				DEB225A425A7199300859117 /* DatePlus.swift in Sources */,
+				DEE48CF626AA64D600391508 /* ShadowPlayground.swift in Sources */,
 				DE93781224D124B200D89D4C /* DispatchOnce.swift in Sources */,
 				DE9E8D8425C24ED300FB3C46 /* UITabBarItemPlus.swift in Sources */,
 				DEE4D4B026A54A5800E5566B /* SuperTableViewCell.swift in Sources */,

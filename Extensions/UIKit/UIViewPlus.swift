@@ -148,21 +148,85 @@ extension Array where Element: UIView {
 	}
 }
 extension UIView {
+	private enum Associated {
+		static var shadowViewKey = UUID()
+	}
+	private var shadowView: UIView {
+		guard let shadow = objc_getAssociatedObject(self, &Associated.shadowViewKey) as? UIView else {
+			let shadow = UIView(frame: bounds)
+			shadow.autoresizingMask = [
+				.flexibleWidth,
+				.flexibleHeight
+			]
+			shadow.isUserInteractionEnabled = false
+			shadow.backgroundColor = .clear
+			shadow.layer.masksToBounds = false
+			shadow.layer.shouldRasterize = true
+			shadow.layer.rasterizationScale = UIScreen.main.scale
+			objc_setAssociatedObject(self, &Associated.shadowViewKey, shadow, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+			return shadow
+		}
+		return shadow
+	}
 	
-	/// 为视图添加圆角
+	
+	/// 为视图添加圆角和阴影 | 只在frame确定的时候才能调用此方法
 	/// - Parameters:
-	///   - corners: 圆角位置
-	///   - radius: 圆角半径
-	func roundCorners(corners: UIRectCorner = .allCorners, radius: Double = 0.0) {
-		layer.masksToBounds = true
-		let maskPath = UIBezierPath(
+	///   - corners: 圆角效果施加的角
+	///   - cornerRadius: 圆角大小
+	///   - shadowColor: 阴影颜色: 不为空才添加阴影
+	///   - shadowOffsetX: 阴影偏移X
+	///   - shadowOffsetY: 阴影偏移Y
+	///   - shadowRadius: 阴影大小
+	///   - shadowOpacity: 阴影透明度
+	///   - shadowExpansion: 阴影扩大值:大于零扩大; 小于零收缩; 0:默认值
+	func roundCorners(corners: UIRectCorner = .allCorners,
+					  cornerRadius: Double = 0.0,
+					  withShadowColor shadowColor: UIColor? = nil,
+					  shadowOffset: (x: Double, y: Double) = (0, 0),
+					  shadowRadius: CGFloat = 0,
+					  shadowOpacity: Float = 0,
+					  shadowExpansion: CGFloat = 0) {
+		// 圆角
+		var bezier = UIBezierPath(
 			roundedRect: bounds,
 			byRoundingCorners: corners,
-			cornerRadii: CGSize(width:radius, height:radius)
+			cornerRadii: CGSize(width:cornerRadius, height:cornerRadius)
 		)
-		let shape = CAShapeLayer()
-		shape.path = maskPath.cgPath
-		layer.mask = shape
+		if cornerRadius > 0 {
+			let shape = CAShapeLayer()
+			shape.path = bezier.cgPath
+			layer.mask = shape
+		}
+		
+		// 阴影
+		if let shadowColor = shadowColor {
+			// 调整阴影View的frame
+			shadowView.frame = frame
+			// 设置阴影属性
+			shadowView.layer.shadowColor = shadowColor.cgColor
+			shadowView.layer.shadowOffset = CGSize(width: shadowOffset.x, height: shadowOffset.y)
+			shadowView.layer.shadowRadius = shadowRadius
+			shadowView.layer.shadowOpacity = shadowOpacity
+			// 设置阴影形状
+			if shadowExpansion != 0 {
+				let insets = UIEdgeInsets(
+					top: -shadowExpansion,
+					left: -shadowExpansion,
+					bottom: -shadowExpansion,
+					right: -shadowExpansion
+				)
+				bezier = UIBezierPath(
+					roundedRect: bounds.inset(by: insets),
+					byRoundingCorners: corners,
+					cornerRadii: CGSize(width:cornerRadius, height:cornerRadius)
+				)
+			}
+			shadowView.layer.shadowPath = bezier.cgPath
+			if let superView = superview {
+				superView.insertSubview(shadowView, belowSubview: self)
+			}
+		}
 	}
 }
 #if DEBUG

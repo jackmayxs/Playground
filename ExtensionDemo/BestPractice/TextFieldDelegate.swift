@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TextFieldDelegate: UIViewController, UITextFieldDelegate {
+class TextFieldDelegate: NSObject, UITextFieldDelegate {
 	
 	func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
 		// Get latest text of the textfield.
