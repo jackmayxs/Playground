@@ -121,11 +121,26 @@ extension String {
 		!isEmptyString
 	}
 	
+	/// 判断字符串是否满足字符集中的字符
+	/// - Parameters:
+	///   - characterSet: 匹配的字符集
+	///   - options: 匹配选项
+	/// - Returns: 检查结果
+	func match(_ characterSet: CharacterSet, options: CompareOptions = []) -> Bool {
+		rangeOfCharacter(from: characterSet.inverted, options: options) == .none
+	}
+	
+	/// 移除不需要的字符
+	/// - Parameter notAllowed: 不需要的字符集 | 可以用正常字符集反向获取到
 	mutating func removeCharacters(in notAllowed: CharacterSet) {
 		unicodeScalars.removeAll { scalar in
 			notAllowed.contains(scalar)
 		}
 	}
+	
+	/// 移除不需要的字符 | 返回新字符串
+	/// - Parameter notAllowed: 不需要的字符集 | 可以用正常字符集反向获取到
+	/// - Returns: 处理过的字符串
 	func removingCharacters(in notAllowed: CharacterSet) -> String {
 		var copy = self
 		copy.removeCharacters(in: notAllowed)
