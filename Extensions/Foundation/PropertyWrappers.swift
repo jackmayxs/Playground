@@ -8,6 +8,23 @@
 
 import Foundation
 
+/// 忽略Optional.none
+@propertyWrapper
+struct GuardValidValue<T> where T: Equatable {
+	private var value: T?
+	init(wrappedValue: T?) {
+		self.value = wrappedValue
+	}
+	var wrappedValue: T? {
+		get { value }
+		set {
+			// 直接忽略空值
+			guard newValue != .none else { return }
+			value = newValue
+		}
+	}
+}
+
 @propertyWrapper
 final class Temporary<T> {
 	
