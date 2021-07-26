@@ -33,6 +33,41 @@ func sink<In, Out>(_ output: Out) -> (In) -> Out {
 infix operator <-- : MultiplicationPrecedence
 infix operator --> : MultiplicationPrecedence
 
+// MARK: - __________ Array __________
+infix operator +> : MultiplicationPrecedence
+extension Array where Element : Hashable {
+	
+	/// 添加唯一的元素
+	/// - Parameter newElement: 遵循Hashable的元素
+	mutating func appendUnique(_ newElement:Element) {
+		let isNotUnique = contains { element in
+			element.hashValue == newElement.hashValue
+		}
+		guard !isNotUnique else { return }
+		append(newElement)
+	}
+	
+	/// 合并唯一的元素 | 可用于reduce
+	/// - Parameters:
+	///   - lhs: 数组
+	///   - rhs: 要添加的元素
+	/// - Returns: 结果数组
+	static func +> (lhs: Self, rhs: Element) -> Self {
+		var result = lhs
+		result.appendUnique(rhs)
+		return result
+	}
+	
+	/// 合并数组
+	/// - Parameters:
+	///   - lhs: 原数组
+	///   - rhs: 新数组
+	/// - Returns: 合并唯一元素的数组
+	static func +> (lhs: Self, rhs: Self) -> Self {
+		rhs.reduce(lhs, +>)
+	}
+}
+
 // MARK: - __________ ArraySlice __________
 extension ArraySlice {
 	
