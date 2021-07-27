@@ -8,9 +8,8 @@
 
 import Foundation
 
-/// 忽略Optional.none
-@propertyWrapper
-struct GuardValidValue<T> where T: Equatable {
+@propertyWrapper // 忽略Optional.none
+class GuardValidValue<T> where T: Equatable {
 	private var value: T?
 	init(wrappedValue: T?) {
 		self.value = wrappedValue
@@ -18,10 +17,19 @@ struct GuardValidValue<T> where T: Equatable {
 	var wrappedValue: T? {
 		get { value }
 		set {
-			// 直接忽略空值
-			guard newValue != .none else { return }
-			value = newValue
+			guard let validValue = newValue else {
+				return // 直接忽略空值
+			}
+			value = validValue
 		}
+	}
+}
+
+@propertyWrapper // 忽略空字符串
+final class IgnoreEmptyString: GuardValidValue<String> {
+	override var wrappedValue: String? {
+		get { super.wrappedValue }
+		set { super.wrappedValue = newValue.validStringOrNone }
 	}
 }
 
