@@ -181,7 +181,7 @@ extension UIView {
 	///   - shadowOpacity: 阴影透明度
 	///   - shadowExpansion: 阴影扩大值:大于零扩大; 小于零收缩; 0:默认值
 	func roundCorners(corners: UIRectCorner = .allCorners,
-					  cornerRadius: Double = 0.0,
+					  cornerRadius: CGFloat = 0.0,
 					  withShadowColor shadowColor: UIColor? = nil,
 					  shadowOffset: (x: Double, y: Double) = (0, 0),
 					  shadowRadius: CGFloat = 0,
@@ -194,9 +194,15 @@ extension UIView {
 			cornerRadii: CGSize(width:cornerRadius, height:cornerRadius)
 		)
 		if cornerRadius > 0 {
-			let shape = CAShapeLayer()
-			shape.path = bezier.cgPath
-			layer.mask = shape
+			if #available(iOS 11.0, *) {
+				layer.masksToBounds = true
+				layer.cornerRadius = cornerRadius
+				layer.maskedCorners = corners.caCornerMask
+			} else {
+				let shape = CAShapeLayer()
+				shape.path = bezier.cgPath
+				layer.mask = shape
+			}
 		}
 		
 		// 阴影

@@ -15,6 +15,7 @@
 		3E7B586F25AC743A00EE65B7 /* UIColorPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7B586E25AC743A00EE65B7 /* UIColorPlus.swift */; };
 		3E7B587225AC763C00EE65B7 /* CGColorPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7B587125AC763C00EE65B7 /* CGColorPlus.swift */; };
 		3EB2D05125B8770D00C70FE7 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EB2D05025B8770D00C70FE7 /* Constants.swift */; };
+		3EB77DC826B1B1BD0005C7A5 /* UIKitPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EB77DC726B1B1BD0005C7A5 /* UIKitPlus.swift */; };
 		3EBEDB2625BD9C740067D02F /* UIDevicePlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBEDB2525BD9C740067D02F /* UIDevicePlus.swift */; };
 		DE0819BD25BAD5D300950784 /* DoublePlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0819BC25BAD5D300950784 /* DoublePlus.swift */; };
 		DE12399E26784E6A00AB6B18 /* NumberFormatterPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE12399D26784E6A00AB6B18 /* NumberFormatterPlus.swift */; };
@@ -68,6 +69,7 @@
 		3E7B586E25AC743A00EE65B7 /* UIColorPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorPlus.swift; sourceTree = "<group>"; };
 		3E7B587125AC763C00EE65B7 /* CGColorPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGColorPlus.swift; sourceTree = "<group>"; };
 		3EB2D05025B8770D00C70FE7 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		3EB77DC726B1B1BD0005C7A5 /* UIKitPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitPlus.swift; sourceTree = "<group>"; };
 		3EBEDB2525BD9C740067D02F /* UIDevicePlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDevicePlus.swift; sourceTree = "<group>"; };
 		DE0819BC25BAD5D300950784 /* DoublePlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoublePlus.swift; sourceTree = "<group>"; };
 		DE12399D26784E6A00AB6B18 /* NumberFormatterPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberFormatterPlus.swift; sourceTree = "<group>"; };
@@ -199,6 +201,7 @@
 		DE93781524D1482400D89D4C /* UIKit */ = {
 			isa = PBXGroup;
 			children = (
+				3EB77DC726B1B1BD0005C7A5 /* UIKitPlus.swift */,
 				DE9453392508A5050082E5E5 /* UIApplicationPlus.swift */,
 				DE66D8BC24C7F982003B9206 /* UIButtonPlus.swift */,
 				3E7B586E25AC743A00EE65B7 /* UIColorPlus.swift */,
@@ -369,6 +372,7 @@
 				0CD71F3424D6707A005FDE67 /* FoundationPlus.swift in Sources */,
 				DE6E150224D16AA60053CC44 /* BlankViewController.swift in Sources */,
 				DE6E150024D16A320053CC44 /* UIImagePlus.swift in Sources */,
+				3EB77DC826B1B1BD0005C7A5 /* UIKitPlus.swift in Sources */,
 				DE9E8E0525C5568000FB3C46 /* UIImageViewPlus.swift in Sources */,
 				DE16719F25E7935D00BA5CE9 /* GCDTimer.swift in Sources */,
 				DE743CCD25A7F9E7001764A5 /* DataPlus.swift in Sources */,
