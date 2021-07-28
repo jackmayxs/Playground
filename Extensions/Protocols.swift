@@ -9,18 +9,17 @@ import UIKit
 
 // MARK: - __________ Storyboarded __________
 protocol Storyboarded {
+	static var bundle: Bundle? { get }
 	static var storyboardName: String { get }
-	static func instantiate() -> Self
+	static var instantiate: Self { get }
 }
-extension Storyboarded where Self: UIViewController {
-	static var storyboardName: String { "Main" }
-	static func instantiate() -> Self {
-		let id = String(describing: self)
-		let storyboard = UIStoryboard(name: storyboardName, bundle: .main)
-		return storyboard.instantiateViewController(withIdentifier: id) as! Self
+extension Storyboarded {
+	static var bundle: Bundle? { .none }
+	static var instantiate: Self {
+		let storyboardId = String(describing: self)
+		let storyboard = UIStoryboard(name: storyboardName, bundle: bundle ?? .main)
+		return storyboard.instantiateViewController(withIdentifier: storyboardId) as! Self
 	}
-}
-extension UIViewController: Storyboarded {
 }
 
 // MARK: - __________ Configurable __________
@@ -134,10 +133,10 @@ protocol SizeExtendable {
 
 
 public protocol ReusableView: AnyObject {
-	static var reuseIdentifier: String { get }
+	static var reuseId: String { get }
 }
 extension ReusableView {
-	public static var reuseIdentifier: String {
+	public static var reuseId: String {
 		String(describing: self)
 	}
 }

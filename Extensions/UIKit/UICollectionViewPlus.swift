@@ -8,12 +8,31 @@
 
 import UIKit
 
-extension UICollectionViewCell: ReusableView {}
+extension UICollectionReusableView: ReusableView {}
+extension UICollectionReusableView {
+	enum SupplementaryViewKind {
+		case header
+		case footer
+		var raw: String {
+			switch self {
+				case .header: return UICollectionView.elementKindSectionHeader
+				case .footer: return UICollectionView.elementKindSectionFooter
+			}
+		}
+	}
+	static func registerFor(_ collectionView: UICollectionView, kind: SupplementaryViewKind) {
+		collectionView.register(self, forSupplementaryViewOfKind: kind.raw, withReuseIdentifier: Self.reuseId)
+	}
+	static func dequeReusableSupplementaryView(from collectionView: UICollectionView, kind: String, indexPath: IndexPath) -> Self {
+		collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: Self.reuseId, for: indexPath) as! Self
+	}
+}
+
 extension UICollectionViewCell {
 	static func registerFor(_ collectionView: UICollectionView) {
-		collectionView.register(self, forCellWithReuseIdentifier: reuseIdentifier)
+		collectionView.register(self, forCellWithReuseIdentifier: reuseId)
 	}
 	static func dequeueReusableCell(from collectionView: UICollectionView, indexPath: IndexPath) -> Self {
-		collectionView.dequeueReusableCell(withReuseIdentifier: Self.reuseIdentifier, for: indexPath) as! Self
+		collectionView.dequeueReusableCell(withReuseIdentifier: Self.reuseId, for: indexPath) as! Self
 	}
 }
