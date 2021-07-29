@@ -77,4 +77,7 @@ extension ObservableConvertibleType {
     public func trackActivity(_ activityIndicator: ActivityIndicator) -> Observable<Element> {
         activityIndicator.trackActivityOfObservable(self)
     }
+    public func trackActivity(_ activityIndicator: ActivityIndicator) -> Completable {
+        activityIndicator.trackActivityOfObservable(self).ignoreElements().asCompletable()
+    }
 }
