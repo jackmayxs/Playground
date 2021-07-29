@@ -18,7 +18,7 @@ class InsetsLabel: UILabel {
 	}
 	
 	/// 设置圆角
-	var roundCornersOption: (UIRectCorner, Double)?
+	var roundCornersOption: (UIRectCorner, CGFloat)?
 	
 	override func textRect(forBounds bounds: CGRect, limitedToNumberOfLines numberOfLines: Int) -> CGRect {
 		super.textRect(forBounds: bounds.inset(by: textEdgeInsets), limitedToNumberOfLines: numberOfLines)

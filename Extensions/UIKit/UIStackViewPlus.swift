@@ -8,7 +8,29 @@
 
 import UIKit
 
+typealias SubviewsBuilder = CommonBuilder<UIView>
+
 extension UIStackView {
+	
+	convenience init(
+		axis: NSLayoutConstraint.Axis = .vertical,
+		distribution: UIStackView.Distribution = .fill,
+		alignment: UIStackView.Alignment = .leading,
+		spacing: CGFloat = 0.0,
+		@SubviewsBuilder content: () -> [UIView] = { [] }
+	) {
+		self.init(arrangedSubviews: content())
+		self.axis = axis
+		self.distribution = distribution
+		self.alignment = alignment
+		self.spacing = spacing
+	}
+	
+	func addArrangedSubviews(@SubviewsBuilder content: () -> [UIView]) {
+		content().forEach { subView in
+			addArrangedSubview(subView)
+		}
+	}
 	
 	/// Remove all of the arranged subviews
 	func purgeArrangedSubviews() {

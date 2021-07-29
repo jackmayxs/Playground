@@ -30,6 +30,7 @@
 		DE4190AF25EF412D00F03D4A /* SwiftUIPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4190AE25EF412D00F03D4A /* SwiftUIPlus.swift */; };
 		DE4190B325EF49BA00F03D4A /* SwiftUIPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4190B225EF49BA00F03D4A /* SwiftUIPreview.swift */; };
 		DE4190B625EF4E9B00F03D4A /* UIViewControllerPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4190B525EF4E9B00F03D4A /* UIViewControllerPlus.swift */; };
+		DE59921626B27509007A2A77 /* ResultBuilders.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE59921526B27509007A2A77 /* ResultBuilders.swift */; };
 		DE66D8A824C7F931003B9206 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE66D8A724C7F931003B9206 /* AppDelegate.swift */; };
 		DE66D8AA24C7F931003B9206 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE66D8A924C7F931003B9206 /* SceneDelegate.swift */; };
 		DE66D8AC24C7F931003B9206 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE66D8AB24C7F931003B9206 /* ViewController.swift */; };
@@ -84,6 +85,7 @@
 		DE4190AE25EF412D00F03D4A /* SwiftUIPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIPlus.swift; sourceTree = "<group>"; };
 		DE4190B225EF49BA00F03D4A /* SwiftUIPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIPreview.swift; sourceTree = "<group>"; };
 		DE4190B525EF4E9B00F03D4A /* UIViewControllerPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerPlus.swift; sourceTree = "<group>"; };
+		DE59921526B27509007A2A77 /* ResultBuilders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultBuilders.swift; sourceTree = "<group>"; };
 		DE64BA0A264A2ADA009FA78B /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		DE66D8A424C7F931003B9206 /* ExtensionDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExtensionDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DE66D8A724C7F931003B9206 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -232,6 +234,7 @@
 				DEB225A025A7182D00859117 /* StringPlus.swift */,
 				DE12399D26784E6A00AB6B18 /* NumberFormatterPlus.swift */,
 				DE36450826984BBD001D072C /* PropertyWrappers.swift */,
+				DE59921526B27509007A2A77 /* ResultBuilders.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -379,6 +382,7 @@
 				DE1DD9652552B95F00E08A8B /* Protocols.swift in Sources */,
 				DE66D8A824C7F931003B9206 /* AppDelegate.swift in Sources */,
 				DE13534526170A7D00903FA3 /* AutoResizeTextView.swift in Sources */,
+				DE59921626B27509007A2A77 /* ResultBuilders.swift in Sources */,
 				DE4190AF25EF412D00F03D4A /* SwiftUIPlus.swift in Sources */,
 				DEB225A425A7199300859117 /* DatePlus.swift in Sources */,
 				DEE48CF626AA64D600391508 /* ShadowPlayground.swift in Sources */,
