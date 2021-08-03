@@ -11,7 +11,16 @@ import UIKit
 typealias SubviewsBuilder = CommonBuilder<UIView>
 
 extension UIStackView {
-	
+	enum Associated {
+		static var backgroundView = UUID()
+	}
+	var backgroundView: UIView? {
+		get { objc_getAssociatedObject(self, &Associated.backgroundView) as? UIView }
+		set {
+			backgroundView?.removeFromSuperview()
+			objc_setAssociatedObject(self, &Associated.backgroundView, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+		}
+	}
 	convenience init(
 		axis: NSLayoutConstraint.Axis = .vertical,
 		distribution: UIStackView.Distribution = .fill,
@@ -44,6 +53,7 @@ extension UIStackView {
         view.frame = bounds
         view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         insertSubview(view, at: 0)
+		backgroundView = view
     }
     /// 添加StackView背景视图颜色
     /// - Parameter color: 背景View颜色
@@ -51,5 +61,6 @@ extension UIStackView {
         let colored = UIView(frame: bounds)
         colored.backgroundColor = color
 		addBackground(view: colored)
+		backgroundView = colored
     }
 }
