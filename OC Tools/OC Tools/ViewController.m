@@ -2,17 +2,21 @@
 //  ViewController.m
 //  OC Tools
 //
-//  Created by Major on 2021/8/2.
+//  Created by Choi on 2021/8/3.
 //
 
 #import "ViewController.h"
-#import "NSObject+Plus.h"
 
 @interface ViewController ()
 
 @end
 
 @implementation ViewController
+
+- (void)viewDidLoad {
+	[super viewDidLoad];
+	// Do any additional setup after loading the view.
+}
 
 
 @end
