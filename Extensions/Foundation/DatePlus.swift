@@ -171,6 +171,18 @@ extension DateComponents {
 		return new
 	}
 	
+	/// 忽略除时间之外的所有历法
+	var trimmed: DateComponents {
+		var temp = self
+		temp.weekday = .none
+		temp.weekdayOrdinal = .none
+		temp.quarter = .none
+		temp.weekOfMonth = .none
+		temp.weekOfYear = .none
+		temp.yearForWeekOfYear = .none
+		return temp
+	}
+	
 	static func +(_ lhs: DateComponents, _ rhs: DateComponents) -> DateComponents {
 		combineComponents(lhs, rhs)
 	}
