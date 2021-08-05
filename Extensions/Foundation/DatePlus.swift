@@ -20,10 +20,12 @@ extension Date {
 	var beijingFormatter: DateFormatter {
 		Self.commonDateFormatter.configure { make in
 			make.timeZone = .beijing
+			make.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
 		}
 	}
 	var debugFormatter: DateFormatter {
 		Self.commonDateFormatter.configure { make in
+			make.timeZone = .current
 			make.dateFormat = "HH:mm:ss.SSS"
 		}
 	}
@@ -57,23 +59,19 @@ extension Date {
 	
 	/// 返回当前时间只包含小时的时间
 	static var hourOfClock: Date {
-		Calendar.current.transform { calendar -> Date in
-			calendar.dateComponents(in: .current, from: .now)
-				.minute(0).second(0).nanosecond(0)
-				.transform { trimmed -> Date in
-					calendar.date(from: trimmed).unsafelyUnwrapped
-				}
-			}
+		.now.components.minute(0).second(0).nanosecond(0).date.unsafelyUnwrapped
 	}
-	
-	/// 当天日期结束的前一秒
+	/// 获取日期所有元素
+	var components: DateComponents {
+		Calendar.current.dateComponents(in: .current, from: self)
+	}
+	/// 当天起始时间点
+	var dayStart: Date {
+		components.hour(0).minute(0).second(0).nanosecond(0).date ?? self
+	}
+	/// 当天结束时间点
 	var dayEnd: Date {
-		var components = Calendar.current.dateComponents(in: .current, from: self)
-		components.hour = 23
-		components.minute = 59
-		components.second = 59
-		components.nanosecond = 0
-		return components.date ?? self
+		components.hour(23).minute(59).second(59).nanosecond(0).date ?? self
 	}
 	
 	var desc: String {
