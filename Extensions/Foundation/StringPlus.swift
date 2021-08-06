@@ -146,6 +146,14 @@ extension String {
 		copy.removeCharacters(in: notAllowed)
 		return copy
 	}
+	
+	var validStringOrNone: String? {
+		isEmptyString ? .none : self
+	}
+	
+	var optional: String? {
+		self
+	}
 }
 
 extension Locale {
