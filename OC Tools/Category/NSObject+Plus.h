@@ -7,10 +7,14 @@
 
 #import <Foundation/Foundation.h>
 #import <objc/runtime.h>
+#import "NSObjectProxy.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface NSObject (Plus)
+
+/// 代理对象
+@property (readonly) NSObjectProxy *proxy;
 
 /// 方法交换
 /// @param original 原方法

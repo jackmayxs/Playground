@@ -15,6 +15,8 @@
 		DECC0FD626B93DAC00F6B00D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DECC0FD426B93DAC00F6B00D /* LaunchScreen.storyboard */; };
 		DECC0FD926B93DAC00F6B00D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DECC0FD826B93DAC00F6B00D /* main.m */; };
 		DECC0FE226B93DE400F6B00D /* NSObject+Plus.m in Sources */ = {isa = PBXBuildFile; fileRef = DECC0FE026B93DE400F6B00D /* NSObject+Plus.m */; };
+		DEDAF7E526C10AEE00E80DFE /* NSObjectProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = DEDAF7E426C10AEE00E80DFE /* NSObjectProxy.m */; };
+		DEDAF7E826C10DCD00E80DFE /* NewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEDAF7E726C10DCD00E80DFE /* NewViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +34,10 @@
 		DECC0FD826B93DAC00F6B00D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		DECC0FE026B93DE400F6B00D /* NSObject+Plus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Plus.m"; sourceTree = "<group>"; };
 		DECC0FE126B93DE400F6B00D /* NSObject+Plus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Plus.h"; sourceTree = "<group>"; };
+		DEDAF7E326C10AEE00E80DFE /* NSObjectProxy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSObjectProxy.h; sourceTree = "<group>"; };
+		DEDAF7E426C10AEE00E80DFE /* NSObjectProxy.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSObjectProxy.m; sourceTree = "<group>"; };
+		DEDAF7E626C10DCD00E80DFE /* NewViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewViewController.h; sourceTree = "<group>"; };
+		DEDAF7E726C10DCD00E80DFE /* NewViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NewViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +77,8 @@
 				DECC0FCA26B93DA900F6B00D /* SceneDelegate.m */,
 				DECC0FCC26B93DA900F6B00D /* ViewController.h */,
 				DECC0FCD26B93DA900F6B00D /* ViewController.m */,
+				DEDAF7E626C10DCD00E80DFE /* NewViewController.h */,
+				DEDAF7E726C10DCD00E80DFE /* NewViewController.m */,
 				DECC0FCF26B93DA900F6B00D /* Main.storyboard */,
 				DECC0FD226B93DAC00F6B00D /* Assets.xcassets */,
 				DECC0FD426B93DAC00F6B00D /* LaunchScreen.storyboard */,
@@ -83,8 +91,10 @@
 		DECC0FDF26B93DE400F6B00D /* Category */ = {
 			isa = PBXGroup;
 			children = (
-				DECC0FE026B93DE400F6B00D /* NSObject+Plus.m */,
 				DECC0FE126B93DE400F6B00D /* NSObject+Plus.h */,
+				DECC0FE026B93DE400F6B00D /* NSObject+Plus.m */,
+				DEDAF7E326C10AEE00E80DFE /* NSObjectProxy.h */,
+				DEDAF7E426C10AEE00E80DFE /* NSObjectProxy.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -158,6 +168,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DEDAF7E826C10DCD00E80DFE /* NewViewController.m in Sources */,
+				DEDAF7E526C10AEE00E80DFE /* NSObjectProxy.m in Sources */,
 				DECC0FCE26B93DA900F6B00D /* ViewController.m in Sources */,
 				DECC0FC826B93DA900F6B00D /* AppDelegate.m in Sources */,
 				DECC0FD926B93DAC00F6B00D /* main.m in Sources */,

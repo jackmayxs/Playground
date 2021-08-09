@@ -9,6 +9,18 @@
 
 @implementation NSObject (Plus)
 
+- (NSObjectProxy *)proxy {
+	static void const * const proxyKey = @"NSObjectProxy";
+	id object = objc_getAssociatedObject(self, proxyKey);
+	if (object) {
+		return object;
+	} else {
+		NSObjectProxy *proxy = [NSObjectProxy proxyWithTarget:self];
+		objc_setAssociatedObject(self, proxyKey, proxy, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+		return proxy;
+	}
+}
+
 + (void)exchangeSelector:(SEL)original withSwizzled:(SEL)swizzled {
 	
     Method originalMethod = class_getInstanceMethod(self, original);
