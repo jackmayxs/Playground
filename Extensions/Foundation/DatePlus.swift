@@ -183,6 +183,30 @@ extension DateComponents {
 		return temp
 	}
 	
+	/// 削除不需要的日期元素
+	/// - Parameter element: 日期元素
+	/// - Returns: 新DateComponents
+	func erased(to element: Calendar.Component) -> DateComponents {
+		switch element {
+			case .era:
+				return trimmed.year(0).erased(to: .year)
+			case .year:
+				return trimmed.month(0).erased(to: .month)
+			case .month:
+				return trimmed.day(0).erased(to: .day)
+			case .day:
+				return trimmed.hour(0).erased(to: .hour)
+			case .hour:
+				return trimmed.minute(0).erased(to: .minute)
+			case .minute:
+				return trimmed.second(0).erased(to: .second)
+			case .second:
+				return trimmed.nanosecond(0)
+			default:
+				return self
+		}
+	}
+	
 	static func +(_ lhs: DateComponents, _ rhs: DateComponents) -> DateComponents {
 		combineComponents(lhs, rhs)
 	}
