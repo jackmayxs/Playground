@@ -171,7 +171,7 @@ extension DateComponents {
 		return new
 	}
 	
-	/// 忽略除时间之外的所有历法
+	/// 忽略除时间之外的所有历法(防止获取date属性时由于其他项干扰导致获取日期失败的情况)
 	var trimmed: DateComponents {
 		var temp = self
 		temp.weekday = .none
