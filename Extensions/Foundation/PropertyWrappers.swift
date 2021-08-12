@@ -8,6 +8,78 @@
 
 import Foundation
 
+@propertyWrapper
+final class EditDetectable<E> where E: Equatable {
+	
+	var projectedValue: EditDetectable<E> {
+		self
+	}
+	private var value: E?
+	var wrappedValue: E? {
+		get { value }
+		set {
+			value = newValue
+			
+			/// 根据命中条件决定是否继续执行 '命中' 方法
+			if requirements.contains(.valid), newValue == .none { return }
+			if let string = newValue as? String,
+			   requirements.contains(.validString),
+			   string.isEmptyString { return }
+			hit(newValue)
+		}
+	}
+	var needsUpdate: Bool {
+		if hitCache.isEmpty { // 未命中
+			return false
+		} else { // 至少命中1次
+			guard hitCache.count > 1 else {
+				// 只命中了1次
+				if requirements.contains(.ignoreInitialValue) {
+					return false
+				}
+				return true
+			}
+			// 命中了2次以上
+			// 校验当前值是否满足指定条件
+			var isValid: Bool {
+				guard requirements.contains(.valid) else { return true }
+				return wrappedValue != .none
+			}
+			var isNotEmptyString: Bool {
+				guard requirements.contains(.validString) else { return true }
+				guard let string = wrappedValue as? String else { return false }
+				return !string.isEmptyString
+			}
+			return isValid && isNotEmptyString && hitCache.first != hitCache.last
+		}
+	}
+	
+	private var lock = NSRecursiveLock()
+	private var hitCache: [E?] = []
+	private func hit(_ value: E?) {
+		lock.lock()
+		if hitCache.count == 2 {
+			hitCache.removeLast()
+		}
+		hitCache.append(value)
+		lock.unlock()
+	}
+	
+	private let requirements: ValueRequirement
+	init(wrappedValue: E?, requirements: ValueRequirement = [.valid]) {
+		self.requirements = requirements
+		self.wrappedValue = wrappedValue
+	}
+}
+
+struct ValueRequirement: OptionSet {
+	let rawValue: Int
+	static let valid              = ValueRequirement(rawValue: 1 << 0)
+	static let validString        = ValueRequirement(rawValue: 1 << 1)
+	static let ignoreInitialValue = ValueRequirement(rawValue: 1 << 2)
+}
+
+
 @propertyWrapper // 忽略Optional.none
 class GuardValidValue<T> where T: Equatable {
 	private var value: T?

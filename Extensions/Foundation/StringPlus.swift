@@ -73,7 +73,9 @@ extension String {
 }
 // MARK: - __________ Range __________
 extension RangeExpression where Bound == String.Index  {
-	func nsRange<S: StringProtocol>(in string: S) -> NSRange { .init(self, in: string) }
+	func nsRange<S: StringProtocol>(in string: S) -> NSRange {
+		NSRange(self, in: string)
+	}
 }
 extension String {
 	
