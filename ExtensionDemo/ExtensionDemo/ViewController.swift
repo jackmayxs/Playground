@@ -18,7 +18,9 @@ class ViewController: UIViewController {
 		super.viewDidLoad()
 		
 		topButton.titleLabel?.backgroundColor = UIColor.systemYellow.withAlphaComponent(0.3)
-		
+	}
+	
+	private func waveView() {
 		// 创建文本标签
 		let label = UILabel()
 		label.text = "正在加载中......"
