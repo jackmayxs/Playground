@@ -106,6 +106,12 @@ extension TimeZone {
 
 extension DateComponents {
 	
+	
+	/// 返回有效时间或空
+	var validDate: Date? {
+		isValidDate ? date.unsafelyUnwrapped : .none
+	}
+	
 	var fromNow: Date {
 		Calendar.current.date(byAdding: self, to: .now).unsafelyUnwrapped
 	}
@@ -189,11 +195,11 @@ extension DateComponents {
 	func erased(to element: Calendar.Component) -> DateComponents {
 		switch element {
 			case .era:
-				return trimmed.year(0).erased(to: .year)
+				return trimmed.year(1).erased(to: .year)
 			case .year:
-				return trimmed.month(0).erased(to: .month)
+				return trimmed.month(1).erased(to: .month)
 			case .month:
-				return trimmed.day(0).erased(to: .day)
+				return trimmed.day(1).erased(to: .day)
 			case .day:
 				return trimmed.hour(0).erased(to: .hour)
 			case .hour:
