@@ -54,7 +54,7 @@ final class EditDetectable<E> where E: Equatable {
 		}
 	}
 	
-	private var lock = NSRecursiveLock()
+	private var lock = NSLock()
 	private var hitCache: [E?] = []
 	private func hit(_ value: E?) {
 		lock.lock()
