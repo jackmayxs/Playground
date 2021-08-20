@@ -123,13 +123,22 @@ extension String {
 		!isEmptyString
 	}
 	
-	/// 判断字符串是否满足字符集中的字符
+	/// 判断字符串是否满足字符集中的字符(严格匹配)
 	/// - Parameters:
 	///   - characterSet: 匹配的字符集
 	///   - options: 匹配选项
 	/// - Returns: 检查结果
 	func match(_ characterSet: CharacterSet, options: CompareOptions = []) -> Bool {
 		rangeOfCharacter(from: characterSet.inverted, options: options) == .none
+	}
+	
+	/// 字符串中是否包含指定字符集中的字符
+	/// - Parameters:
+	///   - characterSet: 匹配的字符集
+	///   - options: 匹配选项
+	/// - Returns: 检查结果
+	func containsCharacter(in characterSet: CharacterSet, options: CompareOptions = []) -> Bool {
+		rangeOfCharacter(from: characterSet, options: options) != .none
 	}
 	
 	/// 移除不需要的字符
