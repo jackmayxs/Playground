@@ -186,6 +186,7 @@ extension DateComponents {
 		temp.weekOfMonth = .none
 		temp.weekOfYear = .none
 		temp.yearForWeekOfYear = .none
+		temp.isLeapMonth = .none
 		return temp
 	}
 	
