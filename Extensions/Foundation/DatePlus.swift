@@ -79,6 +79,13 @@ extension Date {
 	}
 }
 
+extension Int {
+	var days: Int { 24 * hours }
+	var hours: Int { self * 60.minutes }
+	var minutes: Int { self * 60.seconds }
+	var seconds: Int { self }
+}
+
 // Date + DateComponents
 func +(_ lhs: Date, _ rhs: DateComponents) -> Date {
 	Calendar.current.date(byAdding: rhs, to: lhs)!
@@ -104,6 +111,7 @@ extension TimeZone {
 	}
 }
 
+// MARK: - __________ DateComponents __________
 extension DateComponents {
 	
 	
@@ -248,4 +256,12 @@ extension DateComponents {
 		if components.year       != nil { result.year       = -components.year! }
 		return result
 	}
+}
+
+// MARK: - __________ Calendar __________
+extension Calendar {
+	// 公历
+	static let gregorian = Calendar(identifier: .gregorian)
+	// 农历
+	static let chinese = Calendar(identifier: .chinese)
 }

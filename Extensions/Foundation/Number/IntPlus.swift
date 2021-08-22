@@ -30,11 +30,3 @@ extension Int {
 		Double(self)
 	}
 }
-
-// MARK: - __________ Date __________
-extension Int {
-	var days: Int { 24 * hours }
-	var hours: Int { self * 60.minutes }
-	var minutes: Int { self * 60.seconds }
-	var seconds: Int { self }
-}
