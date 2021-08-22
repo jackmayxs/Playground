@@ -10,6 +10,11 @@ import CoreGraphics
 
 extension CGRect {
 	
+	/// 中心点
+	var center: CGPoint {
+		CGPoint(x: midX, y: midY)
+	}
+	
 	/// 对Rect进行缩放
 	/// - Parameter ratio: 缩放比率
 	mutating func zoom(_ ratio: CGFloat) {
