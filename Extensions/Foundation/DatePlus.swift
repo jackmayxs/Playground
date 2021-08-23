@@ -50,7 +50,7 @@ extension Date {
 	/// - Returns: DateComponents
 	static func >> (lhs: Date, rhs: Date) -> DateComponents {
 		DefaultCalendarComponents.transform { components -> DateComponents in
-			Calendar.current.dateComponents(components, from: lhs, to: rhs)
+			Calendar.gregorian.dateComponents(components, from: lhs, to: rhs)
 		}
 	}
 	
@@ -58,20 +58,20 @@ extension Date {
 	static var now: Date { Date() }
 	
 	/// 返回当前时间只包含小时的时间
-	static var hourOfClock: Date {
-		.now.components.minute(0).second(0).nanosecond(0).date.unsafelyUnwrapped
+	var hourOfClock: Date {
+		components.erased(to: .hour, trim: false).date.unsafelyUnwrapped
 	}
 	/// 获取日期所有元素
 	var components: DateComponents {
-		Calendar.current.dateComponents(in: .current, from: self)
+		Calendar.gregorian.dateComponents(in: .current, from: self)
 	}
 	/// 当天起始时间点
 	var dayStart: Date {
-		components.hour(0).minute(0).second(0).nanosecond(0).date ?? self
+		components.erased(to: .day, trim: false).date.unsafelyUnwrapped
 	}
 	/// 当天结束时间点
 	var dayEnd: Date {
-		components.hour(23).minute(59).second(59).nanosecond(0).date ?? self
+		components.hour(23).minute(59).second(59).nanosecond(0).date.unsafelyUnwrapped
 	}
 	
 	var desc: String {
@@ -88,7 +88,7 @@ extension Int {
 
 // Date + DateComponents
 func +(_ lhs: Date, _ rhs: DateComponents) -> Date {
-	Calendar.current.date(byAdding: rhs, to: lhs)!
+	Calendar.gregorian.date(byAdding: rhs, to: lhs)!
 }
 
 // DateComponents + Dates
@@ -121,10 +121,10 @@ extension DateComponents {
 	}
 	
 	var fromNow: Date {
-		Calendar.current.date(byAdding: self, to: .now).unsafelyUnwrapped
+		Calendar.gregorian.date(byAdding: self, to: .now).unsafelyUnwrapped
 	}
 	var ago: Date {
-		Calendar.current.date(byAdding: -self, to: .now).unsafelyUnwrapped
+		Calendar.gregorian.date(byAdding: -self, to: .now).unsafelyUnwrapped
 	}
 	
 	static func year(_ year: Int) -> DateComponents {
@@ -201,22 +201,22 @@ extension DateComponents {
 	/// 削除不需要的日期元素
 	/// - Parameter element: 日期元素
 	/// - Returns: 新DateComponents
-	func erased(to element: Calendar.Component) -> DateComponents {
+	func erased(to element: Calendar.Component, trim: Bool = true) -> DateComponents {
 		switch element {
 			case .era:
-				return trimmed.year(1).erased(to: .year)
+				return (trim ? trimmed : self).year(1).erased(to: .year, trim: trim)
 			case .year:
-				return trimmed.month(1).erased(to: .month)
+				return (trim ? trimmed : self).month(1).erased(to: .month, trim: trim)
 			case .month:
-				return trimmed.day(1).erased(to: .day)
+				return (trim ? trimmed : self).day(1).erased(to: .day, trim: trim)
 			case .day:
-				return trimmed.hour(0).erased(to: .hour)
+				return (trim ? trimmed : self).hour(0).erased(to: .hour, trim: trim)
 			case .hour:
-				return trimmed.minute(0).erased(to: .minute)
+				return (trim ? trimmed : self).minute(0).erased(to: .minute, trim: trim)
 			case .minute:
-				return trimmed.second(0).erased(to: .second)
+				return (trim ? trimmed : self).second(0).erased(to: .second, trim: trim)
 			case .second:
-				return trimmed.nanosecond(0)
+				return (trim ? trimmed : self).nanosecond(0)
 			default:
 				return self
 		}
