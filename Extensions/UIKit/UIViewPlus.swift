@@ -195,6 +195,7 @@ extension UIView {
 		)
 		if cornerRadius > 0 {
 			if #available(iOS 11.0, *) {
+				// 这个方法在UITableViewCell外部调用时 Section的最后一个Cell不起作用,不清楚为啥
 				layer.masksToBounds = true
 				layer.cornerRadius = cornerRadius
 				layer.maskedCorners = corners.caCornerMask
@@ -203,6 +204,8 @@ extension UIView {
 				shape.path = bezier.cgPath
 				layer.mask = shape
 			}
+		} else {
+			layer.mask = nil
 		}
 		
 		// 阴影
