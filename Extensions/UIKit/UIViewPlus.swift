@@ -148,6 +148,17 @@ extension Array where Element: UIView {
 	}
 }
 extension UIView {
+	
+	
+	/// 硬化 | 不可拉伸 | 不可压缩
+	/// - Parameter intensity: 硬化强度
+	func harden(intensity: UILayoutPriority = .required) {
+		setContentCompressionResistancePriority(intensity, for: .horizontal)
+		setContentCompressionResistancePriority(intensity, for: .vertical)
+		setContentHuggingPriority(intensity, for: .horizontal)
+		setContentHuggingPriority(intensity, for: .vertical)
+	}
+	
 	private enum Associated {
 		static var shadowViewKey = UUID()
 	}
