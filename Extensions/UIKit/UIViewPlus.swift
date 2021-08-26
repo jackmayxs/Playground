@@ -149,6 +149,10 @@ extension Array where Element: UIView {
 }
 extension UIView {
 	
+	func parentView<SuperView: UIView>(_ type: SuperView.Type) -> SuperView? {
+		guard let superview = superview else { return nil }
+		return (superview as? SuperView) ?? superview.parentView(SuperView.self)
+	}
 	
 	/// 硬化 | 不可拉伸 | 不可压缩
 	/// - Parameter intensity: 硬化强度

@@ -22,6 +22,7 @@
 		DE13534526170A7D00903FA3 /* AutoResizeTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE13534426170A7D00903FA3 /* AutoResizeTextView.swift */; };
 		DE16719F25E7935D00BA5CE9 /* GCDTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE16719E25E7935D00BA5CE9 /* GCDTimer.swift */; };
 		DE16F41426B7F479005D1A21 /* Spacer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE16F41326B7F479005D1A21 /* Spacer.swift */; };
+		DE19277E26D791C00009B1A5 /* UIResponderPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE19277D26D791C00009B1A5 /* UIResponderPlus.swift */; };
 		DE1D66A62620316500337652 /* UITextInputPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1D66A52620316500337652 /* UITextInputPlus.swift */; };
 		DE1DD9622552B8B700E08A8B /* UIEdgeInsetsPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1DD9612552B8B700E08A8B /* UIEdgeInsetsPlus.swift */; };
 		DE1DD9652552B95F00E08A8B /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1DD9642552B95F00E08A8B /* Protocols.swift */; };
@@ -78,6 +79,7 @@
 		DE13534426170A7D00903FA3 /* AutoResizeTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoResizeTextView.swift; sourceTree = "<group>"; };
 		DE16719E25E7935D00BA5CE9 /* GCDTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GCDTimer.swift; sourceTree = "<group>"; };
 		DE16F41326B7F479005D1A21 /* Spacer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spacer.swift; sourceTree = "<group>"; };
+		DE19277D26D791C00009B1A5 /* UIResponderPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIResponderPlus.swift; sourceTree = "<group>"; };
 		DE1D66A52620316500337652 /* UITextInputPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextInputPlus.swift; sourceTree = "<group>"; };
 		DE1DD9612552B8B700E08A8B /* UIEdgeInsetsPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIEdgeInsetsPlus.swift; sourceTree = "<group>"; };
 		DE1DD9642552B95F00E08A8B /* Protocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
@@ -218,6 +220,7 @@
 				DE9E8D8325C24ED300FB3C46 /* UITabBarItemPlus.swift */,
 				DE4190B525EF4E9B00F03D4A /* UIViewControllerPlus.swift */,
 				DEF40F5D25B02C2900ADA57D /* UIViewPlus.swift */,
+				DE19277D26D791C00009B1A5 /* UIResponderPlus.swift */,
 				DEF0553D25BBD31700093261 /* UIWindowPlus.swift */,
 				3E127E3025FF926100EC8C22 /* UICollectionViewPlus.swift */,
 				3E127E3325FF928C00EC8C22 /* UITableViewPlus.swift */,
@@ -382,6 +385,7 @@
 				DE16F41426B7F479005D1A21 /* Spacer.swift in Sources */,
 				DE9E8E0525C5568000FB3C46 /* UIImageViewPlus.swift in Sources */,
 				DE16719F25E7935D00BA5CE9 /* GCDTimer.swift in Sources */,
+				DE19277E26D791C00009B1A5 /* UIResponderPlus.swift in Sources */,
 				DE743CCD25A7F9E7001764A5 /* DataPlus.swift in Sources */,
 				DE1DD9652552B95F00E08A8B /* Protocols.swift in Sources */,
 				DE66D8A824C7F931003B9206 /* AppDelegate.swift in Sources */,
