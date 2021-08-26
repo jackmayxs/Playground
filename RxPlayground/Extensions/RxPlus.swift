@@ -8,6 +8,18 @@
 import RxSwift
 import RxCocoa
 
+extension ObservableType {
+    
+    func `as`<T>(_ type: T.Type) -> Observable<T> {
+        map { element in
+            if let valid = element as? T {
+                return valid
+            }
+            throw RxError.overflow
+        }
+    }
+}
+
 extension ObservableType where Element == Bool {
 	
 	var isFalse: Observable<Element> {
