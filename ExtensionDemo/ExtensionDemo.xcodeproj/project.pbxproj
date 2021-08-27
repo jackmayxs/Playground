@@ -10,6 +10,7 @@
 		0CD71F3424D6707A005FDE67 /* FoundationPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD71F3324D6707A005FDE67 /* FoundationPlus.swift */; };
 		3E127E3125FF926100EC8C22 /* UICollectionViewPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E127E3025FF926100EC8C22 /* UICollectionViewPlus.swift */; };
 		3E127E3425FF928C00EC8C22 /* UITableViewPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E127E3325FF928C00EC8C22 /* UITableViewPlus.swift */; };
+		3E17B00426D95AD5004663EC /* ProtocolExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E17B00326D95AD5004663EC /* ProtocolExtensions.swift */; };
 		3E58A84525B5D4D000B0D2E3 /* CGRectPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E58A84425B5D4D000B0D2E3 /* CGRectPlus.swift */; };
 		3E58B55725E7D71E0013DE51 /* GlobalFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E58B55625E7D71E0013DE51 /* GlobalFunctions.swift */; };
 		3E7B586F25AC743A00EE65B7 /* UIColorPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7B586E25AC743A00EE65B7 /* UIColorPlus.swift */; };
@@ -67,6 +68,7 @@
 		0CD71F3324D6707A005FDE67 /* FoundationPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoundationPlus.swift; sourceTree = "<group>"; };
 		3E127E3025FF926100EC8C22 /* UICollectionViewPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionViewPlus.swift; sourceTree = "<group>"; };
 		3E127E3325FF928C00EC8C22 /* UITableViewPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewPlus.swift; sourceTree = "<group>"; };
+		3E17B00326D95AD5004663EC /* ProtocolExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolExtensions.swift; sourceTree = "<group>"; };
 		3E58A84425B5D4D000B0D2E3 /* CGRectPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGRectPlus.swift; sourceTree = "<group>"; };
 		3E58B55625E7D71E0013DE51 /* GlobalFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalFunctions.swift; sourceTree = "<group>"; };
 		3E7B586E25AC743A00EE65B7 /* UIColorPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorPlus.swift; sourceTree = "<group>"; };
@@ -198,6 +200,7 @@
 				DEA34B762511DC8D00B4697C /* CoreGraphics */,
 				DE93781624D1483B00D89D4C /* Foundation */,
 				DE1DD9642552B95F00E08A8B /* Protocols.swift */,
+				3E17B00326D95AD5004663EC /* ProtocolExtensions.swift */,
 				DE93781724D1484900D89D4C /* Tools */,
 				DE93781524D1482400D89D4C /* UIKit */,
 			);
@@ -208,23 +211,23 @@
 		DE93781524D1482400D89D4C /* UIKit */ = {
 			isa = PBXGroup;
 			children = (
-				3EB77DC726B1B1BD0005C7A5 /* UIKitPlus.swift */,
 				DE9453392508A5050082E5E5 /* UIApplicationPlus.swift */,
 				DE66D8BC24C7F982003B9206 /* UIButtonPlus.swift */,
+				3E127E3025FF926100EC8C22 /* UICollectionViewPlus.swift */,
 				3E7B586E25AC743A00EE65B7 /* UIColorPlus.swift */,
 				3EBEDB2525BD9C740067D02F /* UIDevicePlus.swift */,
 				DE1DD9612552B8B700E08A8B /* UIEdgeInsetsPlus.swift */,
 				DE6E14FF24D16A320053CC44 /* UIImagePlus.swift */,
 				DE9E8E0425C5568000FB3C46 /* UIImageViewPlus.swift */,
+				3EB77DC726B1B1BD0005C7A5 /* UIKitPlus.swift */,
+				DE19277D26D791C00009B1A5 /* UIResponderPlus.swift */,
 				DE243812253188CC006CF000 /* UIStackViewPlus.swift */,
 				DE9E8D8325C24ED300FB3C46 /* UITabBarItemPlus.swift */,
-				DE4190B525EF4E9B00F03D4A /* UIViewControllerPlus.swift */,
-				DEF40F5D25B02C2900ADA57D /* UIViewPlus.swift */,
-				DE19277D26D791C00009B1A5 /* UIResponderPlus.swift */,
-				DEF0553D25BBD31700093261 /* UIWindowPlus.swift */,
-				3E127E3025FF926100EC8C22 /* UICollectionViewPlus.swift */,
 				3E127E3325FF928C00EC8C22 /* UITableViewPlus.swift */,
 				DE1D66A52620316500337652 /* UITextInputPlus.swift */,
+				DE4190B525EF4E9B00F03D4A /* UIViewControllerPlus.swift */,
+				DEF40F5D25B02C2900ADA57D /* UIViewPlus.swift */,
+				DEF0553D25BBD31700093261 /* UIWindowPlus.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -393,6 +396,7 @@
 				DE59921626B27509007A2A77 /* ResultBuilders.swift in Sources */,
 				DE4190AF25EF412D00F03D4A /* SwiftUIPlus.swift in Sources */,
 				DEB225A425A7199300859117 /* DatePlus.swift in Sources */,
+				3E17B00426D95AD5004663EC /* ProtocolExtensions.swift in Sources */,
 				DEE48CF626AA64D600391508 /* ShadowPlayground.swift in Sources */,
 				DE93781224D124B200D89D4C /* DispatchOnce.swift in Sources */,
 				DE9E8D8425C24ED300FB3C46 /* UITabBarItemPlus.swift in Sources */,

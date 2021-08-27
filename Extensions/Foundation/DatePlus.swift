@@ -128,25 +128,25 @@ extension DateComponents {
 	}
 	
 	static func year(_ year: Int) -> DateComponents {
-		DateComponents(calendar: .current, timeZone: .current, year: year)
+		DateComponents(calendar: .gregorian, timeZone: .current, year: year)
 	}
 	static func month(_ month: Int) -> DateComponents {
-		DateComponents(calendar: .current, timeZone: .current, month: month)
+		DateComponents(calendar: .gregorian, timeZone: .current, month: month)
 	}
 	static func day(_ day: Int) -> DateComponents {
-		DateComponents(calendar: .current, timeZone: .current, day: day)
+		DateComponents(calendar: .gregorian, timeZone: .current, day: day)
 	}
 	static func hour(_ hour: Int) -> DateComponents {
-		DateComponents(calendar: .current, timeZone: .current, hour: hour)
+		DateComponents(calendar: .gregorian, timeZone: .current, hour: hour)
 	}
 	static func minute(_ minute: Int) -> DateComponents {
-		DateComponents(calendar: .current, timeZone: .current, minute: minute)
+		DateComponents(calendar: .gregorian, timeZone: .current, minute: minute)
 	}
 	static func second(_ second: Int) -> DateComponents {
-		DateComponents(calendar: .current, timeZone: .current, second: second)
+		DateComponents(calendar: .gregorian, timeZone: .current, second: second)
 	}
 	static func nanosecond(_ nanosecond: Int) -> DateComponents {
-		DateComponents(calendar: .current, timeZone: .current, nanosecond: nanosecond)
+		DateComponents(calendar: .gregorian, timeZone: .current, nanosecond: nanosecond)
 	}
 	
 	func year(_ year: Int) -> DateComponents {

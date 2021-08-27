@@ -107,25 +107,6 @@ extension UIView {
 				return image
 		}
 	}
-	
-	/// 获取View控制器实例
-	var owner: UIViewController? {
-		owner(UIViewController.self)
-	}
-	
-	/// 获取View的控制器
-	/// - Parameter type: 控制器类型
-	/// - Returns: 控制器实例
-	func owner<VC: UIViewController>(_ type: VC.Type) -> VC? {
-		var parent: UIResponder? = self
-		while parent != nil {
-			parent = parent?.next
-			if let controller = parent as? VC {
-				return controller
-			}
-		}
-		return nil
-	}
 }
 
 // MARK: - __________ Functions __________
@@ -149,6 +130,9 @@ extension Array where Element: UIView {
 }
 extension UIView {
 	
+	/// 获取父视图
+	/// - Parameter type: 父视图类型
+	/// - Returns: 有效的父视图
 	func parentSuperView<SuperView: UIView>(_ type: SuperView.Type) -> SuperView? {
 		guard let validSuperview = superview else { return nil }
 		guard let matchedSuperview = validSuperview as? SuperView else {
@@ -159,6 +143,7 @@ extension UIView {
 	
 	/// 硬化 | 不可拉伸 | 不可压缩
 	/// - Parameter intensity: 硬化强度
+	/// - 提示: 谨慎使用这个方法: 调用这四个方法之后, 会导致UIButtonPlus分类中重写的intrinsicContentSize返回的size失效
 	func harden(intensity: UILayoutPriority = .required) {
 		setContentCompressionResistancePriority(intensity, for: .horizontal)
 		setContentCompressionResistancePriority(intensity, for: .vertical)
@@ -166,6 +151,7 @@ extension UIView {
 		setContentHuggingPriority(intensity, for: .vertical)
 	}
 	
+	// MARK: - __________ 圆角 + 阴影 __________
 	final class _UIShadowView: UIView { }
 	private enum Associated {
 		static var shadowViewKey = UUID()
@@ -173,15 +159,15 @@ extension UIView {
 	private var shadowView: _UIShadowView {
 		guard let shadow = objc_getAssociatedObject(self, &Associated.shadowViewKey) as? _UIShadowView else {
 			let shadow = _UIShadowView(frame: bounds)
-			shadow.autoresizingMask = [
-				.flexibleWidth,
-				.flexibleHeight
-			]
 			shadow.isUserInteractionEnabled = false
 			shadow.backgroundColor = .clear
 			shadow.layer.masksToBounds = false
 			shadow.layer.shouldRasterize = true
 			shadow.layer.rasterizationScale = UIScreen.main.scale
+			shadow.autoresizingMask = [
+				.flexibleWidth,
+				.flexibleHeight
+			]
 			objc_setAssociatedObject(self, &Associated.shadowViewKey, shadow, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
 			return shadow
 		}
@@ -213,7 +199,8 @@ extension UIView {
 			cornerRadii: CGSize(width:cornerRadius, height:cornerRadius)
 		)
 		if cornerRadius > 0 {
-			if #available(iOS 11.0, *) {
+			// 未设置阴影的时候尝试使用iOS 11的API设置圆角
+			if #available(iOS 11.0, *), shadowColor == nil {
 				// 这个方法在UITableViewCell外部调用时 Section的最后一个Cell不起作用,不清楚为啥
 				layer.masksToBounds = true
 				layer.cornerRadius = cornerRadius
@@ -257,8 +244,8 @@ extension UIView {
 		}
 	}
 }
-#if DEBUG
 // MARK: - __________ SwiftUI __________
+#if DEBUG
 extension UIView {
 
 	var previewLayout: PreviewLayout {
