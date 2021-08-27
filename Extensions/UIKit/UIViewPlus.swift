@@ -149,9 +149,12 @@ extension Array where Element: UIView {
 }
 extension UIView {
 	
-	func parentView<SuperView: UIView>(_ type: SuperView.Type) -> SuperView? {
-		guard let superview = superview else { return nil }
-		return (superview as? SuperView) ?? superview.parentView(SuperView.self)
+	func parentSuperView<SuperView: UIView>(_ type: SuperView.Type) -> SuperView? {
+		guard let validSuperview = superview else { return nil }
+		guard let matchedSuperview = validSuperview as? SuperView else {
+			return validSuperview.parentSuperView(SuperView.self)
+		}
+		return matchedSuperview
 	}
 	
 	/// 硬化 | 不可拉伸 | 不可压缩
@@ -163,12 +166,13 @@ extension UIView {
 		setContentHuggingPriority(intensity, for: .vertical)
 	}
 	
+	final class _UIShadowView: UIView { }
 	private enum Associated {
 		static var shadowViewKey = UUID()
 	}
-	private var shadowView: UIView {
-		guard let shadow = objc_getAssociatedObject(self, &Associated.shadowViewKey) as? UIView else {
-			let shadow = UIView(frame: bounds)
+	private var shadowView: _UIShadowView {
+		guard let shadow = objc_getAssociatedObject(self, &Associated.shadowViewKey) as? _UIShadowView else {
+			let shadow = _UIShadowView(frame: bounds)
 			shadow.autoresizingMask = [
 				.flexibleWidth,
 				.flexibleHeight
