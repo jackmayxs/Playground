@@ -81,7 +81,7 @@ struct ValueRequirement: OptionSet {
 
 
 @propertyWrapper // 忽略Optional.none
-class GuardValidValue<T> where T: Equatable {
+class ValidValueOnly<T> where T: Equatable {
 	private var value: T?
 	init(wrappedValue: T?) {
 		self.value = wrappedValue
@@ -98,7 +98,7 @@ class GuardValidValue<T> where T: Equatable {
 }
 
 @propertyWrapper // 忽略空字符串
-final class IgnoreEmptyString: GuardValidValue<String> {
+final class IgnoreEmptyString: ValidValueOnly<String> {
 	override var wrappedValue: String? {
 		get { super.wrappedValue }
 		set { super.wrappedValue = newValue.validStringOrNone }
