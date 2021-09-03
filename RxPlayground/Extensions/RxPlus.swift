@@ -58,6 +58,20 @@ extension ObservableConvertibleType where Element: Equatable {
 
 extension ObservableConvertibleType {
 	
+	/// 用于蓝牙搜索等长时间操作
+	var isProcessing: Driver<Bool> {
+		asObservable().materialize()
+			.map { event in
+				switch event {
+					case .next: return true
+					default: return false
+				}
+			}
+			.startWith(true)
+			.distinctUntilChanged()
+			.asDriver(onErrorJustReturn: false)
+	}
+	
 	func repeatWhen<O: ObservableType>(_ notifier: O) -> Observable<Element> {
 		notifier.map { _ in }
 			.startWith(())
