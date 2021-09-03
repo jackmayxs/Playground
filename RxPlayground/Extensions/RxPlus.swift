@@ -80,3 +80,15 @@ extension ObservableConvertibleType {
 			}
 	}
 }
+
+extension Completable {
+	func concatMap<Source: ObservableConvertibleType>(_ selector: @escaping () throws -> Source)
+	-> Observable<Source.Element> {
+		do {
+			let next = try selector().asObservable()
+			return andThen(next)
+		} catch {
+			return .error(error)
+		}
+	}
+}
