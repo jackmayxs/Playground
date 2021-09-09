@@ -7,6 +7,34 @@
 
 import UIKit
 
+@dynamicMemberLookup
+struct Configurator<Object> {
+	var stabilized: Object { target }
+	private let target: Object
+	init(_ target: Object) {
+		self.target = target
+	}
+	subscript<Value>(dynamicMember keyPath: ReferenceWritableKeyPath<Object, Value>)
+	-> ( (Value) -> Configurator<Object> ) {
+		{ value in
+			target[keyPath: keyPath] = value
+			return self
+		}
+	}
+	func configure(_ execute: (Object) -> Void) -> Configurator<Object> {
+		execute(target)
+		return self
+	}
+}
+
+protocol Chainable {}
+extension Chainable {
+	var cf: Configurator<Self> {
+		Configurator(self)
+	}
+}
+extension NSObject: Chainable {}
+
 // MARK: - __________ Storyboarded __________
 protocol Storyboarded {
 	static var bundle: Bundle? { get }
