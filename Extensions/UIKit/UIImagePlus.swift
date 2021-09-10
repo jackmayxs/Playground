@@ -78,7 +78,7 @@ extension UIImage {
 		defer {
 			UIGraphicsEndImageContext()
 		}
-		return UIGraphicsGetImageFromCurrentImageContext().or(self)
+		return UIGraphicsGetImageFromCurrentImageContext().ifNil(self)
 	}
 	
 	/// 启动图截图

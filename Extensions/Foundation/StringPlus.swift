@@ -51,7 +51,7 @@ extension StringProtocol {
 		Int(double)
 	}
 	var double: Double {
-		Double(self).or(0.0)
+		Double(self).ifNil(0.0)
 	}
 }
 

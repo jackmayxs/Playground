@@ -98,17 +98,23 @@ extension Optional {
 	/// 解包Optional
 	/// - Parameter defaultValue: 自动闭包
 	/// - Returns: Wrapped Value
-	func or(_ defaultValue: @autoclosure () -> Wrapped) -> Wrapped {
+	func ifNil(_ defaultValue: @autoclosure () -> Wrapped) -> Wrapped {
 		guard let wrapped = try? unwrap() else {
 			return defaultValue()
 		}
 		return wrapped
 	}
-	func or<T>(_ defaultValue: T, or transform: (Wrapped) -> T) -> T {
+	func ifNil<T>(_ defaultValue: T, else transform: (Wrapped) -> T) -> T {
 		guard let wrapped = try? unwrap() else {
 			return defaultValue
 		}
 		return transform(wrapped)
+	}
+	func ifNil<T>(_ defaultValue: T, else transform: @autoclosure () -> T) -> T {
+		guard let _ = try? unwrap() else {
+			return defaultValue
+		}
+		return transform()
 	}
 	
 	/// Optional Error
