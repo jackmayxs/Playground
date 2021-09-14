@@ -157,6 +157,17 @@ extension DateComponents {
 	func month(_ month: Int) -> DateComponents {
 		var new = self
 		new.month = month
+		if month >= 13 {
+			if let validYear = year {
+				new.year = validYear + 1
+			}
+			new.month = 1
+		} else if month <= 0 {
+			if let validYear = year {
+				new.year = validYear - 1
+			}
+			new.month = 12
+		}
 		return new
 	}
 	func day(_ day: Int) -> DateComponents {
