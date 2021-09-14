@@ -16,3 +16,11 @@ extension Sequence where Self: ExpressibleByArrayLiteral {
 		[]
 	}
 }
+
+extension Sequence {
+	func `as`<T>(_ type: T.Type) -> [T] {
+		compactMap { element in
+			element as? T
+		}
+	}
+}
