@@ -13,6 +13,7 @@
 		3E17B00426D95AD5004663EC /* ProtocolExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E17B00326D95AD5004663EC /* ProtocolExtensions.swift */; };
 		3E58A84525B5D4D000B0D2E3 /* CGRectPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E58A84425B5D4D000B0D2E3 /* CGRectPlus.swift */; };
 		3E58B55725E7D71E0013DE51 /* GlobalFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E58B55625E7D71E0013DE51 /* GlobalFunctions.swift */; };
+		3E70EEB126FEB33900C19A78 /* PlaceholderTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E70EEB026FEB33900C19A78 /* PlaceholderTextView.swift */; };
 		3E7B586F25AC743A00EE65B7 /* UIColorPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7B586E25AC743A00EE65B7 /* UIColorPlus.swift */; };
 		3E7B587225AC763C00EE65B7 /* CGColorPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7B587125AC763C00EE65B7 /* CGColorPlus.swift */; };
 		3EB2D05125B8770D00C70FE7 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EB2D05025B8770D00C70FE7 /* Constants.swift */; };
@@ -72,6 +73,7 @@
 		3E17B00326D95AD5004663EC /* ProtocolExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolExtensions.swift; sourceTree = "<group>"; };
 		3E58A84425B5D4D000B0D2E3 /* CGRectPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGRectPlus.swift; sourceTree = "<group>"; };
 		3E58B55625E7D71E0013DE51 /* GlobalFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalFunctions.swift; sourceTree = "<group>"; };
+		3E70EEB026FEB33900C19A78 /* PlaceholderTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaceholderTextView.swift; sourceTree = "<group>"; };
 		3E7B586E25AC743A00EE65B7 /* UIColorPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorPlus.swift; sourceTree = "<group>"; };
 		3E7B587125AC763C00EE65B7 /* CGColorPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGColorPlus.swift; sourceTree = "<group>"; };
 		3EB2D05025B8770D00C70FE7 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -148,6 +150,7 @@
 				DEE4D4AF26A54A5800E5566B /* SuperTableViewCell.swift */,
 				DE16F41326B7F479005D1A21 /* Spacer.swift */,
 				DE95B8DE26F31E1B00A9FA5D /* AutoResizeCollectionView.swift */,
+				3E70EEB026FEB33900C19A78 /* PlaceholderTextView.swift */,
 			);
 			path = CustomizedControls;
 			sourceTree = "<group>";
@@ -406,6 +409,7 @@
 				DEE4D4B026A54A5800E5566B /* SuperTableViewCell.swift in Sources */,
 				DE95B8DF26F31E1B00A9FA5D /* AutoResizeCollectionView.swift in Sources */,
 				3E58A84525B5D4D000B0D2E3 /* CGRectPlus.swift in Sources */,
+				3E70EEB126FEB33900C19A78 /* PlaceholderTextView.swift in Sources */,
 				3E127E3425FF928C00EC8C22 /* UITableViewPlus.swift in Sources */,
 				DE66D8AA24C7F931003B9206 /* SceneDelegate.swift in Sources */,
 				DEB622FC25E899BB00702C5E /* IntPlus.swift in Sources */,
