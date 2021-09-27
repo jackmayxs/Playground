@@ -8,6 +8,13 @@
 
 import Foundation
 
+// MARK: - __________ Collection __________
+extension Collection {
+	var isNotEmpty: Bool {
+		!isEmpty
+	}
+}
+
 // MARK: - __________ Sequence __________
 extension Sequence where Self: ExpressibleByArrayLiteral {
 	

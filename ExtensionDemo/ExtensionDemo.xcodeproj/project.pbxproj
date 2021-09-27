@@ -80,6 +80,7 @@
 		3EB77DC726B1B1BD0005C7A5 /* UIKitPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitPlus.swift; sourceTree = "<group>"; };
 		3EBEDB2525BD9C740067D02F /* UIDevicePlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDevicePlus.swift; sourceTree = "<group>"; };
 		DE0819BC25BAD5D300950784 /* DoublePlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoublePlus.swift; sourceTree = "<group>"; };
+		DE09397827003FE400935A0B /* StateMachine.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = StateMachine.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		DE12399D26784E6A00AB6B18 /* NumberFormatterPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberFormatterPlus.swift; sourceTree = "<group>"; };
 		DE13534426170A7D00903FA3 /* AutoResizeTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoResizeTextView.swift; sourceTree = "<group>"; };
 		DE16719E25E7935D00BA5CE9 /* GCDTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GCDTimer.swift; sourceTree = "<group>"; };
@@ -292,6 +293,7 @@
 				DEFAD78B2615CCA6008CEBE0 /* TextFieldDelegate.swift */,
 				DE64BA0A264A2ADA009FA78B /* MyPlayground.playground */,
 				DEE48CF526AA64D600391508 /* ShadowPlayground.swift */,
+				DE09397827003FE400935A0B /* StateMachine.playground */,
 			);
 			path = BestPractice;
 			sourceTree = "<group>";
