@@ -63,4 +63,27 @@ extension UIStackView {
 		addBackground(view: colored)
 		backgroundView = colored
     }
+	
+	/// 内部控件边距
+	var contentInsets: UIEdgeInsets? {
+		get {
+			if #available(iOS 11, *) {
+				return directionalLayoutMargins.uiEdgeInsets
+			} else {
+				return isLayoutMarginsRelativeArrangement ? layoutMargins : .none
+			}
+		}
+		set {
+			guard let insets = newValue else {
+				isLayoutMarginsRelativeArrangement = false
+				return
+			}
+			isLayoutMarginsRelativeArrangement = true
+			if #available(iOS 11, *) {
+				directionalLayoutMargins = insets.directionalEdgeInsets
+			} else {
+				layoutMargins = insets
+			}
+		}
+	}
 }

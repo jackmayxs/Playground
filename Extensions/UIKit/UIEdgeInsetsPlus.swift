@@ -8,9 +8,36 @@
 
 import UIKit
 
+@available(iOS 11.0, *)
+extension NSDirectionalEdgeInsets {
+	
+	var uiEdgeInsets: UIEdgeInsets {
+		switch UIApplication.shared.userInterfaceLayoutDirection {
+			case .leftToRight:
+				return UIEdgeInsets(top: top, left: leading, bottom: bottom, right: trailing)
+			case .rightToLeft:
+				return UIEdgeInsets(top: top, left: trailing, bottom: bottom, right: leading)
+			@unknown default:
+				return .zero
+		}
+	}
+}
+
 extension UIEdgeInsets {
 	var reversed: UIEdgeInsets {
 		UIEdgeInsets(top: -top, left: -left, bottom: -bottom, right: -right)
+	}
+	
+	@available (iOS 11.0, *)
+	var directionalEdgeInsets: NSDirectionalEdgeInsets {
+		switch UIApplication.shared.userInterfaceLayoutDirection {
+			case .leftToRight:
+				return NSDirectionalEdgeInsets(top: top, leading: left, bottom: bottom, trailing: right)
+			case .rightToLeft:
+				return NSDirectionalEdgeInsets(top: top, leading: right, bottom: bottom, trailing: left)
+			@unknown default:
+				fatalError("UNKNOWN DIRECTION")
+		}
 	}
 }
 
