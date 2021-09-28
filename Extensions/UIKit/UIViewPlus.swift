@@ -17,7 +17,7 @@ extension UIView {
 	}
 	
 	static func cornerRadius(_ cornerRadius: CGFloat, color: UIColor = .white) -> UIView {
-		UIView.new { make in
+		UIView.make { make in
 			make.backgroundColor = color
 			make.layer.cornerRadius = cornerRadius
 		}

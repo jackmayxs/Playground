@@ -42,19 +42,24 @@ struct Configurator<Object> {
 			return self
 		}
 	}
-	func configure(_ execute: (Object) -> Void) -> Configurator<Object> {
+	func configure(_ execute: (Object) -> Void) -> Object {
 		execute(target)
-		return self
+		return self.stabilized
 	}
 }
 
 protocol Chainable {}
 extension Chainable {
-	var cf: Configurator<Self> {
+	var make: Configurator<Self> {
 		Configurator(self)
 	}
 }
-extension NSObject: Chainable {}
+extension Chainable where Self: SimpleInitializer {
+	static var make: Configurator<Self> {
+		self.init().make
+	}
+}
+extension NSObject: Chainable { }
 
 // MARK: - __________ Storyboarded __________
 protocol Storyboarded {
@@ -88,10 +93,10 @@ extension Configurable {
 	}
 }
 protocol InstanceFactory {
-	static func new(_ configurator: (inout Self) -> Void) -> Self
+	static func make(_ configurator: (inout Self) -> Void) -> Self
 }
 extension InstanceFactory where Self: SimpleConfigurable {
-	static func new(_ configurator: (inout Self) -> Void) -> Self {
+	static func make(_ configurator: (inout Self) -> Void) -> Self {
 		var retval = Self()
 		return retval.configure(configurator)
 	}
@@ -108,7 +113,7 @@ extension ClassConfigurable {
 typealias SimpleClassConfigurable = SimpleInitializer & ClassConfigurable
 protocol ClassNewInstanceConfigurable: SimpleClassConfigurable {}
 extension ClassNewInstanceConfigurable {
-	static func new(_ configurator: (Self) -> Void) -> Self {
+	static func make(_ configurator: (Self) -> Void) -> Self {
 		let retval = Self()
 		return retval.configure(configurator)
 	}

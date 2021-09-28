@@ -38,7 +38,7 @@ struct UIViewPreview: PreviewProvider {
 
 class XView: UIView {
 	
-	let aLabel = UILabel.new { make in
+	let aLabel = UILabel.make { make in
 		make.translatesAutoresizingMaskIntoConstraints = false
 		make.font = .systemFont(ofSize: 12.0)
 		make.lineBreakMode = .byCharWrapping

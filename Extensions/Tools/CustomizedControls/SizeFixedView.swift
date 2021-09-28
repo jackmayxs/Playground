@@ -1,6 +1,6 @@
 //
-//  FixSizedView.swift
-//  FangLiLai
+//  SizeFixedView.swift
+//  
 //
 //  Created by Choi on 2021/9/27.
 //  Copyright © 2021 Choi. All rights reserved.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class FixSizedView: UIView {
+final class SizeFixedView: UIView {
 	
 	private var fixedSize = CGSize.zero
 	init(_ fixedSize: CGSize) {

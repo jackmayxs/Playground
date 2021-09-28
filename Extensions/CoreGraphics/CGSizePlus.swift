@@ -55,14 +55,12 @@ extension CGSize {
 }
 
 extension CGSize: ExpressibleByFloatLiteral {
-	public typealias FloatLiteralType = Double
 	public init(floatLiteral value: Double) {
 		self.init(width: value, height: value)
 	}
 }
 
 extension CGSize: ExpressibleByIntegerLiteral {
-	public typealias IntegerLiteralType = Int
 	public init(integerLiteral value: Int) {
 		self.init(width: value, height: value)
 	}
