@@ -30,6 +30,7 @@
 		DE1DD9652552B95F00E08A8B /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1DD9642552B95F00E08A8B /* Protocols.swift */; };
 		DE1DD96C2552BA2800E08A8B /* InsetsLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1DD96B2552BA2700E08A8B /* InsetsLabel.swift */; };
 		DE243813253188CC006CF000 /* UIStackViewPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE243812253188CC006CF000 /* UIStackViewPlus.swift */; };
+		DE29E1F62701B4AF008BE81D /* FixSizedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE29E1F52701B4AF008BE81D /* FixSizedView.swift */; };
 		DE36450926984BBD001D072C /* PropertyWrappers.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE36450826984BBD001D072C /* PropertyWrappers.swift */; };
 		DE4190AF25EF412D00F03D4A /* SwiftUIPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4190AE25EF412D00F03D4A /* SwiftUIPlus.swift */; };
 		DE4190B325EF49BA00F03D4A /* SwiftUIPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4190B225EF49BA00F03D4A /* SwiftUIPreview.swift */; };
@@ -91,6 +92,7 @@
 		DE1DD9642552B95F00E08A8B /* Protocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		DE1DD96B2552BA2700E08A8B /* InsetsLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsetsLabel.swift; sourceTree = "<group>"; };
 		DE243812253188CC006CF000 /* UIStackViewPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStackViewPlus.swift; sourceTree = "<group>"; };
+		DE29E1F52701B4AF008BE81D /* FixSizedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FixSizedView.swift; sourceTree = "<group>"; };
 		DE36450826984BBD001D072C /* PropertyWrappers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyWrappers.swift; sourceTree = "<group>"; };
 		DE4190AE25EF412D00F03D4A /* SwiftUIPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIPlus.swift; sourceTree = "<group>"; };
 		DE4190B225EF49BA00F03D4A /* SwiftUIPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIPreview.swift; sourceTree = "<group>"; };
@@ -152,6 +154,7 @@
 				DE16F41326B7F479005D1A21 /* Spacer.swift */,
 				DE95B8DE26F31E1B00A9FA5D /* AutoResizeCollectionView.swift */,
 				3E70EEB026FEB33900C19A78 /* PlaceholderTextView.swift */,
+				DE29E1F52701B4AF008BE81D /* FixSizedView.swift */,
 			);
 			path = CustomizedControls;
 			sourceTree = "<group>";
@@ -382,6 +385,7 @@
 				DEB622F925E8995B00702C5E /* CGFloatPlus.swift in Sources */,
 				DE36450926984BBD001D072C /* PropertyWrappers.swift in Sources */,
 				DEF40F5E25B02C2900ADA57D /* UIViewPlus.swift in Sources */,
+				DE29E1F62701B4AF008BE81D /* FixSizedView.swift in Sources */,
 				DEB225A125A7182D00859117 /* StringPlus.swift in Sources */,
 				3E7B587225AC763C00EE65B7 /* CGColorPlus.swift in Sources */,
 				3E127E3125FF926100EC8C22 /* UICollectionViewPlus.swift in Sources */,
