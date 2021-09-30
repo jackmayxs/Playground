@@ -42,8 +42,8 @@ struct Configurator<Object> {
 			return self
 		}
 	}
-	func configure(_ execute: (Object) -> Void) -> Object {
-		execute(target)
+	func stabilize(_ configure: (Object) -> Void) -> Object {
+		configure(target)
 		return self.stabilized
 	}
 }
