@@ -130,6 +130,20 @@ extension Array where Element: UIView {
 }
 extension UIView {
 	
+	/// 自适应Size | 内部子控件Autolayout
+	func fitSizeIfNeeded() {
+		let systemLayoutSize = systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+		let height = systemLayoutSize.height
+		let width = systemLayoutSize.width
+		// Comparison necessary to avoid infinite loop
+		if height != bounds.height {
+			bounds.size.height = height
+		}
+		if width != bounds.width {
+			bounds.size.width = width
+		}
+	}
+	
 	/// 获取父视图
 	/// - Parameter type: 父视图类型
 	/// - Returns: 有效的父视图
