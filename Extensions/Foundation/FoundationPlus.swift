@@ -80,6 +80,23 @@ extension ArraySlice {
 // MARK: - __________ Optional __________
 extension Optional {
 	
+	var myself: Self {
+		self
+	}
+	
+	var isNotValid: Bool {
+		!isValid
+	}
+	
+	var isValid: Bool {
+		do {
+			_ = try unwrap()
+			return true
+		} catch {
+			return false
+		}
+	}
+	
 	/// 转换为Any类型
 	var any: Any {
 		self as Any
