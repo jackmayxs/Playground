@@ -8,6 +8,12 @@
 
 import UIKit
 
+extension String: LocalizedError {
+	public var errorDescription: String? {
+		self
+	}
+}
+
 extension Optional where Wrapped == String {
 	
 	var safeValue: String { self ?? "" }
