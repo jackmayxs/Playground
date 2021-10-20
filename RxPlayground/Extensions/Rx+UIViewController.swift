@@ -14,12 +14,17 @@ public extension Reactive where Base: UIViewController {
 		let source = methodInvoked(#selector(Base.viewDidLoad)).map { _ in }
 		return ControlEvent(events: source)
 	}
-	
+    var viewWillAppearOnce: Observable<Bool> {
+        viewWillAppear.take(1)
+    }
 	var viewWillAppear: ControlEvent<Bool> {
 		let source = methodInvoked(#selector(Base.viewWillAppear))
 			.map { $0.first as? Bool ?? false }
 		return ControlEvent(events: source)
 	}
+    var viewDidAppearOnce: Observable<Bool> {
+        viewDidAppear.take(1)
+    }
 	var viewDidAppear: ControlEvent<Bool> {
 		let source = methodInvoked(#selector(Base.viewDidAppear))
 			.map { $0.first as? Bool ?? false }

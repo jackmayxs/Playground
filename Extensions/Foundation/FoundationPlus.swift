@@ -80,7 +80,7 @@ extension ArraySlice {
 // MARK: - __________ Optional __________
 extension Optional {
 	
-	var myself: Self {
+	var itself: Self {
 		self
 	}
 	

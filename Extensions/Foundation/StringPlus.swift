@@ -16,7 +16,7 @@ extension String: LocalizedError {
 
 extension Optional where Wrapped == String {
 	
-	var safeValue: String { self ?? "" }
+	var orEmpty: String { self ?? "" }
 	
 	/// 判断Optional<String>类型是否为空(.none或Wrapped为空字符串)
 	var isEmptyString: Bool {
