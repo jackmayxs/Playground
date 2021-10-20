@@ -131,6 +131,9 @@ extension Array where Element: UIView {
 extension UIView {
 	
 	/// 自适应Size | 内部子控件Autolayout
+	/// 注意: 调用此方法之前要保证外部的约束要提前设置好
+	/// 比如UITableView.headerView的宽度约束要提前设置成等于TableView,否则会得到意料之外的结果
+	/// 或者调用layoutIfNeeded然后重新赋值UITableView.headerView
 	func fitSizeIfNeeded() {
 		let systemLayoutSize = systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
 		let height = systemLayoutSize.height
