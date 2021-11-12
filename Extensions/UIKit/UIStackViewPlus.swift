@@ -86,4 +86,22 @@ extension UIStackView {
 			}
 		}
 	}
+	var horizontalInsets: UIEdgeInsets? {
+		get { contentInsets }
+		set {
+			guard var insets = newValue else { return }
+			insets.top = 0
+			insets.bottom = 0
+			contentInsets = insets
+		}
+	}
+	var verticalInsets: UIEdgeInsets? {
+		get { contentInsets }
+		set {
+			guard var insets = newValue else { return }
+			insets.left = 0
+			insets.right = 0
+			contentInsets = insets
+		}
+	}
 }
