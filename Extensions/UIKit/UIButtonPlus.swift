@@ -9,63 +9,31 @@ import UIKit
 
 extension UIButton {
 	
-	enum ImageTitleAxis: Int {
-		case down
-		case right
-		case up
+	enum ImagePlacement: Int {
+		case top
 		case left
+		case bottom
+		case right
+		
+		@available(iOS 13.0, *)
+		fileprivate var configTranslation: NSDirectionalRectEdge {
+			switch self {
+			case .top: return .top
+			case .left: return .leading
+			case .bottom: return .bottom
+			case .right: return .trailing
+			}
+		}
 	}
 	
 	private enum Key {
-		static var imageTitleAxis = UUID()
-		static var imageTitleSpacing = UUID()
+		static var imagePlacement = UUID()
+		static var imagePadding = UUID()
 		static var useBackgroundImageSize = UUID()
 	}
-	
-	// MARK: - Properties
-	
-	var useBackgroundImageSize: Bool {
-		set { objc_setAssociatedObject(self, &Key.useBackgroundImageSize, newValue, .OBJC_ASSOCIATION_ASSIGN) }
-		get { objc_getAssociatedObject(self, &Key.useBackgroundImageSize) as? Bool ?? false }
-	}
-	
-	private(set) var imageTitleAxis: ImageTitleAxis {
-		set { objc_setAssociatedObject(self, &Key.imageTitleAxis, newValue.rawValue, .OBJC_ASSOCIATION_ASSIGN) }
-		get {
-			guard let rawValue = objc_getAssociatedObject(self, &Key.imageTitleAxis) as? Int else {
-				return .right
-			}
-			return ImageTitleAxis(rawValue: rawValue).unsafelyUnwrapped
-		}
-	}
-	
-	private(set) var imageTitleSpacing: CGFloat {
-		set { objc_setAssociatedObject(self, &Key.imageTitleSpacing, newValue, .OBJC_ASSOCIATION_ASSIGN) }
-		get { objc_getAssociatedObject(self, &Key.imageTitleSpacing) as? CGFloat ?? 0 }
-	}
-	
-	var imageWidth: CGFloat { currentImage?.size.width ?? 0 }
-	var imageHeight: CGFloat { currentImage?.size.height ?? 0 }
-	var titleWidth: CGFloat {
-		// 以下两行: 适配iOS14,否则此属性会按照字体的Font返回一个值,从而影响intrinsicContentSize的计算
-		guard let titleLabel = titleLabel else { return 0 }
-		guard titleLabel.text != .none else { return 0 }
-		if #available(iOS 8.0, *) {
-			return titleLabel.intrinsicContentSize.width
-		} else {
-			return titleLabel.frame.size.width
-		}
-	}
-	var titleHeight: CGFloat {
-		// 以下两行: 适配iOS14,否则此属性会按照字体的Font返回一个值,从而影响intrinsicContentSize的计算
-		guard let titleLabel = titleLabel else { return 0 }
-		guard titleLabel.text != .none else { return 0 }
-		if #available(iOS 8.0, *) {
-			return titleLabel.intrinsicContentSize.height
-		} else {
-			return titleLabel.frame.size.height
-		}
-	}
+}
+
+extension UIButton {
 	
 	/// 可以根据contentEdgeInsets自动适配自身大小
 	open override var intrinsicContentSize: CGSize {
@@ -75,13 +43,13 @@ extension UIButton {
 			// 初始化size
 			var size = CGSize.zero
 			// 计算宽高
-			switch imageTitleAxis  {
-				case .down, .up:
-					size.width = max(imageWidth, titleWidth)
-					size.height = imageHeight + imageTitleSpacing + titleHeight
-				case .right, .left:
-					size.width = imageWidth + imageTitleSpacing + titleWidth
-					size.height = max(imageHeight, titleHeight)
+			switch imagePlacement  {
+			case .top, .bottom:
+				size.width = max(imageWidth, titleWidth)
+				size.height = imageHeight + imagePadding + titleHeight
+			case .left, .right:
+				size.width = imageWidth + imagePadding + titleWidth
+				size.height = max(imageHeight, titleHeight)
 			}
 			return size + contentEdgeInsets
 		}
@@ -89,176 +57,265 @@ extension UIButton {
 		return useBackgroundImageSize ? backgroundImageSize : regularSize
 	}
 	
-	// MARK: - Interface
+	open override func setNeedsLayout() {
+		super.setNeedsLayout()
+		setupImageTitleEdgeInsets()
+	}
 	
-	/// 设置Image-Title布局
-	/// - Parameters:
-	///   - axis: 布局轴线
-	///   - spacing: Image-Title间距(大于等于0; 最好是偶数,否则按钮显示可能会有小小误差)
-	func setImageTitleAxis(_ axis: ImageTitleAxis = .right, spacing: CGFloat = 0) {
+	/// 是否使用背景图片尺寸作为按钮固有尺寸
+	var useBackgroundImageSize: Bool {
+		get { objc_getAssociatedObject(self, &Key.useBackgroundImageSize) as? Bool ?? false }
+		set {
+			objc_setAssociatedObject(self, &Key.useBackgroundImageSize, newValue, .OBJC_ASSOCIATION_ASSIGN)
+			invalidateIntrinsicContentSize()
+		}
+	}
+	
+	/// 图片位置
+	var imagePlacement: ImagePlacement {
+		get {
+			guard let rawValue = objc_getAssociatedObject(self, &Key.imagePlacement) as? Int else {
+				return .left
+			}
+			return ImagePlacement(rawValue: rawValue).unsafelyUnwrapped
+		}
+		set {
+			objc_setAssociatedObject(self, &Key.imagePlacement, newValue.rawValue, .OBJC_ASSOCIATION_ASSIGN)
+			setupImageTitleEdgeInsets()
+		}
+	}
+	
+	/// Image-Title间距(大于等于0; 最好是偶数,否则按钮显示可能会有小小误差)
+	var imagePadding: CGFloat {
+		get { objc_getAssociatedObject(self, &Key.imagePadding) as? CGFloat ?? 0 }
+		set {
+			assert(newValue >= 0, "A sane person will never do that🤪,right?")
+			objc_setAssociatedObject(self, &Key.imagePadding, newValue, .OBJC_ASSOCIATION_ASSIGN)
+			setupImageTitleEdgeInsets()
+		}
+	}
+	
+	private var imageSize: CGSize {
+		guard let image = currentImage else {
+			return .zero
+		}
+		return image.size
+	}
+	private var buttonLabel: UILabel? {
+		titleLabel.flatMap { lb in
+			lb.configure {
+				// 以下两句,解决iOS 15以后由于设置了太小的字体导致Label被压缩的问题
+				// 也可能是由于新系统(iOS 15.1)有BUG导致,待后续观察
+				$0.minimumScaleFactor = $0.numberOfLines == 1 ? 0.99 : 0.0
+				$0.adjustsFontSizeToFitWidth = $0.numberOfLines == 1 ? true : false
+			}
+		}
+	}
+	private var titleSize: CGSize {
+		// 适配iOS14,否则此属性会按照字体的Font返回一个值,从而影响intrinsicContentSize的计算
+		guard let titleLabel = buttonLabel, titleLabel.text != .none else {
+			return .zero
+		}
+		if #available(iOS 8.0, *) {
+			return titleLabel.intrinsicContentSize
+		} else {
+			return titleLabel.frame.size
+		}
+	}
+	private var imageWidth: CGFloat { imageSize.width }
+	private var imageHeight: CGFloat { imageSize.height }
+	private var titleWidth: CGFloat { titleSize.width }
+	private var titleHeight: CGFloat { titleSize.height }
+	
+	private func setupImageTitleEdgeInsets() {
 		
-		assert(spacing >= 0, "A sane person will never do that🤪,right?")
-		
-		// 赋值
-		imageTitleAxis = axis
-		imageTitleSpacing = spacing
-		
-		// 声明
 		var imageInsets = UIEdgeInsets.zero
 		var titleInsets = UIEdgeInsets.zero
-		let halfSpacing = spacing / 2.0
+		let halfPadding = imagePadding / 2.0
 		
 		/// 根据ContentVerticalAlignment和ContentHorizontalAlignment
-		/// 以及ImageTitleStyle确定最终的Image/Title的EdgeInsets
+		/// 以及ImagePlacement确定最终的Image/Title的EdgeInsets
 		/// - 说明:
 		///  - 平时使用最多的就是水平和垂直方向都居中的情况了,其他情况只为了加深印象
 		var alignments = (contentVerticalAlignment, contentHorizontalAlignment)
 		if #available(iOS 11, *) {
 			alignments = (contentVerticalAlignment, effectiveContentHorizontalAlignment)
 		}
+		let titleHeightWithPadding = titleHeight + imagePadding
+		let titleWidthWithPadding = titleWidth + imagePadding
+		let imageHeightWithPadding = imageHeight + imagePadding
+		let imageWidthWithPadding = imageWidth + imagePadding
+		let titleOffset = (imageHeight - titleHeight) / 2.0
 		switch alignments {
 			
-			case (.center, .center):
-				switch axis {
-					case .down:
-						imageInsets = UIEdgeInsets(top: -titleHeight-spacing, left: 0, bottom: 0, right: -titleWidth)
-						titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: -imageHeight-spacing, right: 0)
-					case .right:
-						imageInsets = UIEdgeInsets(top: 0, left: -halfSpacing, bottom: 0, right: halfSpacing)
-						titleInsets = UIEdgeInsets(top: 0, left: halfSpacing, bottom: 0, right: -halfSpacing)
-					case .up:
-						imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: -titleHeight-spacing, right: -titleWidth)
-						titleInsets = UIEdgeInsets(top: -imageHeight-spacing, left: -imageWidth, bottom: 0, right: 0)
-					case .left:
-						let imageOffset = titleWidth + halfSpacing
-						let titleOffset = imageWidth + halfSpacing
-						imageInsets = UIEdgeInsets(top: 0, left: imageOffset, bottom: 0, right: -imageOffset)
-						titleInsets = UIEdgeInsets(top: 0, left: -titleOffset, bottom: 0, right: titleOffset)
-				}
-			case (.center, .left):
-				switch axis {
-					case .down:
-						imageInsets = UIEdgeInsets(top: -titleHeight-spacing, left: 0, bottom: 0, right: -titleWidth)
-						titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: -imageHeight-spacing, right: 0)
-					case .right:
-						titleInsets = UIEdgeInsets(top: 0, left: spacing, bottom: 0, right: -spacing)
-					case .up:
-						imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: -titleHeight-spacing, right: -titleWidth)
-						titleInsets = UIEdgeInsets(top: -imageHeight-spacing, left: -imageWidth, bottom: 0, right: 0)
-					case .left:
-						imageInsets = UIEdgeInsets(top: 0, left: titleWidth+spacing, bottom: 0, right: -titleWidth-spacing)
-						titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: 0, right: imageWidth)
-				}
-			case (.center, .right):
-				switch axis {
-					case .down:
-						imageInsets = UIEdgeInsets(top: -titleHeight-spacing, left: 0, bottom: 0, right: -titleWidth)
-						titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: -imageHeight-spacing, right: 0)
-					case .right:
-						imageInsets = UIEdgeInsets(top: 0, left: -spacing, bottom: 0, right: spacing)
-					case .up:
-						imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: -titleHeight-spacing, right: -titleWidth)
-						titleInsets = UIEdgeInsets(top: -imageHeight-spacing, left: -imageWidth, bottom: 0, right: 0)
-					case .left:
-						imageInsets = UIEdgeInsets(top: 0, left: titleWidth, bottom: 0, right: -titleWidth)
-						titleInsets = UIEdgeInsets(top: 0, left: -imageWidth-spacing, bottom: 0, right: imageWidth+spacing)
-				}
-			case (.top, .left):
-				switch axis {
-					case .down:
-						titleInsets = UIEdgeInsets(top: imageHeight+spacing, left: -imageWidth, bottom: 0, right: 0)
-					case .right:
-						titleInsets = UIEdgeInsets(top: 0, left: spacing, bottom: 0, right: -spacing)
-					case .up:
-						imageInsets = UIEdgeInsets(top: titleHeight+spacing, left: 0, bottom: -titleHeight-spacing, right: 0)
-						titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: 0, right: 0)
-					case .left:
-						imageInsets = UIEdgeInsets(top: 0, left: titleWidth+spacing, bottom: 0, right: -titleWidth-spacing)
-						titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: 0, right: 0)
-				}
-			case (.top, .center):
-				switch axis {
-					case .down:
-						imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -titleWidth)
-						titleInsets = UIEdgeInsets(top: imageHeight+spacing, left: -imageWidth, bottom: 0, right: 0)
-					case .right:
-						imageInsets = UIEdgeInsets(top: 0, left: -halfSpacing, bottom: 0, right: halfSpacing)
-						titleInsets = UIEdgeInsets(top: 0, left: halfSpacing, bottom: 0, right: -halfSpacing)
-					case .up:
-						imageInsets = UIEdgeInsets(top: titleHeight+spacing, left: 0, bottom: -titleHeight-spacing, right: -titleWidth)
-						titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: 0, right: 0)
-					case .left:
-						let imageOffset = titleWidth + halfSpacing
-						let titleOffset = imageWidth + halfSpacing
-						imageInsets = UIEdgeInsets(top: 0, left: imageOffset, bottom: 0, right: -imageOffset)
-						titleInsets = UIEdgeInsets(top: 0, left: -titleOffset, bottom: 0, right: titleOffset)
-				}
-			case (.top, .right):
-				switch axis {
-					case .down:
-						imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -titleWidth)
-						titleInsets = UIEdgeInsets(top: imageHeight+spacing, left: -imageWidth-spacing, bottom: 0, right: 0)
-					case .right:
-						imageInsets = UIEdgeInsets(top: 0, left: -spacing, bottom: 0, right: spacing)
-					case .up:
-						imageInsets = UIEdgeInsets(top: titleHeight+spacing, left: 0, bottom: -titleHeight-spacing, right: -titleWidth)
-						titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: 0, right: 0)
-					case .left:
-						imageInsets = UIEdgeInsets(top: 0, left: titleWidth, bottom: 0, right: -titleWidth)
-						titleInsets = UIEdgeInsets(top: 0, left: -imageWidth-spacing, bottom: 0, right: imageWidth+spacing)
-				}
-			case (.bottom, .left):
-				switch axis {
-					case .down:
-						imageInsets = UIEdgeInsets(top: -titleHeight-spacing, left: 0, bottom: titleHeight+spacing, right: 0)
-						titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: 0, right: 0)
-					case .right:
-						titleInsets = UIEdgeInsets(top: 0, left: spacing, bottom: 0, right: -spacing)
-					case .up:
-						titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: imageHeight+spacing, right: 0)
-					case .left:
-						imageInsets = UIEdgeInsets(top: 0, left: titleWidth+spacing, bottom: 0, right: -titleWidth-spacing)
-						titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: 0, right: imageWidth)
-				}
-			case (.bottom, .center):
-				switch axis {
-					case .down:
-						imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: titleHeight+spacing, right: -titleWidth)
-						titleInsets = UIEdgeInsets(top: imageHeight+spacing, left: -imageWidth, bottom: 0, right: 0)
-					case .right:
-						imageInsets = UIEdgeInsets(top: 0, left: -halfSpacing, bottom: 0, right: halfSpacing)
-						titleInsets = UIEdgeInsets(top: 0, left: halfSpacing, bottom: 0, right: -halfSpacing)
-					case .up:
-						imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -titleWidth)
-						titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: imageHeight+spacing, right: 0)
-					case .left:
-						let imageOffset = titleWidth + halfSpacing
-						let titleOffset = imageWidth + halfSpacing
-						imageInsets = UIEdgeInsets(top: 0, left: imageOffset, bottom: 0, right: -imageOffset)
-						titleInsets = UIEdgeInsets(top: 0, left: -titleOffset, bottom: 0, right: titleOffset)
-				}
-			case (.bottom, .right):
-				switch axis {
-					case .down:
-						imageInsets = UIEdgeInsets(top: -titleHeight-spacing, left: 0, bottom: titleHeight+spacing, right: -titleWidth)
-						titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: 0, right: 0)
-					case .right:
-						imageInsets = UIEdgeInsets(top: 0, left: -spacing, bottom: 0, right: spacing)
-					case .up:
-						imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -titleWidth)
-						titleInsets = UIEdgeInsets(top: -imageHeight-spacing, left: -imageWidth, bottom: imageHeight+spacing, right: 0)
-					case .left:
-						imageInsets = UIEdgeInsets(top: 0, left: titleWidth, bottom: 0, right: -titleWidth)
-						titleInsets = UIEdgeInsets(top: 0, left: -imageWidth-spacing, bottom: 0, right: imageWidth+spacing)
-				}
-			default:
-				break
+		case (.center, .center):
+			switch imagePlacement {
+			case .top:
+				imageInsets = UIEdgeInsets(top: -titleHeightWithPadding, left: 0, bottom: 0, right: -titleWidth)
+				titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: -imageHeightWithPadding, right: 0)
+			case .left:
+				imageInsets = UIEdgeInsets(top: 0, left: -halfPadding, bottom: 0, right: halfPadding)
+				titleInsets = UIEdgeInsets(top: 0, left: halfPadding, bottom: 0, right: -halfPadding)
+			case .bottom:
+				imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: -titleHeightWithPadding, right: -titleWidth)
+				titleInsets = UIEdgeInsets(top: -imageHeightWithPadding, left: -imageWidth, bottom: 0, right: 0)
+			case .right:
+				let imageOffset = titleWidth + halfPadding
+				let titleOffset = imageWidth + halfPadding
+				imageInsets = UIEdgeInsets(top: 0, left: imageOffset, bottom: 0, right: -imageOffset)
+				titleInsets = UIEdgeInsets(top: 0, left: -titleOffset, bottom: 0, right: titleOffset)
+			}
+		case (.center, .left):
+			switch imagePlacement {
+			case .top:
+				imageInsets = UIEdgeInsets(top: -titleHeightWithPadding, left: 0, bottom: 0, right: -titleWidth)
+				titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: -imageHeightWithPadding, right: 0)
+			case .left:
+				titleInsets = UIEdgeInsets(top: 0, left: imagePadding, bottom: 0, right: -imagePadding)
+			case .bottom:
+				imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: -titleHeightWithPadding, right: -titleWidth)
+				titleInsets = UIEdgeInsets(top: -imageHeightWithPadding, left: -imageWidth, bottom: 0, right: 0)
+			case .right:
+				imageInsets = UIEdgeInsets(top: 0, left: titleWidthWithPadding, bottom: 0, right: -titleWidthWithPadding)
+				titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: 0, right: imageWidth)
+			}
+		case (.center, .right):
+			switch imagePlacement {
+			case .top:
+				imageInsets = UIEdgeInsets(top: -titleHeightWithPadding, left: 0, bottom: 0, right: -titleWidth)
+				titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: -imageHeightWithPadding, right: 0)
+			case .left:
+				imageInsets = UIEdgeInsets(top: 0, left: -imagePadding, bottom: 0, right: imagePadding)
+			case .bottom:
+				imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: -titleHeightWithPadding, right: -titleWidth)
+				titleInsets = UIEdgeInsets(top: -imageHeightWithPadding, left: -imageWidth, bottom: 0, right: 0)
+			case .right:
+				imageInsets = UIEdgeInsets(top: 0, left: titleWidth, bottom: 0, right: -titleWidth)
+				titleInsets = UIEdgeInsets(top: 0, left: -imageWidthWithPadding, bottom: 0, right: imageWidthWithPadding)
+			}
+		case (.top, .left):
+			switch imagePlacement {
+			case .top:
+				titleInsets = UIEdgeInsets(top: imageHeightWithPadding, left: -imageWidth, bottom: 0, right: 0)
+			case .left:
+				titleInsets = UIEdgeInsets(top: 0, left: imagePadding, bottom: 0, right: -imagePadding)
+			case .bottom:
+				imageInsets = UIEdgeInsets(top: titleHeightWithPadding, left: 0, bottom: -titleHeightWithPadding, right: 0)
+				titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: 0, right: 0)
+			case .right:
+				imageInsets = UIEdgeInsets(top: 0, left: titleWidthWithPadding, bottom: 0, right: -titleWidthWithPadding)
+				titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: 0, right: 0)
+			}
+		case (.top, .center):
+			switch imagePlacement {
+			case .top:
+				imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -titleWidth)
+				titleInsets = UIEdgeInsets(top: imageHeightWithPadding, left: -imageWidth, bottom: 0, right: 0)
+			case .left:
+				imageInsets = UIEdgeInsets(top: 0, left: -halfPadding, bottom: 0, right: halfPadding)
+				titleInsets = UIEdgeInsets(top: 0, left: halfPadding, bottom: 0, right: -halfPadding)
+			case .bottom:
+				imageInsets = UIEdgeInsets(top: titleHeightWithPadding, left: 0, bottom: -titleHeightWithPadding, right: -titleWidth)
+				titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: 0, right: 0)
+			case .right:
+				let imageOffset = titleWidth + halfPadding
+				let titleOffset = imageWidth + halfPadding
+				imageInsets = UIEdgeInsets(top: 0, left: imageOffset, bottom: 0, right: -imageOffset)
+				titleInsets = UIEdgeInsets(top: 0, left: -titleOffset, bottom: 0, right: titleOffset)
+			}
+		case (.top, .right):
+			switch imagePlacement {
+			case .top:
+				imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -titleWidth)
+				titleInsets = UIEdgeInsets(top: imageHeightWithPadding, left: -imageWidthWithPadding, bottom: 0, right: 0)
+			case .left:
+				imageInsets = UIEdgeInsets(top: 0, left: -imagePadding, bottom: 0, right: imagePadding)
+			case .bottom:
+				imageInsets = UIEdgeInsets(top: titleHeightWithPadding, left: 0, bottom: -titleHeightWithPadding, right: -titleWidth)
+				titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: 0, right: 0)
+			case .right:
+				imageInsets = UIEdgeInsets(top: 0, left: titleWidth, bottom: 0, right: -titleWidth)
+				titleInsets = UIEdgeInsets(top: 0, left: -imageWidthWithPadding, bottom: 0, right: imageWidthWithPadding)
+			}
+		case (.bottom, .left):
+			switch imagePlacement {
+			case .top:
+				imageInsets = UIEdgeInsets(top: -titleHeightWithPadding, left: 0, bottom: titleHeightWithPadding, right: 0)
+				titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: 0, right: 0)
+			case .left:
+				titleInsets = UIEdgeInsets(top: 0, left: imagePadding, bottom: 0, right: -imagePadding)
+			case .bottom:
+				titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: imageHeightWithPadding, right: 0)
+			case .right:
+				imageInsets = UIEdgeInsets(top: 0, left: titleWidthWithPadding, bottom: 0, right: -titleWidthWithPadding)
+				titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: 0, right: imageWidth)
+			}
+		case (.bottom, .center):
+			switch imagePlacement {
+			case .top:
+				imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: titleHeightWithPadding, right: -titleWidth)
+				titleInsets = UIEdgeInsets(top: imageHeightWithPadding, left: -imageWidth, bottom: 0, right: 0)
+			case .left:
+				imageInsets = UIEdgeInsets(top: 0, left: -halfPadding, bottom: 0, right: halfPadding)
+				titleInsets = UIEdgeInsets(top: 0, left: halfPadding, bottom: 0, right: -halfPadding)
+			case .bottom:
+				imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -titleWidth)
+				titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: imageHeightWithPadding, right: 0)
+			case .right:
+				let imageOffset = titleWidth + halfPadding
+				let titleOffset = imageWidth + halfPadding
+				imageInsets = UIEdgeInsets(top: 0, left: imageOffset, bottom: 0, right: -imageOffset)
+				titleInsets = UIEdgeInsets(top: 0, left: -titleOffset, bottom: 0, right: titleOffset)
+			}
+		case (.bottom, .right):
+			switch imagePlacement {
+			case .top:
+				imageInsets = UIEdgeInsets(top: -titleHeightWithPadding, left: 0, bottom: titleHeightWithPadding, right: -titleWidth)
+				titleInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: 0, right: 0)
+			case .left:
+				imageInsets = UIEdgeInsets(top: 0, left: -imagePadding, bottom: 0, right: imagePadding)
+			case .bottom:
+				imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -titleWidth)
+				titleInsets = UIEdgeInsets(top: -imageHeightWithPadding, left: -imageWidth, bottom: imageHeightWithPadding, right: 0)
+			case .right:
+				imageInsets = UIEdgeInsets(top: 0, left: titleWidth, bottom: 0, right: -titleWidth)
+				titleInsets = UIEdgeInsets(top: 0, left: -imageWidthWithPadding, bottom: 0, right: imageWidthWithPadding)
+			}
+		default:
+			break
 		}
 		
-		// 赋值
-		titleEdgeInsets = titleInsets
 		imageEdgeInsets = imageInsets
+		titleEdgeInsets = titleInsets
 		
 		invalidateIntrinsicContentSize()
+	}
+	
+	@available(iOS 15.0, *)
+	private func setConfigurationUpdateHandlerIfNeeded() {
+		if configurationUpdateHandler == nil {
+			configurationUpdateHandler = { button in
+				var config = button.configuration ?? .plain()
+				config.contentInsets = button.contentEdgeInsets.directionalEdgeInsets
+				config.imagePadding = button.imagePadding
+				config.imagePlacement = button.imagePlacement.configTranslation
+				if let title = button.title(for: button.state) {
+					var titleAttributes = AttributeContainer()
+					titleAttributes.font = button.buttonLabel?.font
+					titleAttributes.foregroundColor = button.titleColor(for: button.state)
+					config.attributedTitle = AttributedString(title, attributes: titleAttributes)
+				}
+				if let attributedTitle = button.attributedTitle(for: button.state) {
+					config.attributedTitle = AttributedString(attributedTitle)
+				}
+				config.image = button.image(for: button.state)
+				config.background.image = button.backgroundImage(for: button.state)
+				config.background.backgroundColor = button.backgroundColor
+				config.baseBackgroundColor = button.backgroundColor
+				
+				button.configuration = config
+			}
+		}
+		setNeedsUpdateConfiguration()
 	}
 }

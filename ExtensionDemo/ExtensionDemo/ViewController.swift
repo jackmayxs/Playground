@@ -45,7 +45,6 @@ class ViewController: UIViewController {
 		waveView.startWave()
 	}
 	@IBAction func horizontalChanged(_ sender: UISegmentedControl) {
-		topButton.setImageTitleAxis()
 		axisSegment.selectedSegmentIndex = 1
 		switch sender.selectedSegmentIndex {
 			case 0: topButton.contentHorizontalAlignment = .center
@@ -62,7 +61,6 @@ class ViewController: UIViewController {
 		}
 	}
 	@IBAction func verticalChanged(_ sender: UISegmentedControl) {
-		topButton.setImageTitleAxis()
 		axisSegment.selectedSegmentIndex = 1
 		switch sender.selectedSegmentIndex {
 			case 0: topButton.contentVerticalAlignment = .center
@@ -91,14 +89,18 @@ class ViewController: UIViewController {
 			default:
 				break
 		}
+		topButton.setNeedsLayout()
+		UIView.animate(withDuration: 1.0) {
+			self.view.layoutIfNeeded()
+		}
 	}
 	@IBAction func imageTitleStyleChanged(_ sender: UISegmentedControl) {
-		let spacing = CGFloat(Double(spacingTF.text ?? "") ?? 0)
+		topButton.imagePadding = spacingTF.text?.double ?? 0.0
 		switch sender.selectedSegmentIndex {
-			case 0: topButton.setImageTitleAxis(.down, spacing: spacing)
-			case 1: topButton.setImageTitleAxis(.right, spacing: spacing)
-			case 2: topButton.setImageTitleAxis(.up, spacing: spacing)
-			case 3: topButton.setImageTitleAxis(.left, spacing: spacing)
+			case 0: topButton.imagePlacement = .top
+			case 1: topButton.imagePlacement = .left
+			case 2: topButton.imagePlacement = .bottom
+			case 3: topButton.imagePlacement = .right
 			default: break
 		}
 		UIView.animate(withDuration: 1.0) {
@@ -106,7 +108,7 @@ class ViewController: UIViewController {
 		}
 	}
 	@IBAction func resetTopButton(_ sender: UIButton) {
-		topButton.setImageTitleAxis(.right)
+		topButton.imagePlacement = .left
 	}
 	@IBAction func toggleFixedSize(_ sender: UIButton) {
 		
