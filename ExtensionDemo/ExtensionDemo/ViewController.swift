@@ -12,12 +12,18 @@ class ViewController: UIViewController {
 	
 	@IBOutlet var buttonSizeConstraints: [NSLayoutConstraint]!
 	@IBOutlet weak var axisSegment: UISegmentedControl!
+	@IBOutlet weak var pictureSizeSegment: UISegmentedControl!
+	@IBOutlet weak var titleSizeSegment: UISegmentedControl!
+	
+	private let hei = #imageLiteral(resourceName: "hei")
+	private let small = UIImage(systemName: "suit.heart.fill")
 	@IBOutlet weak var topButton: UIButton!
 	@IBOutlet weak var spacingTF: UITextField!
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
 		topButton.titleLabel?.backgroundColor = UIColor.systemYellow.withAlphaComponent(0.3)
+		topButton.imageView?.backgroundColor = UIColor.systemYellow.withAlphaComponent(0.3)
 	}
 	
 	private func waveView() {
@@ -44,19 +50,34 @@ class ViewController: UIViewController {
 		// 开始播放波浪动画
 		waveView.startWave()
 	}
+	
+	@IBAction func titleSizeChanged(_ sender: UISegmentedControl) {
+		switch sender.selectedSegmentIndex {
+		case 0: topButton.setTitle("HHHHHHH", for: .normal)
+		case 1: topButton.setTitle("HH", for: .normal)
+		default: break
+		}
+	}
+	
+	@IBAction func imageSizeChanged(_ sender: UISegmentedControl) {
+		switch sender.selectedSegmentIndex {
+		case 0: topButton.setImage(hei, for: .normal)
+		case 1: topButton.setImage(small, for: .normal)
+		default: break
+		}
+	}
+	
 	@IBAction func horizontalChanged(_ sender: UISegmentedControl) {
 		axisSegment.selectedSegmentIndex = 1
 		switch sender.selectedSegmentIndex {
 			case 0: topButton.contentHorizontalAlignment = .center
-			case 1: topButton.contentHorizontalAlignment = .left
-			case 2: topButton.contentHorizontalAlignment = .right
+			case 1: topButton.contentHorizontalAlignment = .leading
+			case 2: topButton.contentHorizontalAlignment = .trailing
 			case 3: topButton.contentHorizontalAlignment = .fill
-			case 4: topButton.contentHorizontalAlignment = .leading
-			case 5: topButton.contentHorizontalAlignment = .trailing
 			default:
 				return
 		}
-		UIView.animate(withDuration: 1.0) {
+		UIView.animate(withDuration: 0.3) {
 			self.view.layoutIfNeeded()
 		}
 	}
@@ -71,7 +92,7 @@ class ViewController: UIViewController {
 				return
 		}
 		topButton.setNeedsLayout()
-		UIView.animate(withDuration: 1.0) {
+		UIView.animate(withDuration: 0.3) {
 			self.view.layoutIfNeeded()
 		}
 	}
@@ -90,7 +111,7 @@ class ViewController: UIViewController {
 				break
 		}
 		topButton.setNeedsLayout()
-		UIView.animate(withDuration: 1.0) {
+		UIView.animate(withDuration: 0.3) {
 			self.view.layoutIfNeeded()
 		}
 	}
@@ -103,7 +124,7 @@ class ViewController: UIViewController {
 			case 3: topButton.imagePlacement = .right
 			default: break
 		}
-		UIView.animate(withDuration: 1.0) {
+		UIView.animate(withDuration: 0.3) {
 			self.view.layoutIfNeeded()
 		}
 	}
