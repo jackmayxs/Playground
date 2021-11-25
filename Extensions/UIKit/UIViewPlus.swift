@@ -159,13 +159,35 @@ extension UIView {
 	}
 	
 	/// 硬化 | 不可拉伸 | 不可压缩
-	/// - Parameter intensity: 硬化强度
-	/// - 提示: 谨慎使用这个方法: 调用这四个方法之后, 会导致UIButtonPlus分类中重写的intrinsicContentSize返回的size失效
-	func harden(intensity: UILayoutPriority = .required) {
-		setContentCompressionResistancePriority(intensity, for: .horizontal)
-		setContentCompressionResistancePriority(intensity, for: .vertical)
-		setContentHuggingPriority(intensity, for: .horizontal)
-		setContentHuggingPriority(intensity, for: .vertical)
+	/// - Parameters:
+	///   - axis: 设置轴线 | 默认为空(两轴同时硬化)
+	///   - intensity: 硬化强度
+	/// - Returns: 控件本身
+	/// - Tips: 谨慎使用这个方法: 调用这四个方法之后, 会导致UIButtonPlus分类中重写的intrinsicContentSize返回的size失效
+	@discardableResult
+	func harden(axis: NSLayoutConstraint.Axis? = nil, intensity: UILayoutPriority = .required) -> Self {
+		func hardenVertical() {
+			setContentCompressionResistancePriority(intensity, for: .vertical)
+			setContentHuggingPriority(intensity, for: .vertical)
+		}
+		func hardenHorizontal() {
+			setContentCompressionResistancePriority(intensity, for: .horizontal)
+			setContentHuggingPriority(intensity, for: .horizontal)
+		}
+		guard let axis = axis else {
+			hardenVertical()
+			hardenHorizontal()
+			return self
+		}
+		switch axis {
+		case .horizontal:
+			hardenHorizontal()
+		case .vertical:
+			hardenVertical()
+		@unknown default:
+			break
+		}
+		return self
 	}
 	
 	// MARK: - __________ 圆角 + 阴影 __________
