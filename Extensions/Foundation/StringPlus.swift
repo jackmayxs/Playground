@@ -190,7 +190,7 @@ extension Locale {
 		}
 		// MARK: - __________ Chinese Type __________
 		enum Chinese: String {
-			case simplified = "zh_Hans"
+			case simplified = "zh_CN"
 		}
 	}
 }

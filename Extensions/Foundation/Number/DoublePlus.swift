@@ -8,6 +8,12 @@
 
 import UIKit
 
+extension Numeric {
+	var spellout: String? {
+		NumberFormatter.spellout.string(for: self)
+	}
+}
+
 // MARK: - __________ Common __________
 extension Double {
 	
@@ -35,13 +41,9 @@ extension Double {
 // MARK: - __________ Format __________
 extension Double {
 	
-	@Temporary<NumberFormatter>(expireIn: 300)
-	fileprivate static var sharedNumberFormatter = NumberFormatter.init
-	
 	// 默认设置
 	fileprivate var decimalFormatter: NumberFormatter {
-		Self.sharedNumberFormatter
-			.reset()
+		NumberFormatter.shared
 			.configure { make in
 				make.numberStyle = .decimal
 				make.maximumFractionDigits = 2

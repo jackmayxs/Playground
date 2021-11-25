@@ -10,6 +10,21 @@ import Foundation
 
 extension NumberFormatter {
 	
+	@Temporary<NumberFormatter>(expireIn: 300)
+	fileprivate static var sharedNumberFormatter = NumberFormatter.init
+	
+	public static var shared: NumberFormatter {
+		sharedNumberFormatter.reset()
+	}
+	
+	public static var spellout: NumberFormatter {
+		shared.configure {
+			$0.numberStyle = .spellOut
+			$0.zeroSymbol = "零"
+			$0.locale = Locale(.chinese(.simplified))
+		}
+	}
+	
 	/// 重置NumberFormatter
 	@discardableResult
 	func reset() -> Self {
