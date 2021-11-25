@@ -1,0 +1,81 @@
+
+/* Class = "UIButton"; normalTitle = "Reset"; ObjectID = "3Rr-Eg-Xss"; */
+"3Rr-Eg-Xss.normalTitle" = "Reset";
+
+/* Class = "UISegmentedControl"; 5Hw-Ng-EkD.segmentTitles[0] = "V:Center"; ObjectID = "5Hw-Ng-EkD"; */
+"5Hw-Ng-EkD.segmentTitles[0]" = "V:Center";
+
+/* Class = "UISegmentedControl"; 5Hw-Ng-EkD.segmentTitles[1] = "Top"; ObjectID = "5Hw-Ng-EkD"; */
+"5Hw-Ng-EkD.segmentTitles[1]" = "Top";
+
+/* Class = "UISegmentedControl"; 5Hw-Ng-EkD.segmentTitles[2] = "Bottom"; ObjectID = "5Hw-Ng-EkD"; */
+"5Hw-Ng-EkD.segmentTitles[2]" = "Bottom";
+
+/* Class = "UISegmentedControl"; 5Hw-Ng-EkD.segmentTitles[3] = "Fill"; ObjectID = "5Hw-Ng-EkD"; */
+"5Hw-Ng-EkD.segmentTitles[3]" = "Fill";
+
+/* Class = "UISegmentedControl"; 7ej-ad-OcN.segmentTitles[0] = "㊤"; ObjectID = "7ej-ad-OcN"; */
+"7ej-ad-OcN.segmentTitles[0]" = "Top";
+
+/* Class = "UISegmentedControl"; 7ej-ad-OcN.segmentTitles[1] = "㊧"; ObjectID = "7ej-ad-OcN"; */
+"7ej-ad-OcN.segmentTitles[1]" = "Left";
+
+/* Class = "UISegmentedControl"; 7ej-ad-OcN.segmentTitles[2] = "㊦"; ObjectID = "7ej-ad-OcN"; */
+"7ej-ad-OcN.segmentTitles[2]" = "Bottom";
+
+/* Class = "UISegmentedControl"; 7ej-ad-OcN.segmentTitles[3] = "㊨"; ObjectID = "7ej-ad-OcN"; */
+"7ej-ad-OcN.segmentTitles[3]" = "Right";
+
+/* Class = "UISegmentedControl"; 9Tf-6C-bDS.segmentTitles[0] = "大图"; ObjectID = "9Tf-6C-bDS"; */
+"9Tf-6C-bDS.segmentTitles[0]" = "Large Image";
+
+/* Class = "UISegmentedControl"; 9Tf-6C-bDS.segmentTitles[1] = "小图"; ObjectID = "9Tf-6C-bDS"; */
+"9Tf-6C-bDS.segmentTitles[1]" = "Small Image";
+
+/* Class = "UILabel"; text = "* Tap the button to toggle button size fixed or not."; ObjectID = "Guc-2O-Jfg"; */
+"Guc-2O-Jfg.text" = "* Tap the button to toggle button size fixed or not.";
+
+/* Class = "UISegmentedControl"; Uif-jd-kJe.segmentTitles[0] = "H:Center"; ObjectID = "Uif-jd-kJe"; */
+"Uif-jd-kJe.segmentTitles[0]" = "H:Center";
+
+/* Class = "UISegmentedControl"; Uif-jd-kJe.segmentTitles[1] = "Leading"; ObjectID = "Uif-jd-kJe"; */
+"Uif-jd-kJe.segmentTitles[1]" = "Leading";
+
+/* Class = "UISegmentedControl"; Uif-jd-kJe.segmentTitles[2] = "Trailing"; ObjectID = "Uif-jd-kJe"; */
+"Uif-jd-kJe.segmentTitles[2]" = "Trailing";
+
+/* Class = "UISegmentedControl"; Uif-jd-kJe.segmentTitles[3] = "Fill"; ObjectID = "Uif-jd-kJe"; */
+"Uif-jd-kJe.segmentTitles[3]" = "Fill";
+
+/* Class = "UITextField"; placeholder = "Spacing"; ObjectID = "X4g-Oy-bYq"; */
+"X4g-Oy-bYq.placeholder" = "Spacing";
+
+/* Class = "UITextField"; text = "20"; ObjectID = "X4g-Oy-bYq"; */
+"X4g-Oy-bYq.text" = "20";
+
+/* Class = "UISegmentedControl"; ele-fQ-ThF.segmentTitles[0] = "Both"; ObjectID = "ele-fQ-ThF"; */
+"ele-fQ-ThF.segmentTitles[0]" = "Both";
+
+/* Class = "UISegmentedControl"; ele-fQ-ThF.segmentTitles[1] = "ImageOnly"; ObjectID = "ele-fQ-ThF"; */
+"ele-fQ-ThF.segmentTitles[1]" = "ImageOnly";
+
+/* Class = "UISegmentedControl"; ele-fQ-ThF.segmentTitles[2] = "TitleOnly"; ObjectID = "ele-fQ-ThF"; */
+"ele-fQ-ThF.segmentTitles[2]" = "TitleOnly";
+
+/* Class = "UIButton"; normalTitle = "圆角"; ObjectID = "hak-mh-wcj"; */
+"hak-mh-wcj.normalTitle" = "圆角";
+
+/* Class = "UILabel"; text = "图片位置"; ObjectID = "mq4-nP-11H"; */
+"mq4-nP-11H.text" = "Image Placement";
+
+/* Class = "UIButton"; normalTitle = "HHHHHHH"; ObjectID = "ndh-PE-dUO"; */
+"ndh-PE-dUO.normalTitle" = "HHHHHHH";
+
+/* Class = "UISegmentedControl"; obX-QE-cLl.segmentTitles[0] = "长标题"; ObjectID = "obX-QE-cLl"; */
+"obX-QE-cLl.segmentTitles[0]" = "Long Title";
+
+/* Class = "UISegmentedControl"; obX-QE-cLl.segmentTitles[1] = "短标题"; ObjectID = "obX-QE-cLl"; */
+"obX-QE-cLl.segmentTitles[1]" = "Short Title";
+
+/* Class = "UILabel"; text = "间距"; ObjectID = "qfh-C8-eVb"; */
+"qfh-C8-eVb.text" = "Spacing";
