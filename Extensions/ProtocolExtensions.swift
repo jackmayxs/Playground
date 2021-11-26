@@ -8,6 +8,11 @@
 
 import Foundation
 
+// MARK: - __________ Equatable __________
+extension Equatable {
+	var optional: Self? { self }
+}
+
 // MARK: - __________ Collection __________
 extension Collection {
 	var isNotEmpty: Bool {
