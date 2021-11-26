@@ -101,33 +101,18 @@ extension UIButton {
 		}
 	}
 	
-	private var imageSize: CGSize {
-		guard let image = currentImage else {
-			return .zero
-		}
-		return image.size
-	}
 	private var buttonLabel: UILabel? {
-		titleLabel.flatMap { lb in
-			lb.configure {
+		titleLabel.flatMap {
+			$0.configure { label in
 				// 以下两句,解决iOS 15以后由于设置了太小的字体导致Label被压缩的问题
 				// 也可能是由于新系统(iOS 15.1)有BUG导致,待后续观察
-				$0.minimumScaleFactor = $0.numberOfLines == 1 ? 0.99 : 0.0
-				$0.adjustsFontSizeToFitWidth = $0.numberOfLines == 1 ? true : false
+				label.minimumScaleFactor = label.numberOfLines == 1 ? 0.98 : 0.0
+				label.adjustsFontSizeToFitWidth = label.numberOfLines == 1 ? true : false
 			}
 		}
 	}
-	private var titleSize: CGSize {
-		// 适配iOS14,否则此属性会按照字体的Font返回一个值,从而影响intrinsicContentSize的计算
-		guard let titleLabel = buttonLabel, titleLabel.text != .none else {
-			return .zero
-		}
-		if #available(iOS 8.0, *) {
-			return titleLabel.intrinsicContentSize
-		} else {
-			return titleLabel.frame.size
-		}
-	}
+	private var imageSize: CGSize { currentImage?.size ?? .zero }
+	private var titleSize: CGSize { buttonLabel?.intrinsicContentSize ?? .zero }
 	private var imageWidth: CGFloat { imageSize.width }
 	private var imageHeight: CGFloat { imageSize.height }
 	private var titleWidth: CGFloat { titleSize.width }

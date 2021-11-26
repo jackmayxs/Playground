@@ -21,13 +21,13 @@ extension NumberFormatter {
 		shared.configure {
 			$0.numberStyle = .spellOut
 			$0.zeroSymbol = "零"
-			$0.locale = Locale(.chinese(.simplified))
+			$0.locale = .language(.chinese(.simplified))
 		}
 	}
 	
 	/// 重置NumberFormatter
 	@discardableResult
-	func reset() -> Self {
+	private func reset() -> Self {
 		numberStyle = .none
 		locale = .current
 		generatesDecimalNumbers = false

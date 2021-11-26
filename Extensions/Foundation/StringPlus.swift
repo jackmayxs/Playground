@@ -175,8 +175,8 @@ extension String {
 
 extension Locale {
 	
-	init(_ language: Language) {
-		self.init(identifier: language.identifier)
+	static func language(_ language: Language) -> Locale {
+		Locale(identifier: language.identifier)
 	}
 	
 	// MARK: - __________ Languages __________

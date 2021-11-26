@@ -50,13 +50,13 @@ struct Configurator<Object> {
 
 protocol Chainable {}
 extension Chainable {
-	var make: Configurator<Self> {
+	var set: Configurator<Self> {
 		Configurator(self)
 	}
 }
 extension Chainable where Self: SimpleInitializer {
 	static var make: Configurator<Self> {
-		self.init().make
+		self.init().set
 	}
 }
 extension NSObject: Chainable { }

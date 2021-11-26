@@ -10,34 +10,32 @@ import Foundation
 
 extension Date {
 	
-	fileprivate static var commonDateFormatter = DateFormatter()
-	var regularFormatter: DateFormatter {
-		Self.commonDateFormatter.configure { make in
-			make.timeZone = .current
-			make.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-		}
-	}
-	var beijingFormatter: DateFormatter {
-		Self.commonDateFormatter.configure { make in
-			make.timeZone = .beijing
-			make.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-		}
-	}
-	var debugFormatter: DateFormatter {
-		Self.commonDateFormatter.configure { make in
-			make.timeZone = .current
-			make.dateFormat = "HH:mm:ss.SSS"
-		}
+	func string(dateFormat: String) -> String {
+		DateFormatter.shared.set
+			.dateFormat(dateFormat)
+			.stabilized
+			.transform(transformer)
 	}
 	
 	var beijingTimeString: String {
-		beijingFormatter.string(from: self)
+		DateFormatter.shared.set
+			.dateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+			.timeZone(.beijing)
+			.stabilized
+			.transform(transformer)
 	}
 	
 	var debugTimeString: String {
-		debugFormatter.string(from: self)
+		DateFormatter.shared.set
+			.dateFormat("HH:mm:ss.SSS")
+			.stabilized
+			.transform(transformer)
 	}
-
+	
+	private func transformer(_ formatter: DateFormatter) -> String {
+		formatter.string(from: self)
+	}
+	
 	fileprivate static var DefaultCalendarComponents: Set<Calendar.Component> {
 		[.year, .month, .day, .hour, .minute, .second, .nanosecond]
 	}
@@ -75,7 +73,7 @@ extension Date {
 	}
 	
 	var desc: String {
-		description(with: Locale(.chinese(.simplified)))
+		description(with: .language(.chinese(.simplified)))
 	}
 }
 
@@ -214,33 +212,33 @@ extension DateComponents {
 	/// - Returns: 新DateComponents
 	func erased(to element: Calendar.Component, trim: Bool = true) -> DateComponents {
 		switch element {
-			case .era:
-				return (trim ? trimmed : self).year(1).erased(to: .year, trim: trim)
-			case .year:
-				return (trim ? trimmed : self).month(1).erased(to: .month, trim: trim)
-			case .month:
-				return (trim ? trimmed : self).day(1).erased(to: .day, trim: trim)
-			case .day:
-				return (trim ? trimmed : self).hour(0).erased(to: .hour, trim: trim)
-			case .hour:
-				return (trim ? trimmed : self).minute(0).erased(to: .minute, trim: trim)
-			case .minute:
-				return (trim ? trimmed : self).second(0).erased(to: .second, trim: trim)
-			case .second:
-				return (trim ? trimmed : self).nanosecond(0)
-			default:
-				return self
+		case .era:
+			return (trim ? trimmed : self).year(1).erased(to: .year, trim: trim)
+		case .year:
+			return (trim ? trimmed : self).month(1).erased(to: .month, trim: trim)
+		case .month:
+			return (trim ? trimmed : self).day(1).erased(to: .day, trim: trim)
+		case .day:
+			return (trim ? trimmed : self).hour(0).erased(to: .hour, trim: trim)
+		case .hour:
+			return (trim ? trimmed : self).minute(0).erased(to: .minute, trim: trim)
+		case .minute:
+			return (trim ? trimmed : self).second(0).erased(to: .second, trim: trim)
+		case .second:
+			return (trim ? trimmed : self).nanosecond(0)
+		default:
+			return self
 		}
 	}
 	
 	static func +(_ lhs: DateComponents, _ rhs: DateComponents) -> DateComponents {
 		combineComponents(lhs, rhs)
 	}
-
+	
 	static func -(_ lhs: DateComponents, _ rhs: DateComponents) -> DateComponents {
 		combineComponents(lhs, rhs, multiplier: -1)
 	}
-
+	
 	static func combineComponents(_ lhs: DateComponents, _ rhs: DateComponents, multiplier: Int = 1)
 	-> DateComponents {
 		var result = DateComponents()
