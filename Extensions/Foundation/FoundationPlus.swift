@@ -35,6 +35,18 @@ infix operator --> : MultiplicationPrecedence
 
 // MARK: - __________ Array __________
 infix operator +> : MultiplicationPrecedence
+
+extension Array {
+	public init(generating elementGenerator: (Int) -> Element, count: Int) {
+		self = (0..<count).map(elementGenerator)
+	}
+	public init(generating elementGenerator: () -> Element, count: Int) {
+		self = (0..<count).map { _ in
+			elementGenerator()
+		}
+	}
+}
+
 extension Array where Element : Hashable {
 	
 	/// 添加唯一的元素
