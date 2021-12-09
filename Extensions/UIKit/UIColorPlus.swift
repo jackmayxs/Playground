@@ -9,20 +9,6 @@
 import UIKit
 
 extension UIColor {
-    // MARK: - __________ Static __________
-	
-	/// 使用十六进制数字创建UIColor
-	/// - Parameters:
-	///   - hex: 十六进制数字颜色
-	///   - alpha: 透明度
-	/// - Returns: A new UIColor
-    static func hex(_ hex: UInt32, alpha: CGFloat = 1) -> UIColor {
-        let divisor = CGFloat(255)
-        let red     = CGFloat((hex & 0xFF0000) >> 16) / divisor
-        let green   = CGFloat((hex & 0x00FF00) >>  8) / divisor
-        let blue    = CGFloat( hex & 0x0000FF       ) / divisor
-        return UIColor(red: red, green: green, blue: blue, alpha: alpha)
-    }
 	
 	/// 生成一个随机颜色
     static var random: UIColor {
@@ -46,4 +32,36 @@ extension UIColor {
         view.heightAnchor.constraint(equalToConstant: height).isActive = true
         return view
     }
+}
+
+extension Int {
+	
+	var cgColor: CGColor {
+		guard let argb = argb else { return UIColor.clear.cgColor }
+		return CGColor(red: argb.r, green: argb.g, blue: argb.b, alpha: argb.a)
+	}
+	
+	var uiColor: UIColor {
+		guard let argb = argb else { return .clear }
+		return UIColor(red: argb.r, green: argb.g, blue: argb.b, alpha: argb.a)
+	}
+	
+	var argb: (a: CGFloat, r: CGFloat, g: CGFloat, b: CGFloat)? {
+		guard 0...0xFF_FF_FF_FF ~= self else { return nil }
+		// 带透明度的情况
+		if self > 0xFF_FF_FF {
+			let alpha   = CGFloat((self & 0xFF_00_00_00) >> 24) / 0xFF
+			let red     = CGFloat((self & 0x00_FF_00_00) >> 16) / 0xFF
+			let green   = CGFloat((self & 0x00_00_FF_00) >>  8) / 0xFF
+			let blue    = CGFloat( self & 0x00_00_00_FF       ) / 0xFF
+			return (alpha, red, green, blue)
+		}
+		// 不带透明度的情况
+		else {
+			let red     = CGFloat((self & 0xFF_00_00) >> 16) / 0xFF
+			let green   = CGFloat((self & 0x00_FF_00) >>  8) / 0xFF
+			let blue    = CGFloat( self & 0x00_00_FF       ) / 0xFF
+			return (1.0, red, green, blue)
+		}
+	}
 }
