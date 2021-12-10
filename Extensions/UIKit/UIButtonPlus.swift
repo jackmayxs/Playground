@@ -302,7 +302,12 @@ extension UIButton {
 	
 	@available(iOS 15.0, *)
 	private func setConfigurationUpdateHandlerIfNeeded() {
-		if configurationUpdateHandler == nil {
+		/// Try to assign any value to configurationUpdateHandler on a button
+		/// created with the old API will cause a run-time error with the following message.
+		///
+		/// Terminating app due to uncaught exception 'NSInternalInconsistencyException',
+		/// reason: 'Invalid parameter not satisfying: configuration != nil'
+		if configuration != nil, configurationUpdateHandler == nil {
 			configurationUpdateHandler = { button in
 				var config = button.configuration ?? .plain()
 				config.contentInsets = button.contentEdgeInsets.directionalEdgeInsets
