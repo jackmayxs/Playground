@@ -194,3 +194,11 @@ extension ReusableView {
 		String(describing: self)
 	}
 }
+
+
+
+// MARK: - __________ OptionalType __________
+protocol OptionalType {
+	associatedtype Wrapped
+	var optionalValue: Wrapped? { get }
+}

@@ -33,6 +33,16 @@ func sink<In, Out>(_ output: Out) -> (In) -> Out {
 infix operator <-- : MultiplicationPrecedence
 infix operator --> : MultiplicationPrecedence
 
+// MARK: - __________ Dictionary __________
+extension Dictionary where Value: OptionalType {
+	var unwrapped: Dictionary<Key, Value.Wrapped> {
+		reduce(into: [Key:Value.Wrapped]()) { partialResult, tuple in
+			guard let value = tuple.value.optionalValue else { return }
+			partialResult[tuple.key] = value
+		}
+	}
+}
+
 // MARK: - __________ Array __________
 infix operator +> : MultiplicationPrecedence
 
@@ -90,6 +100,11 @@ extension ArraySlice {
 }
 
 // MARK: - __________ Optional __________
+
+extension Optional: OptionalType {
+	var optionalValue: Wrapped? { self }
+}
+
 extension Optional {
 	
 	var itself: Self {
