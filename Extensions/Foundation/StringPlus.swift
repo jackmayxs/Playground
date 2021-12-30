@@ -8,12 +8,14 @@
 
 import UIKit
 
+// MARK: - __________ String: LocalizedError __________
 extension String: LocalizedError {
 	public var errorDescription: String? {
 		self
 	}
 }
 
+// MARK: - __________ String? __________
 extension Optional where Wrapped == String {
 	
 	var orEmpty: String { self ?? "" }
@@ -42,7 +44,7 @@ extension Optional where Wrapped == String {
 	}
 }
 
-// MARK: - __________ Transform __________
+// MARK: - __________ StringProtocol __________
 extension StringProtocol {
 	
 	/// 返回一个字符串占用多少字节数
@@ -61,6 +63,14 @@ extension StringProtocol {
 	}
 }
 
+// MARK: - __________ Range<String.Index> __________
+extension RangeExpression where Bound == String.Index  {
+	func nsRange<S: StringProtocol>(in string: S) -> NSRange {
+		NSRange(self, in: string)
+	}
+}
+
+// MARK: - __________ String __________
 extension String {
 	
 	/// 使用右侧的字符串
@@ -76,12 +86,6 @@ extension String {
 	///   - lhs: 左操作对象
 	///   - rhs: 右操作对象
 	static func << (lhs: String, rhs: String) -> String { lhs }
-}
-// MARK: - __________ Range __________
-extension RangeExpression where Bound == String.Index  {
-	func nsRange<S: StringProtocol>(in string: S) -> NSRange {
-		NSRange(self, in: string)
-	}
 }
 extension String {
 	
@@ -112,6 +116,10 @@ extension String {
 }
 // MARK: - __________ Verification __________
 extension String {
+	
+	static var random: String {
+		UUID().uuidString
+	}
 	
 	func isValid(for characterSet: CharacterSet) -> Bool {
 		false

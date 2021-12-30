@@ -33,6 +33,7 @@
 		DE4E45D726296C8800EF9CA5 /* RxPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxPlus.swift; sourceTree = "<group>"; };
 		DE81A7DA263BE3DA005DFE59 /* Rx+UIScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rx+UIScrollView.swift"; sourceTree = "<group>"; };
 		DEA160BC26329AE300E16316 /* RxCLLocationManagerDelegateProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxCLLocationManagerDelegateProxy.swift; sourceTree = "<group>"; };
+		DEAE8B01277AA9D9006B8D66 /* Playground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Playground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		DECB6EC02624398000D59C09 /* RxPlayground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RxPlayground.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DECB6EC32624398000D59C09 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DECB6EC52624398000D59C09 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -112,6 +113,7 @@
 				DECB6EC32624398000D59C09 /* AppDelegate.swift */,
 				DECB6EC52624398000D59C09 /* SceneDelegate.swift */,
 				DECB6EC72624398000D59C09 /* ViewController.swift */,
+				DEAE8B01277AA9D9006B8D66 /* Playground.playground */,
 				DECB6EC92624398000D59C09 /* Main.storyboard */,
 				DECB6ECC2624398200D59C09 /* Assets.xcassets */,
 				DECB6ECE2624398200D59C09 /* LaunchScreen.storyboard */,

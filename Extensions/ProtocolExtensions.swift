@@ -19,12 +19,12 @@ extension Collection {
 		!isEmpty
 	}
 }
+// MARK: - __________ Sequence __________
 extension Sequence where Iterator.Element: OptionalType {
 	var unwrapped: [Iterator.Element.Wrapped] {
 		compactMap(\.optionalValue)
 	}
 }
-// MARK: - __________ Sequence __________
 extension Sequence where Self: ExpressibleByArrayLiteral {
 	
 	/// 空序列
