@@ -8,8 +8,6 @@
 
 import UIKit
 
-typealias SubviewsBuilder = CommonBuilder<UIView>
-
 extension UIStackView {
 	enum Associated {
 		static var backgroundView = UUID()
