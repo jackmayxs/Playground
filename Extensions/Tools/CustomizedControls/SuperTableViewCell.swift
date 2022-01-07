@@ -42,7 +42,8 @@ class SuperTableViewCell: UITableViewCell {
 	override func systemLayoutSizeFitting(_ targetSize: CGSize, withHorizontalFittingPriority horizontalFittingPriority: UILayoutPriority, verticalFittingPriority: UILayoutPriority) -> CGSize {
 		super.systemLayoutSizeFitting(targetSize, withHorizontalFittingPriority: horizontalFittingPriority, verticalFittingPriority: verticalFittingPriority) + contentInsets
 	}
-	func adjustSeparatorFor(_ tableView: UITableView, at indexPath: IndexPath) {
+	@discardableResult
+	func adjustSeparatorFor(_ tableView: UITableView, at indexPath: IndexPath) -> Self {
 		tableView.separatorStyle = .none
 		/// 第一次进入TableViewController时获取的sectionHeight不正常 所以这里做延迟1ms处理
 		DispatchQueue.main.asyncAfter(deadline: indexPath.section + indexPath.row == 0 ? 0.001 : 0.0) {
@@ -56,5 +57,6 @@ class SuperTableViewCell: UITableViewCell {
 				self.separator.isHidden = self.frame.maxY == sectionFooterRect.minY
 			}
 		}
+		return self
 	}
 }
