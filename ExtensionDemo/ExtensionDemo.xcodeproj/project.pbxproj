@@ -61,6 +61,7 @@
 		DEB622F925E8995B00702C5E /* CGFloatPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB622F825E8995B00702C5E /* CGFloatPlus.swift */; };
 		DEB622FC25E899BB00702C5E /* IntPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB622FB25E899BB00702C5E /* IntPlus.swift */; };
 		DEB6E34827633AF100212120 /* NewUIButtonSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB6E34727633AF100212120 /* NewUIButtonSystem.swift */; };
+		DED5093A27957C9C000AE370 /* CustomLayoutGuilde.swift in Sources */ = {isa = PBXBuildFile; fileRef = DED5093927957C9C000AE370 /* CustomLayoutGuilde.swift */; };
 		DEE48CF626AA64D600391508 /* ShadowPlayground.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE48CF526AA64D600391508 /* ShadowPlayground.swift */; };
 		DEE4D4B026A54A5800E5566B /* SuperTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE4D4AF26A54A5800E5566B /* SuperTableViewCell.swift */; };
 		DEF0553E25BBD31700093261 /* UIWindowPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF0553D25BBD31700093261 /* UIWindowPlus.swift */; };
@@ -128,6 +129,7 @@
 		DEB622FB25E899BB00702C5E /* IntPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntPlus.swift; sourceTree = "<group>"; };
 		DEB6E34727633AF100212120 /* NewUIButtonSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewUIButtonSystem.swift; sourceTree = "<group>"; };
 		DEC02208274F253500986DFC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
+		DED5093927957C9C000AE370 /* CustomLayoutGuilde.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomLayoutGuilde.swift; sourceTree = "<group>"; };
 		DEE48CF526AA64D600391508 /* ShadowPlayground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowPlayground.swift; sourceTree = "<group>"; };
 		DEE4D4AF26A54A5800E5566B /* SuperTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperTableViewCell.swift; sourceTree = "<group>"; };
 		DEF0553D25BBD31700093261 /* UIWindowPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIWindowPlus.swift; sourceTree = "<group>"; };
@@ -296,6 +298,7 @@
 		DEFAD78A2615CC55008CEBE0 /* BestPractice */ = {
 			isa = PBXGroup;
 			children = (
+				DED5093927957C9C000AE370 /* CustomLayoutGuilde.swift */,
 				DEFAD78B2615CCA6008CEBE0 /* TextFieldDelegate.swift */,
 				DE64BA0A264A2ADA009FA78B /* MyPlayground.playground */,
 				DEE48CF526AA64D600391508 /* ShadowPlayground.swift */,
@@ -407,6 +410,7 @@
 				DE16719F25E7935D00BA5CE9 /* GCDTimer.swift in Sources */,
 				DE19277E26D791C00009B1A5 /* UIResponderPlus.swift in Sources */,
 				DE743CCD25A7F9E7001764A5 /* DataPlus.swift in Sources */,
+				DED5093A27957C9C000AE370 /* CustomLayoutGuilde.swift in Sources */,
 				DE1DD9652552B95F00E08A8B /* Protocols.swift in Sources */,
 				DE66D8A824C7F931003B9206 /* AppDelegate.swift in Sources */,
 				DE13534526170A7D00903FA3 /* AutoResizeTextView.swift in Sources */,
@@ -584,7 +588,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = ExtensionDemo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -601,7 +605,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = ExtensionDemo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
