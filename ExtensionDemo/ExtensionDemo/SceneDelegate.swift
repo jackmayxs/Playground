@@ -24,6 +24,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		let content = GeometryReaderPractice()
 		let window = UIWindow(windowScene: windowScene)
 		window.rootViewController = UIHostingController(rootView: content)
+		
+		/// Test Controllers
+		do {
+			let root = TableViewCollectionViewDiffableDataSourceExample()
+			let nav = UINavigationController(rootViewController: root)
+			window.rootViewController = nav			
+		}
 		self.window = window
 		window.makeKeyAndVisible()
 	}

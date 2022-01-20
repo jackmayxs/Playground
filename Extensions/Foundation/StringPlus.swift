@@ -8,6 +8,19 @@
 
 import UIKit
 
+extension String {
+	
+	/// 返回SF Symbol图片
+	var systemImage: UIImage? {
+		UIImage(systemName: self)
+	}
+	
+	/// 生成图片
+	var image: UIImage? {
+		UIImage(named: self)
+	}
+}
+
 // MARK: - __________ String: LocalizedError __________
 extension String: LocalizedError {
 	public var errorDescription: String? {

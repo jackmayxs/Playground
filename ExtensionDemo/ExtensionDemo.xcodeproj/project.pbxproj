@@ -35,6 +35,7 @@
 		DE2326902797F57600FAB6B8 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE23268E2797F57600FAB6B8 /* ImagePicker.swift */; };
 		DE243813253188CC006CF000 /* UIStackViewPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE243812253188CC006CF000 /* UIStackViewPlus.swift */; };
 		DE29E1F62701B4AF008BE81D /* SizeFixedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE29E1F52701B4AF008BE81D /* SizeFixedView.swift */; };
+		DE34AF882798FCF900705473 /* TableViewCollectionViewDiffableDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE34AF872798FCF900705473 /* TableViewCollectionViewDiffableDataSource.swift */; };
 		DE36450926984BBD001D072C /* PropertyWrappers.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE36450826984BBD001D072C /* PropertyWrappers.swift */; };
 		DE4190AF25EF412D00F03D4A /* SwiftUIPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4190AE25EF412D00F03D4A /* SwiftUIPlus.swift */; };
 		DE4190B325EF49BA00F03D4A /* SwiftUIPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4190B225EF49BA00F03D4A /* SwiftUIPreview.swift */; };
@@ -103,6 +104,7 @@
 		DE23268E2797F57600FAB6B8 /* ImagePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		DE243812253188CC006CF000 /* UIStackViewPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStackViewPlus.swift; sourceTree = "<group>"; };
 		DE29E1F52701B4AF008BE81D /* SizeFixedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SizeFixedView.swift; sourceTree = "<group>"; };
+		DE34AF872798FCF900705473 /* TableViewCollectionViewDiffableDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCollectionViewDiffableDataSource.swift; sourceTree = "<group>"; };
 		DE36450826984BBD001D072C /* PropertyWrappers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyWrappers.swift; sourceTree = "<group>"; };
 		DE4190AE25EF412D00F03D4A /* SwiftUIPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIPlus.swift; sourceTree = "<group>"; };
 		DE4190B225EF49BA00F03D4A /* SwiftUIPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIPreview.swift; sourceTree = "<group>"; };
@@ -205,6 +207,7 @@
 			children = (
 				DEFAD78B2615CCA6008CEBE0 /* TextFieldDelegate.swift */,
 				DEB6E34727633AF100212120 /* NewUIButtonSystem.swift */,
+				DE34AF872798FCF900705473 /* TableViewCollectionViewDiffableDataSource.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -479,6 +482,7 @@
 				DE764B78260D745C00AA0956 /* DashLine.swift in Sources */,
 				DE243813253188CC006CF000 /* UIStackViewPlus.swift in Sources */,
 				DE0819BD25BAD5D300950784 /* DoublePlus.swift in Sources */,
+				DE34AF882798FCF900705473 /* TableViewCollectionViewDiffableDataSource.swift in Sources */,
 				DE4190B625EF4E9B00F03D4A /* UIViewControllerPlus.swift in Sources */,
 				DE8E4F6A25DE75320057D456 /* TouchesDelayedScrollView.swift in Sources */,
 				DE2326902797F57600FAB6B8 /* ImagePicker.swift in Sources */,
