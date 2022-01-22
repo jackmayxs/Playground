@@ -21,6 +21,7 @@
 		DE02063D2750D3F500779080 /* DateFormatterPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE02063C2750D3F500779080 /* DateFormatterPlus.swift */; };
 		DE0819BD25BAD5D300950784 /* DoublePlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0819BC25BAD5D300950784 /* DoublePlus.swift */; };
 		DE12399E26784E6A00AB6B18 /* NumberFormatterPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE12399D26784E6A00AB6B18 /* NumberFormatterPlus.swift */; };
+		DE12DB51279BCEC100D0FBD2 /* FrameBootcamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE12DB50279BCEC100D0FBD2 /* FrameBootcamp.swift */; };
 		DE13534526170A7D00903FA3 /* AutoResizeTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE13534426170A7D00903FA3 /* AutoResizeTextView.swift */; };
 		DE16719F25E7935D00BA5CE9 /* GCDTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE16719E25E7935D00BA5CE9 /* GCDTimer.swift */; };
 		DE16F41426B7F479005D1A21 /* Spacer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE16F41326B7F479005D1A21 /* Spacer.swift */; };
@@ -90,6 +91,7 @@
 		DE0819BC25BAD5D300950784 /* DoublePlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoublePlus.swift; sourceTree = "<group>"; };
 		DE09397827003FE400935A0B /* StateMachine.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = StateMachine.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		DE12399D26784E6A00AB6B18 /* NumberFormatterPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberFormatterPlus.swift; sourceTree = "<group>"; };
+		DE12DB50279BCEC100D0FBD2 /* FrameBootcamp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameBootcamp.swift; sourceTree = "<group>"; };
 		DE13534426170A7D00903FA3 /* AutoResizeTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoResizeTextView.swift; sourceTree = "<group>"; };
 		DE16719E25E7935D00BA5CE9 /* GCDTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GCDTimer.swift; sourceTree = "<group>"; };
 		DE16F41326B7F479005D1A21 /* Spacer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spacer.swift; sourceTree = "<group>"; };
@@ -180,6 +182,7 @@
 				DE23268C2797F56400FAB6B8 /* ImagePicker */,
 				DE2326892797F50500FAB6B8 /* GeometryReader */,
 				DED5093927957C9C000AE370 /* CustomLayoutGuilde.swift */,
+				DE12DB50279BCEC100D0FBD2 /* FrameBootcamp.swift */,
 			);
 			path = SwiftUI;
 			sourceTree = "<group>";
@@ -463,6 +466,7 @@
 				DE1DD9652552B95F00E08A8B /* Protocols.swift in Sources */,
 				DE66D8A824C7F931003B9206 /* AppDelegate.swift in Sources */,
 				DE13534526170A7D00903FA3 /* AutoResizeTextView.swift in Sources */,
+				DE12DB51279BCEC100D0FBD2 /* FrameBootcamp.swift in Sources */,
 				DE59921626B27509007A2A77 /* ResultBuilders.swift in Sources */,
 				DE4190AF25EF412D00F03D4A /* SwiftUIPlus.swift in Sources */,
 				DEB225A425A7199300859117 /* DatePlus.swift in Sources */,
