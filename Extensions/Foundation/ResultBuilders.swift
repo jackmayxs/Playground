@@ -9,18 +9,34 @@
 import UIKit
 
 @resultBuilder
-struct CommonBuilder<Element> {
-	static func buildBlock(_ components: Element...) -> [Element] {
-		components
+enum CommonBuilder<E> {
+	
+	static func buildEither(first component: [E]) -> [E] {
+		component
 	}
-	static func buildEither(first component: Element) -> Element {
-		return component
+
+	static func buildEither(second component: [E]) -> [E] {
+		component
 	}
-	static func buildEither(second component: Element) -> Element {
-		return component
+
+	static func buildOptional(_ component: [E]?) -> [E] {
+		component ?? []
 	}
-	static func buildArray(_ components: [Element]) -> [Element] {
-		components
+
+	static func buildExpression(_ expression: E) -> [E] {
+		[expression]
+	}
+
+	static func buildExpression(_ expression: ()) -> [E] {
+		[]
+	}
+
+	static func buildBlock(_ components: [E]...) -> [E] {
+		components.flatMap { $0 }
+	}
+	
+	static func buildArray(_ components: [[E]]) -> [E] {
+		Array(components.joined())
 	}
 }
 
