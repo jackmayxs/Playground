@@ -8,6 +8,27 @@
 
 import UIKit
 
+extension UITableView {
+	
+	/// 在视图控制器的viewDidLayoutSubviews()方法里调用此方法以自动布局HeaderFooterView
+	func layoutHeaderFooterViewIfNeeded() {
+		if let headerView = tableHeaderView {
+			let fitSize = CGSize(width: bounds.size.width, height: UIView.layoutFittingCompressedSize.height)
+			let layoutSize = headerView.systemLayoutSizeFitting(fitSize)
+			guard headerView.frame.size != layoutSize else { return }
+			headerView.frame.size = layoutSize
+			tableHeaderView = headerView
+		}
+		if let footerView = tableFooterView {
+			let fitSize = CGSize(width: bounds.size.width, height: UIView.layoutFittingCompressedSize.height)
+			let layoutSize = footerView.systemLayoutSizeFitting(fitSize)
+			guard footerView.frame.size != layoutSize else { return }
+			footerView.frame.size = layoutSize
+			tableFooterView = footerView
+		}
+	}
+}
+
 extension UITableViewCell: ReusableView {}
 extension UITableViewCell {
 	static func registerFor(_ tableView: UITableView) {
