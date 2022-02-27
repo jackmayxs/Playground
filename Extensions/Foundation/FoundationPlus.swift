@@ -130,11 +130,15 @@ extension Optional {
 	}
 	
 	/// 解包Optional
-	/// - Throws: 解包失败抛出错误
+	/// - Parameter error: 抛出的错误
 	/// - Returns: Wrapped Value
-	func unwrap() throws -> Wrapped {
+	func unwrap(onError error: Error? = nil) throws -> Wrapped {
 		guard let unwrapped = self else {
-			throw OptionalError.badValue
+			if let error = error {
+				throw error
+			} else {
+				throw OptionalError.badValue
+			}
 		}
 		return unwrapped
 	}
