@@ -65,3 +65,9 @@ extension CGSize: ExpressibleByIntegerLiteral {
 		self.init(width: value, height: value)
 	}
 }
+
+extension CGSize: Comparable {
+	public static func < (lhs: CGSize, rhs: CGSize) -> Bool {
+		lhs.width * lhs.height < rhs.width * rhs.height
+	}
+}
