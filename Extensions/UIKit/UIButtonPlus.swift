@@ -101,6 +101,14 @@ extension UIButton {
 		}
 	}
 	
+	var backgroundImageView: UIImageView? {
+		subviews
+			.compactMap { $0 as? UIImageView }
+			.first {
+				$0.image == backgroundImage(for: state)
+			}
+	}
+	
 	private var buttonLabel: UILabel? {
 		titleLabel.flatMap {
 			$0.configure { label in

@@ -19,6 +19,7 @@
 		3EB2D05125B8770D00C70FE7 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EB2D05025B8770D00C70FE7 /* Constants.swift */; };
 		3EB77DC826B1B1BD0005C7A5 /* UIKitPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EB77DC726B1B1BD0005C7A5 /* UIKitPlus.swift */; };
 		3EBEDB2625BD9C740067D02F /* UIDevicePlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBEDB2525BD9C740067D02F /* UIDevicePlus.swift */; };
+		3EC9CEBB27E0E81F00ECFD27 /* UIBackgroundExpendedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC9CEBA27E0E81F00ECFD27 /* UIBackgroundExpendedButton.swift */; };
 		DE02063D2750D3F500779080 /* DateFormatterPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE02063C2750D3F500779080 /* DateFormatterPlus.swift */; };
 		DE0819BD25BAD5D300950784 /* DoublePlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0819BC25BAD5D300950784 /* DoublePlus.swift */; };
 		DE12399E26784E6A00AB6B18 /* NumberFormatterPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE12399D26784E6A00AB6B18 /* NumberFormatterPlus.swift */; };
@@ -89,6 +90,7 @@
 		3EB2D05025B8770D00C70FE7 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		3EB77DC726B1B1BD0005C7A5 /* UIKitPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitPlus.swift; sourceTree = "<group>"; };
 		3EBEDB2525BD9C740067D02F /* UIDevicePlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDevicePlus.swift; sourceTree = "<group>"; };
+		3EC9CEBA27E0E81F00ECFD27 /* UIBackgroundExpendedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIBackgroundExpendedButton.swift; sourceTree = "<group>"; };
 		DE02063C2750D3F500779080 /* DateFormatterPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatterPlus.swift; sourceTree = "<group>"; };
 		DE0819BC25BAD5D300950784 /* DoublePlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoublePlus.swift; sourceTree = "<group>"; };
 		DE09397827003FE400935A0B /* StateMachine.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = StateMachine.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -165,6 +167,7 @@
 		DE1DD96A2552BA0300E08A8B /* CustomizedControls */ = {
 			isa = PBXGroup;
 			children = (
+				3EC9CEBA27E0E81F00ECFD27 /* UIBackgroundExpendedButton.swift */,
 				3E40F88627E025E200F3005E /* UIZStackView.swift */,
 				DE1DD96B2552BA2700E08A8B /* InsetsLabel.swift */,
 				DE8E4F6925DE75320057D456 /* TouchesDelayedScrollView.swift */,
@@ -449,6 +452,7 @@
 				DEF40F5E25B02C2900ADA57D /* UIViewPlus.swift in Sources */,
 				DE29E1F62701B4AF008BE81D /* SizeFixedView.swift in Sources */,
 				DEB225A125A7182D00859117 /* StringPlus.swift in Sources */,
+				3EC9CEBB27E0E81F00ECFD27 /* UIBackgroundExpendedButton.swift in Sources */,
 				3E127E3125FF926100EC8C22 /* UICollectionViewPlus.swift in Sources */,
 				DEF0553E25BBD31700093261 /* UIWindowPlus.swift in Sources */,
 				DEB6E34827633AF100212120 /* NewUIButtonSystem.swift in Sources */,
@@ -647,6 +651,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = BHNMHSV89W;
 				INFOPLIST_FILE = ExtensionDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -664,6 +669,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = BHNMHSV89W;
 				INFOPLIST_FILE = ExtensionDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (

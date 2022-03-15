@@ -24,6 +24,60 @@ extension NSDirectionalEdgeInsets {
 }
 
 extension UIEdgeInsets {
+	
+	static func horizontal(_ padding: CGFloat) -> UIEdgeInsets {
+		UIEdgeInsets(top: 0, left: padding, bottom: 0, right: padding)
+	}
+	static func vertical(_ padding: CGFloat) -> UIEdgeInsets {
+		UIEdgeInsets(top: padding, left: 0, bottom: padding, right: 0)
+	}
+	static func top(_ padding: CGFloat) -> UIEdgeInsets {
+		UIEdgeInsets(top: padding, left: 0, bottom: 0, right: 0)
+	}
+	static func left(_ padding: CGFloat) -> UIEdgeInsets {
+		UIEdgeInsets(top: 0, left: padding, bottom: 0, right: 0)
+	}
+	static func bottom(_ padding: CGFloat) -> UIEdgeInsets {
+		UIEdgeInsets(top: 0, left: 0, bottom: padding, right: 0)
+	}
+	static func right(_ padding: CGFloat) -> UIEdgeInsets {
+		UIEdgeInsets(top: 0, left: 0, bottom: 0, right: padding)
+	}
+	
+	func offsetBy(x: Double, y: Double) -> UIEdgeInsets {
+		UIEdgeInsets(top: top + y, left: left + x, bottom: bottom - y, right: right - x)
+	}
+	
+	func ignoreSafeareaEdges(_ edges: UIRectEdge) -> UIEdgeInsets {
+		let screenSafeareaInsets = Size.commonSafeAreaInsets
+		var temp = self
+		if edges.contains(.top) { temp.top = screenSafeareaInsets.top > 0 ? 0 : top }
+		if edges.contains(.left) { temp.left = screenSafeareaInsets.left > 0 ? 0 : left }
+		if edges.contains(.bottom) { temp.bottom = screenSafeareaInsets.bottom > 0 ? 0 : bottom }
+		if edges.contains(.right) { temp.right = screenSafeareaInsets.right > 0 ? 0 : right }
+		return temp
+	}
+	func top(_ padding: CGFloat) -> UIEdgeInsets {
+		var insets = self
+		insets.top = padding
+		return insets
+	}
+	func left(_ padding: CGFloat) -> UIEdgeInsets {
+		var insets = self
+		insets.left = padding
+		return insets
+	}
+	func bottom(_ padding: CGFloat) -> UIEdgeInsets {
+		var insets = self
+		insets.bottom = padding
+		return insets
+	}
+	func right(_ padding: CGFloat) -> UIEdgeInsets {
+		var insets = self
+		insets.right = padding
+		return insets
+	}
+	
 	var reversed: UIEdgeInsets {
 		UIEdgeInsets(top: -top, left: -left, bottom: -bottom, right: -right)
 	}
