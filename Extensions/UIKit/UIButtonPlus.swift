@@ -105,7 +105,7 @@ extension UIButton {
 		subviews
 			.compactMap { $0 as? UIImageView }
 			.first {
-				$0.image == backgroundImage(for: state)
+				$0.image == currentBackgroundImage
 			}
 	}
 	
