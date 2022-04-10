@@ -38,7 +38,7 @@ final class TableViewCollectionViewDiffableDataSourceExample: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		@CommonBuilder<UIAction>
+		@ArrayBuilder<UIAction>
 		var elements: [UIAction] {
 			UIAction(title: "添加", image: "plus.circle".systemImage) {
 				[unowned self] _ in

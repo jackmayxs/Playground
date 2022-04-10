@@ -9,7 +9,7 @@
 import UIKit
 
 @resultBuilder
-enum CommonBuilder<E> {
+enum ArrayBuilder<E> {
 	
 	static func buildEither(first component: [E]) -> [E] {
 		component
@@ -37,6 +37,25 @@ enum CommonBuilder<E> {
 	
 	static func buildArray(_ components: [[E]]) -> [E] {
 		Array(components.joined())
+	}
+}
+
+@resultBuilder
+struct SingleValueBuilder<E> {
+	static func buildBlock(_ components: E) -> E {
+		components
+	}
+	static func buildEither(first component: E) -> E {
+		component
+	}
+	static func buildEither(second component: E) -> E {
+		component
+	}
+	static func buildOptional(_ component: E) -> E {
+		component
+	}
+	static func buildLimitedAvailability(_ component: E) -> E {
+		component
 	}
 }
 
