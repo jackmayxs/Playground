@@ -35,34 +35,6 @@ extension UIButton {
 
 extension UIButton {
 	
-	/// 可以根据contentEdgeInsets自动适配自身大小
-	open override var intrinsicContentSize: CGSize {
-		
-		let backgroundImageSize = currentBackgroundImage?.size ?? .zero
-		var regularSize: CGSize {
-			if imageSize == .zero {
-				return titleSize + contentEdgeInsets
-			} else if titleSize == .zero {
-				return imageSize + contentEdgeInsets
-			} else {
-				// 初始化size
-				var size = CGSize.zero
-				// 计算宽高
-				switch imagePlacement  {
-				case .top, .bottom:
-					size.width = max(imageWidth, titleWidth)
-					size.height = imageHeight + imagePadding + titleHeight
-				case .left, .right:
-					size.width = imageWidth + imagePadding + titleWidth
-					size.height = max(imageHeight, titleHeight)
-				}
-				return size + contentEdgeInsets
-			}
-		}
-		
-		return useBackgroundImageSize ? backgroundImageSize : regularSize
-	}
-	
 	open override func setNeedsLayout() {
 		super.setNeedsLayout()
 		setupImageTitleEdgeInsets()
@@ -111,22 +83,13 @@ extension UIButton {
 	
 	var titleFont: UIFont? {
 		get { titleLabel?.font }
-		set { buttonLabel?.font = newValue }
+		set { titleLabel?.font = newValue }
 	}
 	
-	var buttonLabel: UILabel? {
-		/// 解决iOS 15.x 由于系统开启了粗文本字体后titleLabel被压缩的问题
-		titleLabel.flatMap { label in
-			let isSingleLine = label.numberOfLines == 1
-			label.minimumScaleFactor = isSingleLine ? 0.98 : 0.0
-			label.adjustsFontSizeToFitWidth = isSingleLine ? true : false
-			return label
-		}
-	}
-	private var imageSize: CGSize { currentImage?.size ?? .zero }
-	private var titleSize: CGSize {
+	var imageSize: CGSize { currentImage?.size ?? .zero }
+	var titleSize: CGSize {
 		/// 适配iOS14,否则此属性会按照字体的Font返回一个值,从而影响intrinsicContentSize的计算
-		guard let titleLabel = buttonLabel, titleLabel.text != .none else {
+		guard let titleLabel = titleLabel, titleLabel.text != .none else {
 			return .zero
 		}
 		let intrinsicSize = titleLabel.intrinsicContentSize
@@ -134,10 +97,10 @@ extension UIButton {
 		let additionalSize = CGSize(width: enabledBoldText ? 1.5 : 0, height: 0)
 		return intrinsicSize + additionalSize
 	}
-	private var imageWidth: CGFloat { imageSize.width }
-	private var imageHeight: CGFloat { imageSize.height }
-	private var titleWidth: CGFloat { titleSize.width }
-	private var titleHeight: CGFloat { titleSize.height }
+	var imageWidth: CGFloat { imageSize.width }
+	var imageHeight: CGFloat { imageSize.height }
+	var titleWidth: CGFloat { titleSize.width }
+	var titleHeight: CGFloat { titleSize.height }
 	
 	private func setupImageTitleEdgeInsets() {
 		defer {
@@ -336,7 +299,7 @@ extension UIButton {
 				config.imagePlacement = button.imagePlacement.configTranslation
 				if let title = button.title(for: button.state) {
 					var titleAttributes = AttributeContainer()
-					titleAttributes.font = button.buttonLabel?.font
+					titleAttributes.font = button.titleLabel?.font
 					titleAttributes.foregroundColor = button.titleColor(for: button.state)
 					config.attributedTitle = AttributedString(title, attributes: titleAttributes)
 				}

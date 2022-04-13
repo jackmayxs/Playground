@@ -103,13 +103,31 @@ extension UIEdgeInsets: SizeExtendable {
 extension UIEdgeInsets: ExpressibleByFloatLiteral {
 	public typealias FloatLiteralType = Double
 	public init(floatLiteral value: Double) {
-		self.init(top: value.cgFloat, left: value.cgFloat, bottom: value.cgFloat, right: value.cgFloat)
+		let cgFloatValue: CGFloat = value
+		self.init(top: cgFloatValue, left: cgFloatValue, bottom: cgFloatValue, right: cgFloatValue)
 	}
 }
 
 extension UIEdgeInsets: ExpressibleByIntegerLiteral {
 	public typealias IntegerLiteralType = Int
 	public init(integerLiteral value: Int) {
-		self.init(top: value.cgFloat, left: value.cgFloat, bottom: value.cgFloat, right: value.cgFloat)
+		let cgFloatValue = value.cgFloat
+		self.init(top: cgFloatValue, left: cgFloatValue, bottom: cgFloatValue, right: cgFloatValue)
+	}
+}
+
+extension NSDirectionalEdgeInsets: ExpressibleByFloatLiteral {
+	public typealias FloatLiteralType = Double
+	public init(floatLiteral value: Double) {
+		let cgFloatValue: CGFloat = value
+		self.init(top: cgFloatValue, leading: cgFloatValue, bottom: cgFloatValue, trailing: cgFloatValue)
+	}
+}
+
+extension NSDirectionalEdgeInsets: ExpressibleByIntegerLiteral {
+	public typealias IntegerLiteralType = Int
+	public init(integerLiteral value: Int) {
+		let cgFloatValue = value.cgFloat
+		self.init(top: cgFloatValue, leading: cgFloatValue, bottom: cgFloatValue, trailing: cgFloatValue)
 	}
 }

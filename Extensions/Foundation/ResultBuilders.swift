@@ -26,9 +26,20 @@ enum ArrayBuilder<E> {
 	static func buildExpression(_ expression: E) -> [E] {
 		[expression]
 	}
+	
+	static func buildExpression(_ expression: [E]) -> [E] {
+		expression
+	}
 
 	static func buildExpression(_ expression: ()) -> [E] {
 		[]
+	}
+	
+	static func buildExpression(_ expression: E?) -> [E] {
+		if let e = expression {
+			return [e]
+		}
+		return []
 	}
 
 	static func buildBlock(_ components: [E]...) -> [E] {
