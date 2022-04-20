@@ -1,5 +1,5 @@
 //
-//  Rx+UIScrollView.swift
+//  UIScrollView+Rx.swift
 //  RxPlayground
 //
 //  Created by Choi on 2021/4/30.

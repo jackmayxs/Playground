@@ -8,6 +8,41 @@
 import RxSwift
 import RxCocoa
 
+extension ObservableConvertibleType {
+    var observable: Observable<Element> {
+        asObservable()
+    }
+    var optionalElement: Observable<Element?> {
+        asObservable()
+            .map { $0 }
+    }
+}
+
+extension ObservableConvertibleType where Element: OptionalType {
+    var unwrapped: Observable<Element.Wrapped> {
+        asObservable().compactMap(\.optionalValue)
+    }
+}
+
+extension ObservableConvertibleType where Element == String? {
+    var orEmpty: Observable<String> {
+        asObservable()
+            .map(\.orEmpty)
+    }
+}
+
+extension Infallible {
+    static var empty: Self {
+        empty()
+    }
+}
+
+extension SharedSequence {
+    static var empty: Self {
+        empty()
+    }
+}
+
 extension ObservableType {
     
     func `as`<T>(_ type: T.Type) -> Observable<T> {
@@ -78,17 +113,5 @@ extension ObservableConvertibleType {
 			.flatMap { _ -> Observable<Element> in
 				self.asObservable()
 			}
-	}
-}
-
-extension Completable {
-	func concatMap<Source: ObservableConvertibleType>(_ selector: @escaping () throws -> Source)
-	-> Observable<Source.Element> {
-		do {
-			let next = try selector().asObservable()
-			return andThen(next)
-		} catch {
-			return .error(error)
-		}
 	}
 }

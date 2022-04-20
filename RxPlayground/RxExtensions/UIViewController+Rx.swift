@@ -1,5 +1,5 @@
 //
-//  Rx+UIViewController.swift
+//  UIViewController+Rx.swift
 //  RxPlayground
 //
 //  Created by Choi on 2021/4/15.
