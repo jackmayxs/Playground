@@ -76,6 +76,7 @@
 		DEF0553E25BBD31700093261 /* UIWindowPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF0553D25BBD31700093261 /* UIWindowPlus.swift */; };
 		DEF40F5E25B02C2900ADA57D /* UIViewPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF40F5D25B02C2900ADA57D /* UIViewPlus.swift */; };
 		DEFAD78C2615CCA6008CEBE0 /* TextFieldDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFAD78B2615CCA6008CEBE0 /* TextFieldDelegate.swift */; };
+		DEFFE58E282611DB00BC07EB /* SwiftUIPlayground.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFFE58D282611DB00BC07EB /* SwiftUIPlayground.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -153,6 +154,7 @@
 		DEF0553D25BBD31700093261 /* UIWindowPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIWindowPlus.swift; sourceTree = "<group>"; };
 		DEF40F5D25B02C2900ADA57D /* UIViewPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewPlus.swift; sourceTree = "<group>"; };
 		DEFAD78B2615CCA6008CEBE0 /* TextFieldDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldDelegate.swift; sourceTree = "<group>"; };
+		DEFFE58D282611DB00BC07EB /* SwiftUIPlayground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIPlayground.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -188,10 +190,11 @@
 		DE2326842797DD6F00FAB6B8 /* SwiftUI */ = {
 			isa = PBXGroup;
 			children = (
+				DEFFE58D282611DB00BC07EB /* SwiftUIPlayground.swift */,
+				DE12DB50279BCEC100D0FBD2 /* FrameBootcamp.swift */,
+				DED5093927957C9C000AE370 /* CustomLayoutGuilde.swift */,
 				DE23268C2797F56400FAB6B8 /* ImagePicker */,
 				DE2326892797F50500FAB6B8 /* GeometryReader */,
-				DED5093927957C9C000AE370 /* CustomLayoutGuilde.swift */,
-				DE12DB50279BCEC100D0FBD2 /* FrameBootcamp.swift */,
 			);
 			path = SwiftUI;
 			sourceTree = "<group>";
@@ -358,10 +361,10 @@
 		DEFAD78A2615CC55008CEBE0 /* BestPractice */ = {
 			isa = PBXGroup;
 			children = (
+				DEE48CF526AA64D600391508 /* ShadowPlayground.swift */,
 				DE64BA0A264A2ADA009FA78B /* MyPlayground.playground */,
 				DE2326912797F5A400FAB6B8 /* UIKit */,
 				DE2326842797DD6F00FAB6B8 /* SwiftUI */,
-				DEE48CF526AA64D600391508 /* ShadowPlayground.swift */,
 				DE09397827003FE400935A0B /* StateMachine.playground */,
 			);
 			path = BestPractice;
@@ -473,6 +476,7 @@
 				DE16719F25E7935D00BA5CE9 /* GCDTimer.swift in Sources */,
 				DE19277E26D791C00009B1A5 /* UIResponderPlus.swift in Sources */,
 				DE743CCD25A7F9E7001764A5 /* DataPlus.swift in Sources */,
+				DEFFE58E282611DB00BC07EB /* SwiftUIPlayground.swift in Sources */,
 				DED5093A27957C9C000AE370 /* CustomLayoutGuilde.swift in Sources */,
 				DE1DD9652552B95F00E08A8B /* Protocols.swift in Sources */,
 				DE66D8A824C7F931003B9206 /* AppDelegate.swift in Sources */,
