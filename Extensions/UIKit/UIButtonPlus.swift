@@ -96,10 +96,9 @@ extension UIButton {
 		guard let titleLabel = titleLabel, titleLabel.text != .none else {
 			return .zero
 		}
-		let intrinsicSize = titleLabel.intrinsicContentSize
-		let enabledBoldText = UIAccessibility.isBoldTextEnabled
-		let additionalSize = CGSize(width: enabledBoldText ? 1.5 : 0, height: 0)
-		return intrinsicSize + additionalSize
+		let additionalWidth = UIAccessibility.isBoldTextEnabled ? 1.5 : 0
+		let additionalSize = CGSize(width: additionalWidth, height: 0)
+		return titleLabel.intrinsicContentSize + additionalSize
 	}
 	var imageWidth: CGFloat { imageSize.width }
 	var imageHeight: CGFloat { imageSize.height }
