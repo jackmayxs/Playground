@@ -40,6 +40,7 @@
 		DE2326902797F57600FAB6B8 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE23268E2797F57600FAB6B8 /* ImagePicker.swift */; };
 		DE243813253188CC006CF000 /* UIStackViewPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE243812253188CC006CF000 /* UIStackViewPlus.swift */; };
 		DE29E1F62701B4AF008BE81D /* SizeFixedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE29E1F52701B4AF008BE81D /* SizeFixedView.swift */; };
+		DE2CF0022831EA8400DF55CF /* CustomizeUICollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2CF0012831EA8400DF55CF /* CustomizeUICollectionViewLayout.swift */; };
 		DE34AF882798FCF900705473 /* TableViewCollectionViewDiffableDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE34AF872798FCF900705473 /* TableViewCollectionViewDiffableDataSource.swift */; };
 		DE36450926984BBD001D072C /* PropertyWrappers.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE36450826984BBD001D072C /* PropertyWrappers.swift */; };
 		DE4190AF25EF412D00F03D4A /* SwiftUIPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4190AE25EF412D00F03D4A /* SwiftUIPlus.swift */; };
@@ -115,6 +116,7 @@
 		DE23268E2797F57600FAB6B8 /* ImagePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		DE243812253188CC006CF000 /* UIStackViewPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStackViewPlus.swift; sourceTree = "<group>"; };
 		DE29E1F52701B4AF008BE81D /* SizeFixedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SizeFixedView.swift; sourceTree = "<group>"; };
+		DE2CF0012831EA8400DF55CF /* CustomizeUICollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizeUICollectionViewLayout.swift; sourceTree = "<group>"; };
 		DE34AF872798FCF900705473 /* TableViewCollectionViewDiffableDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCollectionViewDiffableDataSource.swift; sourceTree = "<group>"; };
 		DE36450826984BBD001D072C /* PropertyWrappers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyWrappers.swift; sourceTree = "<group>"; };
 		DE4190AE25EF412D00F03D4A /* SwiftUIPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIPlus.swift; sourceTree = "<group>"; };
@@ -225,6 +227,7 @@
 				DEFAD78B2615CCA6008CEBE0 /* TextFieldDelegate.swift */,
 				DEB6E34727633AF100212120 /* NewUIButtonSystem.swift */,
 				DE34AF872798FCF900705473 /* TableViewCollectionViewDiffableDataSource.swift */,
+				DE2CF0012831EA8400DF55CF /* CustomizeUICollectionViewLayout.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -491,6 +494,7 @@
 				DEB225A425A7199300859117 /* DatePlus.swift in Sources */,
 				3E17B00426D95AD5004663EC /* ProtocolExtensions.swift in Sources */,
 				DE23268F2797F57600FAB6B8 /* ImageSaver.swift in Sources */,
+				DE2CF0022831EA8400DF55CF /* CustomizeUICollectionViewLayout.swift in Sources */,
 				DEE48CF626AA64D600391508 /* ShadowPlayground.swift in Sources */,
 				DE93781224D124B200D89D4C /* DispatchOnce.swift in Sources */,
 				DE9E8D8425C24ED300FB3C46 /* UITabBarItemPlus.swift in Sources */,
