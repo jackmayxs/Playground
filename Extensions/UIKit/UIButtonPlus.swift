@@ -105,6 +105,34 @@ extension UIButton {
 	var titleWidth: CGFloat { titleSize.width }
 	var titleHeight: CGFloat { titleSize.height }
 	
+	/// 可以根据contentEdgeInsets自动适配自身大小
+	open override var intrinsicContentSize: CGSize {
+
+		let backgroundImageSize = currentBackgroundImage?.size ?? .zero
+		var regularSize: CGSize {
+			if imageSize == .zero {
+				return titleSize + contentEdgeInsets
+			} else if titleSize == .zero {
+				return imageSize + contentEdgeInsets
+			} else {
+				// 初始化size
+				var size = CGSize.zero
+				// 计算宽高
+				switch imagePlacement  {
+				case .top, .bottom:
+					size.width = max(imageWidth, titleWidth)
+					size.height = imageHeight + imagePadding + titleHeight
+				case .left, .right:
+					size.width = imageWidth + imagePadding + titleWidth
+					size.height = max(imageHeight, titleHeight)
+				}
+				return size + contentEdgeInsets
+			}
+		}
+
+		return useBackgroundImageSize ? backgroundImageSize : regularSize
+	}
+	
 	private func setupImageTitleEdgeInsets() {
 		defer {
 			invalidateIntrinsicContentSize()

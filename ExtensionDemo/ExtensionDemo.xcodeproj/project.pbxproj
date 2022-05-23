@@ -18,7 +18,6 @@
 		3E7B586F25AC743A00EE65B7 /* UIColorPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7B586E25AC743A00EE65B7 /* UIColorPlus.swift */; };
 		3EB2D05125B8770D00C70FE7 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EB2D05025B8770D00C70FE7 /* Constants.swift */; };
 		3EB77DC826B1B1BD0005C7A5 /* UIKitPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EB77DC726B1B1BD0005C7A5 /* UIKitPlus.swift */; };
-		3EB838A828071CD600EC7013 /* SuperButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EB838A728071CD600EC7013 /* SuperButton.swift */; };
 		3EBEDB2625BD9C740067D02F /* UIDevicePlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBEDB2525BD9C740067D02F /* UIDevicePlus.swift */; };
 		3EC9CEBB27E0E81F00ECFD27 /* UIBackgroundExpendedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC9CEBA27E0E81F00ECFD27 /* UIBackgroundExpendedButton.swift */; };
 		DE02063D2750D3F500779080 /* DateFormatterPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE02063C2750D3F500779080 /* DateFormatterPlus.swift */; };
@@ -93,7 +92,6 @@
 		3E7B586E25AC743A00EE65B7 /* UIColorPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorPlus.swift; sourceTree = "<group>"; };
 		3EB2D05025B8770D00C70FE7 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		3EB77DC726B1B1BD0005C7A5 /* UIKitPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitPlus.swift; sourceTree = "<group>"; };
-		3EB838A728071CD600EC7013 /* SuperButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperButton.swift; sourceTree = "<group>"; };
 		3EBEDB2525BD9C740067D02F /* UIDevicePlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDevicePlus.swift; sourceTree = "<group>"; };
 		3EC9CEBA27E0E81F00ECFD27 /* UIBackgroundExpendedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIBackgroundExpendedButton.swift; sourceTree = "<group>"; };
 		DE02063C2750D3F500779080 /* DateFormatterPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatterPlus.swift; sourceTree = "<group>"; };
@@ -186,7 +184,6 @@
 				DE95B8DE26F31E1B00A9FA5D /* AutoResizeCollectionView.swift */,
 				3E70EEB026FEB33900C19A78 /* PlaceholderTextView.swift */,
 				DE29E1F52701B4AF008BE81D /* SizeFixedView.swift */,
-				3EB838A728071CD600EC7013 /* SuperButton.swift */,
 			);
 			path = CustomizedControls;
 			sourceTree = "<group>";
@@ -451,7 +448,6 @@
 				DE94533A2508A5050082E5E5 /* UIApplicationPlus.swift in Sources */,
 				3E7B586F25AC743A00EE65B7 /* UIColorPlus.swift in Sources */,
 				DE1DD9622552B8B700E08A8B /* UIEdgeInsetsPlus.swift in Sources */,
-				3EB838A828071CD600EC7013 /* SuperButton.swift in Sources */,
 				DE1DD96C2552BA2800E08A8B /* InsetsLabel.swift in Sources */,
 				DE4190B325EF49BA00F03D4A /* SwiftUIPreview.swift in Sources */,
 				DE23268B2797F51E00FAB6B8 /* IntrestingViews.swift in Sources */,

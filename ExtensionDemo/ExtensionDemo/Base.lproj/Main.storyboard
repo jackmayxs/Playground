@@ -147,7 +147,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ILg-ei-6HT" userLabel="Container">
                                 <rect key="frame" x="0.0" y="136.5" width="414" height="568"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" reversesTitleShadowWhenHighlighted="YES" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ndh-PE-dUO" userLabel="The Button" customClass="SuperButton" customModule="ExtensionDemo" customModuleProvider="target">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" reversesTitleShadowWhenHighlighted="YES" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ndh-PE-dUO" userLabel="The Button">
                                         <rect key="frame" x="57.5" y="234" width="299" height="100"/>
                                         <color key="backgroundColor" systemColor="systemTealColor"/>
                                         <constraints>
