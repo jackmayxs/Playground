@@ -57,7 +57,7 @@ extension Date {
 	
 	/// 返回当前时间只包含小时的时间
 	var hourOfClock: Date {
-		components.erased(to: .hour, trim: false).date.unsafelyUnwrapped
+		Calendar.gregorian.dateInterval(of: .hour, for: self)?.start ?? self
 	}
 	/// 获取日期所有元素
 	var components: DateComponents {
@@ -65,11 +65,17 @@ extension Date {
 	}
 	/// 当天起始时间点
 	var dayStart: Date {
-		components.erased(to: .day, trim: false).date.unsafelyUnwrapped
+		Calendar.gregorian.startOfDay(for: self)
 	}
-	/// 当天结束时间点
+	/// 当天结束前一秒时间点
 	var dayEnd: Date {
-		components.hour(23).minute(59).second(59).nanosecond(0).date.unsafelyUnwrapped
+		let dayEnd = DateComponents(hour: 23, minute: 59, second: 59, nanosecond: 0)
+		return Calendar.gregorian.nextDate(after: self, matching: dayEnd, matchingPolicy: .strict) ?? self
+	}
+	
+	/// 返回当前日期一整天的范围(0点-24点)
+	var dayInterval: DateInterval? {
+		Calendar.current.dateInterval(of: .day, for: self)
 	}
 	
 	var desc: String {
