@@ -13,7 +13,6 @@
 		3E1A3D44281053730013CBED /* Spacer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1A3D0D281053730013CBED /* Spacer.swift */; };
 		3E1A3D45281053730013CBED /* PlaceholderTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1A3D0E281053730013CBED /* PlaceholderTextView.swift */; };
 		3E1A3D46281053730013CBED /* AutoResizeTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1A3D0F281053730013CBED /* AutoResizeTextView.swift */; };
-		3E1A3D47281053730013CBED /* SuperButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1A3D10281053730013CBED /* SuperButton.swift */; };
 		3E1A3D48281053730013CBED /* SuperTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1A3D11281053730013CBED /* SuperTableViewCell.swift */; };
 		3E1A3D49281053730013CBED /* DashLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1A3D12281053730013CBED /* DashLine.swift */; };
 		3E1A3D4A281053730013CBED /* UIBackgroundExpendedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1A3D13281053730013CBED /* UIBackgroundExpendedButton.swift */; };
@@ -87,7 +86,6 @@
 		3E1A3D0D281053730013CBED /* Spacer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Spacer.swift; sourceTree = "<group>"; };
 		3E1A3D0E281053730013CBED /* PlaceholderTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaceholderTextView.swift; sourceTree = "<group>"; };
 		3E1A3D0F281053730013CBED /* AutoResizeTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoResizeTextView.swift; sourceTree = "<group>"; };
-		3E1A3D10281053730013CBED /* SuperButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuperButton.swift; sourceTree = "<group>"; };
 		3E1A3D11281053730013CBED /* SuperTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuperTableViewCell.swift; sourceTree = "<group>"; };
 		3E1A3D12281053730013CBED /* DashLine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashLine.swift; sourceTree = "<group>"; };
 		3E1A3D13281053730013CBED /* UIBackgroundExpendedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIBackgroundExpendedButton.swift; sourceTree = "<group>"; };
@@ -204,7 +202,6 @@
 				3E1A3D0D281053730013CBED /* Spacer.swift */,
 				3E1A3D0E281053730013CBED /* PlaceholderTextView.swift */,
 				3E1A3D0F281053730013CBED /* AutoResizeTextView.swift */,
-				3E1A3D10281053730013CBED /* SuperButton.swift */,
 				3E1A3D11281053730013CBED /* SuperTableViewCell.swift */,
 				3E1A3D12281053730013CBED /* DashLine.swift */,
 				3E1A3D13281053730013CBED /* UIBackgroundExpendedButton.swift */,
@@ -489,7 +486,6 @@
 				3E1A3D60281053730013CBED /* UIButtonPlus.swift in Sources */,
 				3E1A3D78281054FB0013CBED /* UITableViewCell+Rx.swift in Sources */,
 				3E1A3D4F281053730013CBED /* DispatchOnce.swift in Sources */,
-				3E1A3D47281053730013CBED /* SuperButton.swift in Sources */,
 				3E1A3D4B281053730013CBED /* AutoResizeCollectionView.swift in Sources */,
 				3E1A3D6E281053730013CBED /* DataPlus.swift in Sources */,
 				3E1A3D742810546C0013CBED /* Array+Rx.swift in Sources */,
