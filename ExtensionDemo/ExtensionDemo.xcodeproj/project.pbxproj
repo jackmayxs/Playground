@@ -58,6 +58,7 @@
 		DE6E150224D16AA60053CC44 /* BlankViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6E150124D16AA60053CC44 /* BlankViewController.swift */; };
 		DE743CCD25A7F9E7001764A5 /* DataPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE743CCC25A7F9E7001764A5 /* DataPlus.swift */; };
 		DE764B78260D745C00AA0956 /* DashLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE764B77260D745C00AA0956 /* DashLine.swift */; };
+		DE818FA32844A4CF00E884C5 /* CombinePlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE818FA22844A4CF00E884C5 /* CombinePlus.swift */; };
 		DE8E4F6A25DE75320057D456 /* TouchesDelayedScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8E4F6925DE75320057D456 /* TouchesDelayedScrollView.swift */; };
 		DE93781224D124B200D89D4C /* DispatchOnce.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE93781124D124B200D89D4C /* DispatchOnce.swift */; };
 		DE93781424D1480300D89D4C /* NSObjectPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE93781324D1480300D89D4C /* NSObjectPlus.swift */; };
@@ -136,6 +137,7 @@
 		DE6E150124D16AA60053CC44 /* BlankViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlankViewController.swift; sourceTree = "<group>"; };
 		DE743CCC25A7F9E7001764A5 /* DataPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataPlus.swift; sourceTree = "<group>"; };
 		DE764B77260D745C00AA0956 /* DashLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashLine.swift; sourceTree = "<group>"; };
+		DE818FA22844A4CF00E884C5 /* CombinePlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinePlus.swift; sourceTree = "<group>"; };
 		DE8E4F6925DE75320057D456 /* TouchesDelayedScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchesDelayedScrollView.swift; sourceTree = "<group>"; };
 		DE93781124D124B200D89D4C /* DispatchOnce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DispatchOnce.swift; sourceTree = "<group>"; };
 		DE93781324D1480300D89D4C /* NSObjectPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSObjectPlus.swift; sourceTree = "<group>"; };
@@ -276,6 +278,7 @@
 		DE66D8BB24C7F982003B9206 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				DE818FA12844A4B300E884C5 /* Combine */,
 				DE93781724D1484900D89D4C /* Tools */,
 				DE93781624D1483B00D89D4C /* Foundation */,
 				DE93781524D1482400D89D4C /* UIKit */,
@@ -286,6 +289,14 @@
 			);
 			name = Extensions;
 			path = ../Extensions;
+			sourceTree = "<group>";
+		};
+		DE818FA12844A4B300E884C5 /* Combine */ = {
+			isa = PBXGroup;
+			children = (
+				DE818FA22844A4CF00E884C5 /* CombinePlus.swift */,
+			);
+			path = Combine;
 			sourceTree = "<group>";
 		};
 		DE93781524D1482400D89D4C /* UIKit */ = {
@@ -502,6 +513,7 @@
 				DE66D8AA24C7F931003B9206 /* SceneDelegate.swift in Sources */,
 				DEB622FC25E899BB00702C5E /* IntPlus.swift in Sources */,
 				3E58B55725E7D71E0013DE51 /* GlobalFunctions.swift in Sources */,
+				DE818FA32844A4CF00E884C5 /* CombinePlus.swift in Sources */,
 				DE764B78260D745C00AA0956 /* DashLine.swift in Sources */,
 				DE243813253188CC006CF000 /* UIStackViewPlus.swift in Sources */,
 				DE0819BD25BAD5D300950784 /* DoublePlus.swift in Sources */,
