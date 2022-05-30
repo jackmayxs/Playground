@@ -10,6 +10,8 @@ import UIKit
 
 class ViewController: UIViewController {
 	
+	weak var coordinator: MainCoordinator?
+	
 	@IBOutlet var buttonSizeConstraints: [NSLayoutConstraint]!
 	@IBOutlet weak var axisSegment: UISegmentedControl!
 	@IBOutlet weak var pictureSizeSegment: UISegmentedControl!
@@ -140,7 +142,14 @@ class ViewController: UIViewController {
 			self.view.layoutIfNeeded()
 		}
 	}
+    @IBAction func buy(_ sender: Any) {
+		/// 从这里传递参数到下一级页面
+		coordinator?.buySubscription(to: 200)
+    }
 }
+
+extension ViewController: Storyboarded {}
+
 extension UIColor {
 	
 	//使用rgb方式生成自定义颜色

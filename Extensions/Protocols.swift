@@ -63,16 +63,20 @@ extension NSObject: Chainable { }
 
 // MARK: - __________ Storyboarded __________
 protocol Storyboarded {
-	static var bundle: Bundle? { get }
+	static var bundle: Bundle { get }
 	static var storyboardName: String { get }
 	static var instantiate: Self { get }
 }
-extension Storyboarded {
-	static var bundle: Bundle? { .none }
+extension Storyboarded where Self: UIViewController {
+	static var bundle: Bundle { .main }
+	static var storyboardName: String { "Main" }
 	static var instantiate: Self {
 		let storyboardId = String(describing: self)
-		let storyboard = UIStoryboard(name: storyboardName, bundle: bundle ?? .main)
-		return storyboard.instantiateViewController(withIdentifier: storyboardId) as! Self
+		let storyboard = UIStoryboard(name: storyboardName, bundle: bundle)
+		guard let instance = storyboard.instantiateViewController(withIdentifier: storyboardId) as? Self else {
+			fatalError("Fail to instantiate view controller with identifier \(storyboardId). Check again.")
+		}
+		return instance
 	}
 }
 

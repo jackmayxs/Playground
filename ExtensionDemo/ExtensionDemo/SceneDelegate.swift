@@ -12,6 +12,7 @@ import SwiftUI
 @available(iOS 13.0, *)
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	
+	var coordinator: MainCoordinator?
 	var window: UIWindow?
 	
 	
@@ -19,18 +20,30 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		// Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
 		// If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
 		// This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
+		
 //		guard let windowScene = (scene as? UIWindowScene) else { return }
-//		
-//		let content = GeometryReaderPractice()
 //		let window = UIWindow(windowScene: windowScene)
+		
+		
+//		/// 1. GeometryReaderPractice
+//		let content = GeometryReaderPractice()
 //		window.rootViewController = UIHostingController(rootView: content)
-//		
-//		/// Test Controllers
-//		do {
-//			let root = TableViewCollectionViewDiffableDataSourceExample()
-//			let nav = UINavigationController(rootViewController: root)
-//			window.rootViewController = nav			
-//		}
+		
+//		/// 2. Test Controllers
+//		let root = TableViewCollectionViewDiffableDataSourceExample()
+//		let nav = UINavigationController(rootViewController: root)
+//		window.rootViewController = nav
+		
+//		/// 3. Coordinator Pattern
+//		let navController = UINavigationController()
+//		coordinator = MainCoordinator(navigationController: navController)
+//		coordinator?.start()
+//		window.rootViewController = navController
+		
+//		/// 4. Coordinator Pattern with TabBarController
+//		window.rootViewController = MainTabBarController()
+		
+		
 //		self.window = window
 //		window.makeKeyAndVisible()
 	}
