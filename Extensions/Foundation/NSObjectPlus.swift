@@ -26,7 +26,7 @@ extension NSObject {
 
 final class _NSObjectProxy<T: NSObjectProtocol>: NSObject {
 	
-	private weak var _target: T!
+	private(set) weak var _target: T!
 	var target: T {
 		_target
 	}
