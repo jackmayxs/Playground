@@ -9,9 +9,9 @@
 import UIKit
 
 extension UIRectCorner: CaseIterable {
-	public static var allCases: [UIRectCorner] {
-		[.topLeft, .topRight, .bottomLeft, .bottomRight]
-	}
+	public static let allCases: [UIRectCorner] = [
+		.topLeft, .topRight, .bottomLeft, .bottomRight
+	]
 }
 
 extension CACornerMask {

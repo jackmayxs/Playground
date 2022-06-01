@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+@available(iOS 15.0, *)
 struct FrameBootcamp: View {
     var body: some View {
         Text("Hello, World!")
@@ -28,6 +29,7 @@ struct FrameBootcamp: View {
     }
 }
 
+@available(iOS 15.0, *)
 struct FrameBootcamp_Previews: PreviewProvider {
     static var previews: some View {
         FrameBootcamp()

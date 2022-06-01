@@ -8,22 +8,21 @@
 
 import UIKit
 
-class ViewController: UIViewController {
-	
-	weak var coordinator: MainCoordinator?
+class ViewController: BaseViewController<MainCoordinator> {
 	
 	@IBOutlet var buttonSizeConstraints: [NSLayoutConstraint]!
-	@IBOutlet weak var axisSegment: UISegmentedControl!
 	@IBOutlet weak var pictureSizeSegment: UISegmentedControl!
 	@IBOutlet weak var titleSizeSegment: UISegmentedControl!
-	
+    @IBOutlet weak var imagePlacementSegment: UISegmentedControl!
+    
 	private let hei = #imageLiteral(resourceName: "hei")
-	private let small = UIImage(systemName: "suit.heart.fill")
+	private let small = "suit.heart.fill".systemImage
 	@IBOutlet weak var topButton: UIButton!
 	@IBOutlet weak var spacingTF: UITextField!
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		
+		/// 约束图片位置选择控件宽度
+		imagePlacementSegment.widthAnchor.constraint(greaterThanOrEqualToConstant: Size.screenWidth * 0.5).isActive = true
 		topButton.titleLabel?.backgroundColor = UIColor.systemYellow.withAlphaComponent(0.3)
 		topButton.imageView?.backgroundColor = UIColor.systemYellow.withAlphaComponent(0.3)
 	}
@@ -53,6 +52,11 @@ class ViewController: UIViewController {
 		waveView.startWave()
 	}
 	
+	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+		super.touchesBegan(touches, with: event)
+		spacingTF.resignFirstResponder()
+	}
+	
 	@IBAction func titleSizeChanged(_ sender: UISegmentedControl) {
 		switch sender.selectedSegmentIndex {
 		case 0: topButton.setTitle("HHHHHHH", for: .normal)
@@ -70,7 +74,6 @@ class ViewController: UIViewController {
 	}
 	
 	@IBAction func horizontalChanged(_ sender: UISegmentedControl) {
-		axisSegment.selectedSegmentIndex = 1
 		switch sender.selectedSegmentIndex {
 			case 0: topButton.contentHorizontalAlignment = .center
 			case 1: topButton.contentHorizontalAlignment = .leading
@@ -84,7 +87,6 @@ class ViewController: UIViewController {
 		}
 	}
 	@IBAction func verticalChanged(_ sender: UISegmentedControl) {
-		axisSegment.selectedSegmentIndex = 1
 		switch sender.selectedSegmentIndex {
 			case 0: topButton.contentVerticalAlignment = .center
 			case 1: topButton.contentVerticalAlignment = .top

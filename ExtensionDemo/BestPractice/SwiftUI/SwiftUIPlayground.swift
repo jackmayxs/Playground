@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+@available(iOS 15, *)
 struct SwiftUIPlayground: View {
 	
 	var thanks: AttributedString {
@@ -54,6 +55,7 @@ struct SwiftUIPlayground: View {
     }
 }
 
+@available(iOS 15, *)
 struct PlayAround_Previews: PreviewProvider {
     static var previews: some View {
         SwiftUIPlayground()

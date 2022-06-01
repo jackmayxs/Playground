@@ -21,8 +21,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		// If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
 		// This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
 		
-//		guard let windowScene = (scene as? UIWindowScene) else { return }
-//		let window = UIWindow(windowScene: windowScene)
+		guard let windowScene = (scene as? UIWindowScene) else { return }
+		let window = UIWindow(windowScene: windowScene)
 		
 		
 //		/// 1. GeometryReaderPractice
@@ -34,18 +34,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //		let nav = UINavigationController(rootViewController: root)
 //		window.rootViewController = nav
 		
-//		/// 3. Coordinator Pattern
-//		let navController = UINavigationController()
-//		coordinator = MainCoordinator(navigationController: navController)
-//		coordinator?.start()
-//		window.rootViewController = navController
+		/// 3. Coordinator Pattern
+		let navController = UINavigationController()
+		coordinator = MainCoordinator(navigationController: navController)
+		coordinator?.start()
+		window.rootViewController = navController
 		
 //		/// 4. Coordinator Pattern with TabBarController
 //		window.rootViewController = MainTabBarController()
 		
 		
-//		self.window = window
-//		window.makeKeyAndVisible()
+		self.window = window
+		window.makeKeyAndVisible()
 	}
 	
 	func sceneDidDisconnect(_ scene: UIScene) {

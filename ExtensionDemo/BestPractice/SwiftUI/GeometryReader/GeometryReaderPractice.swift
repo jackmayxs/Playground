@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+@available(iOS 15.0, *)
 struct InnerView: View {
 	var body: some View {
 		HStack {
@@ -41,6 +42,7 @@ struct InnerView: View {
 	}
 }
 
+@available(iOS 15.0, *)
 struct OuterView: View {
 	var body: some View {
 		VStack {
@@ -52,6 +54,7 @@ struct OuterView: View {
 	}
 }
 
+@available(iOS 15.0, *)
 struct GeometryReaderPractice: View {
     var body: some View {
 		OuterView()
@@ -60,6 +63,7 @@ struct GeometryReaderPractice: View {
     }
 }
 
+@available(iOS 15.0, *)
 struct GeometryReaderPractice_Previews: PreviewProvider {
     static var previews: some View {
         GeometryReaderPractice()

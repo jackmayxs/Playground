@@ -29,6 +29,7 @@ extension ViewDimensions {
     }
 }
 
+@available(iOS 15.0, *)
 struct CustomLayoutGuilde: View {
     var body: some View {
         HStack(alignment: .stringTogether) {
@@ -58,6 +59,7 @@ struct CustomLayoutGuilde: View {
     }
 }
 
+@available(iOS 15.0, *)
 struct CustomLayoutGuilde_Previews: PreviewProvider {
     static var previews: some View {
         CustomLayoutGuilde()

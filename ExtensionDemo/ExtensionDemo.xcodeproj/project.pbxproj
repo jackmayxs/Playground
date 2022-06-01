@@ -45,6 +45,7 @@
 		DE4190AF25EF412D00F03D4A /* SwiftUIPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4190AE25EF412D00F03D4A /* SwiftUIPlus.swift */; };
 		DE4190B325EF49BA00F03D4A /* SwiftUIPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4190B225EF49BA00F03D4A /* SwiftUIPreview.swift */; };
 		DE4190B625EF4E9B00F03D4A /* UIViewControllerPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4190B525EF4E9B00F03D4A /* UIViewControllerPlus.swift */; };
+		DE4668822848645300595658 /* UIlabelPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4668812848645200595658 /* UIlabelPlus.swift */; };
 		DE59921626B27509007A2A77 /* ResultBuilders.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE59921526B27509007A2A77 /* ResultBuilders.swift */; };
 		DE66D8A824C7F931003B9206 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE66D8A724C7F931003B9206 /* AppDelegate.swift */; };
 		DE66D8AA24C7F931003B9206 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE66D8A924C7F931003B9206 /* SceneDelegate.swift */; };
@@ -55,7 +56,6 @@
 		DE66D8BD24C7F982003B9206 /* UIButtonPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE66D8BC24C7F982003B9206 /* UIButtonPlus.swift */; };
 		DE66D8BF24C81432003B9206 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = DE66D8BE24C81432003B9206 /* README.md */; };
 		DE6E150024D16A320053CC44 /* UIImagePlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6E14FF24D16A320053CC44 /* UIImagePlus.swift */; };
-		DE6E150224D16AA60053CC44 /* BlankViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6E150124D16AA60053CC44 /* BlankViewController.swift */; };
 		DE743CCD25A7F9E7001764A5 /* DataPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE743CCC25A7F9E7001764A5 /* DataPlus.swift */; };
 		DE764B78260D745C00AA0956 /* DashLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE764B77260D745C00AA0956 /* DashLine.swift */; };
 		DE818FA32844A4CF00E884C5 /* CombinePlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE818FA22844A4CF00E884C5 /* CombinePlus.swift */; };
@@ -127,6 +127,7 @@
 		DE4190AE25EF412D00F03D4A /* SwiftUIPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIPlus.swift; sourceTree = "<group>"; };
 		DE4190B225EF49BA00F03D4A /* SwiftUIPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIPreview.swift; sourceTree = "<group>"; };
 		DE4190B525EF4E9B00F03D4A /* UIViewControllerPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerPlus.swift; sourceTree = "<group>"; };
+		DE4668812848645200595658 /* UIlabelPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIlabelPlus.swift; sourceTree = "<group>"; };
 		DE59921526B27509007A2A77 /* ResultBuilders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultBuilders.swift; sourceTree = "<group>"; };
 		DE64BA0A264A2ADA009FA78B /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		DE66D8A424C7F931003B9206 /* ExtensionDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExtensionDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -140,7 +141,6 @@
 		DE66D8BC24C7F982003B9206 /* UIButtonPlus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIButtonPlus.swift; sourceTree = "<group>"; };
 		DE66D8BE24C81432003B9206 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		DE6E14FF24D16A320053CC44 /* UIImagePlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImagePlus.swift; sourceTree = "<group>"; };
-		DE6E150124D16AA60053CC44 /* BlankViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlankViewController.swift; sourceTree = "<group>"; };
 		DE743CCC25A7F9E7001764A5 /* DataPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataPlus.swift; sourceTree = "<group>"; };
 		DE764B77260D745C00AA0956 /* DashLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashLine.swift; sourceTree = "<group>"; };
 		DE818FA22844A4CF00E884C5 /* CombinePlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombinePlus.swift; sourceTree = "<group>"; };
@@ -251,11 +251,20 @@
 			path = SwiftUI;
 			sourceTree = "<group>";
 		};
+		DE4668832848859500595658 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				DE818FB32845EE0A00E884C5 /* BaseViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
 		DE66D89B24C7F931003B9206 = {
 			isa = PBXGroup;
 			children = (
 				DEFAD78A2615CC55008CEBE0 /* BestPractice */,
 				DE66D8A624C7F931003B9206 /* ExtensionDemo */,
+				DE818FB52845EE1000E884C5 /* Base */,
 				DE66D8BB24C7F982003B9206 /* Extensions */,
 				DE66D8A524C7F931003B9206 /* Products */,
 				DE66D8BE24C81432003B9206 /* README.md */,
@@ -276,7 +285,6 @@
 			children = (
 				DE66D8A724C7F931003B9206 /* AppDelegate.swift */,
 				DE66D8B024C7F935003B9206 /* Assets.xcassets */,
-				DE6E150124D16AA60053CC44 /* BlankViewController.swift */,
 				DE66D8B524C7F935003B9206 /* Info.plist */,
 				DE66D8B224C7F935003B9206 /* LaunchScreen.storyboard */,
 				DE66D8AD24C7F931003B9206 /* Main.storyboard */,
@@ -290,7 +298,6 @@
 		DE66D8BB24C7F982003B9206 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				DE818FB52845EE1000E884C5 /* Base */,
 				DE818FA12844A4B300E884C5 /* Combine */,
 				DE93781724D1484900D89D4C /* Tools */,
 				DE93781624D1483B00D89D4C /* Foundation */,
@@ -327,7 +334,7 @@
 			isa = PBXGroup;
 			children = (
 				DE818FA52844A5EE00E884C5 /* BaseCoordinator.swift */,
-				DE818FB32845EE0A00E884C5 /* BaseViewController.swift */,
+				DE4668832848859500595658 /* Controller */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -352,6 +359,7 @@
 				DE4190B525EF4E9B00F03D4A /* UIViewControllerPlus.swift */,
 				DEF40F5D25B02C2900ADA57D /* UIViewPlus.swift */,
 				DEF0553D25BBD31700093261 /* UIWindowPlus.swift */,
+				DE4668812848645200595658 /* UIlabelPlus.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -520,7 +528,6 @@
 				DE66D8BD24C7F982003B9206 /* UIButtonPlus.swift in Sources */,
 				0CD71F3424D6707A005FDE67 /* FoundationPlus.swift in Sources */,
 				DE818FAC2844B34600E884C5 /* BuyCoordinator.swift in Sources */,
-				DE6E150224D16AA60053CC44 /* BlankViewController.swift in Sources */,
 				DE6E150024D16A320053CC44 /* UIImagePlus.swift in Sources */,
 				3EB77DC826B1B1BD0005C7A5 /* UIKitPlus.swift in Sources */,
 				DE02063D2750D3F500779080 /* DateFormatterPlus.swift in Sources */,
@@ -561,6 +568,7 @@
 				DE4190B625EF4E9B00F03D4A /* UIViewControllerPlus.swift in Sources */,
 				DE8E4F6A25DE75320057D456 /* TouchesDelayedScrollView.swift in Sources */,
 				DE2326902797F57600FAB6B8 /* ImagePicker.swift in Sources */,
+				DE4668822848645300595658 /* UIlabelPlus.swift in Sources */,
 				DEFAD78C2615CCA6008CEBE0 /* TextFieldDelegate.swift in Sources */,
 				3EB2D05125B8770D00C70FE7 /* Constants.swift in Sources */,
 				3E40F88727E025E200F3005E /* UIZStackView.swift in Sources */,
@@ -717,7 +725,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = BHNMHSV89W;
 				INFOPLIST_FILE = ExtensionDemo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -735,7 +743,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = BHNMHSV89W;
 				INFOPLIST_FILE = ExtensionDemo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

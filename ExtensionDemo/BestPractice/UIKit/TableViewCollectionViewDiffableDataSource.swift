@@ -25,6 +25,7 @@ struct MyModel: Hashable {
 
 import UIKit
 
+@available(iOS 15.0, *)
 final class TableViewCollectionViewDiffableDataSourceExample: UIViewController {
 	
 	private var dataSource: UITableViewDiffableDataSource<Section, MyModel>! = nil
@@ -102,6 +103,7 @@ final class TableViewCollectionViewDiffableDataSourceExample: UIViewController {
 	}()
 }
 
+@available(iOS 15.0, *)
 extension TableViewCollectionViewDiffableDataSourceExample: UITableViewDelegate {
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

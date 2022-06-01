@@ -32,8 +32,7 @@ extension Coordinator {
 	}
 }
 
-/// Usually conformed by a view controller.
-protocol Coordinating: AnyObject {
+protocol Coordinating: UIViewController {
 	associatedtype CoordinatorType: Coordinator
 	var coordinator: CoordinatorType? { get set }
 	init(coordinator: CoordinatorType)

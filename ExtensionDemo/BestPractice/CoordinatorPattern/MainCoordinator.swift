@@ -11,7 +11,6 @@ import UIKit
 final class MainCoordinator: BaseCoordinator {
 	
 	func start() {
-		navigationController.delegate = self
 		let vc = ViewController.instantiate
 		vc.tabBarItem = .init(tabBarSystemItem: .favorites, tag: 0)
 		vc.coordinator = self

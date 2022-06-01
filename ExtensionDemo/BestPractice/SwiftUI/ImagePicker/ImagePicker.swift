@@ -9,6 +9,7 @@
 import SwiftUI
 import PhotosUI
 
+@available(iOS 14, *)
 struct ImagePicker: UIViewControllerRepresentable {
     @Binding var image: UIImage?
     
