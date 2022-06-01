@@ -1,28 +1,14 @@
 //
-//  Coordinator.swift
+//  MainCoordinator.swift
 //  ExtensionDemo
 //
-//  Created by Choi on 2022/5/30.
+//  Created by Choi on 2022/5/31.
 //  Copyright © 2022 Choi. All rights reserved.
 //
 
-import Foundation
 import UIKit
 
-protocol Coordinator: AnyObject {
-	var childCoordinators: [any Coordinator] { get set }
-	var navigationController: UINavigationController { get set }
-	
-	func start()
-}
-
-class MainCoordinator: NSObject, Coordinator {
-	var childCoordinators: [Coordinator] = []
-	var navigationController: UINavigationController
-	
-	init(navigationController: UINavigationController) {
-		self.navigationController = navigationController
-	}
+final class MainCoordinator: BaseCoordinator {
 	
 	func start() {
 		navigationController.delegate = self
@@ -33,23 +19,18 @@ class MainCoordinator: NSObject, Coordinator {
 	}
 	
 	func buySubscription(to passedData: Int) {
-		let child = BuyCoordinator(navigationController: navigationController)
-		child.parentCoordinator = self
-		childCoordinators.append(child)
+		let child = BuyCoordinator(parent: self)
 		child.start()
-	}
-	
-	func childDidFinish(_ child: Coordinator?) {
-		for (index, coordinator) in childCoordinators.enumerated() {
-			if coordinator === child {
-				childCoordinators.remove(at: index)
-				break
-			}
-		}
 	}
 }
 
 extension MainCoordinator: UINavigationControllerDelegate {
+	
+	/// 导航控制器代理方法
+	/// - Parameters:
+	///   - navigationController: 导航控制器
+	///   - viewController: 目标控制器
+	///   - animated: 是否动画展示
 	func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
 		guard let fromViewController = navigationController.transitionCoordinator?.viewController(forKey: .from) else {
 			return
@@ -60,7 +41,7 @@ extension MainCoordinator: UINavigationControllerDelegate {
 		}
 		/// 出栈 | 处理MainCoordinator的子Coordinator
 		if let buyViewController = fromViewController as? BuyViewController {
-			childDidFinish(buyViewController.coordinator)
+			childFinished(buyViewController.coordinator)
 		}
 	}
 }

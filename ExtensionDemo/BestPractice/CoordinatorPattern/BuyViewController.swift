@@ -8,8 +8,7 @@
 
 import UIKit
 
-final class BuyViewController: UIViewController {
-	weak var coordinator: BuyCoordinator?
+final class BuyViewController: BaseViewController<BuyCoordinator> {
 	var selectedProduct = 0
 }
 
