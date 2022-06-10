@@ -72,6 +72,7 @@
 		DE95B8DF26F31E1B00A9FA5D /* AutoResizeCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE95B8DE26F31E1B00A9FA5D /* AutoResizeCollectionView.swift */; };
 		DE9E8D8425C24ED300FB3C46 /* UITabBarItemPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9E8D8325C24ED300FB3C46 /* UITabBarItemPlus.swift */; };
 		DE9E8E0525C5568000FB3C46 /* UIImageViewPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9E8E0425C5568000FB3C46 /* UIImageViewPlus.swift */; };
+		DE9EF9072852D6DA001CE408 /* CoreBluetoothPlayground.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9EF9062852D6DA001CE408 /* CoreBluetoothPlayground.swift */; };
 		DEA34B752511DBE500B4697C /* CGSizePlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA34B742511DBE500B4697C /* CGSizePlus.swift */; };
 		DEB225A125A7182D00859117 /* StringPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB225A025A7182D00859117 /* StringPlus.swift */; };
 		DEB225A425A7199300859117 /* DatePlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB225A325A7199300859117 /* DatePlus.swift */; };
@@ -157,6 +158,7 @@
 		DE95B8DE26F31E1B00A9FA5D /* AutoResizeCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoResizeCollectionView.swift; sourceTree = "<group>"; };
 		DE9E8D8325C24ED300FB3C46 /* UITabBarItemPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITabBarItemPlus.swift; sourceTree = "<group>"; };
 		DE9E8E0425C5568000FB3C46 /* UIImageViewPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageViewPlus.swift; sourceTree = "<group>"; };
+		DE9EF9062852D6DA001CE408 /* CoreBluetoothPlayground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreBluetoothPlayground.swift; sourceTree = "<group>"; };
 		DEA34B742511DBE500B4697C /* CGSizePlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGSizePlus.swift; sourceTree = "<group>"; };
 		DEB225A025A7182D00859117 /* StringPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringPlus.swift; sourceTree = "<group>"; };
 		DEB225A325A7199300859117 /* DatePlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePlus.swift; sourceTree = "<group>"; };
@@ -394,6 +396,14 @@
 			path = Tools;
 			sourceTree = "<group>";
 		};
+		DE9EF9052852D69A001CE408 /* CoreBluetoothBootcamp */ = {
+			isa = PBXGroup;
+			children = (
+				DE9EF9062852D6DA001CE408 /* CoreBluetoothPlayground.swift */,
+			);
+			path = CoreBluetoothBootcamp;
+			sourceTree = "<group>";
+		};
 		DEA34B762511DC8D00B4697C /* CoreGraphics */ = {
 			isa = PBXGroup;
 			children = (
@@ -416,6 +426,7 @@
 		DEFAD78A2615CC55008CEBE0 /* BestPractice */ = {
 			isa = PBXGroup;
 			children = (
+				DE9EF9052852D69A001CE408 /* CoreBluetoothBootcamp */,
 				DE818FA42844A5D400E884C5 /* CoordinatorPattern */,
 				DEE48CF526AA64D600391508 /* ShadowPlayground.swift */,
 				DE64BA0A264A2ADA009FA78B /* MyPlayground.playground */,
@@ -517,6 +528,7 @@
 				DE818FB22845E96000E884C5 /* MainCoordinator.swift in Sources */,
 				DE051781282CA9EC0027FEF3 /* CharacterSetPlus.swift in Sources */,
 				DEB225A125A7182D00859117 /* StringPlus.swift in Sources */,
+				DE9EF9072852D6DA001CE408 /* CoreBluetoothPlayground.swift in Sources */,
 				DE818FB42845EE0A00E884C5 /* BaseViewController.swift in Sources */,
 				DE818FA62844A5EE00E884C5 /* BaseCoordinator.swift in Sources */,
 				3EC9CEBB27E0E81F00ECFD27 /* UIBackgroundExpendedButton.swift in Sources */,
