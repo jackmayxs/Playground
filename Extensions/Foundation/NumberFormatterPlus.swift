@@ -21,7 +21,7 @@ extension NumberFormatter {
 		shared.configure {
 			$0.numberStyle = .spellOut
 			$0.zeroSymbol = "零"
-			$0.locale = .language(.chinese(.simplified))
+			$0.locale = .chineseSimplified
 		}
 	}
 	

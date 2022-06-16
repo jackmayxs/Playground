@@ -79,7 +79,7 @@ extension Date {
 	}
 	
 	var desc: String {
-		description(with: .language(.chinese(.simplified)))
+		description(with: .chineseSimplified)
 	}
 }
 

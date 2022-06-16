@@ -194,25 +194,26 @@ extension String {
 	}
 }
 
+protocol LocaleIdentifier {
+	var identifier: String { get }
+}
+
 extension Locale {
 	
-	static func language(_ language: Language) -> Locale {
-		Locale(identifier: language.identifier)
+	static let chineseSimplified = Locale(Chinese.simplified)
+	static let chineseTraditional = Locale(Chinese.traditional)
+	
+	enum Chinese: String, LocaleIdentifier {
+		/// 协议属性
+		var identifier: String { rawValue }
+		/// 简体中文
+		case simplified = "zh_CN"
+		/// 繁体中文
+		case traditional = "zh-Hant_CN"
 	}
 	
-	// MARK: - __________ Languages __________
-	enum Language {
-		case chinese(Chinese)
-		
-		var identifier: String {
-			switch self {
-				case .chinese(let type): return type.rawValue
-			}
-		}
-		// MARK: - __________ Chinese Type __________
-		enum Chinese: String {
-			case simplified = "zh_CN"
-		}
+	init(_ identifier: LocaleIdentifier) {
+		self.init(identifier: identifier.identifier)
 	}
 }
 
