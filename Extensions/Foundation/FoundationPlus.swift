@@ -29,10 +29,6 @@ func sink<In, Out>(_ output: Out) -> (In) -> Out {
 	{ _ in output }
 }
 
-// MARK: - __________ Operators __________
-infix operator <-- : MultiplicationPrecedence
-infix operator --> : MultiplicationPrecedence
-
 // MARK: - __________ Dictionary __________
 extension Dictionary where Value: OptionalType {
 	var unwrapped: Dictionary<Key, Value.Wrapped> {
@@ -42,9 +38,6 @@ extension Dictionary where Value: OptionalType {
 		}
 	}
 }
-
-// MARK: - __________ Array __________
-infix operator +> : MultiplicationPrecedence
 
 extension Array {
 	public init(generating elementGenerator: (Int) -> Element, count: Int) {
