@@ -194,29 +194,6 @@ extension String {
 	}
 }
 
-protocol LocaleIdentifier {
-	var identifier: String { get }
-}
-
-extension Locale {
-	
-	static let chineseSimplified = Locale(Chinese.simplified)
-	static let chineseTraditional = Locale(Chinese.traditional)
-	
-	enum Chinese: String, LocaleIdentifier {
-		/// 协议属性
-		var identifier: String { rawValue }
-		/// 简体中文
-		case simplified = "zh_CN"
-		/// 繁体中文
-		case traditional = "zh-Hant_CN"
-	}
-	
-	init(_ identifier: LocaleIdentifier) {
-		self.init(identifier: identifier.identifier)
-	}
-}
-
 extension Substring {
 	
 	var string: String {

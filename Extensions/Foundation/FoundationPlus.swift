@@ -200,3 +200,9 @@ extension DateFormatter {
 		return cachedFormatter
 	}
 }
+
+// MARK: - __________ Locale __________
+extension Locale {
+	static let chineseSimplified = Locale(identifier: "zh_CN")
+	static let chineseTraditional = Locale(identifier: "zh-Hant_CN")
+}
