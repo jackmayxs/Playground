@@ -8,7 +8,7 @@
 
 import Foundation
 
-func dePrint(_ items: Any..., file: String = #fileID, function: String = #function, line: Int = #line) {
+func dprint(_ items: Any..., file: String = #fileID, function: String = #function, line: Int = #line) {
 	#if DEBUG
 	var fileName = (file as NSString).lastPathComponent
 	if fileName.hasSuffix(".swift") {

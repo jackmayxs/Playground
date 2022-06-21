@@ -29,4 +29,12 @@ extension Int {
 	var double: Double {
 		Double(self)
 	}
+	
+	var int32: Int32 {
+		Int32(self)
+	}
+	
+	var int64: Int64 {
+		Int64(self)
+	}
 }
