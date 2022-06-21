@@ -23,7 +23,7 @@ extension DateFormatter {
 		dateFormat = ""
 		dateStyle = .full
 		timeStyle = .none
-		locale = .current
+		locale = .chineseSimplified
 		generatesCalendarDates = false
 		timeZone = .current
 		calendar = .current
