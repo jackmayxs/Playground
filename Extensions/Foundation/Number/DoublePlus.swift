@@ -32,10 +32,19 @@ extension Double {
 
 // MARK: - __________ Date __________
 extension Double {
-	var days: Double { 24.0 * hours }
-	var hours: Double { self * 60.0.minutes }
-	var minutes: Double { self * 60.0.seconds }
-	var seconds: Double { self }
+	
+	/// 计算指定日期元素内的秒数
+	/// - Parameter component: 日期元素 | 可处理的枚举: .day, .hour, .minute, .second, .nanosecond
+	/// - Returns: 时间间隔
+	static func timeInterval(in component: Calendar.Component) -> TimeInterval {
+		let now = Date()
+		let treatableComponents: [Calendar.Component] = [.day, .hour, .minute, .second, .nanosecond]
+		guard treatableComponents.contains(component) else {
+			assertionFailure("\(component)'s time interval may vary in current date: \(now)")
+			return 0.0
+		}
+		return Calendar.gregorian.dateInterval(of: component, for: now)?.duration ?? 0.0
+	}
 }
 
 // MARK: - __________ Format __________

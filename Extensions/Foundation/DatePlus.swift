@@ -75,19 +75,12 @@ extension Date {
 	
 	/// 返回当前日期一整天的范围(0点-24点)
 	var dayInterval: DateInterval? {
-		Calendar.current.dateInterval(of: .day, for: self)
+		Calendar.gregorian.dateInterval(of: .day, for: self)
 	}
 	
 	var desc: String {
 		description(with: .chineseSimplified)
 	}
-}
-
-extension Int {
-	var days: Int { 24 * hours }
-	var hours: Int { self * 60.minutes }
-	var minutes: Int { self * 60.seconds }
-	var seconds: Int { self }
 }
 
 // Date + DateComponents
@@ -107,7 +100,7 @@ extension TimeZone {
 	/// 北京时间
 	static var beijing: TimeZone {
 		// 北京时间 GMT+8
-		TimeZone(secondsFromGMT: 8.hours).unsafelyUnwrapped
+		TimeZone(secondsFromGMT: 28800).unsafelyUnwrapped
 		// 使用identifier
 		//TimeZone(identifier: "Asia/Shanghai")
 		// 使用缩写

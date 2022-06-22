@@ -38,3 +38,22 @@ extension Int {
 		Int64(self)
 	}
 }
+
+extension Int {
+	
+	/// 计算指定日期元素的秒数
+	/// - Parameter component: 日期元素 | 可处理的枚举: .day, .hour, .minute, .second, .nanosecond
+	/// - Returns: 秒数
+	static func seconds(in component: Calendar.Component) -> Int {
+		nanoseconds(in: component) / Int(1e9)
+	}
+	
+	/// 计算指定日期元素的纳秒数
+	/// - Parameter component: 日期元素 | 可处理的枚举: .day, .hour, .minute, .second, .nanosecond
+	/// - Returns: 纳秒数
+	static func nanoseconds(in component: Calendar.Component) -> Int {
+		let timeInterval = Double.timeInterval(in: component)
+		let nanoseconds = timeInterval * 1e9
+		return Int(nanoseconds)
+	}
+}
