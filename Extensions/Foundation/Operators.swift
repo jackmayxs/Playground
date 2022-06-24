@@ -15,10 +15,27 @@ infix operator <-- : MultiplicationPrecedence
 infix operator --> : MultiplicationPrecedence
 infix operator +> : MultiplicationPrecedence
 infix operator ??= : AssignmentPrecedence
+infix operator ?= : AssignmentPrecedence
 
-// MARK: - __________ 具体实现 __________
+// MARK: - __________ Conditional Assignment 具体实现 __________
 /// 唯空赋值运算符: To assign only if the assigned-to variable is nil
 func ??= <T>(lhs: inout T?, rhs: T?) {
 	guard lhs == nil else { return }
+	lhs = rhs
+}
+/// 右侧Optional有效时才赋值
+#if swift(>=5.7)
+func ?= <T>(lhs: inout T?, rhs: T?) {
+	guard let rhs else { return }
+	lhs = rhs
+}
+#endif
+/// 右侧值不为空字符串时才赋值
+func ?= (lhs: inout String?, rhs: String?) {
+	guard rhs.isValidString else { return }
+	lhs = rhs
+}
+func ?= (lhs: inout String, rhs: String) {
+	guard rhs.isValidString else { return }
 	lhs = rhs
 }
