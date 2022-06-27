@@ -30,6 +30,10 @@ func ?= <T>(lhs: inout T?, rhs: T?) {
 	lhs = rhs
 }
 #endif
+/// 给String?赋值时总是赋新值
+func ?= (lhs: inout String?, rhs: String) {
+	lhs = rhs
+}
 /// 右侧值不为空字符串时才赋值
 func ?= (lhs: inout String?, rhs: String?) {
 	guard rhs.isValidString else { return }

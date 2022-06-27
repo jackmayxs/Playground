@@ -118,7 +118,7 @@ extension Optional {
 	}
 	
 	/// 转换为Any类型
-	var any: Any {
+	var asAny: Any {
 		self as Any
 	}
 	
