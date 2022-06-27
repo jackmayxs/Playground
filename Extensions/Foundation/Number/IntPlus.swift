@@ -45,15 +45,23 @@ extension Int {
 	/// - Parameter component: 日期元素 | 可处理的枚举: .day, .hour, .minute, .second, .nanosecond
 	/// - Returns: 秒数
 	static func seconds(in component: Calendar.Component) -> Int {
-		nanoseconds(in: component) / Int(1e9)
+		let timeInterval = timeInterval(in: component)
+		return Int(timeInterval)
 	}
 	
 	/// 计算指定日期元素的纳秒数
 	/// - Parameter component: 日期元素 | 可处理的枚举: .day, .hour, .minute, .second, .nanosecond
 	/// - Returns: 纳秒数
 	static func nanoseconds(in component: Calendar.Component) -> Int {
-		let timeInterval = Double.timeInterval(in: component)
+		let timeInterval = timeInterval(in: component) * 1e9
 		let nanoseconds = timeInterval * 1e9
 		return Int(nanoseconds)
+	}
+	
+	/// 计算指定日期元素的时间间隔
+	/// - Parameter component: 日期元素 | 可处理的枚举: .day, .hour, .minute, .second, .nanosecond
+	/// - Returns: 时间间隔
+	fileprivate static func timeInterval(in component: Calendar.Component) -> TimeInterval {
+		Double.timeInterval(in: component)
 	}
 }
