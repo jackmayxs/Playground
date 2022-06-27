@@ -43,6 +43,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //		/// 4. Coordinator Pattern with TabBarController
 //		window.rootViewController = MainTabBarController()
 		
+//		/// 5. SwiftUI
+//		let content = ContentView()
+//		let hostController = UIHostingController(rootView: content)
+//		window.rootViewController = hostController
+		
 		
 		self.window = window
 		window.makeKeyAndVisible()

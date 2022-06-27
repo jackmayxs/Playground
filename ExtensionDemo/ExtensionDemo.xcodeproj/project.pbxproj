@@ -86,6 +86,7 @@
 		DEE4D4B026A54A5800E5566B /* SuperTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE4D4AF26A54A5800E5566B /* SuperTableViewCell.swift */; };
 		DEF0553E25BBD31700093261 /* UIWindowPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF0553D25BBD31700093261 /* UIWindowPlus.swift */; };
 		DEF40F5E25B02C2900ADA57D /* UIViewPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF40F5D25B02C2900ADA57D /* UIViewPlus.swift */; };
+		DEF818BE286977C700D664D7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF818BD286977C700D664D7 /* ContentView.swift */; };
 		DEFAD78C2615CCA6008CEBE0 /* TextFieldDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFAD78B2615CCA6008CEBE0 /* TextFieldDelegate.swift */; };
 		DEFFE58E282611DB00BC07EB /* SwiftUIPlayground.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFFE58D282611DB00BC07EB /* SwiftUIPlayground.swift */; };
 /* End PBXBuildFile section */
@@ -175,6 +176,7 @@
 		DEE4D4AF26A54A5800E5566B /* SuperTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperTableViewCell.swift; sourceTree = "<group>"; };
 		DEF0553D25BBD31700093261 /* UIWindowPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIWindowPlus.swift; sourceTree = "<group>"; };
 		DEF40F5D25B02C2900ADA57D /* UIViewPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewPlus.swift; sourceTree = "<group>"; };
+		DEF818BD286977C700D664D7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		DEFAD78B2615CCA6008CEBE0 /* TextFieldDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldDelegate.swift; sourceTree = "<group>"; };
 		DEFFE58D282611DB00BC07EB /* SwiftUIPlayground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIPlayground.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -297,6 +299,7 @@
 				DE66D8A924C7F931003B9206 /* SceneDelegate.swift */,
 				DE66D8AB24C7F931003B9206 /* ViewController.swift */,
 				DE4190B225EF49BA00F03D4A /* SwiftUIPreview.swift */,
+				DEF818BD286977C700D664D7 /* ContentView.swift */,
 			);
 			path = ExtensionDemo;
 			sourceTree = "<group>";
@@ -577,6 +580,7 @@
 				3E70EEB126FEB33900C19A78 /* PlaceholderTextView.swift in Sources */,
 				3E127E3425FF928C00EC8C22 /* UITableViewPlus.swift in Sources */,
 				DE66D8AA24C7F931003B9206 /* SceneDelegate.swift in Sources */,
+				DEF818BE286977C700D664D7 /* ContentView.swift in Sources */,
 				DEB622FC25E899BB00702C5E /* IntPlus.swift in Sources */,
 				3E58B55725E7D71E0013DE51 /* GlobalFunctions.swift in Sources */,
 				DE818FA32844A4CF00E884C5 /* CombinePlus.swift in Sources */,
