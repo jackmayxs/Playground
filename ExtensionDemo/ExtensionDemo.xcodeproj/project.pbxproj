@@ -82,6 +82,9 @@
 		DEB622FC25E899BB00702C5E /* IntPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB622FB25E899BB00702C5E /* IntPlus.swift */; };
 		DEB6E34827633AF100212120 /* NewUIButtonSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB6E34727633AF100212120 /* NewUIButtonSystem.swift */; };
 		DED5093A27957C9C000AE370 /* CustomLayoutGuilde.swift in Sources */ = {isa = PBXBuildFile; fileRef = DED5093927957C9C000AE370 /* CustomLayoutGuilde.swift */; };
+		DEDE4AD9286AD4AC00B98E52 /* RunloopBootcamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDE4AD8286AD4AC00B98E52 /* RunloopBootcamp.swift */; };
+		DEDE4ADB286ADB4300B98E52 /* TypeAlias.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDE4ADA286ADB4300B98E52 /* TypeAlias.swift */; };
+		DEDE4ADD286ADC9800B98E52 /* SimpleCallbackWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDE4ADC286ADC9800B98E52 /* SimpleCallbackWrapper.swift */; };
 		DEE48CF626AA64D600391508 /* ShadowPlayground.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE48CF526AA64D600391508 /* ShadowPlayground.swift */; };
 		DEE4D4B026A54A5800E5566B /* SuperTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE4D4AF26A54A5800E5566B /* SuperTableViewCell.swift */; };
 		DEF0553E25BBD31700093261 /* UIWindowPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF0553D25BBD31700093261 /* UIWindowPlus.swift */; };
@@ -172,6 +175,9 @@
 		DEB6E34727633AF100212120 /* NewUIButtonSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewUIButtonSystem.swift; sourceTree = "<group>"; };
 		DEC02208274F253500986DFC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
 		DED5093927957C9C000AE370 /* CustomLayoutGuilde.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomLayoutGuilde.swift; sourceTree = "<group>"; };
+		DEDE4AD8286AD4AC00B98E52 /* RunloopBootcamp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunloopBootcamp.swift; sourceTree = "<group>"; };
+		DEDE4ADA286ADB4300B98E52 /* TypeAlias.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeAlias.swift; sourceTree = "<group>"; };
+		DEDE4ADC286ADC9800B98E52 /* SimpleCallbackWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleCallbackWrapper.swift; sourceTree = "<group>"; };
 		DEE48CF526AA64D600391508 /* ShadowPlayground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowPlayground.swift; sourceTree = "<group>"; };
 		DEE4D4AF26A54A5800E5566B /* SuperTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperTableViewCell.swift; sourceTree = "<group>"; };
 		DEF0553D25BBD31700093261 /* UIWindowPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIWindowPlus.swift; sourceTree = "<group>"; };
@@ -388,6 +394,7 @@
 				DE59921526B27509007A2A77 /* ResultBuilders.swift */,
 				DE051780282CA9EC0027FEF3 /* CharacterSetPlus.swift */,
 				3EE208A0285EABCF002B1AF8 /* Operators.swift */,
+				DEDE4ADA286ADB4300B98E52 /* TypeAlias.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -401,6 +408,7 @@
 				DE16719E25E7935D00BA5CE9 /* GCDTimer.swift */,
 				3E58B55625E7D71E0013DE51 /* GlobalFunctions.swift */,
 				DE1D2C2728655ABD00009E12 /* EventManager.swift */,
+				DEDE4ADC286ADC9800B98E52 /* SimpleCallbackWrapper.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -432,9 +440,18 @@
 			path = Number;
 			sourceTree = "<group>";
 		};
+		DEDE4AD7286AD43D00B98E52 /* Runloop */ = {
+			isa = PBXGroup;
+			children = (
+				DEDE4AD8286AD4AC00B98E52 /* RunloopBootcamp.swift */,
+			);
+			path = Runloop;
+			sourceTree = "<group>";
+		};
 		DEFAD78A2615CC55008CEBE0 /* BestPractice */ = {
 			isa = PBXGroup;
 			children = (
+				DEDE4AD7286AD43D00B98E52 /* Runloop */,
 				DE9EF9052852D69A001CE408 /* CoreBluetoothBootcamp */,
 				DE818FA42844A5D400E884C5 /* CoordinatorPattern */,
 				DEE48CF526AA64D600391508 /* ShadowPlayground.swift */,
@@ -557,6 +574,7 @@
 				DE16F41426B7F479005D1A21 /* Spacer.swift in Sources */,
 				DE9E8E0525C5568000FB3C46 /* UIImageViewPlus.swift in Sources */,
 				DE16719F25E7935D00BA5CE9 /* GCDTimer.swift in Sources */,
+				DEDE4AD9286AD4AC00B98E52 /* RunloopBootcamp.swift in Sources */,
 				DE19277E26D791C00009B1A5 /* UIResponderPlus.swift in Sources */,
 				DE743CCD25A7F9E7001764A5 /* DataPlus.swift in Sources */,
 				DEFFE58E282611DB00BC07EB /* SwiftUIPlayground.swift in Sources */,
@@ -571,6 +589,7 @@
 				3E17B00426D95AD5004663EC /* ProtocolExtensions.swift in Sources */,
 				DE23268F2797F57600FAB6B8 /* ImageSaver.swift in Sources */,
 				DE2CF0022831EA8400DF55CF /* CustomizeUICollectionViewLayout.swift in Sources */,
+				DEDE4ADB286ADB4300B98E52 /* TypeAlias.swift in Sources */,
 				DEE48CF626AA64D600391508 /* ShadowPlayground.swift in Sources */,
 				DE93781224D124B200D89D4C /* DispatchOnce.swift in Sources */,
 				DE9E8D8425C24ED300FB3C46 /* UITabBarItemPlus.swift in Sources */,
@@ -596,6 +615,7 @@
 				DEFAD78C2615CCA6008CEBE0 /* TextFieldDelegate.swift in Sources */,
 				3EB2D05125B8770D00C70FE7 /* Constants.swift in Sources */,
 				3E40F88727E025E200F3005E /* UIZStackView.swift in Sources */,
+				DEDE4ADD286ADC9800B98E52 /* SimpleCallbackWrapper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

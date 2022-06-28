@@ -28,6 +28,8 @@ final class BuyView: UIView {
 final class BuyViewController: BaseViewController<BuyCoordinator> {
 	var selectedProduct = 0
 	
+	lazy var thread = PermenantThread()
+	
 	override var preferLargeTitles: Bool { false }
 	
 	override func loadView() {
