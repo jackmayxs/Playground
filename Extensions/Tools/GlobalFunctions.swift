@@ -17,10 +17,11 @@ func dprint(_ items: Any..., file: String = #fileID, function: String = #functio
 		fileName.removeSubrange(rang)
 	}
 	let time = Date().debugTimeString
-	let queue = Thread.isMainThread ? "" : "NOT-MAIN-THREAD"
-	print("========== ↓↓↓ ==========\n")
-	print("\(time) \(fileName).\(function)[\(line)]\(queue)\n")
-	print(items, terminator: "\n========== End ==========")
+	let threadWarning = Thread.isMainThread ? "" : " | Warning: NOT-MAIN-THREAD"
+	print("🤯 @Time \(time) \(fileName).\(function) @Line:\(line)\(threadWarning)")
+	for (idx, item) in items.enumerated() {
+		print("\(idx) -> \(item)")
+	}
 	#endif
 }
 
