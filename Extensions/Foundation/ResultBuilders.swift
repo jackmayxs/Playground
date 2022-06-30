@@ -52,7 +52,7 @@ enum ArrayBuilder<E> {
 }
 
 @resultBuilder
-struct SingleValueBuilder<E> {
+enum SingleValueBuilder<E> {
 	static func buildBlock(_ components: E) -> E {
 		components
 	}
@@ -81,25 +81,9 @@ extension Array: ConstraintGroup where Element == NSLayoutConstraint {
 	var constraints: [NSLayoutConstraint] { self }
 }
 
-@resultBuilder
-struct ConstraintsBuilder {
-	static func buildBlock(_ components: ConstraintGroup...) -> [NSLayoutConstraint] {
-		components.flatMap(\.constraints)
-	}
-	static func buildOptional(_ component: [ConstraintGroup]?) -> [NSLayoutConstraint] {
-		component?.flatMap(\.constraints) ?? []
-	}
-	static func buildEither(first component: [ConstraintGroup]) -> [NSLayoutConstraint] {
-		component.flatMap(\.constraints)
-	}
-	static func buildEither(second component: [ConstraintGroup]) -> [NSLayoutConstraint] {
-		component.flatMap(\.constraints)
-	}
-}
-
 // MARK: Best Practice
 extension NSLayoutConstraint {
-	static func activate(@ConstraintsBuilder constraintsBuilder: () -> [NSLayoutConstraint]) {
+	static func activate(@ArrayBuilder<NSLayoutConstraint> constraintsBuilder: () -> [NSLayoutConstraint]) {
 		let constraints = constraintsBuilder()
 		activate(constraints)
 	}
@@ -108,7 +92,7 @@ extension NSLayoutConstraint {
 protocol SubviewContaining {}
 extension UIView: SubviewContaining {}
 extension SubviewContaining where Self: UIView {
-	func add<SubView: UIView>(subView: SubView, @ConstraintsBuilder constraintsBuilder: (SubView) -> [NSLayoutConstraint]) {
+	func add<SubView: UIView>(subView: SubView, @ArrayBuilder<NSLayoutConstraint> constraintsBuilder: (SubView) -> [NSLayoutConstraint]) {
 		subView.translatesAutoresizingMaskIntoConstraints = false
 		addSubview(subView)
 		let constraints = constraintsBuilder(subView)

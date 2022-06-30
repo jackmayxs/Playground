@@ -130,6 +130,28 @@ extension Array where Element: UIView {
 }
 extension UIView {
 	
+	
+	/// 添加子视图(可变参数)
+	/// - Parameter subviews: 子视图序列
+	func addSubviews(_ subviews: UIView...) {
+		addSubviews(subviews)
+	}
+	
+	/// 添加子视图(通过@ArrayBuilder创建)
+	/// - Parameter builder: 子视图构建方法
+	func addSubviews(@ArrayBuilder<UIView> builder: () -> [UIView]) {
+		let subviews = builder()
+		addSubviews(subviews)
+	}
+	
+	/// 添加子视图集合
+	/// - Parameter subviews: UIView集合
+	func addSubviews<T>(_ subviews: T) where T: Sequence, T.Element: UIView {
+		subviews.forEach { subview in
+			addSubview(subview)
+		}
+	}
+	
 	/// 自适应Size | 内部子控件Autolayout
 	/// 注意: 调用此方法之前要保证外部的约束要提前设置好
 	/// 比如UITableView.headerView的宽度约束要提前设置成等于TableView,否则会得到意料之外的结果
