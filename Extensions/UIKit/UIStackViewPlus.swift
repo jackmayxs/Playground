@@ -24,7 +24,7 @@ extension UIStackView {
 		distribution: UIStackView.Distribution = .fill,
 		alignment: UIStackView.Alignment = .leading,
 		spacing: CGFloat = 0.0,
-		@SubviewsBuilder content: () -> [UIView] = { [] }
+		@ArrayBuilder<UIView> content: () -> [UIView] = { [] }
 	) {
 		self.init(arrangedSubviews: content())
 		self.axis = axis
@@ -33,7 +33,7 @@ extension UIStackView {
 		self.spacing = spacing
 	}
 	
-	func addArrangedSubviews(@SubviewsBuilder content: () -> [UIView]) {
+	func addArrangedSubviews(@ArrayBuilder<UIView> content: () -> [UIView]) {
 		content().forEach { subView in
 			addArrangedSubview(subView)
 		}
