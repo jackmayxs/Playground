@@ -9,20 +9,22 @@
 import Foundation
 
 final class PermenantThread: NSObject {
-	private var innerThread: XThread!
+	private var thread: Thread!
 	private var stopped = false
 	
 	override init() {
 		super.init()
-		innerThread = XThread {
+		let thread = Thread {
 			[weak self] in
-			let xRunloop = RunLoop.current
-			xRunloop.add(Port(), forMode: .default)
+			let runloop = RunLoop.current
+			runloop.add(Port(), forMode: .default)
 			while !(self?.stopped ?? true) {
-				xRunloop.run(mode: .default, before: .distantFuture)
+				runloop.run(mode: .default, before: .distantFuture)
 			}
 		}
-		innerThread.start()
+		thread.name = "com.permenant.thread"
+		thread.start()
+		self.thread = thread
 	}
 	
 	deinit {
@@ -33,36 +35,25 @@ final class PermenantThread: NSObject {
 extension PermenantThread {
 	
 	// MARK: - __________ 执行过程 __________
-	@objc private func _executeTask(_ wrapper: SimpleCallbackWrapper) {
+	@objc private func _execute(_ wrapper: SimpleCallbackWrapper) {
 		wrapper.callback()
 	}
 	
-	func executeTask(_ task: @escaping SimpleCallback) {
-		guard innerThread.isValid else { return }
+	func execute(_ task: @escaping SimpleCallback) {
+		guard let thread = thread else { return }
 		let callbackWrapper = SimpleCallbackWrapper(task)
-		perform(#selector(_executeTask), on: innerThread, with: callbackWrapper, waitUntilDone: false)
+		perform(#selector(_execute), on: thread, with: callbackWrapper, waitUntilDone: false)
 	}
 	
 	// MARK: - __________ 回收过程 __________
 	@objc private func _stop() {
 		stopped = true
 		CFRunLoopStop(CFRunLoopGetCurrent())
-		innerThread = nil
+		thread = nil
 	}
 	
 	private func stop() {
-		guard innerThread.isValid else { return }
-		perform(#selector(_stop), on: innerThread, with: nil, waitUntilDone: true)
-	}
-	
-	// MARK: - __________ 内嵌类型 __________
-	final class XThread: Thread {
-		override init() {
-			super.init()
-			name = "XThread"
-		}
-		deinit {
-			dprint("XThread 销毁")
-		}
+		guard let thread = thread else { return }
+		perform(#selector(_stop), on: thread, with: nil, waitUntilDone: true)
 	}
 }
