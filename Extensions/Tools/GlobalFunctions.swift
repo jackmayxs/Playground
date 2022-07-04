@@ -20,7 +20,7 @@ func dprint(_ items: Any..., file: String = #fileID, function: String = #functio
 	let threadWarning = Thread.isMainThread ? "" : " | Warning: NOT-MAIN-THREAD"
 	print("🤯 @Time \(time) \(fileName).\(function) @Line:\(line)\(threadWarning)")
 	for (idx, item) in items.enumerated() {
-		print("\(idx) -> \(item)")
+		print("\(idx) ➜ \(item)")
 	}
 	#endif
 }
