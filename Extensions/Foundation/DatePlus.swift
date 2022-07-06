@@ -102,6 +102,13 @@ extension Date {
 	var desc: String {
 		description(with: .chineseSimplified)
 	}
+	
+	/// 计算指定日历元素的日期范围
+	/// - Parameter component: 日历元素
+	/// - Returns: 日期范围
+	func dateInterval(of component: Calendar.Component) -> DateInterval? {
+		Calendar.gregorian.dateInterval(of: component, for: self)
+	}
 }
 
 // Date + DateComponents
