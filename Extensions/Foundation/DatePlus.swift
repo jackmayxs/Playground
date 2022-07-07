@@ -8,6 +8,14 @@
 
 import Foundation
 
+extension DateInterval {
+	
+	/// 返回严格意义上的的日期范围 | 避免格式化结束日期的时候返回错误的结果
+	var strict: DateInterval {
+		DateInterval(start: start, end: end - 1 * Calendar.Component.second)
+	}
+}
+
 extension Date {
 	
 	/// 转换为GCD使用的绝对时间
@@ -78,7 +86,7 @@ extension Date {
 	
 	/// 返回当前时间只包含小时的时间
 	var hourOfClock: Date {
-		Calendar.gregorian.dateInterval(of: .hour, for: self)?.start ?? self
+		dateInterval(of: .hour)?.start ?? self
 	}
 	/// 获取日期所有元素
 	var components: DateComponents {
@@ -96,7 +104,7 @@ extension Date {
 	
 	/// 返回当前日期一整天的范围(0点-24点)
 	var dayInterval: DateInterval? {
-		Calendar.gregorian.dateInterval(of: .day, for: self)
+		dateInterval(of: .day)
 	}
 	
 	var desc: String {
@@ -112,15 +120,15 @@ extension Date {
 }
 
 // Date + DateComponents
-func +(_ lhs: Date, _ rhs: DateComponents) -> Date {
+func + (_ lhs: Date, _ rhs: DateComponents) -> Date {
 	Calendar.gregorian.date(byAdding: rhs, to: lhs)!
 }
 
 // DateComponents + Dates
-func +(_ lhs: DateComponents, _ rhs: Date) -> Date { rhs + lhs }
+func + (_ lhs: DateComponents, _ rhs: Date) -> Date { rhs + lhs }
 
 // Date - DateComponents
-func -(_ lhs: Date, _ rhs: DateComponents) -> Date { lhs + (-rhs) }
+func - (_ lhs: Date, _ rhs: DateComponents) -> Date { lhs + (-rhs) }
 
 // MARK: - __________ TimeZone __________
 extension TimeZone {
@@ -258,11 +266,11 @@ extension DateComponents {
 		}
 	}
 	
-	static func +(_ lhs: DateComponents, _ rhs: DateComponents) -> DateComponents {
+	static func + (_ lhs: DateComponents, _ rhs: DateComponents) -> DateComponents {
 		combineComponents(lhs, rhs)
 	}
 	
-	static func -(_ lhs: DateComponents, _ rhs: DateComponents) -> DateComponents {
+	static func - (_ lhs: DateComponents, _ rhs: DateComponents) -> DateComponents {
 		combineComponents(lhs, rhs, multiplier: -1)
 	}
 	
@@ -280,16 +288,15 @@ extension DateComponents {
 		return result
 	}
 	
-	static prefix func -(components: DateComponents) -> DateComponents {
+	static prefix func - (components: DateComponents) -> DateComponents {
 		var result = DateComponents()
-		if components.nanosecond != nil { result.nanosecond = -components.nanosecond! }
-		if components.second     != nil { result.second     = -components.second! }
-		if components.minute     != nil { result.minute     = -components.minute! }
-		if components.hour       != nil { result.hour       = -components.hour! }
-		if components.day        != nil { result.day        = -components.day! }
-		if components.weekOfYear != nil { result.weekOfYear = -components.weekOfYear! }
-		if components.month      != nil { result.month      = -components.month! }
-		if components.year       != nil { result.year       = -components.year! }
+		if let nanosecond = components.nanosecond { result.nanosecond = -nanosecond }
+		if let second     = components.second { result.second = -second }
+		if let minute     = components.minute { result.minute = -minute }
+		if let hour       = components.hour { result.hour = -hour }
+		if let day        = components.day { result.day = -day }
+		if let month      = components.month { result.month = -month }
+		if let year       = components.year { result.year = -year }
 		return result
 	}
 }

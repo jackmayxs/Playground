@@ -41,6 +41,12 @@ extension Int {
 
 extension Int {
 	
+	static func * (lhs: Int, component: Calendar.Component) -> DateComponents {
+		var components = DateComponents(calendar: .gregorian)
+		components.setValue(lhs, for: component)
+		return components
+	}
+	
 	/// 计算指定日期元素的秒数
 	/// - Parameter component: 日期元素 | 可处理的枚举: .day, .hour, .minute, .second, .nanosecond
 	/// - Returns: 秒数
