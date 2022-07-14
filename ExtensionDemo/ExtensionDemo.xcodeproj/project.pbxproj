@@ -11,6 +11,7 @@
 		3E127E3125FF926100EC8C22 /* UICollectionViewPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E127E3025FF926100EC8C22 /* UICollectionViewPlus.swift */; };
 		3E127E3425FF928C00EC8C22 /* UITableViewPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E127E3325FF928C00EC8C22 /* UITableViewPlus.swift */; };
 		3E17B00426D95AD5004663EC /* ProtocolExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E17B00326D95AD5004663EC /* ProtocolExtensions.swift */; };
+		3E3A6CCC287FE63C001ED917 /* StringInterpolation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3A6CCB287FE63C001ED917 /* StringInterpolation.swift */; };
 		3E40F88727E025E200F3005E /* UIZStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E40F88627E025E200F3005E /* UIZStackView.swift */; };
 		3E58A84525B5D4D000B0D2E3 /* CGRectPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E58A84425B5D4D000B0D2E3 /* CGRectPlus.swift */; };
 		3E58B55725E7D71E0013DE51 /* GlobalFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E58B55625E7D71E0013DE51 /* GlobalFunctions.swift */; };
@@ -99,6 +100,7 @@
 		3E127E3025FF926100EC8C22 /* UICollectionViewPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionViewPlus.swift; sourceTree = "<group>"; };
 		3E127E3325FF928C00EC8C22 /* UITableViewPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewPlus.swift; sourceTree = "<group>"; };
 		3E17B00326D95AD5004663EC /* ProtocolExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolExtensions.swift; sourceTree = "<group>"; };
+		3E3A6CCB287FE63C001ED917 /* StringInterpolation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringInterpolation.swift; sourceTree = "<group>"; };
 		3E40F88627E025E200F3005E /* UIZStackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIZStackView.swift; sourceTree = "<group>"; };
 		3E58A84425B5D4D000B0D2E3 /* CGRectPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGRectPlus.swift; sourceTree = "<group>"; };
 		3E58B55625E7D71E0013DE51 /* GlobalFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalFunctions.swift; sourceTree = "<group>"; };
@@ -198,6 +200,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3E3A6CCA287FE613001ED917 /* StringInterpolationBootcamp */ = {
+			isa = PBXGroup;
+			children = (
+				3E3A6CCB287FE63C001ED917 /* StringInterpolation.swift */,
+			);
+			path = StringInterpolationBootcamp;
+			sourceTree = "<group>";
+		};
 		DE1DD96A2552BA0300E08A8B /* CustomizedControls */ = {
 			isa = PBXGroup;
 			children = (
@@ -451,6 +461,7 @@
 		DEFAD78A2615CC55008CEBE0 /* BestPractice */ = {
 			isa = PBXGroup;
 			children = (
+				3E3A6CCA287FE613001ED917 /* StringInterpolationBootcamp */,
 				DEDE4AD7286AD43D00B98E52 /* Runloop */,
 				DE9EF9052852D69A001CE408 /* CoreBluetoothBootcamp */,
 				DE818FA42844A5D400E884C5 /* CoordinatorPattern */,
@@ -550,6 +561,7 @@
 				DE1D2C2828655ABD00009E12 /* EventManager.swift in Sources */,
 				DEB622F925E8995B00702C5E /* CGFloatPlus.swift in Sources */,
 				DE36450926984BBD001D072C /* PropertyWrappers.swift in Sources */,
+				3E3A6CCC287FE63C001ED917 /* StringInterpolation.swift in Sources */,
 				DEF40F5E25B02C2900ADA57D /* UIViewPlus.swift in Sources */,
 				DE29E1F62701B4AF008BE81D /* SizeFixedView.swift in Sources */,
 				DE818FB22845E96000E884C5 /* MainCoordinator.swift in Sources */,
