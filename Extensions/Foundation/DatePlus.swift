@@ -133,15 +133,10 @@ func - (_ lhs: Date, _ rhs: DateComponents) -> Date { lhs + (-rhs) }
 // MARK: - __________ TimeZone __________
 extension TimeZone {
 	
-	/// 北京时间
-	static var beijing: TimeZone {
-		// 北京时间 GMT+8
-		TimeZone(secondsFromGMT: 28800).unsafelyUnwrapped
-		// 使用identifier
-		//TimeZone(identifier: "Asia/Shanghai")
-		// 使用缩写
-		//TimeZone(abbreviation: "GMT+8")
-	}
+	/// 北京时间 GMT+8
+	/// TimeZone(identifier: "Asia/Shanghai")
+	/// TimeZone(abbreviation: "GMT+8")
+	static let beijing = TimeZone(secondsFromGMT: 28800).unsafelyUnwrapped
 }
 
 // MARK: - __________ DateComponents __________
