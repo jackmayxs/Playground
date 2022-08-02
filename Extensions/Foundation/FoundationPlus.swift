@@ -15,10 +15,7 @@ import UIKit
 ///   - value: 被引用的对象
 ///   - closure: 具体的执行代码
 /// - Returns: A closure
-func combine<A, B>(
-	_ value: A,
-	with closure: @escaping (A) -> B
-) -> () -> B {
+func combine<A, B>(_ value: A, with closure: @escaping (A) -> B) -> () -> B {
 	{ closure(value) }
 }
 

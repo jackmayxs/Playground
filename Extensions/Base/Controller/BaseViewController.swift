@@ -27,36 +27,13 @@ protocol ViewControllerConfiguration: UIViewController {
 	func configureNavigationController(_ navigationController: UINavigationController)
 }
 
-class BaseViewController<CoordinatorType: Coordinator>: UIViewController, ViewControllerConfiguration, Coordinating {
+extension ViewControllerConfiguration {
 	
-	// MARK: - __________ Stored Properties __________
-	/// 解除循环引用
-	weak var coordinator: CoordinatorType?
-	
-	// MARK: - __________ 生命周期 __________
-	required convenience init(coordinator: CoordinatorType) {
-		self.init(nibName: nil, bundle: nil)
-		self.coordinator = coordinator
-	}
-	
-	override func viewDidLoad() {
-		super.viewDidLoad()
-		configure()
-	}
-	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		/// 配置导航控制器
-		if let navigationController = navigationController {
-			configureNavigationController(navigationController)
-		}
-	}
-	
-	// MARK: - __________ 配置 __________
 	/// 默认标题
 	var defaultTitle: String? { .none }
+	
 	/// 大标题导航栏
-	var preferLargeTitles: Bool { true }
+	var preferLargeTitles: Bool { false }
 	
 	/// 控制器配置 | 调用时机: viewDidLoad
 	func configure() {
@@ -96,10 +73,10 @@ class BaseViewController<CoordinatorType: Coordinator>: UIViewController, ViewCo
 			//barAppearance.backgroundColor = .white
 			//barAppearance.titlePositionAdjustment
 			barAppearance.largeTitleTextAttributes = [
-				.foregroundColor: UIColor.random
+				:
 			]
 			barAppearance.titleTextAttributes = [
-				.foregroundColor: UIColor.random
+				:
 			]
 			//barAppearance.backgroundImage
 			//barAppearance.backgroundEffect
@@ -145,3 +122,22 @@ class BaseViewController<CoordinatorType: Coordinator>: UIViewController, ViewCo
 		}
 	}
 }
+
+class BaseViewController: UIViewController {
+	
+	override func viewDidLoad() {
+		super.viewDidLoad()
+		configure()
+	}
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		/// 配置导航控制器
+		if let navigationController = navigationController {
+			configureNavigationController(navigationController)
+		}
+	}
+}
+
+extension BaseViewController: ViewControllerConfiguration {}
+

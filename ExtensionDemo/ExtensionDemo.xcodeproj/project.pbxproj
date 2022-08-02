@@ -25,6 +25,7 @@
 		DE02063D2750D3F500779080 /* DateFormatterPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE02063C2750D3F500779080 /* DateFormatterPlus.swift */; };
 		DE051781282CA9EC0027FEF3 /* CharacterSetPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE051780282CA9EC0027FEF3 /* CharacterSetPlus.swift */; };
 		DE0819BD25BAD5D300950784 /* DoublePlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0819BC25BAD5D300950784 /* DoublePlus.swift */; };
+		DE0AD325289926A2002F919F /* BaseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0AD324289926A2002F919F /* BaseTableViewController.swift */; };
 		DE12399E26784E6A00AB6B18 /* NumberFormatterPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE12399D26784E6A00AB6B18 /* NumberFormatterPlus.swift */; };
 		DE12DB51279BCEC100D0FBD2 /* FrameBootcamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE12DB50279BCEC100D0FBD2 /* FrameBootcamp.swift */; };
 		DE13534526170A7D00903FA3 /* AutoResizeTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE13534426170A7D00903FA3 /* AutoResizeTextView.swift */; };
@@ -115,6 +116,7 @@
 		DE051780282CA9EC0027FEF3 /* CharacterSetPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterSetPlus.swift; sourceTree = "<group>"; };
 		DE0819BC25BAD5D300950784 /* DoublePlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoublePlus.swift; sourceTree = "<group>"; };
 		DE09397827003FE400935A0B /* StateMachine.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = StateMachine.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		DE0AD324289926A2002F919F /* BaseTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableViewController.swift; sourceTree = "<group>"; };
 		DE12399D26784E6A00AB6B18 /* NumberFormatterPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberFormatterPlus.swift; sourceTree = "<group>"; };
 		DE12DB50279BCEC100D0FBD2 /* FrameBootcamp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameBootcamp.swift; sourceTree = "<group>"; };
 		DE13534426170A7D00903FA3 /* AutoResizeTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoResizeTextView.swift; sourceTree = "<group>"; };
@@ -279,6 +281,7 @@
 			isa = PBXGroup;
 			children = (
 				DE818FB32845EE0A00E884C5 /* BaseViewController.swift */,
+				DE0AD324289926A2002F919F /* BaseTableViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -288,7 +291,6 @@
 			children = (
 				DEFAD78A2615CC55008CEBE0 /* BestPractice */,
 				DE66D8A624C7F931003B9206 /* ExtensionDemo */,
-				DE818FB52845EE1000E884C5 /* Base */,
 				DE66D8BB24C7F982003B9206 /* Extensions */,
 				DE66D8A524C7F931003B9206 /* Products */,
 				DE66D8BE24C81432003B9206 /* README.md */,
@@ -323,6 +325,7 @@
 		DE66D8BB24C7F982003B9206 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				DE818FB52845EE1000E884C5 /* Base */,
 				DE818FA12844A4B300E884C5 /* Combine */,
 				DE93781724D1484900D89D4C /* Tools */,
 				DE93781624D1483B00D89D4C /* Foundation */,
@@ -347,6 +350,7 @@
 		DE818FA42844A5D400E884C5 /* CoordinatorPattern */ = {
 			isa = PBXGroup;
 			children = (
+				DE818FA52844A5EE00E884C5 /* BaseCoordinator.swift */,
 				DE818FB12845E96000E884C5 /* MainCoordinator.swift */,
 				DE818FAB2844B34600E884C5 /* BuyCoordinator.swift */,
 				DE818FA72844ADB000E884C5 /* BuyViewController.swift */,
@@ -358,7 +362,6 @@
 		DE818FB52845EE1000E884C5 /* Base */ = {
 			isa = PBXGroup;
 			children = (
-				DE818FA52844A5EE00E884C5 /* BaseCoordinator.swift */,
 				DE4668832848859500595658 /* Controller */,
 			);
 			path = Base;
@@ -586,6 +589,7 @@
 				DE16F41426B7F479005D1A21 /* Spacer.swift in Sources */,
 				DE9E8E0525C5568000FB3C46 /* UIImageViewPlus.swift in Sources */,
 				DE16719F25E7935D00BA5CE9 /* GCDTimer.swift in Sources */,
+				DE0AD325289926A2002F919F /* BaseTableViewController.swift in Sources */,
 				DEDE4AD9286AD4AC00B98E52 /* RunloopBootcamp.swift in Sources */,
 				DE19277E26D791C00009B1A5 /* UIResponderPlus.swift in Sources */,
 				DE743CCD25A7F9E7001764A5 /* DataPlus.swift in Sources */,
