@@ -36,7 +36,8 @@ extension UIColor {
 
 extension Int {
 	
-	var cgColor: CGColor {
+    @available(iOS 13.0, *)
+    var cgColor: CGColor {
 		guard let argb = argb else { return UIColor.clear.cgColor }
 		return CGColor(red: argb.r, green: argb.g, blue: argb.b, alpha: argb.a)
 	}

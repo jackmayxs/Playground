@@ -11,7 +11,8 @@ import UIKit
 extension String {
 	
 	/// 返回SF Symbol图片
-	var systemImage: UIImage? {
+    @available(iOS 13.0, *)
+    var systemImage: UIImage? {
 		UIImage(systemName: self)
 	}
 	

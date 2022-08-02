@@ -307,6 +307,7 @@ extension UIView {
 }
 // MARK: - __________ SwiftUI __________
 #if DEBUG
+@available(iOS 13.0, *)
 extension UIView {
 
 	var previewLayout: PreviewLayout {

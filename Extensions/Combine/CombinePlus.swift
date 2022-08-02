@@ -9,8 +9,7 @@
 import Foundation
 import Combine
 
-typealias CancellableSet = Set<AnyCancellable>
-
+@available(iOS 13.0, *)
 extension Set where Element: Cancellable {
 	mutating func insert(@ArrayBuilder<Element> _ builder: () -> [Element]) {
 		let cancellables = builder()
