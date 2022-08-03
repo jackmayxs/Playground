@@ -7,6 +7,15 @@
 
 import UIKit
 
+protocol StandartLayoutLifeCycle: UIView {
+    
+    func prepare()
+    
+    func prepareSubviews()
+    
+    func prepareConstraints()
+}
+
 protocol ConditionCheckable {
 	func matchOrNil(condition: (Self) -> Bool) -> Self?
 }

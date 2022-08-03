@@ -11,13 +11,16 @@ import UIKit
 extension String {
 	
 	/// 返回SF Symbol图片
-    @available(iOS 13.0, *)
     var systemImage: UIImage? {
-		UIImage(systemName: self)
+        if #available(iOS 13, *) {
+            return UIImage(systemName: self)
+        } else {
+            return nil
+        }
 	}
 	
 	/// 生成图片
-	var image: UIImage? {
+	var uiImage: UIImage? {
 		UIImage(named: self)
 	}
 }
@@ -257,4 +260,11 @@ extension String {
 			replaceSubrange(...index, with: newValue)
 		}
 	}
+}
+
+extension String {
+    
+    var url: URL? {
+        URL(string: self)
+    }
 }

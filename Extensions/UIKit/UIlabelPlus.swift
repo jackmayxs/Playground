@@ -12,7 +12,7 @@ extension UILabel {
 	
 	// MARK: - __________ 快速创建方法 __________
 	convenience init(
-		text: String?,
+		text: String? = nil,
 		textColor: UIColor? = nil,
 		fontSize: Double = 12.0,
 		fontWeight: UIFont.Weight = .regular) {
