@@ -21,6 +21,7 @@ class BaseTableViewController<PrimaryCellType: UITableViewCell>: BaseViewControl
     }
     
     /// 添加TableView
+    /// 调用时机:viewDidLoad()
     func addTableView() {
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
@@ -28,11 +29,13 @@ class BaseTableViewController<PrimaryCellType: UITableViewCell>: BaseViewControl
         }
     }
     
+    /// 调用时机:newTableView()
     func configureTableView(_ tableView: UITableView) {
         tableView.showsVerticalScrollIndicator = false
         tableView.showsHorizontalScrollIndicator = false
     }
     
+    /// 调用时机:懒加载
     func newTableView() -> UITableView {
         let table = UITableView(frame: .zero, style: tableViewStyle)
         table.delegate = self
