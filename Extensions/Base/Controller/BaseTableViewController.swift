@@ -14,8 +14,18 @@ class BaseTableViewController<PrimaryCellType: UITableViewCell>: BaseViewControl
     
     var tableViewStyle: UITableView.Style { .plain }
     
-    override func loadView() {
-        view = tableView
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        addTableView()
+    }
+    
+    /// 添加TableView
+    func addTableView() {
+        view.addSubview(tableView)
+        tableView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
     }
     
     func configureTableView(_ tableView: UITableView) {
