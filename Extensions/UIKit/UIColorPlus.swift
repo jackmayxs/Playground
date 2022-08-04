@@ -9,6 +9,13 @@
 import UIKit
 
 extension UIColor {
+    static let OxCCCCCC = 0xCCCCCC.uiColor
+    static let Ox999999 = 0x999999.uiColor
+    static let Ox666666 = 0x666666.uiColor
+    static let Ox333333 = 0x333333.uiColor
+}
+
+extension UIColor {
 	
 	/// 生成一个随机颜色
     static var random: UIColor {
