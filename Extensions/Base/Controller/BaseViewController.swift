@@ -29,10 +29,15 @@ protocol ViewControllerConfiguration: UIViewController {
 
 class BaseViewController: UIViewController, ViewControllerConfiguration {
 	
-	override func viewDidLoad() {
-		super.viewDidLoad()
-		configure()
-	}
+    init() {
+        super.init(nibName: nil, bundle: nil)
+        configure()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        configure()
+    }
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
@@ -50,8 +55,10 @@ class BaseViewController: UIViewController, ViewControllerConfiguration {
     
     /// 控制器配置 | 调用时机: viewDidLoad
     func configure() {
-        /// 导航控制器压栈时隐藏TabBar
-        hidesBottomBarWhenPushed = true
+        if navigationController?.viewControllers.isNotEmpty ?? false {
+            /// 导航控制器压栈时隐藏TabBar
+            hidesBottomBarWhenPushed = true
+        }
         /// 配置标题
         if title == .none, let defaultTitle = defaultTitle {
             title = defaultTitle
@@ -62,6 +69,15 @@ class BaseViewController: UIViewController, ViewControllerConfiguration {
     /// 配置导航条目 | 调用时机: viewDidLoad -> configure
     func configureNavigationItem(_ navigationItem: UINavigationItem) {
         navigationItem.largeTitleDisplayMode = preferLargeTitles ? .automatic : .never
+        if let navigationController = navigationController {
+            if navigationController.viewControllers.count > 1 {
+                navigationItem.leftBarButtonItem = UIBarButtonItem(
+                    image: R.image.arrowBack()?.withRenderingMode(.alwaysOriginal),
+                    style: .plain,
+                    target: self,
+                    action: #selector(escape))
+            }
+        }
     }
     
     /// 配置导航栏样式 | 调用时机: viewWillAppear
@@ -143,5 +159,29 @@ class BaseViewController: UIViewController, ViewControllerConfiguration {
             barAppearance.shadowImage = emptyImage
             barAppearance.isTranslucent = true
         }
+    }
+    
+    @objc func escape(animated: Bool = true) {
+        if let navigationController = navigationController {
+            if navigationController.viewControllers.count > 1 {
+                goBack(animated: animated)
+            } else {
+                close(animated: animated)
+            }
+        } else {
+            dismiss(animated: animated)
+        }
+    }
+    
+    @objc func close(animated: Bool = true, completion: SimpleCallback? = nil) {
+        if let navigationController = navigationController {
+            navigationController.dismiss(animated: animated)
+        } else {
+            dismiss(animated: animated, completion: completion)
+        }
+    }
+    
+    @objc func goBack(animated: Bool = true) {
+        navigationController?.popViewController(animated: animated)
     }
 }

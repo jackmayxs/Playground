@@ -44,8 +44,11 @@ class BaseTableViewController<PrimaryCellType: UITableViewCell>: BaseViewControl
         configureTableView(table)
         return table
     }
-    
+    // MARK: - Table View Delegate
+    // 注意: 必须父类里有实现,代理方法才会调用
     func numberOfSections(in tableView: UITableView) -> Int { 1 }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {}
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { 0 }
     
@@ -55,7 +58,7 @@ class BaseTableViewController<PrimaryCellType: UITableViewCell>: BaseViewControl
         return cell
     }
     
-    func configureCell(_ cell: PrimaryCellType, at indexPath: IndexPath) {
-        
-    }
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {}
+    
+    func configureCell(_ cell: PrimaryCellType, at indexPath: IndexPath) {}
 }

@@ -9,10 +9,9 @@
 import UIKit
 
 extension UIViewController {
-   
-    func embedInNavigationController<NavigationControllerType: UINavigationController>(_ navigationControllerType: NavigationControllerType.Type)
-    -> NavigationControllerType {
-        NavigationControllerType(rootViewController: self)
+    
+    func embedInNavigationController<NavigationController>(_ navigationControllerType: NavigationController.Type = UINavigationController.self as! NavigationController.Type) -> NavigationController where NavigationController: UINavigationController {
+        NavigationController(rootViewController: self)
     }
 }
 
