@@ -8,6 +8,14 @@
 
 import UIKit
 
+extension UIViewController {
+   
+    func embedInNavigationController<NavigationControllerType: UINavigationController>(_ navigationControllerType: NavigationControllerType.Type)
+    -> NavigationControllerType {
+        NavigationControllerType(rootViewController: self)
+    }
+}
+
 #if DEBUG
 import SwiftUI
 

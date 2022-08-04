@@ -74,8 +74,8 @@ class BaseViewController: UIViewController, ViewControllerConfiguration {
         
         if #available(iOS 13, *) {
             /// 配置样式
-            let barAppearance = UINavigationBarAppearance(idiom: .phone)
-            configureNavigationBarAppearance(barAppearance)
+            let navBarAppearance = UINavigationBarAppearance(idiom: .phone)
+            configureNavigationBarAppearance(navBarAppearance)
             
             /// 配置导航按钮样式
             let barButtonItemAppearance = UIBarButtonItemAppearance(style: .plain)
@@ -83,21 +83,21 @@ class BaseViewController: UIViewController, ViewControllerConfiguration {
             barButtonItemAppearance.highlighted.titleTextAttributes = [:]
             barButtonItemAppearance.disabled.titleTextAttributes = [:]
             
-            barAppearance.buttonAppearance = barButtonItemAppearance
-            barAppearance.backButtonAppearance = barButtonItemAppearance
-            barAppearance.doneButtonAppearance = barButtonItemAppearance
+            navBarAppearance.buttonAppearance = barButtonItemAppearance
+            navBarAppearance.backButtonAppearance = barButtonItemAppearance
+            navBarAppearance.doneButtonAppearance = barButtonItemAppearance
             
             /// 配置导航栏
             /// Represents a navigation bar in regular height without a large title.
             /// 其他两个属性使用这个当做默认值
-            navigationBar.standardAppearance = barAppearance
-            navigationBar.compactAppearance = barAppearance
-            navigationBar.scrollEdgeAppearance = barAppearance
+            navigationBar.standardAppearance = navBarAppearance
+            navigationBar.compactAppearance = navBarAppearance
+            navigationBar.scrollEdgeAppearance = navBarAppearance
             func globalConfigure() {
                 let appearance = UINavigationBar.appearance()
-                appearance.standardAppearance = barAppearance
-                appearance.compactAppearance = barAppearance
-                appearance.scrollEdgeAppearance = barAppearance
+                appearance.standardAppearance = navBarAppearance
+                appearance.compactAppearance = navBarAppearance
+                appearance.scrollEdgeAppearance = navBarAppearance
             }
         } else {
             configureNavigationBar(navigationBar)
