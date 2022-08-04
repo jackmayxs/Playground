@@ -52,7 +52,9 @@ class UIBaseTableViewCell: UITableViewCell, StandartLayoutLifeCycle {
         prepareConstraints()
     }
     
-    func prepareSubviews() {}
+    func prepareSubviews() {
+        contentView.addSubview(separator)
+    }
     
     func prepareConstraints() {}
     
