@@ -25,7 +25,7 @@ final class BuyView: UIView {
 	}
 }
 
-final class BuyViewController: BaseViewController<BuyCoordinator> {
+final class BuyViewController: BaseViewController {
 	var selectedProduct = 0
 	
 	lazy var thread = PermenantThread()

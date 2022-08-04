@@ -11,10 +11,10 @@ import UIKit
 final class MainCoordinator: BaseCoordinator {
 	
 	func start() {
-		let vc = ViewController.instantiate
-		vc.tabBarItem = .init(tabBarSystemItem: .favorites, tag: 0)
-		vc.coordinator = self
-		navigationController.pushViewController(vc, animated: false)
+//		let vc = ViewController.instantiate
+//		vc.tabBarItem = .init(tabBarSystemItem: .favorites, tag: 0)
+//		vc.coordinator = self
+//		navigationController.pushViewController(vc, animated: false)
 	}
 	
 	func buySubscription(to passedData: Int) {
@@ -40,7 +40,7 @@ extension MainCoordinator: UINavigationControllerDelegate {
 		}
 		/// 出栈 | 处理MainCoordinator的子Coordinator
 		if let buyViewController = fromViewController as? BuyViewController {
-			childFinished(buyViewController.coordinator)
+//			childFinished(buyViewController.coordinator)
 		}
 	}
 }

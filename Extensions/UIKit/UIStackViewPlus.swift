@@ -46,6 +46,11 @@ extension UIStackView {
 			subview.removeFromSuperview()
 		}
 	}
+    
+    func refill(@ArrayBuilder<UIView> content: () -> [UIView]) {
+        purgeArrangedSubviews()
+        addArrangedSubviews(content: content)
+    }
 	
     func addBackground(view: UIView) {
         view.frame = bounds

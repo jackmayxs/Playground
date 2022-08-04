@@ -23,10 +23,8 @@ class BaseTableViewController<PrimaryCellType: UITableViewCell>: BaseViewControl
     /// 添加TableView
     /// 调用时机:viewDidLoad()
     func addTableView() {
+        tableView.frame = view.bounds
         view.addSubview(tableView)
-        tableView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
     }
     
     /// 调用时机:newTableView()
@@ -38,6 +36,7 @@ class BaseTableViewController<PrimaryCellType: UITableViewCell>: BaseViewControl
     /// 调用时机:懒加载
     func newTableView() -> UITableView {
         let table = UITableView(frame: .zero, style: tableViewStyle)
+        table.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         table.delegate = self
         table.dataSource = self
         PrimaryCellType.registerFor(table)

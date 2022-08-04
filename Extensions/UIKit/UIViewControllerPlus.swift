@@ -10,6 +10,10 @@ import UIKit
 
 extension UIViewController {
     
+    func push(_ controller: UIViewController, animated: Bool = true) {
+        navigationController?.pushViewController(controller, animated: animated)
+    }
+    
     func embedInNavigationController<NavigationController>(_ navigationControllerType: NavigationController.Type = UINavigationController.self as! NavigationController.Type) -> NavigationController where NavigationController: UINavigationController {
         NavigationController(rootViewController: self)
     }

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: BaseViewController<MainCoordinator> {
+class ViewController: BaseViewController {
 	
 	@IBOutlet var buttonSizeConstraints: [NSLayoutConstraint]!
 	@IBOutlet weak var pictureSizeSegment: UISegmentedControl!
@@ -145,12 +145,9 @@ class ViewController: BaseViewController<MainCoordinator> {
 		}
 	}
     @IBAction func buy(_ sender: Any) {
-		/// 从这里传递参数到下一级页面
-		coordinator?.buySubscription(to: 200)
+		
     }
 }
-
-extension ViewController: Storyboarded {}
 
 extension UIColor {
 	

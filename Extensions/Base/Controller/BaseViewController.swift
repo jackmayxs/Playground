@@ -38,6 +38,12 @@ class BaseViewController: UIViewController, ViewControllerConfiguration {
         super.init(coder: coder)
         configure()
     }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        prepareTargets()
+    }
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
@@ -45,6 +51,8 @@ class BaseViewController: UIViewController, ViewControllerConfiguration {
 		if let navigationController = navigationController {
 			configureNavigationController(navigationController)
 		}
+        
+        configureNavigationItem(navigationItem)
 	}
     
     /// 默认标题
@@ -75,7 +83,8 @@ class BaseViewController: UIViewController, ViewControllerConfiguration {
                     image: R.image.arrowBack()?.withRenderingMode(.alwaysOriginal),
                     style: .plain,
                     target: self,
-                    action: #selector(escape))
+                    action: #selector(leftBarButtonItemTriggered)
+                )
             }
         }
     }
@@ -159,6 +168,17 @@ class BaseViewController: UIViewController, ViewControllerConfiguration {
             barAppearance.shadowImage = emptyImage
             barAppearance.isTranslucent = true
         }
+    }
+    
+    
+    /// 添加事件
+    /// 调用时机:viewDidload
+    func prepareTargets() {
+        
+    }
+    
+    @objc func leftBarButtonItemTriggered() {
+        escape(animated: true)
     }
     
     @objc func escape(animated: Bool = true) {

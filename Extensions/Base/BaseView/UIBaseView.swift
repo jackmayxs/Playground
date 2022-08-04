@@ -22,7 +22,6 @@ class UIBaseView: UIView, StandartLayoutLifeCycle {
     }
     
     func prepare() {
-        self.translatesAutoresizingMaskIntoConstraints = false
         self.backgroundColor = defaultBackgroundColor
         prepareSubviews()
         prepareConstraints()

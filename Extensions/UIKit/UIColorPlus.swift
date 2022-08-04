@@ -12,7 +12,10 @@ extension UIColor {
     static let OxCCCCCC = 0xCCCCCC.uiColor
     static let Ox999999 = 0x999999.uiColor
     static let Ox666666 = 0x666666.uiColor
+    static let Ox555555 = 0x555555.uiColor
+    static let Ox444444 = 0x444444.uiColor
     static let Ox333333 = 0x333333.uiColor
+    static let Ox222222 = 0x222222.uiColor
 }
 
 extension UIColor {

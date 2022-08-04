@@ -20,6 +20,15 @@ extension CGSize {
 		guard let height = edges.last else { self.init(width: 0, height: 0); return }
 		self.init(width: width, height: height)
 	}
+    
+    func withNewHeight(_ newHeight: CGFloat) -> CGSize {
+        CGSize(width: width, height: newHeight)
+    }
+    
+    func withNewWidth(_ newWidth: CGFloat) -> CGSize {
+        CGSize(width: newWidth, height: height)
+    }
+    
 	/// 给CGSize加另外的宽高
 	/// - Parameters:
 	///   - lhs: CGSize
