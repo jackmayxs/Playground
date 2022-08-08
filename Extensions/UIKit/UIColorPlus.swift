@@ -20,6 +20,13 @@ extension UIColor {
 
 extension UIColor {
 	
+    @available(iOS 13.0, *)
+    convenience init(dark: UIColor, light: UIColor) {
+        self.init { traitCollection in
+            traitCollection.userInterfaceStyle == .dark ? dark : light
+        }
+    }
+    
 	/// 生成一个随机颜色
     static var random: UIColor {
         UIColor(red: .random, green: .random, blue: .random, alpha: 1)
