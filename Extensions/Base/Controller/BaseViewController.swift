@@ -7,6 +7,38 @@
 //
 
 import UIKit
+import Jelly
+
+final class ControllerPresentor {
+    private var animator: Jelly.Animator?
+    weak var presentingController: UIViewController?
+    
+    init(presentingController: UIViewController) {
+        self.presentingController = presentingController
+    }
+    
+    func slideIn(_ controller: UIViewController) {
+        let presentation = CoverPresentation(
+            directionShow: .bottom,
+            directionDismiss: .bottom,
+            uiConfiguration: PresentationUIConfiguration(
+                cornerRadius: 20,
+                backgroundStyle: .dimmed(alpha: 0.5),
+                isTapBackgroundToDismissEnabled: true,
+                corners: [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+            ),
+            size: PresentationSize(
+                width: .custom(value: controller.preferredContentSize.width),
+                height: .custom(value: controller.preferredContentSize.height)
+            ),
+            alignment: PresentationAlignment(vertical: .bottom, horizontal: .center),
+            marginGuards: .zero
+        )
+        animator = Animator(presentation: presentation)
+        animator?.prepare(presentedViewController: controller)
+        presentingController?.present(controller, animated: true)
+    }
+}
 
 protocol ViewControllerConfiguration: UIViewController {
 
@@ -27,8 +59,10 @@ protocol ViewControllerConfiguration: UIViewController {
 	func configureNavigationController(_ navigationController: UINavigationController)
 }
 
-class BaseViewController: UIViewController, ViewControllerConfiguration {
+class BaseViewController: UIViewController, UIGestureRecognizerDelegate, ViewControllerConfiguration {
 	
+    lazy var presentor = ControllerPresentor(presentingController: self)
+    
     init() {
         super.init(nibName: nil, bundle: nil)
         configure()
@@ -71,7 +105,6 @@ class BaseViewController: UIViewController, ViewControllerConfiguration {
         if title == .none, let defaultTitle = defaultTitle {
             title = defaultTitle
         }
-        configureNavigationItem(navigationItem)
     }
     
     /// 配置导航条目 | 调用时机: viewDidLoad -> configure
@@ -85,6 +118,13 @@ class BaseViewController: UIViewController, ViewControllerConfiguration {
                     target: self,
                     action: #selector(leftBarButtonItemTriggered)
                 )
+            } else if navigationController.viewControllers.count == 1 && presentingViewController != nil {
+                navigationItem.leftBarButtonItem = UIBarButtonItem(
+                    image: R.image.arrowBack()?.withRenderingMode(.alwaysOriginal),
+                    style: .plain,
+                    target: self,
+                    action: #selector(leftBarButtonItemTriggered)
+                )
             }
         }
     }
@@ -92,6 +132,10 @@ class BaseViewController: UIViewController, ViewControllerConfiguration {
     /// 配置导航栏样式 | 调用时机: viewWillAppear
     /// - Parameter navigationController: 导航控制器
     func configureNavigationController(_ navigationController: UINavigationController) {
+        
+        /// 重新开启右滑返回
+        navigationController.interactivePopGestureRecognizer?.delegate = self
+        navigationController.interactivePopGestureRecognizer?.isEnabled = true
         
         let navigationBar = navigationController.navigationBar
         /// 导航栏会根据navigationItem.largeTitleDisplayMode显示大标题样式

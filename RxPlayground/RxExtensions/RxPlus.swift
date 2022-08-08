@@ -8,6 +8,20 @@
 import RxSwift
 import RxCocoa
 
+@propertyWrapper
+struct Variable<Wrapped> {
+    
+    let projectedValue: BehaviorRelay<Wrapped>
+    init(wrappedValue: Wrapped) {
+        projectedValue = BehaviorRelay(value: wrappedValue)
+    }
+    
+    var wrappedValue: Wrapped {
+        get { projectedValue.value }
+        set { projectedValue.accept(newValue) }
+    }
+}
+
 extension ObservableConvertibleType {
     var observable: Observable<Element> {
         asObservable()

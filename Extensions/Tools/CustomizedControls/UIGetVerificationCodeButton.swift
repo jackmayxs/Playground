@@ -13,9 +13,10 @@ class UIGetVerificationCodeButton: UIButton {
         willSet {
             if newValue == 0 {
                 isUserInteractionEnabled = true
-                setTitle("获取验证码", for: .normal)
+                setTitle("获取验证码".localized, for: .normal)
             } else {
-                setTitle("\(newValue)秒后重新获取", for: .normal)
+                let title = LocalizationManager.shared.localized(remainSeconds: newValue)
+                setTitle(title, for: .normal)
             }
             superview?.setNeedsLayout()
             superview?.superview?.setNeedsLayout()
@@ -25,7 +26,7 @@ class UIGetVerificationCodeButton: UIButton {
     init() {
         super.init(frame: .zero)
         titleLabel?.font = .systemFont(ofSize: 14.0)
-        setTitle("获取验证码", for: .normal)
+        setTitle("获取验证码".localized, for: .normal)
         setTitleColor(.actionable, for: .normal)
         addTarget(self, action: #selector(countDown), for: .touchUpInside)
     }
