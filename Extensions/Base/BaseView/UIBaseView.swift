@@ -6,9 +6,23 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
-class UIBaseView: UIView, StandartLayoutLifeCycle {
+protocol ViewModelType: SimpleInitializer {}
 
+protocol ControllerBaseView: StandartLayoutLifeCycle {
+    associatedtype ViewModel: ViewModelType
+    func setupViewModel(_ viewModel: Self.ViewModel)
+}
+
+class BaseViewModel: ViewModelType, ReactiveCompatible {
+    required init() {}
+}
+
+class UIBaseView: UIView, ControllerBaseView {
+    typealias ViewModel = BaseViewModel
+    
     var defaultBackgroundColor: UIColor { .white }
     
     override init(frame: CGRect) {
@@ -31,4 +45,5 @@ class UIBaseView: UIView, StandartLayoutLifeCycle {
     
     func prepareConstraints() {}
     
+    func setupViewModel(_ viewModel: BaseViewModel) {}
 }

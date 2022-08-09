@@ -178,16 +178,24 @@ private class ClosureSleeve<T> {
 
 extension Actionable where Self: UIControl {
 	func addAction(for events: UIControl.Event = .touchUpInside, _ action: ((Self) -> Void)?) {
-        let previousSleeve = objc_getAssociatedObject(self, String(events.rawValue))
-        objc_removeAssociatedObjects(previousSleeve as Any)
-        removeTarget(previousSleeve, action: nil, for: events)
-
         let sleeve = ClosureSleeve(sender: self, action)
         addTarget(sleeve, action: #selector(ClosureSleeve<Self>.invoke), for: events)
         objc_setAssociatedObject(self, String(events.rawValue), sleeve, .OBJC_ASSOCIATION_RETAIN)
+        targets.add(sleeve)
     }
 }
-extension UIControl: Actionable {}
+extension UIControl: Actionable {
+    private static var targetsArrayKey = UUID()
+    fileprivate var targets: NSMutableArray {
+        if let array = objc_getAssociatedObject(self, &Self.targetsArrayKey) as? NSMutableArray {
+            return array
+        } else {
+            let array = NSMutableArray()
+            objc_setAssociatedObject(self, &Self.targetsArrayKey, array, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            return array
+        }
+    }
+}
 
 protocol SizeExtendable {
 	

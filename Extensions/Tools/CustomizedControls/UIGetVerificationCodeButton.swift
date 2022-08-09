@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxSwift
 
 class UIGetVerificationCodeButton: QMLoadingButton {
 
@@ -28,14 +29,21 @@ class UIGetVerificationCodeButton: QMLoadingButton {
         titleLabel?.font = .systemFont(ofSize: 14.0)
         setTitle("获取验证码".localized, for: .normal)
         setTitleColor(.actionable, for: .normal)
-        addTarget(self, action: #selector(countDown), for: .touchUpInside)
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
     
-    @objc private func countDown() {
+    var countDown: Completable {
+        Completable.create { observer in
+            self.countDownLegacy()
+            observer(.completed)
+            return Disposables.create()
+        }
+    }
+    
+    @objc func countDownLegacy() {
         remainSeconds = 60
         isUserInteractionEnabled = false
         GCDTimer.scheduledTimer(timeInterval: .seconds(1)) {

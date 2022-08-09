@@ -8,7 +8,7 @@
 
 import UIKit
 
-class BaseTableViewController<PrimaryCellType: UITableViewCell>: BaseViewController, UITableViewDataSource, UITableViewDelegate {
+class BaseTableViewController<PrimaryCellType: UITableViewCell>: BaseViewController<RemoteView, BaseViewModel>, UITableViewDataSource, UITableViewDelegate {
     
 	lazy var tableView = newTableView()
     

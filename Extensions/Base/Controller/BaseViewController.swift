@@ -59,9 +59,12 @@ protocol ViewControllerConfiguration: UIViewController {
 	func configureNavigationController(_ navigationController: UINavigationController)
 }
 
-class BaseViewController: UIViewController, UIGestureRecognizerDelegate, ViewControllerConfiguration {
+class BaseViewController<MainView: UIBaseView, ViewModel: ViewModelType>: UIViewController, UIGestureRecognizerDelegate, ViewControllerConfiguration {
 	
     lazy var presentor = ControllerPresentor(presentingController: self)
+    
+    lazy var mainView = MainView()
+    lazy var viewModel = ViewModel()
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -71,6 +74,10 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, ViewCon
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         configure()
+    }
+    
+    override func loadView() {
+        view = mainView
     }
     
     override func viewDidLoad() {
