@@ -7,7 +7,7 @@
 
 import UIKit
 
-class UIGetVerificationCodeButton: UIButton {
+class UIGetVerificationCodeButton: QMLoadingButton {
 
     private var remainSeconds = 1 {
         willSet {
