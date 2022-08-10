@@ -8,6 +8,7 @@
 
 import UIKit
 import Jelly
+import QMUIKit
 
 final class ControllerPresentor {
     private var animator: Jelly.Animator?
@@ -254,5 +255,19 @@ class BaseViewController<MainView: UIBaseView, ViewModel: ViewModelType>: UIView
     
     @objc func goBack(animated: Bool = true) {
         navigationController?.popViewController(animated: animated)
+    }
+}
+
+extension BaseViewController {
+    
+    func popError(_ error: Error) {
+        popToast(error.localizedDescription)
+    }
+    
+    func popToast(_ message: String?) {
+        let tips = QMUITips.createTips(to: view)
+        let animator = QMUIToastAnimator(toastView: tips)
+        tips.toastAnimator = animator
+        tips.showInfo(message, hideAfterDelay: 2.0)
     }
 }

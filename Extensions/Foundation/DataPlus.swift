@@ -8,6 +8,12 @@
 
 import UIKit
 
+extension Optional where Wrapped == Data {
+    var orEmpty: Data {
+        self ?? Data()
+    }
+}
+
 extension Data {
 	var cfData: CFData {
 		self as CFData

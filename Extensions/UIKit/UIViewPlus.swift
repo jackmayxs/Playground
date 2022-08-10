@@ -9,6 +9,33 @@
 import UIKit
 import SwiftUI
 
+protocol Tapable {
+    associatedtype T = Self
+    func tapped(_ execute: ((T) -> Void)?)
+}
+
+extension UIView: Tapable {
+    private static var targetsArrayKey = UUID()
+    fileprivate var targets: NSMutableArray {
+        if let array = objc_getAssociatedObject(self, &Self.targetsArrayKey) as? NSMutableArray {
+            return array
+        } else {
+            let array = NSMutableArray()
+            objc_setAssociatedObject(self, &Self.targetsArrayKey, array, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            return array
+        }
+    }
+}
+
+extension Tapable where Self: UIView {
+    func tapped(_ execute: ((Self) -> Void)?) {
+        let target = ClosureSleeve(sender: self, execute)
+        let tapGesture = UITapGestureRecognizer(target: target, action: #selector(target.invoke))
+        addGestureRecognizer(tapGesture)
+        targets.add(target)
+    }
+}
+
 extension UIView {
 	
 	convenience init(_ color: UIColor) {

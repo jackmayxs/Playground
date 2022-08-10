@@ -26,6 +26,10 @@ func sink<In, Out>(_ output: Out) -> (In) -> Out {
 	{ _ in output }
 }
 
+func sink<In>(_ simpleCallBack: @escaping () -> Void) -> (In) -> Void {
+    { _ in simpleCallBack() }
+}
+
 // MARK: - __________ Dictionary __________
 extension Dictionary where Value: OptionalType {
 	var unwrapped: Dictionary<Key, Value.Wrapped> {

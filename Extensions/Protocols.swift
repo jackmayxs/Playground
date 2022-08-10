@@ -157,12 +157,7 @@ extension DateComponents: Transformable {}
 extension Calendar: Transformable {}
 
 // MARK: - __________ Add Selector for UIControl Events Using a Closure __________
-protocol Actionable {
-    associatedtype T = Self
-    func addAction(for controlEvents: UIControl.Event, _ action: ((T) -> Void)?)
-}
-
-private class ClosureSleeve<T> {
+class ClosureSleeve<T> {
     let closure: ((T) -> Void)?
     let sender: T
 
@@ -176,14 +171,11 @@ private class ClosureSleeve<T> {
     }
 }
 
-extension Actionable where Self: UIControl {
-	func addAction(for events: UIControl.Event = .touchUpInside, _ action: ((Self) -> Void)?) {
-        let sleeve = ClosureSleeve(sender: self, action)
-        addTarget(sleeve, action: #selector(ClosureSleeve<Self>.invoke), for: events)
-        objc_setAssociatedObject(self, String(events.rawValue), sleeve, .OBJC_ASSOCIATION_RETAIN)
-        targets.add(sleeve)
-    }
+protocol Actionable {
+    associatedtype T = Self
+    func addAction(for controlEvents: UIControl.Event, _ action: ((T) -> Void)?)
 }
+
 extension UIControl: Actionable {
     private static var targetsArrayKey = UUID()
     fileprivate var targets: NSMutableArray {
@@ -194,6 +186,14 @@ extension UIControl: Actionable {
             objc_setAssociatedObject(self, &Self.targetsArrayKey, array, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             return array
         }
+    }
+}
+
+extension Actionable where Self: UIControl {
+	func addAction(for events: UIControl.Event = .touchUpInside, _ action: ((Self) -> Void)?) {
+        let sleeve = ClosureSleeve(sender: self, action)
+        addTarget(sleeve, action: #selector(sleeve.invoke), for: events)
+        targets.add(sleeve)
     }
 }
 
