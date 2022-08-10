@@ -8,6 +8,16 @@
 
 import UIKit
 
+// MARK: - __________ String To Date __________
+
+extension String {
+    func date(dateFormat: String) -> Date {
+        let formatter = DateFormatter.shared
+        formatter.dateFormat = dateFormat
+        return formatter.date(from: self) ?? Date()
+    }
+}
+
 extension String {
 	
 	/// 返回SF Symbol图片
