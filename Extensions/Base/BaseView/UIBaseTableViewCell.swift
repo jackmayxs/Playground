@@ -90,14 +90,18 @@ class UIBaseTableViewCell: UITableViewCell, StandartLayoutLifeCycle {
 		tableView.separatorStyle = .none
 		/// 第一次进入TableViewController时获取的sectionHeight不正常 所以这里做延迟1ms处理
 		DispatchQueue.main.asyncAfter(deadline: indexPath.section + indexPath.row == 0 ? 0.001 : 0.0) {
+            /// HeaderHeight + CellsHeight + FooterHeight
 			let sectionHeight = tableView.rect(forSection: indexPath.section).height
+            /// Section Header's frame
 			let sectionHeaderRect = tableView.rectForHeader(inSection: indexPath.section)
+            /// Section Footer's frame
 			let sectionFooterRect = tableView.rectForFooter(inSection: indexPath.section)
+            /// Cells Height
 			let sectionCellsHeight = sectionHeight - sectionHeaderRect.height - sectionFooterRect.height
-			if sectionCellsHeight > self.bounds.height {
-				self.separator.isHidden = indexPath.row == 0
+            if sectionCellsHeight > self.bounds.height {
+                self.separator.isHidden = indexPath.row == 0
 			} else {
-				self.separator.isHidden = self.frame.maxY == sectionFooterRect.minY
+                self.separator.isHidden = self.frame.maxY == sectionFooterRect.minY
 			}
 		}
 		return self
@@ -111,7 +115,9 @@ class UIBaseTableViewCell: UITableViewCell, StandartLayoutLifeCycle {
     ///   - indexPath: 所在的indexPath
     /// - Returns: Cell本身
     func adjustCornerRadiusFor(_ tableView: UITableView, at indexPath: IndexPath) -> Self {
-        if indexPath.row == 0 {
+        if indexPath.row == 0, tableView.numberOfRows(inSection: indexPath.section) == indexPath.row + 1 {
+            contentView.roundCorners(corners: .allCorners, cornerRadius: preferredCornerRadius)
+        } else if indexPath.row == 0 {
             contentView.roundCorners(corners: [.topLeft, .topRight], cornerRadius: preferredCornerRadius)
         } else if tableView.numberOfRows(inSection: indexPath.section) == indexPath.row + 1 {
             contentView.roundCorners(corners: [.bottomLeft, .bottomRight], cornerRadius: preferredCornerRadius)

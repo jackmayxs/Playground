@@ -14,7 +14,7 @@ class UIGetVerificationCodeButton: QMLoadingButton {
         willSet {
             if newValue == 0 {
                 isUserInteractionEnabled = true
-                setTitle(localized.getVerificationCode(), for: .normal)
+                setTitle(localized.获取验证码~, for: .normal)
             } else {
                 let title = LocalizationManager.shared.localized(remainSeconds: newValue)
                 setTitle(title, for: .normal)
@@ -27,7 +27,7 @@ class UIGetVerificationCodeButton: QMLoadingButton {
     init() {
         super.init(frame: .zero)
         titleLabel?.font = .systemFont(ofSize: 14.0)
-        setTitle(localized.getVerificationCode(), for: .normal)
+        setTitle(localized.获取验证码~, for: .normal)
         setTitleColor(.actionable, for: .normal)
     }
     

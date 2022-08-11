@@ -299,7 +299,14 @@ extension UIView {
 				layer.mask = shape
 			}
 		} else {
-			layer.mask = nil
+            if #available(iOS 11.0, *), shadowColor == nil {
+                // 这个方法在UITableViewCell外部调用时 Section的最后一个Cell不起作用,不清楚为啥
+                layer.masksToBounds = false
+                layer.cornerRadius = cornerRadius
+                layer.maskedCorners = corners.caCornerMask
+            } else {
+                layer.mask = nil
+            }
 		}
 		
 		// 阴影

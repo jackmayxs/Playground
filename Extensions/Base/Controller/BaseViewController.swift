@@ -9,6 +9,10 @@
 import UIKit
 import Jelly
 import QMUIKit
+import Photos
+import PhotosUI
+import RxSwift
+import RxCocoa
 
 final class ControllerPresentor {
     private var animator: Jelly.Animator?
@@ -24,7 +28,7 @@ final class ControllerPresentor {
             directionDismiss: .bottom,
             uiConfiguration: PresentationUIConfiguration(
                 cornerRadius: 20,
-                backgroundStyle: .dimmed(alpha: 0.5),
+                backgroundStyle: .dimmed(alpha: 0.7),
                 isTapBackgroundToDismissEnabled: true,
                 corners: [.layerMinXMinYCorner, .layerMaxXMinYCorner]
             ),
@@ -60,12 +64,16 @@ protocol ViewControllerConfiguration: UIViewController {
 	func configureNavigationController(_ navigationController: UINavigationController)
 }
 
-class BaseViewController<MainView: UIBaseView, ViewModel: ViewModelType>: UIViewController, UIGestureRecognizerDelegate, ViewControllerConfiguration {
+class BaseViewController<MainView: UIBaseView, ViewModel: ViewModelType>: UIViewController, UIGestureRecognizerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, ViewControllerConfiguration {
 	
-    lazy var presentor = ControllerPresentor(presentingController: self)
+    var presentor: ControllerPresentor {
+        ControllerPresentor(presentingController: self)
+    }
     
     lazy var mainView = MainView()
     lazy var viewModel = ViewModel()
+    
+    var targetImageSize: CGSize?
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -97,6 +105,11 @@ class BaseViewController<MainView: UIBaseView, ViewModel: ViewModelType>: UIView
         configureNavigationItem(navigationItem)
 	}
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        hidesBottomBarWhenPushed = false
+    }
+    
     /// 默认标题
     var defaultTitle: String? { .none }
     
@@ -105,10 +118,6 @@ class BaseViewController<MainView: UIBaseView, ViewModel: ViewModelType>: UIView
     
     /// 控制器配置 | 调用时机: viewDidLoad
     func configure() {
-        if navigationController?.viewControllers.isNotEmpty ?? false {
-            /// 导航控制器压栈时隐藏TabBar
-            hidesBottomBarWhenPushed = true
-        }
         /// 配置标题
         if title == .none, let defaultTitle = defaultTitle {
             title = defaultTitle
@@ -141,9 +150,15 @@ class BaseViewController<MainView: UIBaseView, ViewModel: ViewModelType>: UIView
     /// - Parameter navigationController: 导航控制器
     func configureNavigationController(_ navigationController: UINavigationController) {
         
+        if navigationController.viewControllers.count > 1 {
+            /// 导航控制器压栈时隐藏TabBar
+            hidesBottomBarWhenPushed = true
+        }
+        
         /// 重新开启右滑返回
-        navigationController.interactivePopGestureRecognizer?.delegate = self
-        navigationController.interactivePopGestureRecognizer?.isEnabled = true
+//        navigationController.interactivePopGestureRecognizer?.delegate = self
+//        navigationController.interactivePopGestureRecognizer?.isEnabled = true
+        navigationController.delegate = self
         
         let navigationBar = navigationController.navigationBar
         /// 导航栏会根据navigationItem.largeTitleDisplayMode显示大标题样式
@@ -256,6 +271,33 @@ class BaseViewController<MainView: UIBaseView, ViewModel: ViewModelType>: UIView
     @objc func goBack(animated: Bool = true) {
         navigationController?.popViewController(animated: animated)
     }
+    
+    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+        let destinationCount = navigationController.viewControllers.count + 1
+    }
+    
+    func didGetImages(_ images: [UIImage]) {
+        
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        guard var image = info[.editedImage] as? UIImage else {
+            picker.dismiss(animated: true)
+            return
+        }
+        
+        if let preferredImageSize = targetImageSize {
+            if let resized = image.qmui_imageResized(inLimitedSize: preferredImageSize, resizingMode: .scaleAspectFit, scale: UIScreen.main.scale) {
+                image = resized
+            }
+        }
+        didGetImages([image])
+        picker.dismiss(animated: true)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true)
+    }
 }
 
 extension BaseViewController {
@@ -269,5 +311,94 @@ extension BaseViewController {
         let animator = QMUIToastAnimator(toastView: tips)
         tips.toastAnimator = animator
         tips.showInfo(message, hideAfterDelay: 2.0)
+    }
+    
+    func fetchPhotos(count: Int = 1, targetImageSize: CGSize? = nil) {
+        self.targetImageSize = targetImageSize
+        let sheet = ZKActionSheetController {
+            ZKAction(title: localized.相册~) {
+                [unowned self] in getPhotos(count: count, from: .photoLibrary)
+            }
+            ZKAction(title: localized.相机~) {
+                [unowned self] in getPhotos(count: 1, from: .camera)
+            }
+        }
+        presentor.slideIn(sheet)
+    }
+    
+    private func getPhotos(count: Int, from source: UIImagePickerController.SourceType) {
+        
+        if let presented = presentedViewController {
+            rx.disposeBag.insert {
+                presented.rx.deallocating.bind {
+                    [unowned self] in
+                    if #available(iOS 17, *) {
+                        
+                        var config = PHPickerConfiguration()
+                        config.filter = .images
+                        config.selectionLimit = count
+
+                        let picker = PHPickerViewController(configuration: config)
+                        picker.modalPresentationStyle = .fullScreen
+                        picker.delegate = self
+                        present(picker, animated: true)
+                    } else {
+                        guard UIImagePickerController.isSourceTypeAvailable(source) else {
+                            dprint("设备不支持")
+                            return
+                        }
+                        let picker = UIImagePickerController()
+                        picker.sourceType = source
+                        picker.allowsEditing = true
+                        picker.delegate = self
+                        picker.modalPresentationStyle = .fullScreen
+                        present(picker, animated: true)
+                    }
+                }
+            }
+        }
+    }
+}
+
+extension BaseViewController: PHPickerViewControllerDelegate {
+    @available(iOS 14, *)
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+
+        guard results.isNotEmpty else {
+            DispatchQueue.main.async {
+                picker.dismiss(animated: true)
+            }
+            return
+        }
+        DispatchQueue.main.async {
+            QMUITips.showLoading("正在处理", in: picker.view)
+        }
+        let providers = results.map(\.itemProvider)
+        var images: [UIImage] = []
+        var precessedImage = 0
+        func doneProcess() {
+            precessedImage += 1
+            if precessedImage == providers.count {
+                DispatchQueue.main.async {
+                    QMUITips.hideAllTips(in: picker.view)
+                    self.didGetImages(images)
+                    picker.dismiss(animated: true)
+                }
+            }
+        }
+        for provider in providers {
+            if provider.canLoadObject(ofClass: UIImage.self) {
+                provider.loadObject(ofClass: UIImage.self) { image, error in
+                    guard let validImage = image as? UIImage else {
+                        doneProcess()
+                        return
+                    }
+                    images.append(validImage)
+                    doneProcess()
+                }
+            } else {
+                QMUITips.show(withText: "无法处理")
+            }
+        }
     }
 }
