@@ -22,6 +22,24 @@ struct Variable<Wrapped> {
     }
 }
 
+protocol ErrorTracker: NSObject {
+    func popError(_ error: Error)
+}
+
+extension ObservableConvertibleType {
+    func trackError<T>(_ tracker: T) -> Self where T: ErrorTracker {
+        tracker.rx.disposeBag.insert {
+            asObservable()
+                .subscribe(with: tracker) { _, _ in
+                    
+                } onError: { tracker, error in
+                    tracker.popError(error)
+                }
+        }
+        return self
+    }
+}
+
 extension ObservableConvertibleType {
     var observable: Observable<Element> {
         asObservable()

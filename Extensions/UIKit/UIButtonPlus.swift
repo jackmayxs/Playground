@@ -35,6 +35,18 @@ extension UIButton {
 
 extension UIButton {
 	
+    convenience init(title: String? = nil, titleColor: UIColor? = nil, titleFontSize: CGFloat = 14.0, titleFontWeight: UIFont.Weight = .regular) {
+        let font = UIFont.systemFont(ofSize: titleFontSize, weight: titleFontWeight)
+        self.init(title: title, titleColor: titleColor, font: font)
+    }
+    
+    convenience init(title: String? = nil, titleColor: UIColor? = nil, font: UIFont) {
+        self.init(type: .custom)
+        setTitle(title, for: .normal)
+        setTitleColor(titleColor, for: .normal)
+        titleLabel?.font = font
+    }
+    
 	open override func setNeedsLayout() {
 		super.setNeedsLayout()
 		setupImageTitleEdgeInsets()

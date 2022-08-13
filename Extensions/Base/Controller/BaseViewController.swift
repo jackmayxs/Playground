@@ -64,7 +64,7 @@ protocol ViewControllerConfiguration: UIViewController {
 	func configureNavigationController(_ navigationController: UINavigationController)
 }
 
-class BaseViewController<MainView: UIBaseView, ViewModel: ViewModelType>: UIViewController, UIGestureRecognizerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, ViewControllerConfiguration {
+class BaseViewController<MainView: UIBaseView, ViewModel: ViewModelType>: UIViewController, UIGestureRecognizerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, ViewControllerConfiguration, ErrorTracker {
 	
     var presentor: ControllerPresentor {
         ControllerPresentor(presentingController: self)
@@ -298,13 +298,13 @@ class BaseViewController<MainView: UIBaseView, ViewModel: ViewModelType>: UIView
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true)
     }
+    
+    func popError(_ error: Error) {
+        mainView.popError(error)
+    }
 }
 
 extension BaseViewController {
-    
-    func popError(_ error: Error) {
-        popToast(error.localizedDescription)
-    }
     
     func popToast(_ message: String?) {
         let tips = QMUITips.createTips(to: view)

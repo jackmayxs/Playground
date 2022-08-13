@@ -8,6 +8,7 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import QMUIKit
 
 protocol ViewModelType: SimpleInitializer {}
 
@@ -20,7 +21,7 @@ class BaseViewModel: ViewModelType, ReactiveCompatible {
     required init() {}
 }
 
-class UIBaseView: UIView, ControllerBaseView {
+class UIBaseView: UIView, ControllerBaseView, ErrorTracker {
     typealias ViewModel = BaseViewModel
     
     var defaultBackgroundColor: UIColor { .white }
@@ -46,4 +47,8 @@ class UIBaseView: UIView, ControllerBaseView {
     func prepareConstraints() {}
     
     func setupViewModel(_ viewModel: BaseViewModel) {}
+    
+    func popError(_ error: Error) {
+        QMUITips.showError(error.localizedDescription, in: self)
+    }
 }
