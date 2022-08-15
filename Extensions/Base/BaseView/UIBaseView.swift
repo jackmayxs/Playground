@@ -24,7 +24,7 @@ class BaseViewModel: ViewModelType, ReactiveCompatible {
 class UIBaseView: UIView, ControllerBaseView, ErrorTracker {
     typealias ViewModel = BaseViewModel
     
-    var defaultBackgroundColor: UIColor { .white }
+    var defaultBackgroundColor: UIColor { .baseBlack }
     
     override init(frame: CGRect) {
         super.init(frame: frame)

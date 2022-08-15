@@ -273,17 +273,23 @@ class BaseViewController<MainView: UIBaseView, ViewModel: ViewModelType>: UIView
     }
     
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
-        let destinationCount = navigationController.viewControllers.count + 1
+//        let destinationCount = navigationController.viewControllers.count + 1
     }
     
-    func didGetImages(_ images: [UIImage]) {
+    func didGetImages(_ imageItems: [ImageItem]) {
         
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        guard var image = info[.editedImage] as? UIImage else {
+        
+        /// 原始图片
+        guard var image = info[.originalImage] as? UIImage else {
             picker.dismiss(animated: true)
             return
+        }
+        /// 编辑过的图片
+        if let editedImage = info[.editedImage] as? UIImage {
+            image = editedImage
         }
         
         if let preferredImageSize = targetImageSize {
@@ -291,7 +297,11 @@ class BaseViewController<MainView: UIBaseView, ViewModel: ViewModelType>: UIView
                 image = resized
             }
         }
-        didGetImages([image])
+        var imageItem = ImageItem(image: image)
+        if let imageURL = info[.imageURL] as? URL {
+            imageItem.imageURL = imageURL
+        }
+        didGetImages([imageItem])
         picker.dismiss(animated: true)
     }
     
@@ -313,20 +323,20 @@ extension BaseViewController {
         tips.showInfo(message, hideAfterDelay: 2.0)
     }
     
-    func fetchPhotos(count: Int = 1, targetImageSize: CGSize? = nil) {
+    func fetchPhotos(count: Int = 1, targetImageSize: CGSize? = nil, allowsEditing: Bool = false) {
         self.targetImageSize = targetImageSize
         let sheet = ZKActionSheetController {
             ZKAction(title: localized.相册~) {
-                [unowned self] in getPhotos(count: count, from: .photoLibrary)
+                [unowned self] in getPhotos(count: count, from: .photoLibrary, allowsEditing: allowsEditing)
             }
             ZKAction(title: localized.相机~) {
-                [unowned self] in getPhotos(count: 1, from: .camera)
+                [unowned self] in getPhotos(count: 1, from: .camera, allowsEditing: allowsEditing)
             }
         }
         presentor.slideIn(sheet)
     }
     
-    private func getPhotos(count: Int, from source: UIImagePickerController.SourceType) {
+    private func getPhotos(count: Int, from source: UIImagePickerController.SourceType, allowsEditing: Bool = false) {
         
         if let presented = presentedViewController {
             rx.disposeBag.insert {
@@ -349,7 +359,7 @@ extension BaseViewController {
                         }
                         let picker = UIImagePickerController()
                         picker.sourceType = source
-                        picker.allowsEditing = true
+                        picker.allowsEditing = allowsEditing
                         picker.delegate = self
                         picker.modalPresentationStyle = .fullScreen
                         present(picker, animated: true)
@@ -381,7 +391,10 @@ extension BaseViewController: PHPickerViewControllerDelegate {
             if precessedImage == providers.count {
                 DispatchQueue.main.async {
                     QMUITips.hideAllTips(in: picker.view)
-                    self.didGetImages(images)
+                    let items = images.map { image in
+                        ImageItem(image: image)
+                    }
+                    self.didGetImages(items)
                     picker.dismiss(animated: true)
                 }
             }

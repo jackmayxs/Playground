@@ -41,6 +41,12 @@ extension Dictionary where Value: OptionalType {
 }
 
 extension Array {
+    
+    public func itemAt(_ index: Index) -> Element? {
+        guard index < count else { return nil }
+        return self[index]
+    }
+    
 	public init(generating elementGenerator: (Int) -> Element, count: Int) {
 		self = (0..<count).map(elementGenerator)
 	}
