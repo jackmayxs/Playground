@@ -22,8 +22,30 @@ struct Variable<Wrapped> {
     }
 }
 
+// MARK: - Error & Activity Tracker
 protocol ErrorTracker: NSObject {
     func popError(_ error: Error)
+}
+
+protocol ActivityTracker: NSObject {
+    func processing()
+    func doneProcessing()
+}
+
+extension Reactive where Base: ActivityTracker {
+    var activity: ActivityIndicator {
+        let indicator = ActivityIndicator()
+        base.rx.disposeBag.insert {
+            indicator.drive(with: base) { weakBase, processing in
+                if processing {
+                    weakBase.processing()
+                } else {
+                    weakBase.doneProcessing()
+                }
+            }
+        }
+        return indicator
+    }
 }
 
 extension ObservableConvertibleType {
@@ -38,9 +60,7 @@ extension ObservableConvertibleType {
         }
         return self
     }
-}
-
-extension ObservableConvertibleType {
+    
     var observable: Observable<Element> {
         asObservable()
     }

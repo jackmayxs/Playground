@@ -342,27 +342,60 @@ extension BaseViewController {
             rx.disposeBag.insert {
                 presented.rx.deallocating.bind {
                     [unowned self] in
-                    if #available(iOS 17, *) {
-                        
-                        var config = PHPickerConfiguration()
-                        config.filter = .images
-                        config.selectionLimit = count
-
-                        let picker = PHPickerViewController(configuration: config)
-                        picker.modalPresentationStyle = .fullScreen
-                        picker.delegate = self
-                        present(picker, animated: true)
-                    } else {
-                        guard UIImagePickerController.isSourceTypeAvailable(source) else {
-                            dprint("设备不支持")
-                            return
+                    
+                    guard UIImagePickerController.isSourceTypeAvailable(source) else {
+                        popError("Not supported source type.")
+                        return
+                    }
+                    
+                    /// 显示图片选择器
+                    func showPickerController() {
+                        if #available(iOS 14, *) {
+                            var config = PHPickerConfiguration()
+                            config.filter = .images
+                            config.selectionLimit = count
+                            
+                            let picker = PHPickerViewController(configuration: config)
+                            picker.modalPresentationStyle = .fullScreen
+                            picker.delegate = self
+                            self.present(picker, animated: true)
+                        } else {
+                            let picker = UIImagePickerController()
+                            picker.sourceType = source
+                            picker.allowsEditing = allowsEditing
+                            picker.delegate = self
+                            picker.modalPresentationStyle = .fullScreen
+                            self.present(picker, animated: true)
                         }
-                        let picker = UIImagePickerController()
-                        picker.sourceType = source
-                        picker.allowsEditing = allowsEditing
-                        picker.delegate = self
-                        picker.modalPresentationStyle = .fullScreen
-                        present(picker, animated: true)
+                    }
+                    
+                    /// 获取当前相册权限
+                    switch PHPhotoLibrary.authorizationStatus {
+                    case .notDetermined: /// 第一次请求权限
+                        PHPhotoLibrary.compatibleRequestAuthorization { updatedStatus in
+                            DispatchQueue.main.async {
+                                switch updatedStatus {
+                                case .notDetermined:
+                                    assertionFailure("不该发生的情况")
+                                case .restricted:
+                                    dprint("受限")
+                                case .denied:
+                                    dprint("用户拒绝授权")
+                                case .authorized, .limited:
+                                    showPickerController()
+                                @unknown default:
+                                    assertionFailure("没处理的情况")
+                                }
+                            }
+                        }
+                    case .restricted:
+                        dprint("受限")
+                    case .denied:
+                        dprint("用户拒绝授权")
+                    case .authorized, .limited:
+                        showPickerController()
+                    @unknown default:
+                        assertionFailure("没处理的情况")
                     }
                 }
             }
@@ -371,6 +404,7 @@ extension BaseViewController {
 }
 
 extension BaseViewController: PHPickerViewControllerDelegate {
+    
     @available(iOS 14, *)
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
 
@@ -383,34 +417,44 @@ extension BaseViewController: PHPickerViewControllerDelegate {
         DispatchQueue.main.async {
             QMUITips.showLoading("正在处理", in: picker.view)
         }
-        let providers = results.map(\.itemProvider)
-        var images: [UIImage] = []
+        var imageURLs: [URL] = []
         var precessedImage = 0
         func doneProcess() {
             precessedImage += 1
-            if precessedImage == providers.count {
+            if precessedImage == results.count {
                 DispatchQueue.main.async {
                     QMUITips.hideAllTips(in: picker.view)
-                    let items = images.map { image in
-                        ImageItem(image: image)
+                    let items = imageURLs.map { url in
+                        ImageItem(imageURL: url)
                     }
                     self.didGetImages(items)
                     picker.dismiss(animated: true)
                 }
             }
         }
-        for provider in providers {
-            if provider.canLoadObject(ofClass: UIImage.self) {
-                provider.loadObject(ofClass: UIImage.self) { image, error in
-                    guard let validImage = image as? UIImage else {
-                        doneProcess()
-                        return
+        
+        DispatchQueue.global().async {
+            for result in results {
+                let provider = result.itemProvider
+                if provider.canLoadObject(ofClass: UIImage.self) {
+                    let commonImageTypes: [UTType] = [.jpeg, .png, .heic, .heif]
+                    var iterator = commonImageTypes.makeIterator()
+                    var notFound = true
+                    while let imageType = iterator.next(), notFound {
+                        let semaphore = DispatchSemaphore(value: 0)
+                        provider.loadInPlaceFileRepresentation(forTypeIdentifier: imageType.identifier) { url, flag, error in
+                            if let validURL = url {
+                                imageURLs.append(validURL)
+                                notFound = false
+                                doneProcess()
+                            } else {
+                                dprint("无法处理")
+                            }
+                            semaphore.signal()
+                        }
+                        semaphore.wait()
                     }
-                    images.append(validImage)
-                    doneProcess()
                 }
-            } else {
-                QMUITips.show(withText: "无法处理")
             }
         }
     }
