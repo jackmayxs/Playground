@@ -179,6 +179,40 @@ extension Array where Element: UIView {
 }
 extension UIView {
 	
+    @discardableResult
+    /// 固定尺寸
+    /// - Returns: 自己
+    func fix(size: CGSize) -> Self {
+        fix(width: size.width, height: size.height)
+    }
+    
+    @discardableResult
+    /// 固定宽高
+    /// - Returns: 自己
+    func fix(width: CGFloat? = nil, height: CGFloat? = nil) -> Self {
+        if let width = width {
+            widthAnchor.constraint(equalToConstant: width).isActive = true
+        }
+        if let height = height {
+            heightAnchor.constraint(equalToConstant: height).isActive = true
+        }
+        translatesAutoresizingMaskIntoConstraints = false
+        return self
+    }
+    
+    @discardableResult
+    /// 限制最大宽高
+    /// - Returns: 自己
+    func limit(maxWidth: CGFloat? = nil, maxHeight: CGFloat? = nil) -> Self {
+        if let width = maxWidth {
+            widthAnchor.constraint(lessThanOrEqualToConstant: width).isActive = true
+        }
+        if let height = maxHeight {
+            heightAnchor.constraint(lessThanOrEqualToConstant: height).isActive = true
+        }
+        translatesAutoresizingMaskIntoConstraints = false
+        return self
+    }
 	
 	/// 添加子视图(可变参数)
 	/// - Parameter subviews: 子视图序列
