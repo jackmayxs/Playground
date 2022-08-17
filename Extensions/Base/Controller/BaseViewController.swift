@@ -351,9 +351,11 @@ extension BaseViewController {
                     /// 显示图片选择器
                     func showPickerController() {
                         if #available(iOS 14, *) {
-                            var config = PHPickerConfiguration()
+                            let photoLibrary = PHPhotoLibrary.shared()
+                            var config = PHPickerConfiguration(photoLibrary: photoLibrary)
                             config.filter = .images
                             config.selectionLimit = count
+                            config.preferredAssetRepresentationMode = .automatic
                             
                             let picker = PHPickerViewController(configuration: config)
                             picker.modalPresentationStyle = .fullScreen
@@ -434,28 +436,42 @@ extension BaseViewController: PHPickerViewControllerDelegate {
         }
         
         DispatchQueue.global().async {
-            for result in results {
-                let provider = result.itemProvider
-                if provider.canLoadObject(ofClass: UIImage.self) {
-                    let commonImageTypes: [UTType] = [.jpeg, .png, .heic, .heif]
-                    var iterator = commonImageTypes.makeIterator()
-                    var notFound = true
-                    while let imageType = iterator.next(), notFound {
-                        let semaphore = DispatchSemaphore(value: 0)
-                        provider.loadInPlaceFileRepresentation(forTypeIdentifier: imageType.identifier) { url, flag, error in
-                            if let validURL = url {
-                                imageURLs.append(validURL)
-                                notFound = false
-                                doneProcess()
-                            } else {
-                                dprint("无法处理")
-                            }
-                            semaphore.signal()
-                        }
-                        semaphore.wait()
-                    }
+            
+            let identifiers = results.compactMap(\.assetIdentifier)
+            let finalResult: PHFetchResult = PHAsset.fetchAssets(withLocalIdentifiers: identifiers, options: nil)
+            finalResult.enumerateObjects(options: [.reverse]) { asset, index, tag in
+                let resources = PHAssetResource.assetResources(for: asset)
+                if let first = resources.first, let url = first.value(forKey: "privateFileURL") as? URL {
+                    imageURLs.append(url)
                 }
+                doneProcess()
             }
+            
+//            for result in results {
+//                let provider = result.itemProvider
+//                if provider.canLoadObject(ofClass: UIImage.self) {
+//                    let commonImageTypes: [UTType] = [.jpeg, .png, .heic, .heif]
+//                    var iterator = commonImageTypes.makeIterator()
+//                    var notFound = true
+//                    while let imageType = iterator.next(), notFound {
+//                        let semaphore = DispatchSemaphore(value: 0)
+//                        provider.loadFileRepresentation(forTypeIdentifier: imageType.identifier) { url, error in
+//                            dprint("haha", url.asAny)
+//                        }
+//                        provider.loadInPlaceFileRepresentation(forTypeIdentifier: imageType.identifier) { url, flag, error in
+//                            if let validURL = url {
+//                                imageURLs.append(validURL)
+//                                notFound = false
+//                                doneProcess()
+//                            } else {
+//                                dprint("无法处理")
+//                            }
+//                            semaphore.signal()
+//                        }
+//                        semaphore.wait()
+//                    }
+//                }
+//            }
         }
     }
 }

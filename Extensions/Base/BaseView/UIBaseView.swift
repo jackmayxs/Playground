@@ -9,6 +9,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 import QMUIKit
+import Moya
 
 protocol ViewModelType: SimpleInitializer {}
 
@@ -19,6 +20,15 @@ protocol ControllerBaseView: StandartLayoutLifeCycle {
 
 class BaseViewModel: ViewModelType, ReactiveCompatible {
     required init() {}
+}
+
+class PagableViewModel<Target: TargetType, Model: Codable>: BaseViewModel {
+    
+    var target: Target! { nil }
+    
+    var sendRequest: Single<[Model]> {
+        Network.request(target, logLevel: .verbose).map(Array<Model>.self)
+    }
 }
 
 class UIBaseView: UIView, ControllerBaseView, ErrorTracker {

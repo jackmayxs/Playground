@@ -157,9 +157,9 @@ extension DateComponents: Transformable {}
 extension Calendar: Transformable {}
 
 // MARK: - __________ Add Selector for UIControl Events Using a Closure __________
-class ClosureSleeve<T> {
-    let closure: ((T) -> Void)?
-    let sender: T
+class ClosureSleeve<T> where T: AnyObject {
+    var closure: ((T) -> Void)?
+    weak var sender: T!
 
     init (sender: T, _ closure: ((T) -> Void)?) {
         self.closure = closure

@@ -11,11 +11,12 @@ import SwiftUI
 
 protocol Tapable {
     associatedtype T = Self
-    func tapped(_ execute: ((T) -> Void)?)
+    func addTappedExecution(_ execute: ((T) -> Void)?)
 }
 
 extension UIView: Tapable {
-    private static var targetsArrayKey = UUID()
+    fileprivate static var targetsArrayKey = UUID()
+    fileprivate static var tappedClosureKey = UUID()
     fileprivate var targets: NSMutableArray {
         if let array = objc_getAssociatedObject(self, &Self.targetsArrayKey) as? NSMutableArray {
             return array
@@ -28,7 +29,28 @@ extension UIView: Tapable {
 }
 
 extension Tapable where Self: UIView {
-    func tapped(_ execute: ((Self) -> Void)?) {
+    
+    var tapped: ((Self) -> Void)? {
+        get {
+            if let target = objc_getAssociatedObject(self, &Self.tappedClosureKey) as? ClosureSleeve<Self> {
+                return target.closure
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let target = objc_getAssociatedObject(self, &Self.tappedClosureKey) as? ClosureSleeve<Self> {
+                target.closure = newValue
+            } else {
+                let target = ClosureSleeve(sender: self, newValue)
+                let tapGesture = UITapGestureRecognizer(target: target, action: #selector(target.invoke))
+                addGestureRecognizer(tapGesture)
+                objc_setAssociatedObject(self, &Self.tappedClosureKey, target, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            }
+        }
+    }
+    
+    func addTappedExecution(_ execute: ((Self) -> Void)?) {
         let target = ClosureSleeve(sender: self, execute)
         let tapGesture = UITapGestureRecognizer(target: target, action: #selector(target.invoke))
         addGestureRecognizer(tapGesture)
