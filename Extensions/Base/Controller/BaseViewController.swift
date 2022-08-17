@@ -424,11 +424,14 @@ extension BaseViewController: PHPickerViewControllerDelegate {
         func doneProcess() {
             precessedImage += 1
             if precessedImage == results.count {
+                /// 主线程调用
                 DispatchQueue.main.async {
+                    /// 隐藏提示
                     QMUITips.hideAllTips(in: picker.view)
                     let items = imageURLs.map { url in
                         ImageItem(imageURL: url)
                     }
+                    /// 传回图片
                     self.didGetImages(items)
                     picker.dismiss(animated: true)
                 }
@@ -439,7 +442,7 @@ extension BaseViewController: PHPickerViewControllerDelegate {
             
             let identifiers = results.compactMap(\.assetIdentifier)
             let finalResult: PHFetchResult = PHAsset.fetchAssets(withLocalIdentifiers: identifiers, options: nil)
-            finalResult.enumerateObjects(options: [.reverse]) { asset, index, tag in
+            finalResult.enumerateObjects { asset, index, tag in
                 let resources = PHAssetResource.assetResources(for: asset)
                 if let first = resources.first, let url = first.value(forKey: "privateFileURL") as? URL {
                     imageURLs.append(url)
@@ -448,17 +451,24 @@ extension BaseViewController: PHPickerViewControllerDelegate {
             }
             
 //            for result in results {
-//                let provider = result.itemProvider
-//                if provider.canLoadObject(ofClass: UIImage.self) {
+//                let itemProvider = result.itemProvider
+//                /// In this code, the order of the UTType check is deliberate(故意的).
+//                /// A live photo can be supplied in a simple UIImage representation, so if we test for images before live photos, we won’t learn that the result is a live photo.
+//                if itemProvider.hasItemConformingToTypeIdentifier(UTType.movie.identifier) {
+//                    // it's a video
+//                } else if itemProvider.canLoadObject(ofClass: PHLivePhoto.self) {
+//                    // it's a live photo
+//                } else if itemProvider.canLoadObject(ofClass: UIImage.self) {
+//                    // it's a photo
 //                    let commonImageTypes: [UTType] = [.jpeg, .png, .heic, .heif]
 //                    var iterator = commonImageTypes.makeIterator()
 //                    var notFound = true
 //                    while let imageType = iterator.next(), notFound {
 //                        let semaphore = DispatchSemaphore(value: 0)
-//                        provider.loadFileRepresentation(forTypeIdentifier: imageType.identifier) { url, error in
+//                        itemProvider.loadFileRepresentation(forTypeIdentifier: imageType.identifier) { url, error in
 //                            dprint("haha", url.asAny)
 //                        }
-//                        provider.loadInPlaceFileRepresentation(forTypeIdentifier: imageType.identifier) { url, flag, error in
+//                        itemProvider.loadInPlaceFileRepresentation(forTypeIdentifier: imageType.identifier) { url, flag, error in
 //                            if let validURL = url {
 //                                imageURLs.append(validURL)
 //                                notFound = false
@@ -472,6 +482,14 @@ extension BaseViewController: PHPickerViewControllerDelegate {
 //                    }
 //                }
 //            }
+            
+            
+            
+            
+            
+            
+            
+            
         }
     }
 }
