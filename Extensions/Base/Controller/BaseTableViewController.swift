@@ -8,9 +8,9 @@
 
 import UIKit
 
-class BaseTableViewController<PrimaryCellType: UITableViewCell>: BaseViewController<RemoteView, BaseViewModel>, UITableViewDataSource, UITableViewDelegate {
+class BaseTableViewController<PrimaryCellType: UITableViewCell>: BaseViewController<UIBaseView, BaseViewModel>, UITableViewDataSource, UITableViewDelegate {
     
-	lazy var tableView = newTableView()
+	lazy var tableView = makeTableView()
     
     var tableViewStyle: UITableView.Style { .plain }
     
@@ -38,7 +38,7 @@ class BaseTableViewController<PrimaryCellType: UITableViewCell>: BaseViewControl
     }
     
     /// 调用时机:懒加载
-    func newTableView() -> UITableView {
+    func makeTableView() -> UITableView {
         let table = UITableView(frame: .zero, style: tableViewStyle)
         table.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         table.delegate = self

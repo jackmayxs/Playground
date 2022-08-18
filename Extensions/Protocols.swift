@@ -223,3 +223,7 @@ protocol OptionalType {
 	associatedtype Wrapped
 	var optionalValue: Wrapped? { get }
 }
+
+protocol SelfReflectable {
+    var itself: Self { get }
+}
