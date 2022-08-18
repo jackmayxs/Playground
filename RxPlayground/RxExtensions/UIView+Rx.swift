@@ -10,13 +10,13 @@ import RxCocoa
 
 extension Reactive where Base: UIView {
     
-    var isVisible: Observable<Bool> {
-        let selector = #selector(UIView.didMoveToWindow)
+    var isVisible: Infallible<Bool> {
+        let selector = #selector(base.didMoveToWindow)
         return methodInvoked(selector)
             .withUnretained(base)
             .map(\.0.window)
-            .map { window in
-                window != nil
-            }
+            .map(\.isValid)
+            .observe(on: MainScheduler.instance)
+            .asInfallible(onErrorJustReturn: false)
     }
 }

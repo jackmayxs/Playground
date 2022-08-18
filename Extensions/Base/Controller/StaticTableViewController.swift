@@ -80,7 +80,7 @@ class StaticTable: ReactiveCompatible {
     }
 }
 
-class StaticTableViewController<Table: StaticTable, Cell: UITableViewCell>: BaseTableViewController<Cell> {
+class StaticTableViewController<Table: StaticTable>: BaseTableViewController {
     
     override var tableViewStyle: UITableView.Style { .grouped }
     
@@ -108,11 +108,7 @@ class StaticTableViewController<Table: StaticTable, Cell: UITableViewCell>: Base
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = staticTable[indexPath.section][indexPath.row].cell
-        if let convertCell = cell as? Cell {
-            configureCell(convertCell, at: indexPath)
-        }
-        return cell
+        staticTable[indexPath.section][indexPath.row].cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

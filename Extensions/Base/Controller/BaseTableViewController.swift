@@ -8,7 +8,7 @@
 
 import UIKit
 
-class BaseTableViewController<PrimaryCellType: UITableViewCell>: BaseViewController<UIBaseView, BaseViewModel>, UITableViewDataSource, UITableViewDelegate {
+class BaseTableViewController: BaseViewController, UITableViewDataSource, UITableViewDelegate {
     
 	lazy var tableView = makeTableView()
     
@@ -32,8 +32,7 @@ class BaseTableViewController<PrimaryCellType: UITableViewCell>: BaseViewControl
     func configureTableView(_ tableView: UITableView) {
         tableView.showsVerticalScrollIndicator = false
         tableView.showsHorizontalScrollIndicator = false
-        /// 注册Cell/HeaderFooter
-        PrimaryCellType.registerFor(tableView)
+        UITableViewCell.registerFor(tableView)
         UITableViewHeaderFooterView.registerFor(tableView)
     }
     
@@ -70,9 +69,7 @@ class BaseTableViewController<PrimaryCellType: UITableViewCell>: BaseViewControl
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = PrimaryCellType.dequeueReusableCell(from: tableView, indexPath: indexPath)
-        configureCell(cell, at: indexPath)
-        return cell
+        UITableViewCell.dequeueReusableCell(from: tableView, indexPath: indexPath)
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -80,6 +77,4 @@ class BaseTableViewController<PrimaryCellType: UITableViewCell>: BaseViewControl
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {}
-    
-    func configureCell(_ cell: PrimaryCellType, at indexPath: IndexPath) {}
 }

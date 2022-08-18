@@ -97,6 +97,12 @@ extension SharedSequence {
 
 extension ObservableType {
     
+    func asOptional<T>(_ type: T.Type) -> Observable<T?> {
+        map { element in
+            element as? T
+        }
+    }
+    
     func `as`<T>(_ type: T.Type) -> Observable<T> {
         map { element in
             if let valid = element as? T {
