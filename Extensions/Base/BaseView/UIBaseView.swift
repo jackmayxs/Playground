@@ -31,7 +31,7 @@ class PagableViewModel<Target: TargetType, Model: Codable>: BaseViewModel {
     }
 }
 
-class UIBaseView: UIView, ControllerBaseView, ErrorTracker {
+class UIBaseView: UIView, ControllerBaseView {
     typealias ViewModel = BaseViewModel
     
     var defaultBackgroundColor: UIColor { .baseBlack }
@@ -57,6 +57,9 @@ class UIBaseView: UIView, ControllerBaseView, ErrorTracker {
     func prepareConstraints() {}
     
     func setupViewModel(_ viewModel: BaseViewModel) {}
+}
+
+extension UIView: ErrorTracker {
     
     func popError(_ error: Error) {
         QMUITips.showError(error.localizedDescription, in: self)

@@ -64,14 +64,11 @@ protocol ViewControllerConfiguration: UIViewController {
 	func configureNavigationController(_ navigationController: UINavigationController)
 }
 
-class BaseViewController<MainView: UIBaseView, ViewModel: ViewModelType>: UIViewController, UIGestureRecognizerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, ViewControllerConfiguration, ErrorTracker {
+class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, ViewControllerConfiguration, ErrorTracker {
 	
     var presentor: ControllerPresentor {
         ControllerPresentor(presentingController: self)
     }
-    
-    lazy var mainView = MainView()
-    lazy var viewModel = ViewModel()
     
     var targetImageSize: CGSize?
     
@@ -83,10 +80,6 @@ class BaseViewController<MainView: UIBaseView, ViewModel: ViewModelType>: UIView
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         configure()
-    }
-    
-    override func loadView() {
-        view = mainView
     }
     
     override func viewDidLoad() {
@@ -310,7 +303,7 @@ class BaseViewController<MainView: UIBaseView, ViewModel: ViewModelType>: UIView
     }
     
     func popError(_ error: Error) {
-        mainView.popError(error)
+        view.popError(error)
     }
 }
 
