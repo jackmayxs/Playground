@@ -72,6 +72,14 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
     
     var targetImageSize: CGSize?
     
+    private(set) lazy var backBarButtonItem: UIBarButtonItem = {
+        UIBarButtonItem(
+            image: rImage.arrowBack.original,
+            style: .plain,
+            target: self,
+            action: #selector(leftBarButtonItemTriggered))
+    }()
+    
     init() {
         super.init(nibName: nil, bundle: nil)
         configure()
@@ -122,19 +130,10 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
         navigationItem.largeTitleDisplayMode = preferLargeTitles ? .automatic : .never
         if let navigationController = navigationController {
             if navigationController.viewControllers.count > 1 {
-                navigationItem.leftBarButtonItem = UIBarButtonItem(
-                    image: R.image.arrowBack()?.withRenderingMode(.alwaysOriginal),
-                    style: .plain,
-                    target: self,
-                    action: #selector(leftBarButtonItemTriggered)
-                )
+                navigationItem.leftBarButtonItem = backBarButtonItem
             } else if navigationController.viewControllers.count == 1 && presentingViewController != nil {
-                navigationItem.leftBarButtonItem = UIBarButtonItem(
-                    image: R.image.arrowBack()?.withRenderingMode(.alwaysOriginal),
-                    style: .plain,
-                    target: self,
-                    action: #selector(leftBarButtonItemTriggered)
-                )
+                /// 这里应该返回关闭按钮
+                navigationItem.leftBarButtonItem = backBarButtonItem
             }
         }
     }

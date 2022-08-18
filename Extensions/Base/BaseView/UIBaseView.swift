@@ -22,13 +22,42 @@ class BaseViewModel: ViewModelType, ReactiveCompatible {
     required init() {}
 }
 
-class PagableViewModel<Target: TargetType, Model: Codable>: BaseViewModel {
+protocol PagableViewModelDelegate: AnyObject {
+    func gotItemsFromServer()
+}
+
+class PagableViewModel_: BaseViewModel {
+    weak var delegate: PagableViewModelDelegate?
+    var itemsPerPage = 50
+    var page = 1
+    var numberOfItems: Int { 0 }
     
-    var target: Target! { nil }
-    
-    var sendRequest: Single<[Model]> {
-        Network.request(target, logLevel: .verbose).map(Array<Model>.self)
+    func fetchMoreData() {
+        
     }
+}
+
+class PagableViewModel<Target: TargetType, Model: Codable>: PagableViewModel_ {
+
+    var target: Target? { nil }
+    
+    var items: [Model] = [] {
+        didSet {
+            delegate?.gotItemsFromServer()
+        }
+    }
+    
+    override func fetchMoreData() {
+        guard let validTarget = target else { return }
+        rx.disposeBag.insert {
+            Network.request(validTarget)
+                .map([Model].self, atKeyPath: "data")
+                .do(afterSuccess: rx.items.onNext)
+                .subscribe()
+        }
+    }
+    
+    override var numberOfItems: Int { items.count }
 }
 
 class UIBaseView: UIView, ControllerBaseView {
