@@ -83,3 +83,20 @@ extension Int {
 		}
 	}
 }
+
+extension String {
+    
+    /// 从十六进制字符串转换颜色
+    var uiColor: UIColor {
+        let scanner = Scanner(string: self)
+        scanner.charactersToBeSkipped = CharacterSet(charactersIn: "#")
+        if #available(iOS 13.0, *) {
+            guard let int = scanner.scanInt(representation: .hexadecimal) else { return .clear }
+            return int.uiColor
+        } else {
+            var uint: UInt64 = 0
+            scanner.scanHexInt64(&uint)
+            return Int(uint).uiColor
+        }
+    }
+}
