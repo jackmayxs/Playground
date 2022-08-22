@@ -48,11 +48,11 @@ public class ActivityIndicator : SharedSequenceConvertibleType {
     }
 
     fileprivate func trackActivityOfObservable<Source: ObservableConvertibleType>(_ source: Source) -> Observable<Source.Element> {
-        return Observable.using({ () -> ActivityToken<Source.Element> in
+        Observable.using { () -> ActivityToken<Source.Element> in
             self.increment()
             return ActivityToken(source: source.asObservable(), disposeAction: self.decrement)
-        }) { t in
-            return t.asObservable()
+        } observableFactory: { token in
+            token.asObservable()
         }
     }
 
@@ -74,8 +74,12 @@ public class ActivityIndicator : SharedSequenceConvertibleType {
 }
 
 extension ObservableConvertibleType {
-    public func trackActivity(_ activityIndicator: ActivityIndicator) -> Self {
-        _ = activityIndicator.trackActivityOfObservable(self).subscribe()
-        return self
+    public func trackActivity(_ activityIndicator: ActivityIndicator) -> Observable<Element> {
+        activityIndicator.trackActivityOfObservable(self)
+    }
+}
+extension Completable {
+    public func trackActivity(_ activityIndicator: ActivityIndicator) -> Completable {
+        activityIndicator.trackActivityOfObservable(self).asCompletable()
     }
 }

@@ -41,7 +41,7 @@ class PagableViewModel<Target: TargetType, Model: Codable>: PagableViewModel_ {
 
     var target: Target? { nil }
     
-    var items: [Model] = [] {
+    @Variable var items: [Model] = [] {
         didSet {
             delegate?.gotItemsFromServer()
         }
@@ -58,6 +58,10 @@ class PagableViewModel<Target: TargetType, Model: Codable>: PagableViewModel_ {
     }
     
     override var numberOfItems: Int { items.count }
+    
+    subscript (indexPath: IndexPath) -> Model {
+        items[indexPath.row]
+    }
 }
 
 class UIBaseView: UIView, ControllerBaseView {
