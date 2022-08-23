@@ -62,6 +62,10 @@ class PagableViewModel<Target: TargetType, Model: Codable>: PagableViewModel_ {
     subscript (indexPath: IndexPath) -> Model {
         items[indexPath.row]
     }
+    
+    subscript (index: Int) -> Model {
+        items[index]
+    }
 }
 
 class UIBaseView: UIView, ControllerBaseView {

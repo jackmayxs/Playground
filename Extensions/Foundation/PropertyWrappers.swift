@@ -9,6 +9,24 @@
 import Foundation
 
 @propertyWrapper
+struct Cached<T> {
+    
+    var wrappedValue: T? {
+        get {
+            UserDefaults.standard.value(forKey: key) as? T
+        }
+        set {
+            guard let validValue = newValue else { return }
+            UserDefaults.standard.setValue(validValue, forKey: key)
+        }
+    }
+    let key: String
+    init(wrappedValue: T? = nil, key: String) {
+        self.key = key
+    }
+}
+
+@propertyWrapper
 final class EditDetectable<E> where E: Equatable {
 	
 	var projectedValue: EditDetectable<E> {
