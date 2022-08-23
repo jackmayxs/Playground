@@ -77,4 +77,6 @@ class BaseTableViewController: BaseViewController, UITableViewDataSource, UITabl
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {}
+    
+    func tableView(_ tableView: UITableView, indentationLevelForRowAt indexPath: IndexPath) -> Int { 0 }
 }

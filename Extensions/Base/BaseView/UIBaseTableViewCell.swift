@@ -58,25 +58,33 @@ class UIBaseTableViewCell: UITableViewCell, StandartLayoutLifeCycle {
     
     func prepareConstraints() {}
     
+    private var indentedContentInsets: UIEdgeInsets {
+        contentInsets.left(contentInsets.left + indentationOffset)
+    }
+    
+    private var indentationOffset: CGFloat {
+        CGFloat(indentationLevel) * indentationWidth
+    }
+    
 	// 复写frame属性
 	override var frame: CGRect {
 		get { super.frame }
 		set {
-			super.frame = newValue.inset(by: contentInsets)
-			var insets: UIEdgeInsets {
+			super.frame = newValue.inset(by: indentedContentInsets)
+			var separatorIndets: UIEdgeInsets {
 				UIEdgeInsets(
 					top: 0,
-					left: separatorInset.left,
+					left: separatorInset.left + indentationOffset,
 					bottom: bounds.height - customizedSeparatorHeight,
 					right: separatorInset.right
 				)
 			}
-			separator.frame = bounds.inset(by: insets)
+			separator.frame = bounds.inset(by: separatorIndets)
 		}
 	}
     
 	override func systemLayoutSizeFitting(_ targetSize: CGSize, withHorizontalFittingPriority horizontalFittingPriority: UILayoutPriority, verticalFittingPriority: UILayoutPriority) -> CGSize {
-		super.systemLayoutSizeFitting(targetSize, withHorizontalFittingPriority: horizontalFittingPriority, verticalFittingPriority: verticalFittingPriority) + contentInsets
+		super.systemLayoutSizeFitting(targetSize, withHorizontalFittingPriority: horizontalFittingPriority, verticalFittingPriority: verticalFittingPriority) + indentedContentInsets
 	}
     
     @discardableResult
