@@ -45,7 +45,7 @@ public extension Reactive where Base: AnyObject {
 
 // MARK: - Error & Activity Tracker
 protocol ErrorTracker: NSObject {
-    func popError(_ error: Error)
+    func popError(_ error: Error?)
 }
 
 protocol ActivityTracker: NSObject {

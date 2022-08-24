@@ -86,7 +86,7 @@ protocol ViewControllerConfiguration: UIViewController {
 	func configureNavigationController(_ navigationController: UINavigationController)
 }
 
-class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, ViewControllerConfiguration, ErrorTracker {
+class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, ViewControllerConfiguration, ErrorTracker, ActivityTracker {
 	
     var presentor: ControllerPresentor {
         ControllerPresentor(presentingController: self)
@@ -323,8 +323,16 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
         picker.dismiss(animated: true)
     }
     
-    func popError(_ error: Error) {
-        view.popError(error)
+    func popError(_ error: Error?) {
+        view.window?.popError(error)
+    }
+    
+    func processing() {
+        QMUITips.showLoading(in: view)
+    }
+    
+    func doneProcessing() {
+        QMUITips.hideAllTips(in: view)
     }
 }
 
