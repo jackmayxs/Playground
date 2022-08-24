@@ -26,10 +26,10 @@ extension ObservableConvertibleType {
     
     func then(_ nextStep: @escaping (Error?) -> Void) {
         _ = asObservable()
+            .ignoreElements()
+            .asCompletable()
             .subscribe { event in
                 switch event {
-                case .next:
-                    break
                 case .completed:
                     nextStep(nil)
                 case .error(let error):

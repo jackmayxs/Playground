@@ -42,6 +42,11 @@ extension Dictionary where Value: OptionalType {
 
 extension Array {
     
+    public mutating func append(@ArrayBuilder<Element> _ builder: () -> [Element]) {
+        let elements = builder()
+        append(contentsOf: elements)
+    }
+    
     public func itemAt(_ index: Index) -> Element? {
         guard index < count else { return nil }
         return self[index]

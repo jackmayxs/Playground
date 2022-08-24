@@ -86,10 +86,12 @@ public extension Reactive where Base: UIViewController {
 		return ControlEvent(events: source)
 	}
     
-    var preparedToPresent: Observable<Void> {
-        guard let presented = base.presentedViewController else {
+    var preparedToPresent: Completable {
+        guard let presentedViewController = base.presentedViewController else {
             return .empty()
         }
-        return presented.rx.deallocated
+        return presentedViewController.rx.deallocated
+            .ignoreElements()
+            .asCompletable()
     }
 }
