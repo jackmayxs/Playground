@@ -22,6 +22,28 @@ final class ControllerPresentor {
         self.presentingController = presentingController
     }
     
+    func popDialog(_ controller: UIViewController) {
+        let presentation = CoverPresentation(
+            directionShow: .top,
+            directionDismiss: .top,
+            uiConfiguration: PresentationUIConfiguration(
+                cornerRadius: 6,
+                backgroundStyle: .dimmed(alpha: 0.7),
+                isTapBackgroundToDismissEnabled: true,
+                corners: .allCorners
+            ),
+            size: PresentationSize(
+                width: .custom(value: controller.preferredContentSize.width),
+                height: .custom(value: controller.preferredContentSize.height)
+            ),
+            alignment: PresentationAlignment(vertical: .center, horizontal: .center),
+            marginGuards: .horizontal(20.0)
+        )
+        animator = Animator(presentation: presentation)
+        animator?.prepare(presentedViewController: controller)
+        presentingController?.present(controller, animated: true)
+    }
+    
     func slideIn(_ controller: UIViewController) {
         let presentation = CoverPresentation(
             directionShow: .bottom,

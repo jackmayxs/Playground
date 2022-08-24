@@ -24,6 +24,16 @@ struct Variable<Wrapped> {
 
 extension ObservableConvertibleType {
     
+    func then(_ nextStep: @escaping SimpleCallback) {
+        _ = asObservable()
+            .debug()
+            .subscribe { event in
+                if case .completed = event {
+                    nextStep()
+                }
+            }
+    }
+    
     var observable: Observable<Element> {
         asObservable()
     }

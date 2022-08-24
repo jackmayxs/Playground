@@ -76,6 +76,18 @@ extension UIView {
 // MARK: - __________ Getters __________
 extension UIView {
 	
+    private enum Associated {
+        static var shadowViewKey = UUID()
+        static var baseViewKey = UUID()
+    }
+    
+    /// 表示最底部的UIView
+    /// 标记UIStackView的背景视图
+    var baseView: UIView? {
+        get { objc_getAssociatedObject(self, &Associated.baseViewKey) as? UIView }
+        set { objc_setAssociatedObject(self, &Associated.baseViewKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
+    }
+    
 	func snapshotScreen(scrollView: UIScrollView) -> UIImage?{
 		if UIScreen.main.responds(to: #selector(getter: UIScreen.scale)) {
 			UIGraphicsBeginImageContextWithOptions(scrollView.contentSize, false, UIScreen.main.scale)
@@ -179,6 +191,11 @@ extension Array where Element: UIView {
 }
 extension UIView {
 	
+    convenience init(color: UIColor) {
+        self.init(frame: .zero)
+        backgroundColor = color
+    }
+    
     @discardableResult
     /// 固定尺寸
     /// - Returns: 自己
@@ -297,9 +314,6 @@ extension UIView {
 	
 	// MARK: - __________ 圆角 + 阴影 __________
 	final class _UIShadowView: UIView { }
-	private enum Associated {
-		static var shadowViewKey = UUID()
-	}
 	private var shadowView: _UIShadowView {
 		guard let shadow = objc_getAssociatedObject(self, &Associated.shadowViewKey) as? _UIShadowView else {
 			let shadow = _UIShadowView(frame: bounds)

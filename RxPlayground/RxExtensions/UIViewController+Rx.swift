@@ -85,4 +85,11 @@ public extension Reactive where Base: UIViewController {
 			.map { $0.first as? Bool ?? false }
 		return ControlEvent(events: source)
 	}
+    
+    var preparedToPresent: Observable<Void> {
+        guard let presented = base.presentedViewController else {
+            return .empty()
+        }
+        return presented.rx.deallocated
+    }
 }

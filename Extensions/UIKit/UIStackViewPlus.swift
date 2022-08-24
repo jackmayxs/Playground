@@ -52,19 +52,38 @@ extension UIStackView {
         addArrangedSubviews(content: content)
     }
 	
-    func addBackground(view: UIView) {
-        view.frame = bounds
-        view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        insertSubview(view, at: 0)
-		backgroundView = view
-    }
     /// 添加StackView背景视图颜色
     /// - Parameter color: 背景View颜色
-    func addBackground(color: UIColor) {
-        let colored = UIView(frame: bounds)
-        colored.backgroundColor = color
-		addBackground(view: colored)
-		backgroundView = colored
+    func add(backgroundColor: UIColor) {
+        let background = UIView(frame: bounds)
+        background.backgroundColor = backgroundColor
+        add(backgroundView: background)
+    }
+    
+    func add(cornerRadius: CGFloat, insets: UIEdgeInsets = .zero, maskedCorners: CACornerMask = .allCorners, backgroundColor: UIColor) {
+        let bgView = UIView(color: backgroundColor)
+        bgView.layer.maskedCorners = maskedCorners
+        bgView.layer.cornerRadius = cornerRadius
+        add(backgroundView: bgView, insets: insets)
+    }
+    
+    func stackOverlay(view: UIView) {
+        add(backgroundView: view)
+        bringSubviewToFront(view)
+    }
+    
+    func add(backgroundView: UIView, insets: UIEdgeInsets = .zero, configure: ((UIView) -> Void)? = nil) {
+        defer {
+            configure?(backgroundView)
+        }
+        if let oldBaseView = baseView {
+            oldBaseView.removeFromSuperview()
+            baseView = nil
+        }
+        backgroundView.frame = bounds.inset(by: insets)
+        backgroundView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        insertSubview(backgroundView, at: 0)
+        baseView = backgroundView
     }
 	
 	/// 内部控件边距
