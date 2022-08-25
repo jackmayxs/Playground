@@ -24,7 +24,11 @@ struct Variable<Wrapped> {
 
 extension ObservableConvertibleType {
     
-    func then(_ nextStep: @escaping (Error?) -> Void) {
+    /// 序列结束时回调Closure
+    /// - Parameters:
+    ///   - blockByError: 发生Error时是否继续执行下一步
+    ///   - nextStep: 下一步执行的Closure
+    func then(blockByError: Bool = false, _ nextStep: @escaping (Error?) -> Void) {
         _ = asObservable()
             .ignoreElements()
             .asCompletable()
@@ -33,7 +37,9 @@ extension ObservableConvertibleType {
                 case .completed:
                     nextStep(nil)
                 case .error(let error):
-                    nextStep(error)
+                    if !blockByError {
+                        nextStep(error)
+                    }
                 }
             }
     }
