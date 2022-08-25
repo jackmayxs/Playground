@@ -31,9 +31,28 @@ extension UINavigationController {
 
 extension UIViewController {
     
+    
+    /// 获取目标导航控制器
+    /// - Parameter navigationType: 导航控制器类型
+    /// - Returns: 目标导航控制器
+    func targetNavigation<T>(_ navigationType: T.Type) -> T? where T: UINavigationController {
+        if let tab = self as? UITabBarController {
+            func matches(controller: UIViewController) -> Bool {
+                controller.isMember(of: navigationType)
+            }
+            return tab.viewControllers?.first(where: matches) as? T
+        } else if let navi = self as? T {
+            return navi
+        } else {
+            return navigationController as? T
+        }
+    }
+    
     func push(_ controller: UIViewController, animated: Bool = true) {
-        DispatchQueue.main.async {
-            self.navigationController?.pushViewController(controller, animated: animated)
+        if let navi = self as? UINavigationController {
+            navi.pushViewController(controller, animated: animated)
+        } else {
+            navigationController?.pushViewController(controller, animated: animated)
         }
     }
     

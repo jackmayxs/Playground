@@ -10,6 +10,23 @@ import UIKit
 
 extension UITableView {
 	
+    func performAllCellSelection(_ selected: Bool) {
+        for section in 0..<numberOfSections {
+            for row in 0..<numberOfRows(inSection: section) {
+                let indexPath = IndexPath(row: row, section: section)
+                if selected {
+                    _ = delegate?.tableView?(self, willSelectRowAt: indexPath)
+                    selectRow(at: indexPath, animated: false, scrollPosition: .none)
+                    delegate?.tableView?(self, didSelectRowAt: indexPath)
+                } else {
+                    _ = delegate?.tableView?(self, willDeselectRowAt: indexPath)
+                    deselectRow(at: indexPath, animated: false)
+                    delegate?.tableView?(self, didDeselectRowAt: indexPath)
+                }
+            }
+        }
+    }
+    
 	/// 在视图控制器的viewDidLayoutSubviews()方法里调用此方法以自动布局HeaderFooterView
 	func layoutHeaderFooterViewIfNeeded() {
 		if let headerView = tableHeaderView {

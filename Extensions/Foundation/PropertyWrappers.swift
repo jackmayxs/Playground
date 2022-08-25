@@ -124,17 +124,18 @@ final class IgnoreEmptyString: ValidValueOnly<String> {
 }
 
 @propertyWrapper
+/// 临时的变量: 超时后自动销毁 | 再次访问时重新创建
 final class Temporary<T> {
 	
 	typealias ValueBuilder = () -> T
 	
 	private var value: T?
-    private let survivalTime: TimeInterval
+    private let survivalTime: DispatchTimeInterval
     private let builder: ValueBuilder
     private lazy var timer = GCDTimer.scheduledTimer(delay: .now() + survivalTime, queue: .global(qos: .utility)) { _ in
         self.value = .none
     }
-    init(wrappedValue: @escaping ValueBuilder, expireIn survivalTime: TimeInterval) {
+    init(wrappedValue: @escaping ValueBuilder, expireIn survivalTime: DispatchTimeInterval) {
         self.builder = wrappedValue
         self.survivalTime = survivalTime
     }
@@ -147,5 +148,45 @@ final class Temporary<T> {
             return value.unsafelyUnwrapped
         }
         return unwrapped
+    }
+}
+
+@propertyWrapper
+/// 转瞬即逝的变量
+final class Transient<T> {
+    private var value: T?
+    private let interval: DispatchTimeInterval
+    private lazy var timer = GCDTimer.scheduledTimer(delay: .now() + interval, queue: .global(qos: .utility)) { _ in
+        self.value = .none
+    }
+    
+    init(wrappedValue: T? = nil, venishAfter interval: DispatchTimeInterval) {
+        self.value = wrappedValue
+        self.interval = interval
+    }
+    
+    private func countDown() {
+        timer.fire(.now() + interval)
+    }
+    
+    var wrappedValue: T? {
+        get {
+            defer {
+                if value != nil {
+                    /// 每次调用都推迟执行
+                    countDown()
+                }
+            }
+            return value
+        }
+        set {
+            defer {
+                if value != nil {
+                    /// 每次调用都推迟执行
+                    countDown()
+                }
+            }
+            value = newValue
+        }
     }
 }

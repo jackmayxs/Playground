@@ -15,8 +15,11 @@ import RxSwift
 import RxCocoa
 
 final class ControllerPresentor {
-    private var animator: Jelly.Animator?
-    weak var presentingController: UIViewController?
+    
+    /// 200毫秒后消失的Animator, 实现被present的控制器立刻消失
+    @Transient<Animator>(venishAfter: .milliseconds(200)) private var animator: Animator?
+
+    weak var presentingController: UIViewController!
     
     init(presentingController: UIViewController) {
         self.presentingController = presentingController
@@ -36,12 +39,12 @@ final class ControllerPresentor {
                 width: .custom(value: controller.preferredContentSize.width),
                 height: .custom(value: controller.preferredContentSize.height)
             ),
-            alignment: PresentationAlignment(vertical: .center, horizontal: .center),
-            marginGuards: .horizontal(20.0)
+            alignment: PresentationAlignment(vertical: .custom(y: 300), horizontal: .center),
+            timing: PresentationTiming(duration: .normal, presentationCurve: .easeIn, dismissCurve: .easeOut)
         )
         animator = Animator(presentation: presentation)
         animator?.prepare(presentedViewController: controller)
-        presentingController?.present(controller, animated: true)
+        presentingController.present(controller, animated: true)
     }
     
     func slideIn(_ controller: UIViewController) {
@@ -59,11 +62,11 @@ final class ControllerPresentor {
                 height: .custom(value: controller.preferredContentSize.height)
             ),
             alignment: PresentationAlignment(vertical: .bottom, horizontal: .center),
-            marginGuards: .zero
+            timing: PresentationTiming(duration: .normal, presentationCurve: .easeIn, dismissCurve: .easeOut)
         )
         animator = Animator(presentation: presentation)
         animator?.prepare(presentedViewController: controller)
-        presentingController?.present(controller, animated: true)
+        presentingController.present(controller, animated: true)
     }
 }
 
@@ -75,10 +78,10 @@ protocol ViewControllerConfiguration: UIViewController {
 	/// 大标题导航栏
 	var preferLargeTitles: Bool { get }
 	
-	/// 控制器配置 | 调用时机: viewDidLoad
+	/// 控制器配置 | 调用时机: init
 	func configure()
 	
-	/// 配置导航条目 | 调用时机: viewDidLoad -> configure
+	/// 配置导航条目 | 调用时机: viewWillAppear
 	func configureNavigationItem(_ navigationItem: UINavigationItem)
 	
 	/// 配置导航栏样式 | 调用时机: viewWillAppear
@@ -88,9 +91,7 @@ protocol ViewControllerConfiguration: UIViewController {
 
 class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, ViewControllerConfiguration, ErrorTracker, ActivityTracker {
 	
-    var presentor: ControllerPresentor {
-        ControllerPresentor(presentingController: self)
-    }
+    lazy var presentor = ControllerPresentor(presentingController: self)
     
     var targetImageSize: CGSize?
     
@@ -139,7 +140,7 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
     /// 大标题导航栏
     var preferLargeTitles: Bool { false }
     
-    /// 控制器配置 | 调用时机: viewDidLoad
+    /// 控制器配置 | 调用时机: init
     func configure() {
         /// 配置标题
         if title == .none, let defaultTitle = defaultTitle {
@@ -147,7 +148,7 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
         }
     }
     
-    /// 配置导航条目 | 调用时机: viewDidLoad -> configure
+    /// 配置导航条目 | 调用时机: viewWillAppear
     func configureNavigationItem(_ navigationItem: UINavigationItem) {
         navigationItem.largeTitleDisplayMode = preferLargeTitles ? .automatic : .never
         if let navigationController = navigationController {
