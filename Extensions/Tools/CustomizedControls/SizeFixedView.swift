@@ -10,7 +10,11 @@ import UIKit
 
 final class SizeFixedView: UIView {
 	
-	private var fixedSize = CGSize.zero
+    var fixedSize = CGSize.zero {
+        willSet {
+            invalidateIntrinsicContentSize()
+        }
+    }
 	init(_ fixedSize: CGSize) {
 		self.fixedSize = fixedSize
 		super.init(frame: CGRect(origin: .zero, size: fixedSize))

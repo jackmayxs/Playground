@@ -37,6 +37,10 @@ extension Int {
 	var int64: Int64 {
 		Int64(self)
 	}
+    
+    var string: String {
+        String(self)
+    }
 }
 
 extension Int {
