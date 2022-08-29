@@ -23,8 +23,8 @@ extension UICollectionReusableView {
 	static func registerFor(_ collectionView: UICollectionView, kind: SupplementaryViewKind) {
 		collectionView.register(self, forSupplementaryViewOfKind: kind.raw, withReuseIdentifier: Self.reuseId)
 	}
-	static func dequeReusableSupplementaryView(from collectionView: UICollectionView, kind: String, indexPath: IndexPath) -> Self {
-		collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: Self.reuseId, for: indexPath) as! Self
+	static func dequeReusableSupplementaryView(from collectionView: UICollectionView, kind: SupplementaryViewKind, indexPath: IndexPath) -> Self {
+        collectionView.dequeueReusableSupplementaryView(ofKind: kind.raw, withReuseIdentifier: Self.reuseId, for: indexPath) as! Self
 	}
 }
 
