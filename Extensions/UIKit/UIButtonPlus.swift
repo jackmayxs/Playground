@@ -35,6 +35,11 @@ extension UIButton {
 
 extension UIButton {
 	
+    convenience init(image: UIImage?) {
+        self.init(frame: .zero)
+        setImage(image, for: .normal)
+    }
+    
     convenience init(title: String? = nil, titleColor: UIColor? = nil, titleFontSize: CGFloat = 14.0, titleFontWeight: UIFont.Weight = .regular) {
         let font = UIFont.systemFont(ofSize: titleFontSize, weight: titleFontWeight)
         self.init(title: title, titleColor: titleColor, font: font)

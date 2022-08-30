@@ -17,27 +17,7 @@ struct ColorStop {
     }
 }
 
-extension Array where Element == ColorStop {
-    var gradientColor: GradientColor {
-        GradientColor(colorStops: self)
-    }
-}
-
 typealias ColorStopsBuilder = () -> [ColorStop]
-
-struct GradientColor {
-    let colorStops: [ColorStop]
-    init(colorStops: [ColorStop]) {
-        self.colorStops = colorStops
-    }
-    init(@ArrayBuilder<ColorStop> _ colorsBuilder: ColorStopsBuilder) {
-        let colors = colorsBuilder()
-        self.init(colorStops: colors)
-    }
-    var cgColors: [CGColor] {
-        colorStops.map(\.color.cgColor)
-    }
-}
 
 // MARK: - 渐变View
 class GradientView: UIView {
@@ -49,20 +29,20 @@ class GradientView: UIView {
     convenience init() {
         self.init(direction: .right) {}
     }
+    private(set) var colorStops: [ColorStop] = []
     init(direction: CGVector = .right, @ArrayBuilder<ColorStop> _ colorsBuilder: ColorStopsBuilder) {
         super.init(frame: .zero)
         /// 设置渐变色
-        let gradient = GradientColor(colorsBuilder)
-        let stops = gradient.colorStops.map(\.stop)
-        let stopsAreLegal = stops.allSatisfy { stop in
-            stop >= 0 && stop <= 1
+        let stops = colorsBuilder()
+        let stopsAreLegal = stops.allSatisfy { colorStop in
+            colorStop.stop >= 0 && colorStop.stop <= 1
         }
         if stops.count > 0, stopsAreLegal {
             gradientLayer.locations = stops.map(NSNumber.init)
         } else {
             gradientLayer.locations = nil
         }
-        setGradientColor(gradient)
+        setColorStops(stops)
         /// 设置方向
         setDirection(direction)
     }
@@ -73,11 +53,12 @@ class GradientView: UIView {
     
     func refill(@ArrayBuilder<ColorStop> _ colorsBuilder: ColorStopsBuilder) {
         let colors = colorsBuilder()
-        setGradientColor(colors.gradientColor)
+        setColorStops(colors)
     }
     
-    func setGradientColor(_ gradientColor: GradientColor) {
-        gradientLayer.colors = gradientColor.cgColors
+    func setColorStops(_ colorStops: [ColorStop]) {
+        self.colorStops = colorStops
+        gradientLayer.colors = colorStops.map(\.color.cgColor)
     }
 
     func setDirection(_ vector: CGVector) {
