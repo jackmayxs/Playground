@@ -16,7 +16,19 @@ extension Numeric {
 
 // MARK: - __________ Common __________
 extension Double {
-	
+    
+    /// 切分成整数和小数两个部分
+    var split: (wholeNumber: Double, fractions: Double) {
+        /// 创建Double类型的指针
+        let pWholeNumber = UnsafeMutablePointer<Double>.allocate(capacity: 1)
+        defer {
+            pWholeNumber.deallocate()
+        }
+        /// 执行整数小数分离 | 把整数部分存入指针
+        let fractions = Darwin.modf(self, pWholeNumber)
+        return (pWholeNumber.pointee, fractions)
+    }
+    
 	var nsNumber: NSNumber {
 		NSNumber(value: self)
 	}

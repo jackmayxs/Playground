@@ -18,21 +18,14 @@ extension DateInterval {
 
 extension Date {
 	
-	/// 转换为GCD使用的绝对时间
+    /// 转换为GCD使用的绝对时间
 	var dispatchWallTime: DispatchWallTime {
-		/// 获取时间戳
-		let interval = timeIntervalSince1970
-		/// 创建Double类型的指针
-		let pSecond = UnsafeMutablePointer<Double>.allocate(capacity: 1)
-		defer {
-			pSecond.deallocate()
-		}
-		/// 获取时间戳小数部分 | 并把整数部分存入指针
-		let subsecond = modf(interval, pSecond)
+        /// 将小数切成整数,小数两个部分
+		let split = timeIntervalSince1970.split
 		/// 转换秒数
-		let second = Int(pSecond.pointee)
+        let second = split.wholeNumber.int
 		/// 转换纳秒数
-		let nanoSecond = Int(UInt64(subsecond * Double(NSEC_PER_SEC)))
+        let nanoSecond = Int(UInt64(split.fractions * Double(NSEC_PER_SEC)))
 		/// 创建timespec结构体
 		let timespec = timespec(tv_sec: second, tv_nsec: nanoSecond)
 		/// 返回绝对时间
