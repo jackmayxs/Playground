@@ -12,8 +12,8 @@ class BaseDynamicTableViewController<PrimaryCell: UITableViewCell, ViewModel: Pa
     
     lazy var viewModel = ViewModel()
     
-    override func configure() {
-        super.configure()
+    override func initialConfigure() {
+        super.initialConfigure()
         viewModel.delegate = self
     }
     

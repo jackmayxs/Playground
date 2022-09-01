@@ -79,7 +79,7 @@ protocol ViewControllerConfiguration: UIViewController {
 	var preferLargeTitles: Bool { get }
 	
 	/// 控制器配置 | 调用时机: init
-	func configure()
+	func initialConfigure()
 	
 	/// 配置导航条目 | 调用时机: viewWillAppear
 	func configureNavigationItem(_ navigationItem: UINavigationItem)
@@ -105,18 +105,19 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
     
     init() {
         super.init(nibName: nil, bundle: nil)
-        configure()
+        initialConfigure()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        configure()
+        initialConfigure()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        prepareTargets()
+        /// view loaded 之后的配置
+        afterViewLoadedConfigure()
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -129,11 +130,6 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
         configureNavigationItem(navigationItem)
 	}
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        hidesBottomBarWhenPushed = false
-    }
-    
     /// 默认标题
     var defaultTitle: String? { .none }
     
@@ -141,11 +137,22 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
     var preferLargeTitles: Bool { false }
     
     /// 控制器配置 | 调用时机: init
-    func configure() {
+    func initialConfigure() {
+        
+        /// 导航控制器压栈时默认隐藏TabBar, 首页的几个RootController单独设置此属性为false
+        /// 注: 此属性只有在控制器放入Navigation Stack之前设置才有效
+        hidesBottomBarWhenPushed = true
+    }
+    
+    /// viewDidLoad之后的配置 | 调用时机: viewDidLoad
+    func afterViewLoadedConfigure() {
         /// 配置标题
         if title == .none, let defaultTitle = defaultTitle {
             title = defaultTitle
         }
+        
+        /// 配置Targets
+        prepareTargets()
     }
     
     /// 配置导航条目 | 调用时机: viewWillAppear
@@ -164,11 +171,6 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
     /// 配置导航栏样式 | 调用时机: viewWillAppear
     /// - Parameter navigationController: 导航控制器
     func configureNavigationController(_ navigationController: UINavigationController) {
-        
-        if navigationController.viewControllers.count > 1 {
-            /// 导航控制器压栈时隐藏TabBar
-            hidesBottomBarWhenPushed = true
-        }
         
         /// 重新开启右滑返回
 //        navigationController.interactivePopGestureRecognizer?.delegate = self
@@ -254,10 +256,8 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
     
     
     /// 添加事件
-    /// 调用时机:viewDidload
-    func prepareTargets() {
-        
-    }
+    /// 调用时机: viewDidload -> afterViewLoadedConfigure
+    func prepareTargets() {}
     
     @objc func leftBarButtonItemTriggered() {
         escape(animated: true)
@@ -285,10 +285,6 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
     
     @objc func goBack(animated: Bool = true) {
         navigationController?.popViewController(animated: animated)
-    }
-    
-    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
-//        let destinationCount = navigationController.viewControllers.count + 1
     }
     
     func didGetImages(_ imageItems: [ImageItem]) {
