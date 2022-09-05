@@ -32,6 +32,17 @@ extension UIColor {
         UIColor(red: .random, green: .random, blue: .random, alpha: 1)
     }
     // MARK: - __________ Instance __________
+    func uiImage(size: CGSize = CGSize(width: 1, height: 1)) -> UIImage? {
+        let rect = CGRect(origin: .zero, size: size)
+        UIGraphicsBeginImageContextWithOptions(size, false, UIScreen.main.scale)
+        defer {
+            UIGraphicsEndImageContext()
+        }
+        setFill()
+        UIRectFill(rect)
+        return UIGraphicsGetImageFromCurrentImageContext()
+    }
+    
     func viewWithSize(_ size: CGFloat) -> UIView {
         view(UIView.self, size: size)
     }
