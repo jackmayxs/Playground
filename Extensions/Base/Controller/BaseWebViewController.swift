@@ -55,7 +55,7 @@ class BaseWebViewController: BaseViewController, WKUIDelegate, WKNavigationDeleg
     
     func load(@SingleValueBuilder<URL?> buildURL: () -> URL?) {
         guard let url = buildURL() else {
-            popError("无法加载")
+            trackError("无法加载")
             return
         }
         let request = URLRequest(url: url)

@@ -10,6 +10,15 @@ import RxCocoa
 
 extension Reactive where Base: UIView {
     
+    var superView: Observable<UIView> {
+        base.rx.methodInvoked(#selector(base.didMoveToSuperview))
+            .withUnretained(base)
+            .map(\.0.superview)
+            .startWith(base.superview)
+            .compactMap(\.itself)
+            .distinctUntilChanged()
+    }
+    
     var isVisible: Infallible<Bool> {
         let selector = #selector(base.didMoveToWindow)
         return methodInvoked(selector)

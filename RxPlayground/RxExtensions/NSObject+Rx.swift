@@ -7,6 +7,7 @@
 
 import Foundation
 import RxSwift
+import RxCocoa
 import ObjectiveC
 
 fileprivate var disposeBagContext: UInt8 = 0
@@ -44,8 +45,8 @@ public extension Reactive where Base: AnyObject {
 }
 
 // MARK: - Error & Activity Tracker
-protocol ErrorTracker: NSObject {
-    func popError(_ error: Error?)
+protocol ErrorTracker: UIResponder {
+    func trackError(_ error: Error?)
 }
 
 protocol ActivityTracker: NSObject {
@@ -53,7 +54,7 @@ protocol ActivityTracker: NSObject {
     func doneProcessing()
 }
 
-fileprivate var activityIndicatorKey = 0
+fileprivate var activityIndicatorKey = UUID()
 
 extension Reactive where Base: ActivityTracker {
     var activity: ActivityIndicator {
@@ -78,14 +79,42 @@ extension Reactive where Base: ActivityTracker {
     }
 }
 
+// MARK: - 扩展事件类型为<#EventConvertible#>的事件序列
+extension ObservableConvertibleType where Element: EventConvertible {
+    
+    /// 跟踪错误事件
+    /// - Parameters:
+    ///   - tracker: 错误跟踪者
+    ///   - respondDepth: 响应深度 | nextResponder的深度, 如UIView的父视图
+    /// - Returns: 观察序列
+    func trackErrorEvent(_ tracker: ErrorTracker?, respondDepth: Int = 0) -> Observable<Event<Element.Element>> {
+        asObservable()
+            .dematerialize()
+            .trackError(tracker, respondDepth: respondDepth)
+            .materialize()
+    }
+}
+
 extension ObservableConvertibleType {
     
-    func trackError<T>(_ tracker: T) -> Observable<Element> where T: ErrorTracker {
+    /// 跟踪错误
+    /// - Parameters:
+    ///   - tracker: 错误跟踪者
+    ///   - respondDepth: 响应深度 | nextResponder的深度, 如UIView的父视图
+    /// - Returns: 观察序列
+    func trackError(_ tracker: ErrorTracker?, respondDepth: Int = 0) -> Observable<Element> {
         asObservable()
             .do { _ in
                 
             } onError: {
-                [weak tracker] error in tracker?.popError(error)
+                [weak tracker] error in
+                var responder = tracker
+                for _ in 0 ..< respondDepth {
+                    if let nextTracker = responder?.next as? ErrorTracker {
+                        responder = nextTracker
+                    }
+                }
+                responder?.trackError(error)
             }
     }
 }

@@ -28,7 +28,7 @@ final class ControllerPresentor {
     func popDialog(_ controller: UIViewController) {
         let presentation = CoverPresentation(
             directionShow: .top,
-            directionDismiss: .top,
+            directionDismiss: .bottom,
             uiConfiguration: PresentationUIConfiguration(
                 cornerRadius: 6,
                 backgroundStyle: .dimmed(alpha: 0.7),
@@ -39,7 +39,7 @@ final class ControllerPresentor {
                 width: .custom(value: controller.preferredContentSize.width),
                 height: .custom(value: controller.preferredContentSize.height)
             ),
-            alignment: PresentationAlignment(vertical: .custom(y: 300), horizontal: .center),
+            alignment: PresentationAlignment(vertical: .center, horizontal: .center),
             timing: PresentationTiming(duration: .normal, presentationCurve: .easeIn, dismissCurve: .easeOut)
         )
         animator = Animator(presentation: presentation)
@@ -320,8 +320,8 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
         picker.dismiss(animated: true)
     }
     
-    func popError(_ error: Error?) {
-        view.window?.popError(error)
+    func trackError(_ error: Error?) {
+        view.window?.trackError(error)
     }
     
     func processing() {
@@ -363,7 +363,7 @@ extension BaseViewController {
                     [unowned self] in
                     
                     guard UIImagePickerController.isSourceTypeAvailable(source) else {
-                        popError("Not supported source type.")
+                        trackError("Not supported source type.")
                         return
                     }
                     

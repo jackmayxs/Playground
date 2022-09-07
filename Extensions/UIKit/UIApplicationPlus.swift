@@ -10,6 +10,11 @@ import UIKit
 
 extension UIApplication {
 	
+    static func openSettings() {
+        guard let settingsURL = URL(string: openSettingsURLString) else { return }
+        openURL(settingsURL)
+    }
+    
 	/// UIApplication.openURL的封装方法
 	/// - Parameters:
 	///   - urlToOpen: 传入URL

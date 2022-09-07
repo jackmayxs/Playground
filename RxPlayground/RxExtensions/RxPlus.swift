@@ -24,12 +24,28 @@ struct Variable<Wrapped> {
 
 extension ObservableConvertibleType {
     
+    func flatMapLatest<Source: InfallibleType>(_ source: Source) -> Observable<Source.Element> {
+        asObservable()
+            .flatMapLatest { _ in source }
+    }
+    
+    /// 用于重新订阅事件 | 如: .retry(when: button.rx.tap.triggered)
+    /// Tips: 配合.trackError使用的时候, 注意要把.trackError放在.retry(when:)的前面
+    var triggered: (Observable<Error>) -> Observable<Element> {
+        {
+            $0.flatMapLatest { _ in
+                asObservable().take(1)
+            }
+        }
+    }
+    
     /// 序列结束时回调Closure
     /// - Parameters:
     ///   - blockByError: 发生Error时是否继续执行下一步
     ///   - nextStep: 下一步执行的Closure
-    func then(blockByError: Bool = false, _ nextStep: @escaping (Error?) -> Void) {
-        _ = asObservable()
+    @discardableResult
+    func then(blockByError: Bool = false, _ nextStep: @escaping (Error?) -> Void) -> Disposable {
+        asObservable()
             .ignoreElements()
             .asCompletable()
             .subscribe { event in
