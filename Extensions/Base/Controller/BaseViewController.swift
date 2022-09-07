@@ -14,10 +14,21 @@ import PhotosUI
 import RxSwift
 import RxCocoa
 
+// MARK: - 被Present的控制器协议
+protocol PresentedControllerType: UIViewController {
+    var animator: Animator? { get set }
+    func prepareAnimator(_ animator: Animator)
+}
+
+extension PresentedControllerType {
+    func prepareAnimator(_ animator: Animator) {
+        self.animator = animator
+        animator.prepare(presentedViewController: self)
+    }
+}
+
+// MARK: - 控制器Presentor
 final class ControllerPresentor {
-    
-    /// 200毫秒后消失的Animator, 实现被present的控制器立刻消失
-    @Transient<Animator>(venishAfter: .milliseconds(200)) private var animator: Animator?
 
     weak var presentingController: UIViewController!
     
@@ -25,10 +36,10 @@ final class ControllerPresentor {
         self.presentingController = presentingController
     }
     
-    func popDialog(_ controller: UIViewController) {
-        let presentation = CoverPresentation(
-            directionShow: .top,
-            directionDismiss: .bottom,
+    func popDialog(_ controller: PresentedControllerType) {
+        let cover = CoverPresentation(
+            directionShow: .left,
+            directionDismiss: .right,
             uiConfiguration: PresentationUIConfiguration(
                 cornerRadius: 6,
                 backgroundStyle: .dimmed(alpha: 0.7),
@@ -42,12 +53,12 @@ final class ControllerPresentor {
             alignment: PresentationAlignment(vertical: .center, horizontal: .center),
             timing: PresentationTiming(duration: .normal, presentationCurve: .easeIn, dismissCurve: .easeOut)
         )
-        animator = Animator(presentation: presentation)
-        animator?.prepare(presentedViewController: controller)
+        let animator = Animator(presentation: cover)
+        controller.prepareAnimator(animator)
         presentingController.present(controller, animated: true)
     }
     
-    func slideIn(_ controller: UIViewController) {
+    func slideIn(_ controller: PresentedControllerType) {
         let presentation = CoverPresentation(
             directionShow: .bottom,
             directionDismiss: .bottom,
@@ -64,12 +75,13 @@ final class ControllerPresentor {
             alignment: PresentationAlignment(vertical: .bottom, horizontal: .center),
             timing: PresentationTiming(duration: .normal, presentationCurve: .easeIn, dismissCurve: .easeOut)
         )
-        animator = Animator(presentation: presentation)
-        animator?.prepare(presentedViewController: controller)
+        let animator = Animator(presentation: presentation)
+        controller.prepareAnimator(animator)
         presentingController.present(controller, animated: true)
     }
 }
 
+// MARK: - 控制器配置协议
 protocol ViewControllerConfiguration: UIViewController {
 
 	/// 默认标题
@@ -89,6 +101,7 @@ protocol ViewControllerConfiguration: UIViewController {
 	func configureNavigationController(_ navigationController: UINavigationController)
 }
 
+// MARK: - 基类控制器
 class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, ViewControllerConfiguration, ErrorTracker, ActivityTracker {
 	
     lazy var presentor = ControllerPresentor(presentingController: self)

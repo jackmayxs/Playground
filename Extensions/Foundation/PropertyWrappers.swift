@@ -132,8 +132,8 @@ final class Temporary<T> {
 	private var value: T?
     private let survivalTime: DispatchTimeInterval
     private let builder: ValueBuilder
-    private lazy var timer = GCDTimer.scheduledTimer(delay: .now() + survivalTime, queue: .global(qos: .utility)) { _ in
-        self.value = .none
+    private lazy var timer = GCDTimer.scheduledTimer(delay: .now() + survivalTime, queue: .global(qos: .utility)) {
+        [weak self] _ in self?.value = .none
     }
     init(wrappedValue: @escaping ValueBuilder, expireIn survivalTime: DispatchTimeInterval) {
         self.builder = wrappedValue
@@ -149,6 +149,10 @@ final class Temporary<T> {
         }
         return unwrapped
     }
+    
+    deinit {
+        timer.invalidate()
+    }
 }
 
 @propertyWrapper
@@ -156,11 +160,11 @@ final class Temporary<T> {
 final class Transient<T> {
     private var value: T?
     private let interval: DispatchTimeInterval
-    private lazy var timer = GCDTimer.scheduledTimer(delay: .now() + interval, queue: .global(qos: .utility)) { _ in
-        self.value = .none
+    private lazy var timer = GCDTimer.scheduledTimer(delay: .now() + interval, queue: .global(qos: .utility)) {
+        [weak self] _ in self?.value = .none
     }
     
-    init(wrappedValue: T? = nil, venishAfter interval: DispatchTimeInterval) {
+    init(wrappedValue: T? = nil, venishAfter interval: DispatchTimeInterval = 1.0) {
         self.value = wrappedValue
         self.interval = interval
     }
@@ -188,5 +192,9 @@ final class Transient<T> {
             }
             value = newValue
         }
+    }
+    
+    deinit {
+        timer.invalidate()
     }
 }
