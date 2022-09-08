@@ -14,19 +14,6 @@ import PhotosUI
 import RxSwift
 import RxCocoa
 
-// MARK: - 被Present的控制器协议
-protocol PresentedControllerType: UIViewController {
-    var animator: Animator? { get set }
-    func prepareAnimator(_ animator: Animator)
-}
-
-extension PresentedControllerType {
-    func prepareAnimator(_ animator: Animator) {
-        self.animator = animator
-        animator.prepare(presentedViewController: self)
-    }
-}
-
 // MARK: - 控制器Presentor
 final class ControllerPresentor {
 
@@ -34,6 +21,21 @@ final class ControllerPresentor {
     
     init(presentingController: UIViewController) {
         self.presentingController = presentingController
+    }
+    
+    func fadeIn(_ controller: PresentedControllerType) {
+        let fade = FadePresentation(
+            size: controller.preferredContentSize.presentationSize,
+            ui: PresentationUIConfiguration(
+                cornerRadius: 6,
+                backgroundStyle: .dimmed(alpha: 0.7),
+                isTapBackgroundToDismissEnabled: true,
+                corners: .allCorners
+            )
+        )
+        let animator = Animator(presentation: fade)
+        controller.prepareAnimator(animator)
+        presentingController.present(controller, animated: true)
     }
     
     func popDialog(_ controller: PresentedControllerType) {
@@ -46,10 +48,7 @@ final class ControllerPresentor {
                 isTapBackgroundToDismissEnabled: true,
                 corners: .allCorners
             ),
-            size: PresentationSize(
-                width: .custom(value: controller.preferredContentSize.width),
-                height: .custom(value: controller.preferredContentSize.height)
-            ),
+            size: controller.preferredContentSize.presentationSize,
             alignment: PresentationAlignment(vertical: .center, horizontal: .center),
             timing: PresentationTiming(duration: .normal, presentationCurve: .easeIn, dismissCurve: .easeOut)
         )
@@ -68,10 +67,7 @@ final class ControllerPresentor {
                 isTapBackgroundToDismissEnabled: true,
                 corners: [.layerMinXMinYCorner, .layerMaxXMinYCorner]
             ),
-            size: PresentationSize(
-                width: .custom(value: controller.preferredContentSize.width),
-                height: .custom(value: controller.preferredContentSize.height)
-            ),
+            size: controller.preferredContentSize.presentationSize,
             alignment: PresentationAlignment(vertical: .bottom, horizontal: .center),
             timing: PresentationTiming(duration: .normal, presentationCurve: .easeIn, dismissCurve: .easeOut)
         )

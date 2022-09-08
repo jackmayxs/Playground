@@ -2,7 +2,7 @@
 //  Operators.swift
 //  ExtensionDemo
 //
-//  Created by Major on 2022/6/19.
+//  Created by Choi on 2022/6/19.
 //  Copyright © 2022 Choi. All rights reserved.
 //
 

@@ -2,7 +2,7 @@
 //  ProtocolExtensions.swift
 //  ExtensionDemo
 //
-//  Created by Major on 2021/8/28.
+//  Created by Choi on 2021/8/28.
 //  Copyright © 2021 Choi. All rights reserved.
 //
 

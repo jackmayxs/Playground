@@ -2,7 +2,7 @@
 //  CGRectPlus.swift
 //  ExtensionDemo
 //
-//  Created by Major on 2021/1/18.
+//  Created by Choi on 2021/1/18.
 //  Copyright © 2021 Choi. All rights reserved.
 //
 

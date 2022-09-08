@@ -2,7 +2,7 @@
 //  GlobalFunctions.swift
 //  ExtensionDemo
 //
-//  Created by Major on 2021/2/25.
+//  Created by Choi on 2021/2/25.
 //  Copyright © 2021 Choi. All rights reserved.
 //
 

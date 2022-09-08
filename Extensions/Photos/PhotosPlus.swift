@@ -2,7 +2,7 @@
 //  PhotosPlus.swift
 //  zeniko
 //
-//  Created by Major on 2022/8/16.
+//  Created by Choi on 2022/8/16.
 //
 
 import Photos

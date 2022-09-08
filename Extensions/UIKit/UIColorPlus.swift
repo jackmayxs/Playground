@@ -2,7 +2,7 @@
 //  UIColorPlus.swift
 //  ExtensionDemo
 //
-//  Created by Major on 2021/1/11.
+//  Created by Choi on 2021/1/11.
 //  Copyright © 2021 Choi. All rights reserved.
 //
 

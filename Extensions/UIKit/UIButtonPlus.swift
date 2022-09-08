@@ -80,7 +80,7 @@ extension UIButton {
 		}
 	}
 	
-	/// Image-Title间距(大于等于0; 最好是偶数,否则按钮显示可能会有小小误差)
+	/// Image-Title间距(大于等于0; 最好是偶数,否则按钮显示可能会有小小误差<iOS中像素对齐导致的问题>)
 	var imagePadding: CGFloat {
 		get { objc_getAssociatedObject(self, &Key.imagePadding) as? CGFloat ?? 0 }
 		set {

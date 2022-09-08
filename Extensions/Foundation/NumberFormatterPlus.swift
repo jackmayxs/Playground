@@ -10,11 +10,11 @@ import Foundation
 
 extension NumberFormatter {
 	
-	@Temporary<NumberFormatter>(expireIn: 300)
-	fileprivate static var sharedNumberFormatter = NumberFormatter.init
+	@Transient(venishAfter: 300)
+    fileprivate static var sharedNumberFormatter = NumberFormatter.init
 	
 	public static var shared: NumberFormatter {
-		sharedNumberFormatter.reset()
+        sharedNumberFormatter.unsafelyUnwrapped.reset()
 	}
 	
 	public static var spellout: NumberFormatter {

@@ -2,7 +2,7 @@
 //  UIBackgroundExpendedButton.swift
 //  FangLiLai
 //
-//  Created by Major on 2022/3/15.
+//  Created by Choi on 2022/3/15.
 //  Copyright © 2022 Zhiwu. All rights reserved.
 //
 

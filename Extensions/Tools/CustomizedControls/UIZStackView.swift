@@ -2,7 +2,7 @@
 //  UIZStackView.swift
 //  FangLiLai
 //
-//  Created by Major on 2022/3/14.
+//  Created by Choi on 2022/3/14.
 //  Copyright © 2022 Zhiwu. All rights reserved.
 //
 

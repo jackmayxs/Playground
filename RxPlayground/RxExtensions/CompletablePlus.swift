@@ -2,7 +2,7 @@
 //  CompletablePlus.swift
 //  RxPlayground
 //
-//  Created by Major on 2022/4/20.
+//  Created by Choi on 2022/4/20.
 //
 
 import RxSwift

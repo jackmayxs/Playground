@@ -10,11 +10,11 @@ import Foundation
 
 extension DateFormatter {
 	
-	@Temporary<DateFormatter>(expireIn: 300)
-	fileprivate static var sharedDateFormatter = DateFormatter.init
+	@Transient(venishAfter: 300)
+    fileprivate static var sharedDateFormatter = DateFormatter.init
 	
 	static var shared: DateFormatter {
-		sharedDateFormatter.reset()
+        sharedDateFormatter.unsafelyUnwrapped.reset()
 	}
 	
 	@discardableResult

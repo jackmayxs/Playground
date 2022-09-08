@@ -124,71 +124,58 @@ final class IgnoreEmptyString: ValidValueOnly<String> {
 }
 
 @propertyWrapper
-/// 临时的变量: 超时后自动销毁 | 再次访问时重新创建
-final class Temporary<T> {
-	
-	typealias ValueBuilder = () -> T
-	
-	private var value: T?
-    private let survivalTime: DispatchTimeInterval
-    private let builder: ValueBuilder
-    private lazy var timer = GCDTimer.scheduledTimer(delay: .now() + survivalTime, queue: .global(qos: .utility)) {
-        [weak self] _ in self?.value = .none
-    }
-    init(wrappedValue: @escaping ValueBuilder, expireIn survivalTime: DispatchTimeInterval) {
-        self.builder = wrappedValue
-        self.survivalTime = survivalTime
-    }
-    var wrappedValue: T {
-        defer { /// 每次调用都推迟执行
-            timer.fire(.now() + survivalTime)
-        }
-        guard let unwrapped = value else {
-            value = builder()
-            return value.unsafelyUnwrapped
-        }
-        return unwrapped
-    }
-    
-    deinit {
-        timer.invalidate()
-    }
-}
-
-@propertyWrapper
 /// 转瞬即逝的变量
-final class Transient<T> {
+class Transient<T> {
+    typealias ValueBuilder = () -> T
+    
     private var value: T?
+    private var valueBuilder: ValueBuilder?
+    
     private let interval: DispatchTimeInterval
-    private lazy var timer = GCDTimer.scheduledTimer(delay: .now() + interval, queue: .global(qos: .utility)) {
+    private lazy var timer = GCDTimer.scheduledTimer(queue: .global(qos: .utility)) {
         [weak self] _ in self?.value = .none
     }
     
     init(wrappedValue: T? = nil, venishAfter interval: DispatchTimeInterval = 1.0) {
         self.value = wrappedValue
         self.interval = interval
+        /// 如果初始化就有初值,则立即执行
+        self.countDown()
+    }
+    
+    /// 超时后自动销毁 | 再次访问时重新创建
+    /// - Parameters:
+    ///   - wrappedValue: 值构造方法
+    ///   - interval: 存活时间
+    convenience init(wrappedValue: @escaping ValueBuilder, venishAfter interval: DispatchTimeInterval) {
+        self.init(venishAfter: interval)
+        self.valueBuilder = wrappedValue
     }
     
     private func countDown() {
+        /// 只有值有效的时候才计时
+        guard value.isValid else { return }
         timer.fire(.now() + interval)
     }
     
     var wrappedValue: T? {
         get {
             defer {
-                if value != nil {
-                    /// 每次调用都推迟执行
-                    countDown()
-                }
+                countDown()
             }
-            return value
+            if let value {
+                return value
+            } else if let valueBuilder {
+                let newValue = valueBuilder()
+                value = newValue
+                return newValue
+            } else {
+                return nil
+            }
         }
         set {
             defer {
-                if value != nil {
-                    /// 每次调用都推迟执行
-                    countDown()
-                }
+                countDown()
             }
             value = newValue
         }
