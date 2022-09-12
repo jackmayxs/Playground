@@ -122,6 +122,10 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
         initialConfigure()
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        .lightContent
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
