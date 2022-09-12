@@ -10,31 +10,56 @@ import WebKit
 
 class BaseWebViewController: BaseViewController, WKUIDelegate, WKNavigationDelegate {
     
-    lazy var webview = makeWebView()
+    private lazy var webview = makeWebView()
+    private lazy var progressView = UIProgressView(progressViewStyle: .bar).configure { make in
+        make.progressTintColor = .accentColor
+    }
     
     var fixedTitle: String? {
         willSet { title = newValue }
     }
     
-    private weak var webviewTitleObservation: NSKeyValueObservation?
-    
-    override func loadView() {
-        view = webview
-    }
+    private var titleObservation: NSKeyValueObservation?
+    private var progressObservation: NSKeyValueObservation?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        webviewTitleObservation = webview.observe(\.title, options: [.initial, .new]) {
+        view.addSubviews(webview, progressView)
+        
+        /// 观察网页标题
+        titleObservation = webview.observe(\.title, options: [.initial, .new]) {
             [unowned self] web, change in
             guard let webTitle = change.newValue else { return }
-            self.title = webTitle.validStringOrNone ?? fixedTitle
+            title = webTitle.validStringOrNone ?? fixedTitle
+        }
+        
+        /// 观察网页加载进度
+        progressObservation = webview.observe(\.estimatedProgress, options: [.initial, .new]) {
+            [unowned self] web, change in
+            guard let progress = change.newValue else {
+                progressView.isHidden = true
+                return
+            }
+            progressView.progress = Float(progress)
+            progressView.isHidden = progress == 1.0
+        }
+    }
+    
+    override func updateViewConstraints() {
+        super.updateViewConstraints()
+        webview.snp.updateConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        progressView.snp.updateConstraints { make in
+            make.top.left.right.equalTo(view.safeAreaLayoutGuide)
+            make.height.equalTo(1.0)
         }
     }
     
     @available(iOS 13, *)
     override func configureNavigationBarAppearance(_ barAppearance: UINavigationBarAppearance) {
         super.configureNavigationBarAppearance(barAppearance)
-        barAppearance.configureWithTransparentBackground()
+        barAppearance.backgroundEffect = UIBlurEffect(style: .dark)
         barAppearance.titleTextAttributes = [
             .foregroundColor: UIColor.white,
             .font: UIFont.systemFont(ofSize: 16.0)
@@ -42,16 +67,22 @@ class BaseWebViewController: BaseViewController, WKUIDelegate, WKNavigationDeleg
     }
     
     func makeWebView() -> WKWebView {
-        /// 适配文字大小
-        let js = "var meta = document.createElement('meta'); meta.setAttribute('name', 'viewport'); meta.setAttribute('content', 'width=device-width'); document.getElementsByTagName('head')[0].appendChild(meta);"
-        let userScript = WKUserScript(source: js, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
-        
-        let userContentController = WKUserContentController()
-        userContentController.addUserScript(userScript)
+//        /// 适配文字大小
+//        let js = "var meta = document.createElement('meta'); meta.setAttribute('name', 'viewport'); meta.setAttribute('content', 'width=device-width'); document.getElementsByTagName('head')[0].appendChild(meta);"
+//        let userScript = WKUserScript(source: js, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
+//
+//        let userContentController = WKUserContentController()
+//        userContentController.addUserScript(userScript)
         
         let config = WKWebViewConfiguration()
-        config.userContentController = userContentController
+//        config.userContentController = userContentController
         config.preferences.minimumFontSize = 12.0
+        if #available(iOS 13, *) {
+            /// 适配手机页面
+            let pref = WKWebpagePreferences()
+            pref.preferredContentMode = .mobile
+            config.defaultWebpagePreferences = pref
+        }
         
         
         let webview = WKWebView(frame: .zero, configuration: config)
@@ -83,6 +114,7 @@ class BaseWebViewController: BaseViewController, WKUIDelegate, WKNavigationDeleg
     }
     
     deinit {
-        webviewTitleObservation = nil
+        titleObservation = nil
+        progressObservation = nil
     }
 }

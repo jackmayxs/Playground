@@ -15,7 +15,7 @@ import RxSwift
 import RxCocoa
 
 // MARK: - 控制器Presentor
-final class ControllerPresentor {
+struct ControllerPresentor {
 
     weak var presentingController: UIViewController!
     
@@ -104,13 +104,17 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
     
     var targetImageSize: CGSize?
     
-    private(set) lazy var backBarButtonItem: UIBarButtonItem = {
-        UIBarButtonItem(
-            image: rImage.arrowBack.original,
-            style: .plain,
-            target: self,
-            action: #selector(leftBarButtonItemTriggered))
-    }()
+    private(set) lazy var backBarButtonItem = UIBarButtonItem(
+        image: rImage.arrowBack.original,
+        style: .plain,
+        target: self,
+        action: #selector(leftBarButtonItemTriggered))
+    
+    private(set) lazy var closeBarButtonItem = UIBarButtonItem(
+        image: rImage.close.original,
+        style: .plain,
+        target: self,
+        action: #selector(leftBarButtonItemTriggered))
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -175,8 +179,7 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
             if navigationController.viewControllers.count > 1 {
                 navigationItem.leftBarButtonItem = backBarButtonItem
             } else if navigationController.viewControllers.count == 1 && presentingViewController != nil {
-                /// 这里应该返回关闭按钮
-                navigationItem.leftBarButtonItem = backBarButtonItem
+                navigationItem.leftBarButtonItem = closeBarButtonItem
             }
         }
     }
