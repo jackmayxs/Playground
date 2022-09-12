@@ -186,8 +186,8 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
     func configureNavigationController(_ navigationController: UINavigationController) {
         
         /// 重新开启右滑返回
-//        navigationController.interactivePopGestureRecognizer?.delegate = self
-//        navigationController.interactivePopGestureRecognizer?.isEnabled = true
+        navigationController.interactivePopGestureRecognizer?.delegate = self
+        navigationController.interactivePopGestureRecognizer?.isEnabled = true
         navigationController.delegate = self
         
         let navigationBar = navigationController.navigationBar

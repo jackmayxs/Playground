@@ -42,10 +42,22 @@ class BaseWebViewController: BaseViewController, WKUIDelegate, WKNavigationDeleg
     }
     
     func makeWebView() -> WKWebView {
+        /// 适配文字大小
+        let js = "var meta = document.createElement('meta'); meta.setAttribute('name', 'viewport'); meta.setAttribute('content', 'width=device-width'); document.getElementsByTagName('head')[0].appendChild(meta);"
+        let userScript = WKUserScript(source: js, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
+        
+        let userContentController = WKUserContentController()
+        userContentController.addUserScript(userScript)
+        
         let config = WKWebViewConfiguration()
+        config.userContentController = userContentController
+        config.preferences.minimumFontSize = 12.0
+        
+        
         let webview = WKWebView(frame: .zero, configuration: config)
         webview.uiDelegate = self
         webview.navigationDelegate = self
+        webview.allowsBackForwardNavigationGestures = true
         return webview
     }
     
