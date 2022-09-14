@@ -40,7 +40,12 @@ extension Dictionary where Value: OptionalType {
 	}
 }
 
+// MARK: - Array
 extension Array {
+    
+    init(@ArrayBuilder<Element> _ itemsBuilder: () -> Self) {
+        self.init(itemsBuilder())
+    }
     
     public mutating func append(@ArrayBuilder<Element> _ builder: () -> [Element]) {
         let elements = builder()
