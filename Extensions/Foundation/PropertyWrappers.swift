@@ -124,8 +124,9 @@ final class IgnoreEmptyString: ValidValueOnly<String> {
 }
 
 @propertyWrapper
-/// 转瞬即逝的变量
-class Transient<T> {
+/// 转瞬即逝的变量 | 用于开销较大的变量, 如:NumberFormatter,DateFormatter等
+/// 经过指定的时间后自动销毁
+final class Transient<T> {
     typealias ValueBuilder = () -> T
     
     private var value: T?

@@ -17,6 +17,22 @@ extension Numeric {
 // MARK: - __________ Common __________
 extension Double {
     
+    var percentage: String {
+        percentString(fractions: 2) ?? ""
+    }
+    
+    func percentString(fractions: Int) -> String? {
+        NumberFormatter.shared.configure { formatter in
+            formatter.numberStyle = .percent
+            /// 因为在formatter.shared方法里把这个值重置了, 所以这里要在此设置, 否则百分化会失败
+            formatter.positiveSuffix = "%"
+            formatter.minimumFractionDigits = fractions
+            formatter.maximumFractionDigits = fractions
+        }.transform { formatter in
+            formatter.string(from: self.nsNumber)
+        }
+    }
+    
     /// 切分成整数和小数两个部分
     var split: (wholeNumber: Double, fractions: Double) {
         /// 创建Double类型的指针

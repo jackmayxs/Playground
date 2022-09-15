@@ -10,7 +10,7 @@ import Foundation
 
 extension DateFormatter {
 	
-	@Transient(venishAfter: 300)
+    @Transient(venishAfter: .seconds(300))
     fileprivate static var sharedDateFormatter = DateFormatter.init
 	
 	static var shared: DateFormatter {
