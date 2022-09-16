@@ -337,15 +337,19 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
     }
     
     func trackError(_ error: Error?) {
-        view.window?.trackError(error)
+        guard let error else { return }
+        view.makeToast(error.localizedDescription, duration: 2.0, position: .center)
+        view.makeToast(nil, duration: .infinity, position: .center, title: nil, image: nil, style: ToastStyle()) { didTap in
+            
+        }
     }
     
-    func processing() {
-        QMUITips.showLoading(in: view)
-    }
-    
-    func doneProcessing() {
-        QMUITips.hideAllTips(in: view)
+    func trackActivity(_ isProcessing: Bool) {
+        if isProcessing {
+            view.makeToastActivity(.center)
+        } else {
+            view.hideToastActivity()
+        }
     }
 }
 

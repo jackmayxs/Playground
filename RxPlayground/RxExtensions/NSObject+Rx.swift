@@ -50,8 +50,7 @@ protocol ErrorTracker: UIResponder {
 }
 
 protocol ActivityTracker: NSObject {
-    func processing()
-    func doneProcessing()
+    func trackActivity(_ isProcessing: Bool)
 }
 
 fileprivate var activityIndicatorKey = UUID()
@@ -65,11 +64,7 @@ extension Reactive where Base: ActivityTracker {
                 let indicator = ActivityIndicator()
                 base.rx.disposeBag.insert {
                     indicator.drive(with: base) { weakBase, processing in
-                        if processing {
-                            weakBase.processing()
-                        } else {
-                            weakBase.doneProcessing()
-                        }
+                        weakBase.trackActivity(processing)
                     }
                 }
                 objc_setAssociatedObject(base, &activityIndicatorKey, indicator, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
