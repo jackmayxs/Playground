@@ -10,6 +10,14 @@ import CoreGraphics
 
 extension CGRect {
 	
+    func withNew(size: CGSize) -> CGRect {
+        CGRect(origin: origin, size: size)
+    }
+    
+    func withNew(origin: CGPoint) -> CGRect {
+        CGRect(origin: origin, size: size)
+    }
+    
 	/// 中心点
 	var center: CGPoint {
 		CGPoint(x: midX, y: midY)
