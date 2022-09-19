@@ -21,7 +21,7 @@ extension Double {
         percentString(fractions: 2) ?? ""
     }
     
-    func percentString(fractions: Int) -> String? {
+    func percentString(fractions: Int = 0) -> String? {
         NumberFormatter.shared.configure { formatter in
             formatter.numberStyle = .percent
             /// 因为在formatter.shared方法里把这个值重置了, 所以这里要在此设置, 否则百分化会失败
