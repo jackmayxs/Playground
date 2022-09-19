@@ -7,7 +7,7 @@
 
 import UIKit
 
-class UIBaseTableViewHeaderFooterView: UITableViewHeaderFooterView, StandartLayoutLifeCycle {
+class UIBaseTableViewHeaderFooterView: UITableViewHeaderFooterView, StandardLayoutLifeCycle {
     
     // 内容边距
     var contentInsets: UIEdgeInsets { .zero }

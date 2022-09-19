@@ -15,4 +15,16 @@ extension CALayer {
             addSublayer(subLayer)
         }
     }
+    
+    func setShadow(offsetX: Double, offsetY: Double, blur: CGFloat, color: UIColor, opacity: Float) {
+        shadowColor = color.cgColor
+        shadowOpacity = opacity
+        shadowOffset = CGSize(width: offsetX, height: offsetY)
+        shadowRadius = blur
+    }
+    
+    func setBorder(withColor color:CGColor, thickness:CGFloat) {
+        self.borderColor = color
+        self.borderWidth = thickness
+    }
 }

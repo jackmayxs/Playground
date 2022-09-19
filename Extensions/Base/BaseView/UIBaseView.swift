@@ -13,7 +13,7 @@ import Moya
 
 protocol ViewModelType: SimpleInitializer {}
 
-protocol ControllerBaseView: StandartLayoutLifeCycle {
+protocol ControllerBaseView: StandardLayoutLifeCycle {
     associatedtype ViewModel: ViewModelType
     func setupViewModel(_ viewModel: Self.ViewModel)
 }

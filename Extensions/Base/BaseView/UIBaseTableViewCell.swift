@@ -8,7 +8,7 @@
 
 import UIKit
 
-class UIBaseTableViewCell: UITableViewCell, StandartLayoutLifeCycle {
+class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
 
 	// 所在的indexPath
 	var indexPath: IndexPath?

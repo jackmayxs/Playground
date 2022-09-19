@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol StandartLayoutLifeCycle: UIView {
+protocol StandardLayoutLifeCycle: UIView {
     
     func prepare()
     

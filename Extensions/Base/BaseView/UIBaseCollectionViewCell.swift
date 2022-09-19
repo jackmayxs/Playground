@@ -1,13 +1,15 @@
 //
-//  UIBaseControl.swift
+//  UIBaseCollectionViewCell.swift
 //  zeniko
 //
-//  Created by Choi on 2022/8/27.
+//  Created by Choi on 2022/9/19.
 //
 
 import UIKit
 
-class UIBaseControl: UIControl, StandardLayoutLifeCycle {
+class UIBaseCollectionViewCell: UICollectionViewCell, StandardLayoutLifeCycle {
+    
+    var defaultBackgroundColor: UIColor { .white }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -15,11 +17,11 @@ class UIBaseControl: UIControl, StandardLayoutLifeCycle {
     }
     
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        prepare()
+        fatalError("init(coder:) has not been implemented")
     }
     
     func prepare() {
+        contentView.backgroundColor = defaultBackgroundColor
         prepareSubviews()
         prepareConstraints()
     }
@@ -27,4 +29,5 @@ class UIBaseControl: UIControl, StandardLayoutLifeCycle {
     func prepareSubviews() {}
     
     func prepareConstraints() {}
+    
 }
