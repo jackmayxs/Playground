@@ -127,7 +127,11 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        .lightContent
+        if #available(iOS 13, *) {
+            return .darkContent
+        } else {
+            return .default
+        }
     }
     
     override func viewDidLoad() {
@@ -152,6 +156,9 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
     
     /// 大标题导航栏
     var preferLargeTitles: Bool { false }
+    
+    /// 是否显示导航栏
+    var doHideNavigationBar: Bool { false }
     
     /// 控制器配置 | 调用时机: init
     func initialConfigure() {
@@ -187,6 +194,9 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
     /// 配置导航栏样式 | 调用时机: viewWillAppear
     /// - Parameter navigationController: 导航控制器
     func configureNavigationController(_ navigationController: UINavigationController) {
+        
+        /// 控制导航栏是否显示
+        navigationController.setNavigationBarHidden(doHideNavigationBar, animated: true)
         
         /// 重新开启右滑返回
         navigationController.interactivePopGestureRecognizer?.delegate = self
