@@ -16,10 +16,10 @@ extension CALayer {
         }
     }
     
-    func setShadow(offsetX: Double, offsetY: Double, blur: CGFloat, color: UIColor, opacity: Float) {
+    func setShadow(offset: (x: Double, y: Double), blur: CGFloat, color: UIColor, opacity: Float) {
         shadowColor = color.cgColor
         shadowOpacity = opacity
-        shadowOffset = CGSize(width: offsetX, height: offsetY)
+        shadowOffset = CGSize(width: offset.x, height: offset.y)
         shadowRadius = blur
     }
     
