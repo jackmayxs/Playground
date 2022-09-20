@@ -39,6 +39,7 @@ extension Tapable where Self: UIView {
             }
         }
         set {
+            isUserInteractionEnabled = true
             if let target = objc_getAssociatedObject(self, &Self.tappedClosureKey) as? ClosureSleeve<Self> {
                 target.closure = newValue
             } else {
