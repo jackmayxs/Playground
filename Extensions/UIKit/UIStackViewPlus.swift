@@ -9,16 +9,7 @@
 import UIKit
 
 extension UIStackView {
-	enum Associated {
-		static var backgroundView = UUID()
-	}
-	var backgroundView: UIView? {
-		get { objc_getAssociatedObject(self, &Associated.backgroundView) as? UIView }
-		set {
-			backgroundView?.removeFromSuperview()
-			objc_setAssociatedObject(self, &Associated.backgroundView, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-		}
-	}
+
 	convenience init(
 		axis: NSLayoutConstraint.Axis = .vertical,
 		distribution: UIStackView.Distribution = .fill,
@@ -50,40 +41,6 @@ extension UIStackView {
     func refill(@ArrayBuilder<UIView> content: () -> [UIView]) {
         purgeArrangedSubviews()
         addArrangedSubviews(content: content)
-    }
-	
-    /// 添加StackView背景视图颜色
-    /// - Parameter color: 背景View颜色
-    func add(backgroundColor: UIColor) {
-        let background = UIView(frame: bounds)
-        background.backgroundColor = backgroundColor
-        add(backgroundView: background)
-    }
-    
-    func add(cornerRadius: CGFloat, insets: UIEdgeInsets = .zero, maskedCorners: CACornerMask = .allCorners, backgroundColor: UIColor) {
-        let bgView = UIView(color: backgroundColor)
-        bgView.layer.maskedCorners = maskedCorners
-        bgView.layer.cornerRadius = cornerRadius
-        add(backgroundView: bgView, insets: insets)
-    }
-    
-    func stackOverlay(view: UIView) {
-        add(backgroundView: view)
-        bringSubviewToFront(view)
-    }
-    
-    func add(backgroundView: UIView, insets: UIEdgeInsets = .zero, configure: ((UIView) -> Void)? = nil) {
-        defer {
-            configure?(backgroundView)
-        }
-        if let oldBaseView = baseView {
-            oldBaseView.removeFromSuperview()
-            baseView = nil
-        }
-        backgroundView.frame = bounds.inset(by: insets)
-        backgroundView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        insertSubview(backgroundView, at: 0)
-        baseView = backgroundView
     }
 	
 	/// 内部控件边距

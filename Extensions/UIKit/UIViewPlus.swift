@@ -79,14 +79,72 @@ extension UIView {
 	
     private enum Associated {
         static var shadowViewKey = UUID()
-        static var baseViewKey = UUID()
+        static var backgroundViewKey = UUID()
     }
     
     /// 表示最底部的UIView
     /// 标记UIStackView的背景视图
-    var baseView: UIView? {
-        get { objc_getAssociatedObject(self, &Associated.baseViewKey) as? UIView }
-        set { objc_setAssociatedObject(self, &Associated.baseViewKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
+    var backgroundView: UIView? {
+        get { objc_getAssociatedObject(self, &Associated.backgroundViewKey) as? UIView }
+        set {
+            backgroundView?.removeFromSuperview()
+            objc_setAssociatedObject(self, &Associated.backgroundViewKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+    
+    /// 添加背景色
+    /// - Parameter backgroundColor: 背景颜色
+    func add(backgroundColor: UIColor) {
+        let background = UIView(frame: bounds)
+        background.backgroundColor = backgroundColor
+        add(backgroundView: background)
+    }
+    
+    /// 添加圆角背景子视图
+    /// - Parameters:
+    ///   - cornerRadius: 圆角
+    ///   - insets: 缩进
+    ///   - maskedCorners: 圆角位置
+    ///   - backgroundColor: 圆角背景色
+    func add(cornerRadius: CGFloat, insets: UIEdgeInsets = .zero, maskedCorners: CACornerMask = .allCorners, backgroundColor: UIColor) {
+        let bgView = UIView(color: backgroundColor)
+        bgView.layer.maskedCorners = maskedCorners
+        bgView.layer.cornerRadius = cornerRadius
+        add(backgroundView: bgView, insets: insets)
+    }
+    
+    /// 添加覆盖层
+    /// - Parameter overlay: 顶层子视图
+    func add(overlay: UIView) {
+        add(backgroundView: overlay)
+        bringSubviewToFront(overlay)
+    }
+    
+    /// 添加背景子视图
+    /// - Parameters:
+    ///   - backgroundView: 背景子视图
+    ///   - insets: 缩进边距
+    ///   - configure: 其他设置
+    func add(backgroundView: UIView, insets: UIEdgeInsets = .zero, configure: ((UIView) -> Void)? = nil) {
+        /// 按Bounds缩进
+        let frame = bounds.inset(by: insets)
+        /// 其他配置
+        if let configure {
+            configure(backgroundView)
+        }
+        /// 添加背景图
+        add(backgroundView: backgroundView, frame: frame)
+    }
+    
+    /// 添加背景子视图
+    /// - Parameters:
+    ///   - backgroundView: 背景子视图
+    ///   - frame: 背景图位置
+    func add(backgroundView: UIView, frame: CGRect) {
+        backgroundView.frame = frame
+        backgroundView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        insertSubview(backgroundView, at: 0)
+        self.backgroundView = backgroundView
     }
     
 	func snapshotScreen(scrollView: UIScrollView) -> UIImage?{
