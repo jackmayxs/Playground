@@ -82,6 +82,18 @@ extension ObservableConvertibleType where Element == String? {
     }
 }
 
+extension ObservableConvertibleType where Element == Int {
+    
+    var isNotEmpty: Observable<Bool> {
+        isEmpty.map { isEmpty in !isEmpty }
+    }
+    
+    var isEmpty: Observable<Bool> {
+        asObservable()
+            .map { $0 <= 0 }
+    }
+}
+
 extension Infallible {
     static var empty: Self {
         empty()

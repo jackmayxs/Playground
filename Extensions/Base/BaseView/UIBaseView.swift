@@ -71,7 +71,7 @@ class PagableViewModel<Target: TargetType, Model: Codable>: PagableViewModel_ {
 class UIBaseView: UIView, ControllerBaseView {
     typealias ViewModel = BaseViewModel
     
-    var defaultBackgroundColor: UIColor { .baseBlack }
+    var defaultBackgroundColor: UIColor { .groupTableViewBackground }
     
     override init(frame: CGRect) {
         super.init(frame: frame)

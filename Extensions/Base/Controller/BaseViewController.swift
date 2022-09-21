@@ -105,7 +105,7 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
     var targetImageSize: CGSize?
     
     private(set) lazy var backBarButtonItem = UIBarButtonItem(
-        image: rImage.arrowBack.original,
+        image: rImage.backArrowDark.original,
         style: .plain,
         target: self,
         action: #selector(leftBarButtonItemTriggered))
@@ -199,9 +199,9 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
         navigationController.setNavigationBarHidden(doHideNavigationBar, animated: true)
         
         /// 重新开启右滑返回
-        navigationController.interactivePopGestureRecognizer?.delegate = self
-        navigationController.interactivePopGestureRecognizer?.isEnabled = true
-        navigationController.delegate = self
+//        navigationController.interactivePopGestureRecognizer?.delegate = self
+//        navigationController.interactivePopGestureRecognizer?.isEnabled = true
+//        navigationController.delegate = self
         
         let navigationBar = navigationController.navigationBar
         /// 导航栏会根据navigationItem.largeTitleDisplayMode显示大标题样式
