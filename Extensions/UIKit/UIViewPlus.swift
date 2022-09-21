@@ -75,21 +75,23 @@ extension UIView {
 }
 
 // MARK: - __________ Getters __________
+extension KK where Base: UIView {
+    private typealias Associated = UIView.Associated
+    
+    /// 使用命名空间,避免和UICollectionView,UITableView的属性名冲突
+    var backgroundView: UIView? {
+        get { objc_getAssociatedObject(base, &Associated.backgroundViewKey) as? UIView }
+        nonmutating set {
+            backgroundView?.removeFromSuperview()
+            objc_setAssociatedObject(base, &Associated.backgroundViewKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+}
 extension UIView {
 	
-    private enum Associated {
+    enum Associated {
         static var shadowViewKey = UUID()
         static var backgroundViewKey = UUID()
-    }
-    
-    /// 表示最底部的UIView
-    /// 标记UIStackView的背景视图
-    var backgroundView: UIView? {
-        get { objc_getAssociatedObject(self, &Associated.backgroundViewKey) as? UIView }
-        set {
-            backgroundView?.removeFromSuperview()
-            objc_setAssociatedObject(self, &Associated.backgroundViewKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        }
     }
     
     /// 添加背景色
@@ -144,7 +146,7 @@ extension UIView {
         backgroundView.frame = frame
         backgroundView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         insertSubview(backgroundView, at: 0)
-        self.backgroundView = backgroundView
+        kk.backgroundView = backgroundView
     }
     
 	func snapshotScreen(scrollView: UIScrollView) -> UIImage?{
