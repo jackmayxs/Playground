@@ -1,5 +1,5 @@
 //
-//  StaticTableViewController.swift
+//  BaseStaticTableViewController.swift
 //  zeniko
 //
 //  Created by Choi on 2022/8/11.
@@ -80,7 +80,7 @@ class StaticTable: ReactiveCompatible {
     }
 }
 
-class StaticTableViewController<Table: StaticTable>: BaseTableViewController {
+class BaseStaticTableViewController<Table: StaticTable>: BaseTableViewController {
     
     override var tableViewStyle: UITableView.Style { .grouped }
     
