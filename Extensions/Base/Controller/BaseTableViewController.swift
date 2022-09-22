@@ -16,8 +16,9 @@ class BaseTableViewController: BaseViewController, UITableViewDataSource, UITabl
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        configureTableView(tableView)
+        /// 配置TableView
+        configureTableView()
+        /// 添加TableView
         addTableView()
     }
     
@@ -29,7 +30,7 @@ class BaseTableViewController: BaseViewController, UITableViewDataSource, UITabl
     }
     
     /// 调用时机:viewDidLoad()
-    func configureTableView(_ tableView: UITableView) {
+    func configureTableView() {
         tableView.showsVerticalScrollIndicator = false
         tableView.showsHorizontalScrollIndicator = false
         UITableViewCell.registerFor(tableView)

@@ -12,6 +12,12 @@ import QMUIKit
 import Moya
 
 protocol ViewModelType: SimpleInitializer {}
+protocol PagableViewModelType<Model>: ViewModelType {
+    associatedtype Model
+    var delegate: PagableViewModelDelegate? { get set }
+    var numberOfItems: Int { get }
+    func fetchMoreData()
+}
 
 protocol ControllerBaseView: StandardLayoutLifeCycle {
     associatedtype ViewModel: ViewModelType
@@ -23,29 +29,36 @@ class BaseViewModel: ViewModelType, ReactiveCompatible {
 }
 
 protocol PagableViewModelDelegate: AnyObject {
-    func gotItemsFromServer()
+    func itemsUpdated()
 }
 
-class PagableViewModel_: BaseViewModel {
+class BasePagableViewModel<Model>: BaseViewModel, PagableViewModelType {
     weak var delegate: PagableViewModelDelegate?
     var itemsPerPage = 50
     var page = 1
-    var numberOfItems: Int { 0 }
-    
-    func fetchMoreData() {
-        
-    }
-}
-
-class PagableViewModel<Target: TargetType, Model: Codable>: PagableViewModel_ {
-
-    var target: Target? { nil }
     
     @Variable var items: [Model] = [] {
         didSet {
-            delegate?.gotItemsFromServer()
+            delegate?.itemsUpdated()
         }
     }
+    
+    func fetchMoreData() {}
+    
+    var numberOfItems: Int { items.count }
+    
+    subscript (indexPath: IndexPath) -> Model {
+        items[indexPath.row]
+    }
+    
+    subscript (index: Int) -> Model {
+        items[index]
+    }
+}
+
+class PagableViewModel<Target: TargetType, Model: Codable>: BasePagableViewModel<Model> {
+
+    var target: Target? { nil }
     
     override func fetchMoreData() {
         guard let validTarget = target else { return }
@@ -55,16 +68,6 @@ class PagableViewModel<Target: TargetType, Model: Codable>: PagableViewModel_ {
                 .do(afterSuccess: rx.items.onNext)
                 .subscribe()
         }
-    }
-    
-    override var numberOfItems: Int { items.count }
-    
-    subscript (indexPath: IndexPath) -> Model {
-        items[indexPath.row]
-    }
-    
-    subscript (index: Int) -> Model {
-        items[index]
     }
 }
 

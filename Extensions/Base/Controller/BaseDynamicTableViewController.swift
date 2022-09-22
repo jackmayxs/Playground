@@ -8,12 +8,18 @@
 import UIKit
 import Moya
 
-class BaseDynamicTableViewController<PrimaryCell: UITableViewCell, ViewModel: PagableViewModel_>: BaseTableViewController {
+class BaseDynamicTableViewController
+<PrimaryCell: UITableViewCell, ViewModel: PagableViewModelType>: BaseTableViewController {
     
     lazy var viewModel = ViewModel()
     
     override func initialConfigure() {
         super.initialConfigure()
+        
+        configureViewModel()
+    }
+    
+    func configureViewModel() {
         viewModel.delegate = self
     }
     
@@ -23,8 +29,8 @@ class BaseDynamicTableViewController<PrimaryCell: UITableViewCell, ViewModel: Pa
         viewModel.fetchMoreData()
     }
     
-    override func configureTableView(_ tableView: UITableView) {
-        super.configureTableView(tableView)
+    override func configureTableView() {
+        super.configureTableView()
         PrimaryCell.registerFor(tableView)
     }
     
@@ -46,7 +52,7 @@ class BaseDynamicTableViewController<PrimaryCell: UITableViewCell, ViewModel: Pa
 
 extension BaseDynamicTableViewController: PagableViewModelDelegate {
     
-    func gotItemsFromServer() {
+    func itemsUpdated() {
         tableView.reloadData()
     }
 }

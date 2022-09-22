@@ -22,7 +22,7 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
 		$0.backgroundColor = customizedSeparatorColor
 	}
 	// 分割线高度
-	var customizedSeparatorHeight: CGFloat { 1.0 }
+    var customizedSeparatorHeight: CGFloat { 0.5 }
 	// 分割线颜色
 	var customizedSeparatorColor: UIColor { #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9529411765, alpha: 1) }
     // 圆角

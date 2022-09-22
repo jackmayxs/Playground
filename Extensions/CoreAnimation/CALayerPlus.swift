@@ -23,8 +23,8 @@ extension CALayer {
         shadowRadius = blur
     }
     
-    func setBorder(withColor color:CGColor, thickness:CGFloat) {
-        self.borderColor = color
+    func setBorder(withColor color: UIColor, thickness:CGFloat) {
+        self.borderColor = color.cgColor
         self.borderWidth = thickness
     }
 }
