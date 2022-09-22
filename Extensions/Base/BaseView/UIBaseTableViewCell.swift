@@ -10,6 +10,17 @@ import UIKit
 
 class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
 
+    private weak var tableView_: UITableView?
+    
+    var tableView: UITableView? {
+        if let tableView_ {
+            return tableView_
+        } else {
+            tableView_ = parentSuperView(UITableView.self)
+            return tableView_
+        }
+    }
+    
 	// 所在的indexPath
 	var indexPath: IndexPath?
 	// 内容边距
@@ -87,6 +98,13 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
 		super.systemLayoutSizeFitting(targetSize, withHorizontalFittingPriority: horizontalFittingPriority, verticalFittingPriority: verticalFittingPriority) + indentedContentInsets
 	}
     
+    override func didMoveToSuperview() {
+        super.didMoveToSuperview()
+        guard let tableView else { return }
+        guard let indexpath = tableView.indexPath(for: self) else { return }
+        adjustSeparatorFor(tableView, at: indexpath)
+    }
+    
     @discardableResult
     /// 实现Cell直接加分割线的效果
     /// 调用时机:tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath)
@@ -94,7 +112,7 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
     ///   - tableView: Cell容器TableView
     ///   - indexPath: 所在的indexPath
     /// - Returns: Cell本身
-	func adjustSeparatorFor(_ tableView: UITableView, at indexPath: IndexPath) -> Self {
+	private func adjustSeparatorFor(_ tableView: UITableView, at indexPath: IndexPath) -> Self {
 		tableView.separatorStyle = .none
 		/// 第一次进入TableViewController时获取的sectionHeight不正常 所以这里做延迟1ms处理
 		DispatchQueue.main.asyncAfter(deadline: indexPath.section + indexPath.row == 0 ? 0.001 : 0.0) {
