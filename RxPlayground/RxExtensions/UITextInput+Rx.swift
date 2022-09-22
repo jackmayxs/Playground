@@ -20,11 +20,6 @@ extension Reactive where Base: UITextView {
 
 extension Reactive where Base: UITextField {
     
-    var observedText: Observable<String?> {
-        /// 分别用于观察直接赋值时的文本变化和编辑时的文本变化
-        Observable.merge(observe(\.text), text.observable)
-    }
-    
     var unmarkedText: Observable<String> {
         /// 注意这里observedText的后面不能加.distinctUntilChanged()操作符
         /// 否则拼音字符编辑完成后会出现unmarkedText事件不发送的问题
@@ -35,5 +30,10 @@ extension Reactive where Base: UITextField {
             .map(\.0.unmarkedText)
             .distinctUntilChanged()
             .orEmpty
+    }
+    
+    var observedText: Observable<String?> {
+        /// 分别用于观察直接赋值时的文本变化和编辑时的文本变化
+        Observable.merge(observe(\.text), text.observable)
     }
 }

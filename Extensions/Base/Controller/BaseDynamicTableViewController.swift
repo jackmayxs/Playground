@@ -9,7 +9,7 @@ import UIKit
 import Moya
 
 class BaseDynamicTableViewController
-<PrimaryCell: UITableViewCell, ViewModel: PagableViewModelType>: BaseTableViewController {
+<PrimaryCell: UITableViewCell, ViewModel: PagableViewModelType>: BaseTableViewController, PagableViewModelDelegate {
     
     lazy var viewModel = ViewModel()
     
@@ -47,12 +47,10 @@ class BaseDynamicTableViewController
     func configureCell(_ cell: PrimaryCell, at indexPath: IndexPath) {
         
     }
-}
-
-
-extension BaseDynamicTableViewController: PagableViewModelDelegate {
     
+    // MARK: - PagableViewModelDelegate
     func itemsUpdated() {
         tableView.reloadData()
+        emptyView.isHidden = viewModel.items.isNotEmpty
     }
 }

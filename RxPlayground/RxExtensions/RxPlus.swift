@@ -119,7 +119,7 @@ extension ObservableType {
             if let valid = element as? T {
                 return valid
             }
-            throw RxError.overflow
+            throw "类型转换失败"
         }
     }
 }

@@ -102,6 +102,8 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
 	
     lazy var presentor = ControllerPresentor(presentingController: self)
     
+    lazy var updateNotifier = PublishSubject<Any>()
+    
     var targetImageSize: CGSize?
     
     private(set) lazy var backBarButtonItem = UIBarButtonItem(
@@ -364,6 +366,14 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
 }
 
 extension BaseViewController {
+    
+    func doneUpdate<T>(_ type: T.Type) -> Observable<T> {
+        doneUpdate.as(type)
+    }
+    
+    var doneUpdate: Observable<Any> {
+        updateNotifier.take(1)
+    }
     
     func popToast(_ message: String?) {
         let tips = QMUITips.createTips(to: view)

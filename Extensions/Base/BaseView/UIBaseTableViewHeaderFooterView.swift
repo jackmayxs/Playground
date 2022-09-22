@@ -14,7 +14,7 @@ class UIBaseTableViewHeaderFooterView: UITableViewHeaderFooterView, StandardLayo
     // 背景色
     var defaultBackgroundColor: UIColor { .white }
     // 圆角
-    var preferredCornerRadius: CGFloat { 10.0 }
+    var preferredCornerRadius: CGFloat? { nil }
     
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
@@ -48,6 +48,8 @@ class UIBaseTableViewHeaderFooterView: UITableViewHeaderFooterView, StandardLayo
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        contentView.roundCorners(cornerRadius: preferredCornerRadius)
+        if let preferredCornerRadius {
+            contentView.roundCorners(cornerRadius: preferredCornerRadius)
+        }
     }
 }

@@ -16,6 +16,7 @@ protocol PagableViewModelType<Model>: ViewModelType {
     associatedtype Model
     var delegate: PagableViewModelDelegate? { get set }
     var numberOfItems: Int { get }
+    var items: [Model] { get set }
     func fetchMoreData()
 }
 
