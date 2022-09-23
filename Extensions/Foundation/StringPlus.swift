@@ -159,6 +159,10 @@ extension String {
 	var isEmptyString: Bool {
 		trimmed.isEmpty
 	}
+    
+    var isNotEmptyString: Bool {
+        !isEmptyString
+    }
 	
 	var isValidString: Bool {
 		!isEmptyString
