@@ -10,6 +10,7 @@ import UIKit
 
 extension UIColor {
     static let OxCCCCCC = 0xCCCCCC.uiColor
+    static let OxEEEEEE = 0xEEEEEE.uiColor
     static let Ox999999 = 0x999999.uiColor
     static let Ox666666 = 0x666666.uiColor
     static let Ox555555 = 0x555555.uiColor

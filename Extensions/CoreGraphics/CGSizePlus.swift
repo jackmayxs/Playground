@@ -21,11 +21,19 @@ extension CGSize {
 		self.init(width: width, height: height)
 	}
     
-    func withNewHeight(_ newHeight: CGFloat) -> CGSize {
+    func heightOffset(_ heightOffset: CGFloat) -> CGSize {
+        CGSize(width: width, height: height + heightOffset)
+    }
+    
+    func widthOffset(_ widthOffset: CGFloat) -> CGSize {
+        CGSize(width: width + widthOffset, height: height)
+    }
+    
+    func newHeight(_ newHeight: CGFloat) -> CGSize {
         CGSize(width: width, height: newHeight)
     }
     
-    func withNewWidth(_ newWidth: CGFloat) -> CGSize {
+    func newWidth(_ newWidth: CGFloat) -> CGSize {
         CGSize(width: newWidth, height: height)
     }
     
