@@ -189,35 +189,29 @@ infix operator <-> : DefaultPrecedence
 
 #if os(iOS)
 func <-> <Base>(textInput: TextInput<Base>, relay: BehaviorRelay<String>) -> Disposable {
-    let bindToUIDisposable = relay.bind(to: textInput.text)
+    let bindToProperty = relay.bind(to: textInput.text)
+    let bindToRelay = textInput.text.subscribe {
+        [weak input = textInput.base] _ in
+        /**
+         In some cases `textInput.textRangeFromPosition(start, toPosition: end)` will return nil even though the underlying
+         value is not nil. This appears to be an Apple bug. If it's not, and we are doing something wrong, please let us know.
+         The can be reproed easily if replace bottom code with
+         
+         if nonMarkedTextValue != relay.value {
+            relay.accept(nonMarkedTextValue ?? "")
+         }
 
-    let bindToRelay = textInput.text
-        .subscribe(onNext: { [weak base = textInput.base] n in
-            guard let base = base else {
-                return
-            }
-
-            let nonMarkedTextValue = base.unmarkedText
-
-            /**
-             In some cases `textInput.textRangeFromPosition(start, toPosition: end)` will return nil even though the underlying
-             value is not nil. This appears to be an Apple bug. If it's not, and we are doing something wrong, please let us know.
-             The can be reproed easily if replace bottom code with
-             
-             if nonMarkedTextValue != relay.value {
-                relay.accept(nonMarkedTextValue ?? "")
-             }
-
-             and you hit "Done" button on keyboard.
-             */
-            if let nonMarkedTextValue = nonMarkedTextValue, nonMarkedTextValue != relay.value {
-                relay.accept(nonMarkedTextValue)
-            }
-        }, onCompleted:  {
-            bindToUIDisposable.dispose()
-        })
-
-    return Disposables.create(bindToUIDisposable, bindToRelay)
+         and you hit "Done" button on keyboard.
+         */
+        if let input, let unmarkedText = input.unmarkedText, unmarkedText != relay.value {
+            relay.accept(unmarkedText)
+        }
+        
+    } onCompleted: {
+        bindToProperty.dispose()
+    }
+    
+    return Disposables.create(bindToProperty, bindToRelay)
 }
 #endif
 
@@ -232,13 +226,7 @@ func <-> <T>(property: ControlProperty<T>, relay: BehaviorRelay<T>) -> Disposabl
 #endif
     }
 
-    let bindToUIDisposable = relay.bind(to: property)
-    let bindToRelay = property
-        .subscribe(onNext: { n in
-            relay.accept(n)
-        }, onCompleted:  {
-            bindToUIDisposable.dispose()
-        })
-
-    return Disposables.create(bindToUIDisposable, bindToRelay)
+    let bindToProperty = relay.bind(to: property)
+    let bindToRelay = property.subscribe(onNext: relay.accept, onCompleted: bindToProperty.dispose)
+    return Disposables.create(bindToProperty, bindToRelay)
 }
