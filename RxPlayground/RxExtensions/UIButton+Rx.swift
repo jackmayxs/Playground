@@ -11,7 +11,7 @@ import RxCocoa
 extension Reactive where Base: UIButton {
     
     var isSelected: ControlProperty<Bool> {
-        controlProperty(editingEvents: .touchUpInside) { button in
+        controlProperty(editingEvents: .allEvents) { button in
             button.isSelected
         } setter: { button, selected in
             button.isSelected = selected
