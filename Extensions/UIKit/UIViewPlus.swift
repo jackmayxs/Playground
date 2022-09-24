@@ -279,14 +279,28 @@ extension UIView {
     }
     
     @discardableResult
+    /// 限制最小宽高
+    /// - Returns: 自己
+    func limit(minWidth: CGFloat? = nil, minHeight: CGFloat? = nil) -> Self {
+        if let minWidth {
+            widthAnchor.constraint(greaterThanOrEqualToConstant: minWidth).isActive = true
+        }
+        if let minHeight {
+            heightAnchor.constraint(greaterThanOrEqualToConstant: minHeight).isActive = true
+        }
+        translatesAutoresizingMaskIntoConstraints = false
+        return self
+    }
+    
+    @discardableResult
     /// 限制最大宽高
     /// - Returns: 自己
     func limit(maxWidth: CGFloat? = nil, maxHeight: CGFloat? = nil) -> Self {
-        if let width = maxWidth {
-            widthAnchor.constraint(lessThanOrEqualToConstant: width).isActive = true
+        if let maxWidth {
+            widthAnchor.constraint(lessThanOrEqualToConstant: maxWidth).isActive = true
         }
-        if let height = maxHeight {
-            heightAnchor.constraint(lessThanOrEqualToConstant: height).isActive = true
+        if let maxHeight {
+            heightAnchor.constraint(lessThanOrEqualToConstant: maxHeight).isActive = true
         }
         translatesAutoresizingMaskIntoConstraints = false
         return self
