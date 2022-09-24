@@ -328,9 +328,13 @@ extension UIView {
 	}
 	
 	/// 自适应Size | 内部子控件Autolayout
-	/// 注意: 调用此方法之前要保证外部的约束要提前设置好
-	/// 比如UITableView.headerView的宽度约束要提前设置成等于TableView,否则会得到意料之外的结果
-	/// 或者调用layoutIfNeeded然后重新赋值UITableView.headerView
+	/// 注意: 在设置UITableView.headerView属性的时候,内部控件的约束优先级最好都配置成非.required
+    /// 否则可能报Unable to simultaneously satisfy constraints.警告
+    /// 如果headerView继承自普通的UIView,调用此方法之前要保证提前设置好宽度约束等于TableView的宽度,否则会得到错误的布局
+    /// 或者调用layoutIfNeeded然后重新赋值UITableView.headerView
+    ///
+    /// 故,最好使用UITableViewHeaderFooterView的子类来设置UITableView的headerView属性,因为其自身就带有宽度等于父视图的约束
+    /// 可以省去再次配置宽度约束的步骤
 	func fitSizeIfNeeded() {
 		let systemLayoutSize = systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
 		let height = systemLayoutSize.height

@@ -40,6 +40,7 @@ class BaseTableViewController: BaseViewController, UITableViewDataSource, UITabl
         tableView.backgroundView = emptyView
         tableView.showsVerticalScrollIndicator = false
         tableView.showsHorizontalScrollIndicator = false
+        tableView.estimatedRowHeight = 40.0
         UITableViewCell.registerFor(tableView)
         UITableViewHeaderFooterView.registerFor(tableView)
     }
@@ -64,7 +65,11 @@ class BaseTableViewController: BaseViewController, UITableViewDataSource, UITabl
     }
     /// 每行高度
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        UITableView.automaticDimension
+        /// 不使用UITableView.automaticDimension
+        /// 为了消除警告:
+        /// Warning once only: Detected a case where constraints ambiguously suggest a height of zero for a table view cell's content view.
+        /// We're considering the collapse unintentional and using standard height instead.
+        .leastNormalMagnitude
     }
     /// 组尾高度
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
