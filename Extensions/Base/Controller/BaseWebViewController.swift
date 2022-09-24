@@ -118,3 +118,10 @@ class BaseWebViewController: BaseViewController, WKUIDelegate, WKNavigationDeleg
         progressObservation = nil
     }
 }
+
+extension BaseWebViewController {
+    convenience init(url: URL?) {
+        self.init()
+        load(url)
+    }
+}
