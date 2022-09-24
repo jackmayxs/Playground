@@ -9,6 +9,8 @@
 import UIKit
 
 class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
+    /// 分割线类
+    final class _UIBaseTableViewCellSeparatorView: UIView {}
     
     /// 弱引用Cell本身的TableView | 用于分类中对TableView的缓存
     private weak var tableView_: UITableView?
@@ -25,7 +27,7 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
     var defaultBackgroundColor: UIColor { .white }
     
     /// 分割线
-    private lazy var separator = UIView(frame: .zero).configure {
+    private lazy var separator = _UIBaseTableViewCellSeparatorView(frame: .zero).configure {
         $0.isHidden = true
         $0.backgroundColor = customizedSeparatorColor
     }
