@@ -63,7 +63,9 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
     }
     
     func prepareSubviews() {
-        contentView.addSubview(separator)
+        if separatorPixelHeight.isValid {
+            contentView.addSubview(separator)
+        }
     }
     
     func prepareConstraints() {}
