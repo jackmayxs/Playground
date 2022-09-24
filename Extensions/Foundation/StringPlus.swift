@@ -142,8 +142,40 @@ extension String {
 	}
 }
 // MARK: - __________ Verification __________
+
+enum StringType {
+    case cellphoneNumber
+    case emailAddress
+    case identityCardNumber
+    case number
+    case decimalNumber
+    
+    private var regex: String {
+        switch self {
+        case .cellphoneNumber:
+            return #"^1[3-9]\d{9}$"#
+        case .emailAddress:
+            return "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}"
+        case .identityCardNumber:
+            return #"^[1-9]\d{5}(?:18|19|20)\d{2}(?:0[1-9]|10|11|12)(?:0[1-9]|[1-2]\d|30|31)\d{3}[\dXx]$"#
+        case .number:
+            return "^[0-9]+([.]{1}[0-9]+){0,1}$"
+        case .decimalNumber:
+            return "^([0-9]{1,}[.][0-9]*)$"
+        }
+    }
+    
+    func evaluate(_ target: String) -> Bool {
+        NSPredicate(format: "SELF MATCHES %@", regex).evaluate(with: target)
+    }
+}
+
 extension String {
-	
+    
+    func isValid(_ stringType: StringType) -> Bool {
+        stringType.evaluate(self)
+    }
+    
 	static var random: String {
 		UUID().uuidString
 	}

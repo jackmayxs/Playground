@@ -350,10 +350,7 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
     
     func trackError(_ error: Error?) {
         guard let error else { return }
-        view.makeToast(error.localizedDescription, duration: 2.0, position: .center)
-        view.makeToast(nil, duration: .infinity, position: .center, title: nil, image: nil, style: ToastStyle()) { didTap in
-            
-        }
+        view.popFailToast(error.localizedDescription)
     }
     
     func trackActivity(_ isProcessing: Bool) {
