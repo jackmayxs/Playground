@@ -16,6 +16,11 @@ class UIBaseTableViewHeaderFooterView: UITableViewHeaderFooterView, StandardLayo
     // 圆角
     var preferredCornerRadius: CGFloat? { nil }
     
+    @available(iOS 14.0, *)
+    var defaultBackgroundConfiguration: UIBackgroundConfiguration {
+        .listPlainHeaderFooter()
+    }
+    
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         prepare()
@@ -39,6 +44,9 @@ class UIBaseTableViewHeaderFooterView: UITableViewHeaderFooterView, StandardLayo
     }
     
     func prepare() {
+        if #available(iOS 14.0, *) {
+            backgroundConfiguration = defaultBackgroundConfiguration
+        }
         contentView.backgroundColor = defaultBackgroundColor
         prepareSubviews()
         prepareConstraints()

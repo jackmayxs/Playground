@@ -51,6 +51,6 @@ class BaseDynamicTableViewController
     // MARK: - PagableViewModelDelegate
     func itemsUpdated() {
         tableView.reloadData()
-        emptyView.isHidden = viewModel.items.isNotEmpty
+        emptyView.isHidden = viewModel.numberOfItems > 0
     }
 }
