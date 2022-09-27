@@ -11,7 +11,7 @@ import Moya
 class BaseDynamicTableViewController
 <PrimaryCell: UITableViewCell, ViewModel: PagableViewModelType>: BaseTableViewController, PagableViewModelDelegate {
     
-    lazy var viewModel = ViewModel()
+    lazy var viewModel = ViewModel(delegate: self)
     
     override func initialConfigure() {
         super.initialConfigure()

@@ -18,6 +18,7 @@ protocol PagableViewModelType<Model>: ViewModelType {
     var numberOfItems: Int { get }
     var items: [Model] { get set }
     func fetchMoreData()
+    init(delegate: PagableViewModelDelegate)
 }
 
 protocol ControllerBaseView: StandardLayoutLifeCycle {
@@ -42,6 +43,16 @@ class BasePagableViewModel<Model>: BaseViewModel, PagableViewModelType {
         didSet {
             delegate?.itemsUpdated()
         }
+    }
+    
+    required init() {
+        super.init()
+        fetchMoreData()
+    }
+    
+    required init(delegate: PagableViewModelDelegate) {
+        self.delegate = delegate
+        super.init()
     }
     
     func fetchMoreData() {}

@@ -30,6 +30,12 @@ func sink<In>(_ simpleCallBack: @escaping () -> Void) -> (In) -> Void {
     { _ in simpleCallBack() }
 }
 
+extension Set {
+    var array: Array<Element> {
+        Array(self)
+    }
+}
+
 // MARK: - __________ Dictionary __________
 extension Dictionary where Value: OptionalType {
 	var unwrapped: Dictionary<Key, Value.Wrapped> {
@@ -69,9 +75,16 @@ extension Array {
 
 extension Array where Element : Hashable {
 	
+    
+    mutating func appendUnique<S>(contentsOf newElements: S) where Element == S.Element, S : Sequence {
+        newElements.forEach { element in
+            appendUnique(element)
+        }
+    }
+    
 	/// 添加唯一的元素
 	/// - Parameter newElement: 遵循Hashable的元素
-	mutating func appendUnique(_ newElement:Element) {
+	mutating func appendUnique(_ newElement: Element) {
 		let isNotUnique = contains { element in
 			element.hashValue == newElement.hashValue
 		}
@@ -98,6 +111,10 @@ extension Array where Element : Hashable {
 	static func +> (lhs: Self, rhs: Self) -> Self {
 		rhs.reduce(lhs, +>)
 	}
+    
+    var set: Set<Element> {
+        Set(self)
+    }
 }
 
 // MARK: - __________ ArraySlice __________
