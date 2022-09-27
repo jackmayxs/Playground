@@ -38,3 +38,14 @@ class InsetsLabel: UILabel {
 		super.drawText(in: rect.inset(by: textEdgeInsets))
 	}
 }
+
+extension InsetsLabel {
+    
+    /// 重设边距
+    /// - Parameter insets: 边距
+    /// - Returns: 自身
+    func padding(_ insets: UIEdgeInsets) -> Self {
+        textEdgeInsets = insets
+        return self
+    }
+}

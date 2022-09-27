@@ -24,6 +24,12 @@ struct Variable<Wrapped> {
 
 extension ObservableConvertibleType {
     
+    func concatMapCompletable(_ selector: @escaping (Self.Element) -> Completable) -> Completable {
+        asObservable()
+            .concatMap(selector)
+            .asCompletable()
+    }
+    
     func flatMapLatest<Source: InfallibleType>(_ source: Source) -> Observable<Source.Element> {
         asObservable()
             .flatMapLatest { _ in source }
