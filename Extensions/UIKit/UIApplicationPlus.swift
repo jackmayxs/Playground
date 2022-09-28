@@ -9,7 +9,48 @@
 import UIKit
 
 extension UIApplication {
-	
+    
+    struct Release {
+        let version: String
+        var notes: String?
+        init?(version: String?, notes: String?) {
+            guard let version else { return nil }
+            self.version = version
+            self.notes = notes
+        }
+    }
+    
+    static let appID = "1543734417" /// 暂时用Godox Light的值
+    
+    static func getLatestRelease(completed: @escaping (Release?) -> Void) {
+        func didGetNewRelease(_ release: Release?) {
+            DispatchQueue.main.async {
+                completed(release)
+            }
+        }
+        let getAppVersion = DispatchWorkItem {
+            guard let url = URL(string: "https://itunes.apple.com/lookup?id=\(appID)") else { return }
+            do {
+                let data = try Data(contentsOf: url)
+                guard let response = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves) as? [String: Any] else {
+                    didGetNewRelease(nil)
+                    return
+                }
+                guard let results = response["results"] as? [[String: Any]], let info = results.first else {
+                    didGetNewRelease(nil)
+                    return
+                }
+                let version = info["version"] as? String
+                let notes = info["releaseNotes"] as? String
+                let release = Release(version: version, notes: notes)
+                didGetNewRelease(release)
+            } catch {
+                completed(nil)
+            }
+        }
+        DispatchQueue.global(qos: .userInitiated).async(execute: getAppVersion)
+    }
+    
     static func openSettings() {
         guard let settingsURL = URL(string: openSettingsURLString) else { return }
         openURL(settingsURL)
