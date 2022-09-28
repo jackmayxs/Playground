@@ -129,8 +129,22 @@ final class IgnoreEmptyString: ValidValueOnly<String> {
 final class Transient<T> {
     typealias ValueBuilder = () -> T
     
+    /// 存储对象
     private var value: T?
+    /// 对象构造方法
     private var valueBuilder: ValueBuilder?
+    /// 最大取用次数
+    private var maxTakeTime: UInt = .max {
+        didSet {
+            /// 如果取用次数归零
+            if maxTakeTime == 0 {
+                /// 将值置为空
+                value = nil
+                /// 销毁定时器
+                timer.invalidate()
+            }
+        }
+    }
     
     private let interval: DispatchTimeInterval
     private lazy var timer = GCDTimer.scheduledTimer(queue: .global(qos: .utility)) {
@@ -142,6 +156,14 @@ final class Transient<T> {
         self.interval = interval
         /// 如果初始化就有初值,则立即执行
         self.countDown()
+    }
+    
+    /// 取用指定次数之后销毁
+    /// - Parameters:
+    ///   - maxTakeTime: 最大取用次数
+    convenience init(wrappedValue: T? = nil, maxTakeTime: UInt = .max) {
+        self.init(wrappedValue: wrappedValue, venishAfter: .seconds(.max))
+        self.maxTakeTime = maxTakeTime
     }
     
     /// 超时后自动销毁 | 再次访问时重新创建
@@ -163,6 +185,12 @@ final class Transient<T> {
         get {
             defer {
                 countDown()
+            }
+            defer {
+                if maxTakeTime > 0 {
+                    /// 取用次数-1
+                    maxTakeTime -= 1
+                }
             }
             if let value {
                 return value
