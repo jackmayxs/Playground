@@ -38,6 +38,11 @@ struct ControllerPresentor {
         presentingController.present(controller, animated: true)
     }
     
+    func popDialog(@SingleValueBuilder<PresentedControllerType> _ controllerBuilder: () -> PresentedControllerType) {
+        let controller = controllerBuilder()
+        popDialog(controller)
+    }
+    
     func popDialog(_ controller: PresentedControllerType) {
         let cover = CoverPresentation(
             directionShow: .left,
@@ -55,6 +60,11 @@ struct ControllerPresentor {
         let animator = Animator(presentation: cover)
         controller.prepareAnimator(animator)
         presentingController.present(controller, animated: true)
+    }
+    
+    func slideIn(@SingleValueBuilder<PresentedControllerType> _ controllerBuilder: () -> PresentedControllerType) {
+        let controller = controllerBuilder()
+        slideIn(controller)
     }
     
     func slideIn(_ controller: PresentedControllerType) {

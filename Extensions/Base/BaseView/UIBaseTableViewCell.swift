@@ -34,7 +34,7 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
     /// 分割线像素高度 | 子类重写此属性并返回nil则不显示自定义的分割线
     var separatorPixelHeight: Int? { 1 }
     
-    /// 分割线颜色
+    /// 分割线颜色 | 默认值: #F3F3F3
     var customizedSeparatorColor: UIColor { #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9529411765, alpha: 1) }
     
     /// 圆角
@@ -100,19 +100,21 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
                     
                     /// 如果发现系统的分割线则隐藏它
                     /// 注: 第一次进入Table的时候,有的Cell会出现系统分割线
+                    /// 更新注↑: 在TableView初始化的时候就要设置separatorStyle = .none
+                    /// 否则下面的方法里再设置分割线样式就会出现上面的情况
                     /// (lldb) po subviews
                     /// ▿ 3 elements
                     ///   - 0 : <_UISystemBackgroundView>
                     ///   - 1 : <UITableViewCellContentView>
                     ///   - 2 : <_UITableViewCellSeparatorView>
                     ///   系统分隔线常出现子视图数组的最后一个元素 | 这里做反转处理: Complexity: O(1)
-                    let maybeSystemSeparator = subviews.reversed()
-                        .first { subview in
-                            subview.className == "_UITableViewCellSeparatorView"
-                        }
-                    if let maybeSystemSeparator {
-                        maybeSystemSeparator.isHidden = true
-                    }
+                    /// let maybeSystemSeparator = subviews.reversed()
+                    ///     .first { subview in
+                    ///         subview.className == "_UITableViewCellSeparatorView"
+                    ///     }
+                    /// if let maybeSystemSeparator {
+                    ///     maybeSystemSeparator.isHidden = true
+                    /// }
                     
                     /// 调整分割线显示/隐藏
                     adjustSeparatorFor(tableView, at: indexPath)
@@ -152,7 +154,8 @@ extension UIBaseTableViewCell {
     ///   - tableView: Cell容器TableView
     ///   - indexPath: 所在的indexPath
     private func adjustSeparatorFor(_ tableView: UITableView, at indexPath: IndexPath) {
-        tableView.separatorStyle = .none
+        /// 在TableView初始化的时候就要设置separatorStyle = .none
+        /// tableView.separatorStyle = .none ⛔️
         /// 第一次进入TableViewController时获取的sectionHeight不正常 所以这里做延迟1ms处理
         DispatchQueue.main.asyncAfter(deadline: indexPath.section + indexPath.row == 0 ? 0.001 : 0.0) {
             /// HeaderHeight + CellsHeight + FooterHeight

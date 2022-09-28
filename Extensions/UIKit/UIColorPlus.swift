@@ -32,6 +32,11 @@ extension UIColor {
     static var random: UIColor {
         UIColor(red: .random, green: .random, blue: .random, alpha: 1)
     }
+    
+    static func hex(_ hexValue: Int) -> UIColor {
+        hexValue.uiColor
+    }
+    
     // MARK: - __________ Instance __________
     func uiImage(size: CGSize = CGSize(width: 1, height: 1)) -> UIImage? {
         let rect = CGRect(origin: .zero, size: size)

@@ -41,6 +41,10 @@ class BaseTableViewController: BaseViewController, UITableViewDataSource, UITabl
         tableView.showsVerticalScrollIndicator = false
         tableView.showsHorizontalScrollIndicator = false
         tableView.estimatedRowHeight = 40.0
+        
+        /// 占位图默认隐藏
+        emptyView.isHidden = true
+        
         UITableViewCell.registerFor(tableView)
         UITableViewHeaderFooterView.registerFor(tableView)
     }
