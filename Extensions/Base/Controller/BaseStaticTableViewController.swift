@@ -14,10 +14,10 @@ extension UITableViewCell {
     private static var associatedRow = UUID()
     
     var row: Row {
-        row(preferredHeight: nil)
+        row(preferredHeight: UITableView.automaticDimension)
     }
     
-    func row(preferredHeight: CGFloat? = nil) -> Row {
+    func row(preferredHeight: CGFloat) -> Row {
         if let row = objc_getAssociatedObject(self, &Self.associatedRow) as? Row {
             return row
         } else {
@@ -40,9 +40,9 @@ class StaticTable: ReactiveCompatible {
             unowned let cell: UITableViewCell
             let preferredHeight: CGFloat
             var didSelect: SimpleCallback?
-            init(cell: UITableViewCell, preferredHeight: CGFloat? = nil) {
+            init(cell: UITableViewCell, preferredHeight: CGFloat = UITableView.automaticDimension) {
                 self.cell = cell
-                self.preferredHeight = preferredHeight ?? UITableView.automaticDimension
+                self.preferredHeight = preferredHeight
             }
         }
         
@@ -50,7 +50,7 @@ class StaticTable: ReactiveCompatible {
         var rows: [Row] = []
         let topPadding: CGFloat
         let bottomPadding: CGFloat
-        init(topPadding: CGFloat = UITableView.automaticDimension, bottomPadding: CGFloat = UITableView.automaticDimension, @ArrayBuilder<Row> _ rowsBuilder: () -> [Row]) {
+        init(topPadding: CGFloat = 0, bottomPadding: CGFloat = 0, @ArrayBuilder<Row> _ rowsBuilder: () -> [Row]) {
             self.topPadding = topPadding
             self.bottomPadding = bottomPadding
             let result = rowsBuilder()

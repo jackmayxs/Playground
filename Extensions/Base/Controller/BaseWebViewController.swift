@@ -59,9 +59,9 @@ class BaseWebViewController: BaseViewController, WKUIDelegate, WKNavigationDeleg
     @available(iOS 13, *)
     override func configureNavigationBarAppearance(_ barAppearance: UINavigationBarAppearance) {
         super.configureNavigationBarAppearance(barAppearance)
-        barAppearance.backgroundEffect = UIBlurEffect(style: .dark)
+        barAppearance.backgroundColor = 0xF5F5F5.uiColor
         barAppearance.titleTextAttributes = [
-            .foregroundColor: UIColor.white,
+            .foregroundColor: UIColor.Ox333333,
             .font: UIFont.systemFont(ofSize: 16.0)
         ]
     }
@@ -86,6 +86,8 @@ class BaseWebViewController: BaseViewController, WKUIDelegate, WKNavigationDeleg
         
         
         let webview = WKWebView(frame: .zero, configuration: config)
+        webview.isOpaque = false
+        webview.backgroundColor = .white
         webview.uiDelegate = self
         webview.navigationDelegate = self
         webview.allowsBackForwardNavigationGestures = true
