@@ -64,14 +64,18 @@ class BaseTableViewController: BaseViewController, UITableViewDataSource, UITabl
     // 注意: 必须父类里有实现,代理方法才会调用
     /// 分组数
     func numberOfSections(in tableView: UITableView) -> Int { 1 }
+    
     /// 每组行数
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { 0 }
+    
     /// 组头高度
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         .leastNormalMagnitude
     }
+    
     /// 组头估算高度
     func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat { 50.0 }
+    
     /// 每行高度
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         /// 不使用UITableView.automaticDimension
@@ -80,14 +84,18 @@ class BaseTableViewController: BaseViewController, UITableViewDataSource, UITabl
         /// We're considering the collapse unintentional and using standard height instead.
         .leastNormalMagnitude
     }
+    
     /// 每行估算高度
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat { 50.0 }
+    
     /// 组尾高度
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         .leastNormalMagnitude
     }
+    
     /// 组尾估算高度
     func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat { 50.0 }
+    
     /// 选中一行
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if deselectCellAfterCellSelection {

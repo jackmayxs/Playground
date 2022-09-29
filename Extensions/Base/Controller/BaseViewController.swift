@@ -395,7 +395,7 @@ extension BaseViewController {
             ZKAction(title: localized.相册~) {
                 [unowned self] in getPhotos(count: count, from: .photoLibrary, allowsEditing: allowsEditing)
             }
-            ZKAction(title: localized.相机~) {
+            ZKAction(title: localized.拍照~) {
                 [unowned self] in getPhotos(count: 1, from: .camera, allowsEditing: allowsEditing)
             }
         }
