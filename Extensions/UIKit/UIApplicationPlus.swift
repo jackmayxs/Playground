@@ -18,11 +18,20 @@ extension UIApplication {
             self.version = version
             self.notes = notes
         }
+        
+        var needsUpdate: Bool {
+            guard let appVersion = Bundle.main.version else { return false }
+            return appVersion.compare(version, options: .numeric) == .orderedAscending
+        }
     }
     
-    static let appID = "1543734417" /// 暂时用Godox Light的值
+    /// 对应App Store的应用ID
+    static let appID = "1543734417"
     
     static func getLatestRelease(completed: @escaping (Release?) -> Void) {
+        /// 注意修改appID
+        completed(nil)
+        return;
         func didGetNewRelease(_ release: Release?) {
             DispatchQueue.main.async {
                 completed(release)

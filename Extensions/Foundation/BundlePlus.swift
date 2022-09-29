@@ -14,12 +14,12 @@ extension Bundle {
     }
     
     /// 返回版本号
-    var shortVersion: String? {
+    var version: String? {
         infoDictionary?["CFBundleShortVersionString"] as? String
     }
     
     /// 返回build号
-    var version: String? {
+    var build: String? {
         infoDictionary?["CFBundleVersion"] as? String
     }
 }

@@ -28,6 +28,10 @@ extension UITableViewCell {
     }
 }
 
+protocol StaticTableDelegate: AnyObject {
+    func needsReload()
+}
+
 class StaticTable: ReactiveCompatible {
     typealias Row = Section.Row
     class Section {
@@ -58,8 +62,16 @@ class StaticTable: ReactiveCompatible {
         }
     }
     
+    weak var delegate: StaticTableDelegate?
+    
     /// MARK: - Static Table Implementation
-    var sections: [Section] = []
+    var sections: [Section] = [] {
+        didSet {
+            if let delegate {
+                delegate.needsReload()
+            }
+        }
+    }
     let tableView: UITableView
     required init(tableView: UITableView) {
         self.tableView = tableView
@@ -74,6 +86,11 @@ class StaticTable: ReactiveCompatible {
         sections[section]
     }
     
+    func refillSections(@ArrayBuilder<Section> _ sectionsBuilder: () -> [Section]) {
+        sections.removeAll()
+        appendSections(sectionsBuilder)
+    }
+    
     func appendSections(@ArrayBuilder<Section> _ sectionsBuilder: () -> [Section]) {
         let result = sectionsBuilder()
         sections.append(contentsOf: result)
@@ -85,6 +102,11 @@ class BaseStaticTableViewController<Table: StaticTable>: BaseTableViewController
     override var tableViewStyle: UITableView.Style { .grouped }
     
     lazy var staticTable = Table(tableView: tableView)
+    
+    override func configureTableView() {
+        super.configureTableView()
+        staticTable.delegate = self
+    }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         staticTable.sections.count
@@ -115,5 +137,12 @@ class BaseStaticTableViewController<Table: StaticTable>: BaseTableViewController
         super.tableView(tableView, didSelectRowAt: indexPath)
         let row = staticTable[indexPath.section][indexPath.row]
         row.didSelect?()
+    }
+}
+
+extension BaseStaticTableViewController: StaticTableDelegate {
+    
+    func needsReload() {
+        tableView.reloadData()
     }
 }

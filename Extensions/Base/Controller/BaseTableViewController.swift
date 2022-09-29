@@ -16,6 +16,9 @@ class BaseTableViewController: BaseViewController, UITableViewDataSource, UITabl
     
     var tableViewStyle: UITableView.Style { .plain }
     
+    /// 选中Cell之后是否立刻反选
+    var deselectCellAfterCellSelection = true
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         /// 配置TableView
@@ -86,7 +89,11 @@ class BaseTableViewController: BaseViewController, UITableViewDataSource, UITabl
     /// 组尾估算高度
     func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat { 50.0 }
     /// 选中一行
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {}
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if deselectCellAfterCellSelection {
+            tableView.deselectRow(at: indexPath, animated: true)
+        }
+    }
     
     /// 组头
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {

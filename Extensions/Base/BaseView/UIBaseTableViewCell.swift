@@ -17,7 +17,7 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
     
     /// 缩进之后的边距
     private var indentedContentInsets: UIEdgeInsets {
-        contentInsets.left(contentInsets.left + indentationOffset)
+        contentInsets.leftInset(indentationOffset)
     }
     
     /// 内容边距
@@ -25,6 +25,9 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
     
     /// 背景色
     var defaultBackgroundColor: UIColor { .white }
+    
+    /// 选中样式
+    var defaultSelectionStyle: UITableViewCell.SelectionStyle { .default }
     
     /// 分割线
     private lazy var separator = _UIBaseTableViewCellSeparatorView(frame: .zero).configure {
@@ -42,7 +45,22 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
     
     @available(iOS 14.0, *)
     var defaultBackgroundConfiguration: UIBackgroundConfiguration {
-        .clear()
+        .listPlainCell()
+    }
+    
+    @available(iOS 14.0, *)
+    override func updateConfiguration(using state: UICellConfigurationState) {
+        super.updateConfiguration(using: state)
+        
+        /// 如果选中样式为.none的话,就不执行隐藏自定义分割线的操作
+        if selectionStyle != .none, let tableView, let indexPath = tableView.indexPath(for: self) {
+            /// 高亮或者选中时隐藏分割线
+            if state.isHighlighted || state.isSelected {
+                separator.isHidden = true
+            } else {
+                adjustSeparatorFor(tableView, at: indexPath)
+            }
+        }
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -59,7 +77,8 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
         if #available(iOS 14.0, *) {
             backgroundConfiguration = defaultBackgroundConfiguration
         }
-        contentView.backgroundColor = defaultBackgroundColor
+        selectionStyle = defaultSelectionStyle
+        backgroundColor = defaultBackgroundColor
         prepareSubviews()
         prepareConstraints()
     }

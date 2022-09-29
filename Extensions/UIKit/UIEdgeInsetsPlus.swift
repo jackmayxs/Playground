@@ -57,21 +57,41 @@ extension UIEdgeInsets {
 		if edges.contains(.right) { temp.right = screenSafeareaInsets.right > 0 ? 0 : right }
 		return temp
 	}
+    func topInset(_ inset: CGFloat) -> UIEdgeInsets {
+        var insets = self
+        insets.top = insets.top + inset
+        return insets
+    }
 	func top(_ padding: CGFloat) -> UIEdgeInsets {
 		var insets = self
 		insets.top = padding
 		return insets
 	}
+    func leftInset(_ inset: CGFloat) -> UIEdgeInsets {
+        var insets = self
+        insets.left = insets.left + inset
+        return insets
+    }
 	func left(_ padding: CGFloat) -> UIEdgeInsets {
 		var insets = self
 		insets.left = padding
 		return insets
 	}
+    func bottomInset(_ inset: CGFloat) -> UIEdgeInsets {
+        var insets = self
+        insets.bottom = insets.bottom + inset
+        return insets
+    }
 	func bottom(_ padding: CGFloat) -> UIEdgeInsets {
 		var insets = self
 		insets.bottom = padding
 		return insets
 	}
+    func rightInset(_ inset: CGFloat) -> UIEdgeInsets {
+        var insets = self
+        insets.right = insets.right + inset
+        return insets
+    }
 	func right(_ padding: CGFloat) -> UIEdgeInsets {
 		var insets = self
 		insets.right = padding
