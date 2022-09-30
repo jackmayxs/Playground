@@ -8,11 +8,26 @@
 import Foundation
 
 extension URL {
-    static let documentDirectory: URL = {
-        let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        guard let url = urls.first else {
+    
+    static func ubiquityContainer(identifier: String?) -> URL? {
+        FileManager.default.url(forUbiquityContainerIdentifier: identifier)
+    }
+    
+    static var libraryDirectory: URL {
+        guard let url = url(for: .libraryDirectory) else {
             fatalError("NOT OK")
         }
         return url
-    }()
+    }
+    
+    static var documentDirectory: URL {
+        guard let url = url(for: .documentDirectory) else {
+            fatalError("NOT OK")
+        }
+        return url
+    }
+    
+    static func url(for path: FileManager.SearchPathDirectory) -> URL? {
+        FileManager.default.urls(for: path, in: .userDomainMask).first
+    }
 }
