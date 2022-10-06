@@ -69,7 +69,13 @@ extension ObservableConvertibleType {
     var observable: Observable<Element> {
         asObservable()
     }
+    
     var optionalElement: Observable<Element?> {
+        asObservable()
+            .map { $0 }
+    }
+    
+    var anyElement: Observable<Any> {
         asObservable()
             .map { $0 }
     }

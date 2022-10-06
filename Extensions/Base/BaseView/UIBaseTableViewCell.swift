@@ -45,7 +45,7 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
     
     @available(iOS 14.0, *)
     var defaultBackgroundConfiguration: UIBackgroundConfiguration {
-        .listPlainCell()
+        .clear()
     }
     
     @available(iOS 14.0, *)
@@ -57,8 +57,10 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
             /// 高亮或者选中时隐藏分割线
             if state.isHighlighted || state.isSelected {
                 separator.isHidden = true
+                contentView.backgroundColor = .secondarySystemGroupedBackground
             } else {
                 adjustSeparatorFor(tableView, at: indexPath)
+                contentView.backgroundColor = defaultBackgroundColor
             }
         }
     }
@@ -78,7 +80,7 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
             backgroundConfiguration = defaultBackgroundConfiguration
         }
         selectionStyle = defaultSelectionStyle
-        backgroundColor = defaultBackgroundColor
+        contentView.backgroundColor = defaultBackgroundColor
         prepareSubviews()
         prepareConstraints()
     }
