@@ -10,6 +10,8 @@ import RxSwift
 
 class UIGetVerificationCodeButton: QMLoadingButton {
 
+    private var timer: GCDTimer?
+    
     private var remainSeconds = 1 {
         willSet {
             if newValue == 0 {
@@ -35,18 +37,10 @@ class UIGetVerificationCodeButton: QMLoadingButton {
         super.init(coder: coder)
     }
     
-    var countDown: Completable {
-        Completable.create { observer in
-            self.countDownLegacy()
-            observer(.completed)
-            return Disposables.create()
-        }
-    }
-    
-    @objc func countDownLegacy() {
+    @objc func countDown() {
         remainSeconds = 60
         isUserInteractionEnabled = false
-        GCDTimer.scheduledTimer(timeInterval: .seconds(1)) {
+        timer = GCDTimer.scheduledTimer(timeInterval: .seconds(1)) {
             [weak self] timer in
             guard let button = self else {
                 timer.invalidate()
@@ -57,6 +51,13 @@ class UIGetVerificationCodeButton: QMLoadingButton {
                 timer.invalidate()
             }
         }
+    }
+    
+    func clear() {
+        if let timer {
+            timer.invalidate()
+        }
+        remainSeconds = 0
     }
 
 }
