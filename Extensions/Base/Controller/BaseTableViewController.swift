@@ -40,6 +40,8 @@ class BaseTableViewController: BaseViewController, UITableViewDataSource, UITabl
             /// 取消组头顶部间距
             tableView.sectionHeaderTopPadding = 0
         }
+        tableView.separatorColor = 0xEDEDED.uiColor
+        tableView.separatorStyle = .none
         tableView.backgroundView = emptyView
         tableView.showsVerticalScrollIndicator = false
         tableView.showsHorizontalScrollIndicator = false

@@ -30,15 +30,10 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
     var defaultSelectionStyle: UITableViewCell.SelectionStyle { .default }
     
     /// 分割线
-    private lazy var separator = _UIBaseTableViewCellSeparatorView(frame: .zero).configure {
-        $0.isHidden = true
-        $0.backgroundColor = customizedSeparatorColor
-    }
+    private lazy var separator = _UIBaseTableViewCellSeparatorView(frame: .zero)
+    
     /// 分割线像素高度 | 子类重写此属性并返回nil则不显示自定义的分割线
     var separatorPixelHeight: Int? { 1 }
-    
-    /// 分割线颜色 | 默认值: #F3F3F3
-    var customizedSeparatorColor: UIColor { #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9529411765, alpha: 1) }
     
     /// 圆角
     var preferredCornerRadius: CGFloat? { nil }
@@ -117,6 +112,9 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
                             right: separatorInset.right
                         )
                     }
+                    /// 从TableView设置分割线颜色
+                    separator.backgroundColor = tableView.separatorColor
+                    /// 设置分割线位置
                     separator.frame = bounds.inset(by: separatorIndets)
                     
                     /// 如果发现系统的分割线则隐藏它
@@ -176,7 +174,6 @@ extension UIBaseTableViewCell {
     ///   - indexPath: 所在的indexPath
     private func adjustSeparatorFor(_ tableView: UITableView, at indexPath: IndexPath) {
         /// 在TableView初始化的时候就要设置separatorStyle = .none
-        /// tableView.separatorStyle = .none ⛔️
         /// 第一次进入TableViewController时获取的sectionHeight不正常 所以这里做延迟1ms处理
         DispatchQueue.main.asyncAfter(deadline: indexPath.section + indexPath.row == 0 ? 0.001 : 0.0) {
             /// HeaderHeight + CellsHeight + FooterHeight
