@@ -52,8 +52,10 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
             /// 高亮或者选中时隐藏分割线
             if state.isHighlighted || state.isSelected {
                 separator.isHidden = true
+                teammateCellBelow?.separator.isHidden = true
                 contentView.backgroundColor = .secondarySystemGroupedBackground
             } else {
+                teammateCellBelow?.separator.isHidden = false
                 adjustSeparatorFor(tableView, at: indexPath)
                 contentView.backgroundColor = defaultBackgroundColor
             }
@@ -153,6 +155,28 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
 }
 
 extension UIBaseTableViewCell {
+    
+    /// 同组的下面的Cell
+    var teammateCellBelow: UIBaseTableViewCell? {
+        guard let indexPath else { return nil }
+        guard let neighborCellBelow else { return nil }
+        guard let neighborIndexPath = neighborCellBelow.indexPath else { return nil }
+        guard indexPath.section == neighborIndexPath.section else { return nil }
+        return neighborCellBelow
+    }
+    
+    /// 可见的邻居Cell(可能是不同分组的Cell)
+    var neighborCellBelow: UIBaseTableViewCell? {
+        guard let tableView else { return nil }
+        /// 取得可见Cell数组
+        let visibleCells = tableView.visibleCells
+        /// 确保找到自己在数组中的位置并保证数组下标安全
+        guard let myIndex = visibleCells.firstIndex(of: self), myIndex + 1 <= visibleCells.endIndex else { return nil }
+        /// 得出下一个可见Cell的下标
+        let nextIndex = visibleCells.index(myIndex, offsetBy: 1)
+        /// 类型转换并返回
+        return visibleCells.itemAt(nextIndex) as? UIBaseTableViewCell
+    }
     
     var tableView: UITableView? {
         if let tableView_ {
