@@ -149,6 +149,7 @@ enum StringType {
     case identityCardNumber
     case number
     case decimalNumber
+    case password(regex: String)
     
     private var regex: String {
         switch self {
@@ -162,6 +163,8 @@ enum StringType {
             return "^[0-9]+([.]{1}[0-9]+){0,1}$"
         case .decimalNumber:
             return "^([0-9]{1,}[.][0-9]*)$"
+        case .password(let regex):
+            return regex
         }
     }
     
