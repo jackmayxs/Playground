@@ -7,33 +7,6 @@
 
 import UIKit
 
-// MARK: - 渐变色封装
-struct ColorStop {
-    let color: UIColor
-    let stop: Double
-    init(color: UIColor, stop: Double = -1) {
-        self.color = color
-        self.stop = stop
-    }
-    
-    /// 从HUE创建对象
-    /// - Parameters:
-    ///   - hue: 色相 (范围: 0 - 1)
-    static func fromHue(_ hue: Double) -> ColorStop {
-        let color = UIColor(hue: hue, saturation: 1.0, brightness: 1.0, alpha: 1.0)
-        return self.init(color: color)
-    }
-}
-
-extension UIColor {
-    var colorStop: ColorStop {
-        ColorStop(color: self)
-    }
-}
-
-typealias GradientColors = [ColorStop]
-typealias GradientColorsBuilder = () -> GradientColors
-
 // MARK: - 渐变View
 class GradientView: UIView {
     
@@ -49,14 +22,6 @@ class GradientView: UIView {
         super.init(frame: .zero)
         /// 设置渐变色
         let gradientColors = gradientBuilder()
-        let stopsAreLegal = gradientColors.allSatisfy { colorStop in
-            colorStop.stop >= 0 && colorStop.stop <= 1
-        }
-        if gradientColors.count > 0, stopsAreLegal {
-            gradientLayer.locations = gradientColors.map(NSNumber.init)
-        } else {
-            gradientLayer.locations = nil
-        }
         setGradientColors(gradientColors)
         /// 设置方向
         setDirection(direction)
@@ -73,13 +38,11 @@ class GradientView: UIView {
     
     func setGradientColors(_ gradientColors: GradientColors) {
         self.gradientColors = gradientColors
-        gradientLayer.colors = gradientColors.map(\.color.cgColor)
+        gradientLayer.setColors(gradientColors)
     }
 
     func setDirection(_ vector: CGVector) {
-        let points = vector.positivePoints
-        gradientLayer.startPoint = points.start
-        gradientLayer.endPoint = points.end
+        gradientLayer.setDirection(vector)
     }
 }
 

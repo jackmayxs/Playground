@@ -8,6 +8,16 @@
 
 import UIKit
 
+extension Int: SizeExtendable {
+    var vertical: CGFloat { cgFloat }
+    var horizontal: CGFloat { cgFloat }
+}
+
+extension Double: SizeExtendable {
+    var vertical: CGFloat { self }
+    var horizontal: CGFloat { self }
+}
+
 extension CGSize: SizeExtendable {
 	var vertical: CGFloat { height }
 	var horizontal: CGFloat { width }

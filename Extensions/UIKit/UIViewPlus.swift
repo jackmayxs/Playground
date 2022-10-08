@@ -94,6 +94,11 @@ extension UIView {
         static var backgroundViewKey = UUID()
     }
     
+    func tagged(_ tag: Int) -> Self {
+        self.tag = tag
+        return self
+    }
+    
     /// 添加背景色
     /// - Parameter backgroundColor: 背景颜色
     func add(backgroundColor: UIColor) {
@@ -393,7 +398,7 @@ extension UIView {
 	
 	// MARK: - __________ 圆角 + 阴影 __________
 	final class _UIShadowView: UIView { }
-	private var shadowView: _UIShadowView {
+	var shadowView: _UIShadowView {
 		guard let shadow = objc_getAssociatedObject(self, &Associated.shadowViewKey) as? _UIShadowView else {
 			let shadow = _UIShadowView(frame: bounds)
 			shadow.isUserInteractionEnabled = false

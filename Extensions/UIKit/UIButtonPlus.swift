@@ -46,7 +46,7 @@ extension UIButton {
     }
     
     convenience init(title: String? = nil, titleColor: UIColor? = nil, font: UIFont) {
-        self.init(type: .custom)
+        self.init(frame: .zero)
         setTitle(title, for: .normal)
         setTitleColor(titleColor, for: .normal)
         titleLabel?.font = font
