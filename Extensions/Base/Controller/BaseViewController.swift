@@ -404,69 +404,60 @@ extension BaseViewController {
     
     private func getPhotos(count: Int, from source: UIImagePickerController.SourceType, allowsEditing: Bool = false) {
         
-        if let presented = presentedViewController {
-            rx.disposeBag.insert {
-                presented.rx.deallocating.bind {
-                    [unowned self] in
-                    
-                    guard UIImagePickerController.isSourceTypeAvailable(source) else {
-                        trackError("Not supported source type.")
-                        return
-                    }
-                    
-                    /// 显示图片选择器
-                    func showPickerController() {
-                        if #available(iOS 14, *) {
-                            let photoLibrary = PHPhotoLibrary.shared()
-                            var config = PHPickerConfiguration(photoLibrary: photoLibrary)
-                            config.filter = .images
-                            config.selectionLimit = count
-                            config.preferredAssetRepresentationMode = .automatic
-                            
-                            let picker = PHPickerViewController(configuration: config)
-                            picker.modalPresentationStyle = .fullScreen
-                            picker.delegate = self
-                            self.present(picker, animated: true)
-                        } else {
-                            let picker = UIImagePickerController()
-                            picker.sourceType = source
-                            picker.allowsEditing = allowsEditing
-                            picker.delegate = self
-                            picker.modalPresentationStyle = .fullScreen
-                            self.present(picker, animated: true)
-                        }
-                    }
-                    
-                    /// 获取当前相册权限
-                    switch PHPhotoLibrary.authorizationStatus {
-                    case .notDetermined: /// 第一次请求权限
-                        PHPhotoLibrary.compatibleRequestAuthorization { updatedStatus in
-                            DispatchQueue.main.async {
-                                switch updatedStatus {
-                                case .notDetermined:
-                                    assertionFailure("不该发生的情况")
-                                case .restricted:
-                                    dprint("受限")
-                                case .denied:
-                                    dprint("用户拒绝授权")
-                                case .authorized, .limited:
-                                    showPickerController()
-                                @unknown default:
-                                    assertionFailure("没处理的情况")
-                                }
-                            }
-                        }
-                    case .restricted:
-                        dprint("受限")
-                    case .denied:
-                        dprint("用户拒绝授权")
-                    case .authorized, .limited:
-                        showPickerController()
-                    @unknown default:
-                        assertionFailure("没处理的情况")
-                    }
-                }
+        /// 检查图片源是否可用
+        guard UIImagePickerController.isSourceTypeAvailable(source) else {
+            trackError("Not supported source type.")
+            return
+        }
+        
+        /// 拍照 | 旧版图片选择控制器
+        let pickPhotoFrom: (UIImagePickerController.SourceType) -> Void = {
+            [unowned self] imageSource in
+            let picker = UIImagePickerController()
+            picker.sourceType = imageSource
+            picker.allowsEditing = allowsEditing
+            picker.delegate = self
+            picker.modalPresentationStyle = .fullScreen
+            present(picker, animated: true)
+        }
+        
+        /// 显示图片选择器
+        let showPickerController = {
+            [unowned self] in
+            if #available(iOS 14, *) {
+                let photoLibrary = PHPhotoLibrary.shared()
+                var config = PHPickerConfiguration(photoLibrary: photoLibrary)
+                config.filter = .images
+                config.selectionLimit = count
+                config.preferredAssetRepresentationMode = .automatic
+                
+                let picker = PHPickerViewController(configuration: config)
+                picker.modalPresentationStyle = .fullScreen
+                picker.delegate = self
+                self.present(picker, animated: true)
+            } else {
+                pickPhotoFrom(source)
             }
+        }
+        
+        switch source {
+        case .camera:
+            rx.disposeBag.insert {
+                AVAuthorizationStatus.checkValidCameraStatus
+                    .trackError(self)
+                    .then(blockByError: true) { _ in
+                        pickPhotoFrom(source)
+                    }
+            }
+        case .photoLibrary, .savedPhotosAlbum:
+            rx.disposeBag.insert {
+                PHPhotoLibrary.chekValidAuthorizationStatus
+                    .trackError(self)
+                    .then(blockByError: true, sink(showPickerController))
+
+            }
+        @unknown default:
+            break
         }
     }
 }
