@@ -370,6 +370,10 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
             view.hideToastActivity()
         }
     }
+    
+    override func forceEnableInteractivePopGestureRecognizer() -> Bool {
+        true
+    }
 }
 
 extension BaseViewController {
