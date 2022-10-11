@@ -65,7 +65,7 @@ extension CAGradientLayer {
             colorStop.stop >= 0 && colorStop.stop <= 1
         }
         if gradientColors.count > 0, stopsAreLegal {
-            locations = gradientColors.map(NSNumber.init)
+            locations = gradientColors.map(\.stop).map(NSNumber.init)
         } else {
             locations = nil
         }
