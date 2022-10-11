@@ -17,6 +17,11 @@ class UIStackScrollView: UIBaseView {
         willSet { stackView.spacing = newValue }
     }
     
+    override var backgroundColor: UIColor? {
+        get { scrollView.backgroundColor }
+        set { scrollView.backgroundColor = newValue }
+    }
+    
     var contentInsets: UIEdgeInsets? {
         get { stackView.contentInsets }
         set { stackView.contentInsets = newValue }
@@ -99,5 +104,9 @@ class UIVerticalStackScrollView: UIStackScrollView {
     
     override init(frame: CGRect) {
         super.init(axis: .vertical)
+    }
+    
+    init(spacing: Double = 0, @ArrayBuilder<UIView> subviewsBuilder: () -> [UIView] = { [] }) {
+        super.init(axis: .vertical, spacing: spacing, subviewsBuilder: subviewsBuilder)
     }
 }
