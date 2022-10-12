@@ -25,20 +25,15 @@ extension UIApplication {
         }
     }
     
-    /// 对应App Store的应用ID
-    static let appID = "1543734417"
-    
     static func getLatestRelease(completed: @escaping (Release?) -> Void) {
-        /// 注意修改appID
-        completed(nil)
-        return;
+        
         func didGetNewRelease(_ release: Release?) {
             DispatchQueue.main.async {
                 completed(release)
             }
         }
         let getAppVersion = DispatchWorkItem {
-            guard let url = URL(string: "https://itunes.apple.com/lookup?id=\(appID)") else { return }
+            guard let url = URL(string: "https://itunes.apple.com/lookup?id=\(String.appID)") else { return }
             do {
                 let data = try Data(contentsOf: url)
                 guard let response = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves) as? [String: Any] else {
