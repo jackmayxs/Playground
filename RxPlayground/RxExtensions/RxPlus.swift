@@ -35,6 +35,17 @@ extension ObservableConvertibleType {
             .flatMapLatest { _ in source }
     }
     
+    var completed: Completable {
+        asObservable()
+            .ignoreElements()
+            .asCompletable()
+    }
+    
+    var once: Observable<Element> {
+        asObservable()
+            .take(1)
+    }
+    
     /// 用于重新订阅事件 | 如: .retry(when: button.rx.tap.triggered)
     /// Tips: 配合.trackError使用的时候, 注意要把.trackError放在.retry(when:)的前面
     var triggered: (Observable<Error>) -> Observable<Element> {
