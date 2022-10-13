@@ -39,10 +39,13 @@ class StaticTable: ReactiveCompatible {
             /// MARK: - Row Implementation
             unowned let cell: UITableViewCell
             let preferredHeight: CGFloat
-            var didSelect: SimpleCallback?
+            fileprivate var didSelect: SimpleCallback?
             init(cell: UITableViewCell, preferredHeight: CGFloat = UITableView.automaticDimension) {
                 self.cell = cell
                 self.preferredHeight = preferredHeight
+            }
+            func didSelect(execute: @escaping SimpleCallback) {
+                self.didSelect = execute
             }
         }
         
