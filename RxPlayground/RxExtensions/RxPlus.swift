@@ -9,16 +9,49 @@ import RxSwift
 import RxCocoa
 
 @propertyWrapper
-struct Variable<Wrapped> {
+class Variable<Wrapped> {
     
-    let projectedValue: BehaviorRelay<Wrapped>
+    private let projectedValue_: BehaviorRelay<Wrapped>
+    var projectedValue: BehaviorRelay<Wrapped> {
+        projectedValue_
+    }
     init(wrappedValue: Wrapped) {
-        projectedValue = BehaviorRelay(value: wrappedValue)
+        projectedValue_ = BehaviorRelay(value: wrappedValue)
     }
     
     var wrappedValue: Wrapped {
-        get { projectedValue.value }
-        set { projectedValue.accept(newValue) }
+        get { projectedValue_.value }
+        set { projectedValue_.accept(newValue) }
+    }
+}
+
+@propertyWrapper
+final class ClamppedVariable<T>: Variable<T> where T: Comparable {
+    
+    private let range: ClosedRange<T>
+    
+    init(wrappedValue: T, range: ClosedRange<T>) {
+        self.range = range
+        super.init(wrappedValue: wrappedValue)
+    }
+    
+    override var projectedValue: BehaviorRelay<T> {
+        super.projectedValue
+    }
+    
+    override var wrappedValue: T {
+        get { super.wrappedValue }
+        set {
+            guard range ~= newValue else {
+                if newValue > range.upperBound {
+                    super.wrappedValue = range.upperBound
+                } else if newValue < range.lowerBound {
+                    super.wrappedValue = range.lowerBound
+                }
+                return
+            }
+            super.wrappedValue = newValue
+        }
     }
 }
 
