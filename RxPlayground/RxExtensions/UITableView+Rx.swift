@@ -32,12 +32,19 @@ extension Reactive where Base: UITableView {
     }
     
     var selectedIndexPaths: Observable<[IndexPath]> {
-        itemTapped.map { _ in
+        selectedIndexPathChanged.map { _ in
             base.indexPathsForSelectedRows ?? []
         }
     }
     
-    var itemTapped: Observable<IndexPath> {
-        Observable.of(itemSelected, itemDeselected).merge()
+    var selectedIndexPathChanged: Observable<IndexPath> {
+        Observable.of(selectRowAt, itemSelected.observable, itemDeselected.observable).merge()
+    }
+    
+    private var selectRowAt: Observable<IndexPath> {
+        base.rx.methodInvoked(#selector(base.selectRow(at:animated:scrollPosition:)))
+            .map(\.first)
+            .unwrapped
+            .as(IndexPath.self)
     }
 }
