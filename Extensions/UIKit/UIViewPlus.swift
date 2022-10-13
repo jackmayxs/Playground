@@ -234,6 +234,21 @@ extension UIView {
 				return image
 		}
 	}
+    
+    /// 用于调整父视图为ScrollView子类时, 其子视图被自身遮挡的问题
+    /// 通常赋值给控制器的.additionalSafeAreaInsets属性, 让ScrollView自动适配边距
+    /// 注: 这时自身底部的约束就不好设置成相对父视图的safeAreaLayoutGuide了, 直接相对于父视图本身能达到效果.
+    /// 可能不是最优解,待后续优化
+    @available(iOS 11.0, *)
+    var additionalSafeAreaInsetsForSuperView: UIEdgeInsets {
+        .bottom(bottomSafeAreaPadding + frame.height)
+    }
+    
+    @available(iOS 11.0, *)
+    var bottomSafeAreaPadding: Double {
+        guard let superview else { return 0 }
+        return superview.bounds.height - frame.maxY - superview.safeAreaInsets.bottom
+    }
 }
 
 // MARK: - __________ Functions __________
