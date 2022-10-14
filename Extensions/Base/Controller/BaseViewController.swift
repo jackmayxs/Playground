@@ -23,13 +23,13 @@ struct ControllerPresentor {
         self.presentingController = presentingController
     }
     
-    func fadeIn(_ controller: PresentedControllerType) {
+    func fadeIn(_ controller: PresentedControllerType, tapBackgroundToDismissEnabled: Bool = true) {
         let fade = FadePresentation(
             size: controller.preferredContentSize.presentationSize,
             ui: PresentationUIConfiguration(
                 cornerRadius: 6,
                 backgroundStyle: .dimmed(alpha: 0.7),
-                isTapBackgroundToDismissEnabled: true,
+                isTapBackgroundToDismissEnabled: tapBackgroundToDismissEnabled,
                 corners: .allCorners
             )
         )
@@ -123,7 +123,7 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
         action: #selector(leftBarButtonItemTriggered))
     
     private(set) lazy var closeBarButtonItem = UIBarButtonItem(
-        image: rImage.close.original,
+        image: rImage.clear14P.original,
         style: .plain,
         target: self,
         action: #selector(leftBarButtonItemTriggered))
