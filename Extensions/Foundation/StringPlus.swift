@@ -82,9 +82,11 @@ extension StringProtocol {
 	var cgFloat: CGFloat {
 		CGFloat(double)
 	}
-	var int: Int {
-		Int(double)
-	}
+    
+    var int: Int? {
+        Int(self)
+    }
+    
 	var double: Double {
 		Double(self).ifNil(0.0)
 	}

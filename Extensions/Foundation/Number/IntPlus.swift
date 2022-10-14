@@ -8,6 +8,27 @@
 
 import UIKit
 
+extension Optional where Wrapped == Int {
+    
+    var orZero: Int { self ?? 0 }
+}
+
+extension Int {
+    
+    /// 例: 1 -> 01; 10 -> 10
+    var twoDigits: String? {
+        digits(2)
+    }
+    
+    func digits(_ minimumIntegerDigits: Int = 1) -> String? {
+        NumberFormatter.shared.configure { formatter in
+            formatter.minimumIntegerDigits = minimumIntegerDigits
+        }.transform { formatter in
+            formatter.string(from: self.nsNumber)
+        }
+    }
+}
+
 // MARK: - __________ Common __________
 extension Int {
 	
@@ -40,6 +61,10 @@ extension Int {
     
     var string: String {
         String(self)
+    }
+    
+    var nsNumber: NSNumber {
+        NSNumber(value: self)
     }
 }
 

@@ -10,6 +10,17 @@ import Foundation
 
 extension CharacterSet {
 	
+    static func ~= (lhs: Character, rhs: CharacterSet) -> Bool {
+        rhs.contains(lhs)
+    }
+    
+    /// 检查字符是否存在于字符集中
+    /// - Parameter character: 字符
+    /// - Returns: 是否包含
+    func contains(_ character: Character) -> Bool {
+        character.unicodeScalars.allSatisfy(contains)
+    }
+    
 	/// 阿拉伯数字
 	static let arabicNumbers = CharacterSet(charactersIn: "0123456789")
 	
