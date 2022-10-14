@@ -18,7 +18,7 @@ extension Numeric {
 extension Double {
     
     var percentage: String {
-        percentString(fractions: 2) ?? ""
+        percentString(fractions: 0) ?? ""
     }
     
     func percentString(fractions: Int = 0) -> String? {
