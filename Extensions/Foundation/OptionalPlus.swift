@@ -35,6 +35,14 @@ extension Optional {
         self as Any
     }
     
+    /// 过滤指定条件
+    /// - Parameter predicate: 过滤条件
+    /// - Returns: 满足指定条件的结果
+    func filter(_ predicate: (Wrapped) -> Bool) -> Wrapped? {
+        guard let unwrapped = self, predicate(unwrapped) else { return nil }
+        return unwrapped
+    }
+    
     /// 解包Optional
     /// - Parameter error: 抛出的错误
     /// - Returns: Wrapped Value

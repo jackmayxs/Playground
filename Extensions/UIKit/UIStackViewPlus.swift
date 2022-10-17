@@ -23,26 +23,45 @@ extension UIStackView {
 		self.alignment = alignment
 		self.spacing = spacing
 	}
-	
-	func addArrangedSubviews(@ArrayBuilder<UIView> content: () -> [UIView]) {
-		content().forEach { subView in
-			addArrangedSubview(subView)
-		}
-	}
-	
-	/// Remove all of the arranged subviews
-	func purgeArrangedSubviews() {
-		arrangedSubviews.forEach { subview in
-			removeArrangedSubview(subview)
-			subview.removeFromSuperview()
-		}
-	}
     
     func refill(@ArrayBuilder<UIView> content: () -> [UIView]) {
+        let subviews = content()
+        refill(arrangedSubviews: subviews)
+    }
+    
+    func add(@ArrayBuilder<UIView> content: () -> [UIView]) {
+        let subviews = content()
+        add(arrangedSubviews: subviews)
+    }
+    
+    func refill<T>(arrangedSubviews: T) where T: Sequence, T.Element: UIView {
         purgeArrangedSubviews()
-        addArrangedSubviews(content: content)
+        add(arrangedSubviews: arrangedSubviews)
+    }
+    
+    func add<T>(arrangedSubviews: T) where T: Sequence, T.Element: UIView {
+        arrangedSubviews.forEach { subview in
+            addArrangedSubview(subview)
+        }
+    }
+    
+    /// Remove all of the arranged subviews
+    func purgeArrangedSubviews() {
+        arrangedSubviews.forEach { subview in
+            removeArrangedSubview(subview)
+            subview.removeFromSuperview()
+        }
     }
 	
+    var refilledArrangedSubviews: [UIView] {
+        get { arrangedSubviews }
+        set {
+            refill {
+                newValue
+            }
+        }
+    }
+    
 	/// 内部控件边距
 	var contentInsets: UIEdgeInsets? {
 		get {

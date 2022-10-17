@@ -57,6 +57,18 @@ final class ClamppedVariable<T>: Variable<T> where T: Comparable {
 
 extension ObservableConvertibleType {
     
+    /// 将可观察数组的元素转换为指定的类型
+    /// - Parameter type: 指定转换类型
+    /// - Returns: 新的数组序列
+    func compactConvertTo<T>(_ type: T.Type) -> Observable<[T]> where Self.Element: Sequence  {
+        asObservable()
+            .compactMap { sequence in
+                sequence.compactMap { arrayElement in
+                    arrayElement as? T
+                }
+            }
+    }
+    
     func concatMapCompletable(_ selector: @escaping (Self.Element) -> Completable) -> Completable {
         asObservable()
             .concatMap(selector)

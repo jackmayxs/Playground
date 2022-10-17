@@ -39,7 +39,7 @@ class UIStackScrollView: UIBaseView {
         self.axis = axis
         self.spacing = spacing
         super.init(frame: .zero)
-        stackView.addArrangedSubviews(content: subviewsBuilder)
+        stackView.add(content: subviewsBuilder)
     }
     
     func refillSubviews(@ArrayBuilder<UIView> subviewsBuilder: () -> [UIView]) {
