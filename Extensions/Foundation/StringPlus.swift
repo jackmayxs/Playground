@@ -88,7 +88,7 @@ extension StringProtocol {
     }
     
 	var double: Double {
-		Double(self).ifNil(0.0)
+		Double(self).or(0.0)
 	}
 }
 

@@ -127,7 +127,7 @@ extension ObservableConvertibleType {
 
 extension ObservableConvertibleType where Element: OptionalType {
     
-    func ifNil(_ validElement: Element.Wrapped) -> Observable<Element.Wrapped> {
+    func or(_ validElement: Element.Wrapped) -> Observable<Element.Wrapped> {
         asObservable()
             .map { optionalElement in
                 optionalElement.optionalValue ?? validElement

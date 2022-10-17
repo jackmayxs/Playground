@@ -45,7 +45,7 @@ class UIZStackView: UIStackView {
 				case .leftToRight:
 					subview.frame.origin.x = 0
 				case .rightToLeft:
-					subview.frame.origin.x = largestSubView.ifNil(bounds.size.width, else: \.frame.size.width) - subview.frame.size.width
+					subview.frame.origin.x = largestSubView.or(bounds.size.width, else: \.frame.size.width) - subview.frame.size.width
 				@unknown default:
 					break
 				}
@@ -53,7 +53,7 @@ class UIZStackView: UIStackView {
 				subview.center = self.center
 				switch UIApplication.shared.userInterfaceLayoutDirection {
 				case .leftToRight:
-					subview.frame.origin.x = largestSubView.ifNil(bounds.size.width, else: \.frame.size.width) - subview.frame.size.width
+					subview.frame.origin.x = largestSubView.or(bounds.size.width, else: \.frame.size.width) - subview.frame.size.width
 				case .rightToLeft:
 					subview.frame.origin.x = 0
 				@unknown default:
@@ -72,7 +72,7 @@ class UIZStackView: UIStackView {
 				case .leftToRight:
 					subview.frame.origin.x = 0
 				case .rightToLeft:
-					subview.frame.origin.x = largestSubView.ifNil(bounds.size.width, else: \.frame.size.width) - subview.frame.size.width
+					subview.frame.origin.x = largestSubView.or(bounds.size.width, else: \.frame.size.width) - subview.frame.size.width
 				@unknown default:
 					break
 				}
@@ -81,7 +81,7 @@ class UIZStackView: UIStackView {
 				subview.frame.origin.y = 0
 				switch UIApplication.shared.userInterfaceLayoutDirection {
 				case .leftToRight:
-					subview.frame.origin.x = largestSubView.ifNil(bounds.size.width, else: \.frame.size.width) - subview.frame.size.width
+					subview.frame.origin.x = largestSubView.or(bounds.size.width, else: \.frame.size.width) - subview.frame.size.width
 				case .rightToLeft:
 					subview.frame.origin.x = 0
 				@unknown default:
@@ -89,21 +89,21 @@ class UIZStackView: UIStackView {
 				}
 			case .bottomLeading:
 				subview.center = self.center
-				subview.frame.origin.y = largestSubView.ifNil(bounds.size.height, else: \.frame.size.height) - subview.frame.size.height
+				subview.frame.origin.y = largestSubView.or(bounds.size.height, else: \.frame.size.height) - subview.frame.size.height
 				switch UIApplication.shared.userInterfaceLayoutDirection {
 				case .leftToRight:
 					subview.frame.origin.x = 0
 				case .rightToLeft:
-					subview.frame.origin.x = largestSubView.ifNil(bounds.size.width, else: \.frame.size.width) - subview.frame.size.width
+					subview.frame.origin.x = largestSubView.or(bounds.size.width, else: \.frame.size.width) - subview.frame.size.width
 				@unknown default:
 					break
 				}
 			case .bottomTrailing:
 				subview.center = self.center
-				subview.frame.origin.y = largestSubView.ifNil(bounds.size.height, else: \.frame.size.height) - subview.frame.size.height
+				subview.frame.origin.y = largestSubView.or(bounds.size.height, else: \.frame.size.height) - subview.frame.size.height
 				switch UIApplication.shared.userInterfaceLayoutDirection {
 				case .leftToRight:
-					subview.frame.origin.x = largestSubView.ifNil(bounds.size.width, else: \.frame.size.width) - subview.frame.size.width
+					subview.frame.origin.x = largestSubView.or(bounds.size.width, else: \.frame.size.width) - subview.frame.size.width
 				case .rightToLeft:
 					subview.frame.origin.x = 0
 				@unknown default:
