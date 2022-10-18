@@ -76,15 +76,37 @@ extension ObservableType {
     /// - Parameter observers: 观察者们
     /// - Returns: Disposable
     public func bindErrorIgnored<Observer: ObserverType>(to observers: Observer...) -> Disposable where Observer.Element == Element? {
-        map { $0 as Element? }
-            .subscribe { nextElement in
-                observers.forEach { observer in
-                    observer.onNext(nextElement)
-                }
-            } onError: { error in
-                dprint(error)
+        asOptional(Element.self).subscribe { nextElement in
+            observers.forEach { observer in
+                observer.onNext(nextElement)
             }
-
+        } onError: { error in
+            dprint(error)
+        }
+    }
+    
+    /// 绑定忽略Error事件的序列
+    /// - Parameters:
+    ///   - object: 弱引用的对象
+    ///   - onNext: Next事件
+    /// - Returns: Disposable
+    public func bindErrorIgnored<Object: AnyObject>(with object: Object, onNext: @escaping (Object, Element) -> Void) -> Disposable {
+        subscribe {
+            [weak object] nextElement in
+            guard let object else { return }
+            onNext(object, nextElement)
+        } onError: { error in
+            dprint(error)
+        }
+    }
+    
+    /// 绑定忽略Error事件的序列
+    /// - Parameter onNext: Next事件
+    /// - Returns: Disposable
+    public func bindErrorIgnored(onNext: @escaping (Element) -> Void) -> Disposable {
+        subscribe(onNext: onNext) { error in
+            dprint(error)
+        }
     }
 }
 
@@ -218,9 +240,7 @@ extension SharedSequence {
 extension ObservableType {
     
     func asOptional<T>(_ type: T.Type) -> Observable<T?> {
-        map { element in
-            element as? T
-        }
+        map { element in element as? T }
     }
     
     func `as`<T>(_ type: T.Type) -> Observable<T> {

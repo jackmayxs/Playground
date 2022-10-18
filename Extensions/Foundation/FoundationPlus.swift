@@ -26,7 +26,7 @@ func sink<In, Out>(_ output: Out) -> (In) -> Out {
 	{ _ in output }
 }
 
-func sink<In>(_ simpleCallBack: @escaping () -> Void) -> (In) -> Void {
+func sink<In>(_ simpleCallBack: @escaping SimpleCallback) -> (In) -> Void {
     { _ in simpleCallBack() }
 }
 
