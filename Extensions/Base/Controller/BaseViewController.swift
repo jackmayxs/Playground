@@ -163,6 +163,11 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
         configureNavigationItem(navigationItem)
 	}
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        view.endEditing(true)
+    }
+    
     /// 默认标题
     var defaultTitle: String? { .none }
     
