@@ -55,6 +55,39 @@ final class ClamppedVariable<T>: Variable<T> where T: Comparable {
     }
 }
 
+extension ObservableType {
+    
+    /// 绑定忽略Error事件的序列
+    /// 错误事件由上层调用.trackError(ErrorTracker)处理错误
+    /// - Parameter observers: 观察者们
+    /// - Returns: Disposable
+    public func bindErrorIgnored<Observer: ObserverType>(to observers: Observer...) -> Disposable where Observer.Element == Element {
+        subscribe { nextElement in
+            observers.forEach { observer in
+                observer.onNext(nextElement)
+            }
+        } onError: { error in
+            dprint(error)
+        }
+    }
+
+    /// 绑定忽略Error事件的序列
+    /// 错误事件由上层调用.trackError(ErrorTracker)处理错误
+    /// - Parameter observers: 观察者们
+    /// - Returns: Disposable
+    public func bindErrorIgnored<Observer: ObserverType>(to observers: Observer...) -> Disposable where Observer.Element == Element? {
+        map { $0 as Element? }
+            .subscribe { nextElement in
+                observers.forEach { observer in
+                    observer.onNext(nextElement)
+                }
+            } onError: { error in
+                dprint(error)
+            }
+
+    }
+}
+
 extension ObservableConvertibleType {
     
     /// 将可观察数组的元素转换为指定的类型
