@@ -117,7 +117,25 @@ extension String {
 	static func << (lhs: String, rhs: String) -> String { lhs }
 }
 extension String {
-	
+    
+    /// 返回指定个数的头部子字符串
+    /// - Parameter characterCount: 字符个数
+    /// - Returns: 子字符串
+    func first(_ characterCount: Int) -> Substring {
+        guard characterCount <= count else { return "" }
+        let tail = count - characterCount
+        return dropLast(tail)
+    }
+    
+    /// 返回指定个数的尾部子字符串
+    /// - Parameter characterCount: 字符个数
+    /// - Returns: 子字符串
+    func last(_ characterCount: Int) -> Substring {
+        guard characterCount <= count else { return "" }
+        let head = count - characterCount
+        return dropFirst(head)
+    }
+    
 	func indices(of occurrence: String) -> [Int] {
 		var indices: [Int] = []
 		var position = startIndex
