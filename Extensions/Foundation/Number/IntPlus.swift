@@ -43,6 +43,10 @@ extension Int {
 		return (self / decimalBase) % 10
 	}
 	
+    var bool: Bool {
+        self > 0 ? true : false
+    }
+    
 	var cgFloat: CGFloat {
 		CGFloat(self)
 	}

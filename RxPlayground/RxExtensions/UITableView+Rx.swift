@@ -11,13 +11,19 @@ import RxCocoa
 extension Reactive where Base: UITableView {
     
     var numberOfRows: Observable<Int> {
-        methodInvoked(#selector(UITableView.reloadData)).map { _ in
-            guard let dataSource = base.dataSource else { return 0 }
+        dataReloaded.map { tableView in
+            guard let dataSource = tableView.dataSource else { return 0 }
             let sectionCount = dataSource.numberOfSections?(in: base) ?? 1
             return (0..<sectionCount).reduce(0) { partialResult, section in
                 partialResult + dataSource.tableView(base, numberOfRowsInSection: section)
             }
         }
+    }
+    
+    var dataReloaded: Observable<Base> {
+        methodInvoked(#selector(base.reloadData))
+            .withUnretained(base)
+            .map(\.0)
     }
     
     var isAllRowsSelected: Observable<Bool> {
@@ -32,12 +38,12 @@ extension Reactive where Base: UITableView {
     }
     
     var selectedIndexPaths: Observable<[IndexPath]> {
-        selectedIndexPathChanged.map { _ in
-            base.indexPathsForSelectedRows ?? []
-        }
+        rowSelectionChanged
+            .withUnretained(base)
+            .compactMap(\.0.indexPathsForSelectedRows)
     }
     
-    var selectedIndexPathChanged: Observable<IndexPath> {
+    var rowSelectionChanged: Observable<IndexPath> {
         Observable.of(selectRowAt, itemSelected.observable, itemDeselected.observable).merge()
     }
     
