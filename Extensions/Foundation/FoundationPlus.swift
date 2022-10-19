@@ -30,12 +30,6 @@ func sink<In>(_ simpleCallBack: @escaping SimpleCallback) -> (In) -> Void {
     { _ in simpleCallBack() }
 }
 
-extension Set {
-    var array: Array<Element> {
-        Array(self)
-    }
-}
-
 // MARK: - __________ Dictionary __________
 extension Dictionary where Value: OptionalType {
 	var unwrapped: Dictionary<Key, Value.Wrapped> {
