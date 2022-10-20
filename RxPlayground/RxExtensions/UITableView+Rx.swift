@@ -40,7 +40,7 @@ extension Reactive where Base: UITableView {
     var selectedIndexPaths: Observable<[IndexPath]> {
         rowSelectionChanged
             .withUnretained(base)
-            .compactMap(\.0.indexPathsForSelectedRows)
+            .map(\.0.indexPathsForSelectedRows.orEmpty)
     }
     
     var rowSelectionChanged: Observable<IndexPath> {
@@ -48,7 +48,7 @@ extension Reactive where Base: UITableView {
     }
     
     private var selectRowAt: Observable<IndexPath> {
-        base.rx.methodInvoked(#selector(base.selectRow(at:animated:scrollPosition:)))
+        base.rx.methodInvoked(#selector(UITableView.selectRow(at:animated:scrollPosition:)))
             .map(\.first)
             .unwrapped
             .as(IndexPath.self)

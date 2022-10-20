@@ -29,7 +29,7 @@ extension Reactive where Base: UICollectionView {
     var selectedIndexPaths: Observable<[IndexPath]> {
         itemSelectionChanged
             .withUnretained(base)
-            .compactMap(\.0.indexPathsForSelectedItems)
+            .map(\.0.indexPathsForSelectedItems.orEmpty)
     }
     
     var itemSelectionChanged: Observable<IndexPath> {
@@ -37,7 +37,7 @@ extension Reactive where Base: UICollectionView {
     }
     
     private var selectItemAt: Observable<IndexPath> {
-        base.rx.methodInvoked(#selector(base.selectItem(at:animated:scrollPosition:)))
+        base.rx.methodInvoked(#selector(UICollectionView.selectItem(at:animated:scrollPosition:)))
             .map(\.first)
             .unwrapped
             .as(IndexPath.self)
