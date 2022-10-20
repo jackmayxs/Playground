@@ -13,6 +13,12 @@ extension Optional where Wrapped == Int {
     var orZero: Int { self ?? 0 }
 }
 
+extension UInt16 {
+    var int: Int {
+        Int(self)
+    }
+}
+
 extension Int {
     
     /// 例: 1 -> 01; 10 -> 10

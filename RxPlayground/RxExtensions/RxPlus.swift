@@ -8,6 +8,13 @@
 import RxSwift
 import RxCocoa
 
+extension DisposeBag {
+    func insert(@ArrayBuilder<Disposable> builder: () -> [Disposable]) {
+        let disposables = builder()
+        insert(disposables)
+    }
+}
+
 @propertyWrapper
 class Variable<Wrapped> {
     
