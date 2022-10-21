@@ -19,7 +19,7 @@ extension AVAuthorizationStatus: LocalizedError {
         case .restricted:
             return "RESTRICTED"
         case .denied:
-            return "DENIED"
+            return localized.相机未授权~
         case .authorized:
             return "AUTHORIZED"
         @unknown default:

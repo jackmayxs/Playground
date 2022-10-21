@@ -25,6 +25,14 @@ func dprint(_ items: Any..., file: String = #fileID, function: String = #functio
 	#endif
 }
 
+var isDebugging: Bool {
+    #if DEBUG
+    return true
+    #else
+    return false
+    #endif
+}
+
 /// 判断是否是主队列
 fileprivate let mainQueueSpecificKey = DispatchSpecificKey<UUID>()
 fileprivate let mainQueueID = UUID()

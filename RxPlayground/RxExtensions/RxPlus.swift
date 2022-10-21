@@ -163,6 +163,25 @@ extension ObservableConvertibleType {
         }
     }
     
+    @discardableResult
+    func then<Object: AnyObject>(with object: Object, blockByError: Bool = false, _ nextStep: @escaping (Object, Error?) -> Void) -> Disposable {
+        asObservable()
+            .ignoreElements()
+            .asCompletable()
+            .subscribe {
+                [weak object] event in
+                guard let object else { return }
+                switch event {
+                case .completed:
+                    nextStep(object, nil)
+                case .error(let error):
+                    if !blockByError {
+                        nextStep(object, error)
+                    }
+                }
+            }
+    }
+    
     /// 序列结束时回调Closure
     /// - Parameters:
     ///   - blockByError: 发生Error时是否继续执行下一步

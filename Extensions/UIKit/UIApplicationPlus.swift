@@ -29,6 +29,11 @@ extension UIApplication {
         
         func didGetNewRelease(_ release: Release?) {
             DispatchQueue.main.async {
+                if release.isNotValid && isDebugging {
+                    let release = Release(version: Bundle.main.version.orEmpty + ".1", notes: nil)
+                    completed(release)
+                    return
+                }
                 completed(release)
             }
         }
