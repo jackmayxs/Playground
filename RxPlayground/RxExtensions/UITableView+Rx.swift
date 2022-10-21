@@ -21,7 +21,7 @@ extension Reactive where Base: UITableView {
     }
     
     var dataReloaded: Observable<Base> {
-        methodInvoked(#selector(base.reloadData))
+        methodInvoked(#selector(UITableView.reloadData))
             .withUnretained(base)
             .map(\.0)
     }

@@ -8,18 +8,32 @@
 
 import UIKit
 
+// MARK: - Optional<Int>
 extension Optional where Wrapped == Int {
     
     var orZero: Int { self ?? 0 }
 }
 
+// MARK: - UInt16
 extension UInt16 {
     var int: Int {
         Int(self)
     }
 }
 
+// MARK: - Common
 extension Int {
+	
+	// 获取一个整形数字个十百千...位上的数字. 例如:
+	// 746381295[0] == 5 个位数字
+	// 746381295[1] == 9 十位数字...
+	subscript(digitIndex: Int) -> Int {
+		var decimalBase = 1
+		for _ in 0 ..< digitIndex {
+			decimalBase *= 10
+		}
+		return (self / decimalBase) % 10
+	}
     
     /// 例: 1 -> 01; 10 -> 10
     var twoDigits: String? {
@@ -33,21 +47,6 @@ extension Int {
             formatter.string(from: self.nsNumber)
         }
     }
-}
-
-// MARK: - __________ Common __________
-extension Int {
-	
-	// 获取一个整形数字个十百千...位上的数字. 例如:
-	// 746381295[0] == 5 个位数字
-	// 746381295[1] == 9 十位数字...
-	subscript(digitIndex: Int) -> Int {
-		var decimalBase = 1
-		for _ in 0 ..< digitIndex {
-			decimalBase *= 10
-		}
-		return (self / decimalBase) % 10
-	}
     
     var isZero: Bool {
         self == 0
@@ -95,6 +94,7 @@ extension Int {
     }
 }
 
+// MARK: - Int + Calendar
 extension Int {
 	
 	static func * (lhs: Int, component: Calendar.Component) -> DateComponents {
@@ -126,4 +126,12 @@ extension Int {
 	fileprivate static func timeInterval(in component: Calendar.Component) -> TimeInterval {
 		Double.timeInterval(in: component)
 	}
+}
+
+// MARK: - Int 操作符
+extension Int {
+    
+    static postfix func ++(input: inout Int) {
+        input += 1
+    }
 }

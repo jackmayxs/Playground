@@ -7,16 +7,23 @@
 
 import UIKit
 import RxSwift
+import RxCocoa
 
 class UIGetVerificationCodeButton: QMLoadingButton {
 
     private var timer: GCDTimer?
     
+    @Variable private var resignActiveDate: Date?
+    @Variable private var activeDate: Date?
+    
     private var remainSeconds = 1 {
         willSet {
-            if newValue == 0 {
+            if newValue <= 0 {
                 isUserInteractionEnabled = true
                 setTitle(localized.获取验证码~, for: .normal)
+                if let timer {
+                    timer.invalidate()
+                }
             } else {
                 let title = LocalizationManager.shared.localized(remainSeconds: newValue)
                 setTitle(title, for: .normal)
@@ -31,6 +38,33 @@ class UIGetVerificationCodeButton: QMLoadingButton {
         titleLabel?.font = .systemFont(ofSize: 14.0)
         setTitle(localized.获取验证码~, for: .normal)
         setTitleColor(.actionable, for: .normal)
+        
+        rx.disposeBag.insert {
+            Observable.combineLatest($resignActiveDate.unwrapped, $activeDate.unwrapped)
+                .map { resign, active -> Int in
+                    guard active >= resign else { return 0 }
+                    return active.timeIntervalSince(resign).int
+                }
+                .filter(\.isPositive)
+                .bind {
+                    [unowned self] passedSeconds in
+                    remainSeconds -= passedSeconds
+                }
+            
+            NotificationCenter.default.rx
+                .notification(UIApplication.didEnterBackgroundNotification)
+                .map { note in
+                    Date.now
+                }
+                .bind(to: rx.resignActiveDate)
+            
+            NotificationCenter.default.rx
+                .notification(UIApplication.willEnterForegroundNotification)
+                .map { note in
+                    Date.now
+                }
+                .bind(to: rx.activeDate)
+        }
     }
     
     required init?(coder: NSCoder) {
