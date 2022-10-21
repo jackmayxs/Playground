@@ -49,6 +49,18 @@ extension Int {
 		return (self / decimalBase) % 10
 	}
     
+    var isZero: Bool {
+        self == 0
+    }
+    
+    var isNegative: Bool {
+        self < 0
+    }
+    
+    var isPositive: Bool {
+        self > 0
+    }
+    
     /// 转换成索引值
     var index: Int {
         Swift.max(0, self - 1)
