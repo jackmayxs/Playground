@@ -38,26 +38,27 @@ struct ControllerPresentor {
         presentingController.present(controller, animated: true)
     }
     
-    func popDialog(@SingleValueBuilder<PresentedControllerType> _ controllerBuilder: () -> PresentedControllerType) {
+    func popDialog(tapBackgroundToDismissEnabled: Bool = true, @SingleValueBuilder<PresentedControllerType> _ controllerBuilder: () -> PresentedControllerType) {
         let controller = controllerBuilder()
         popDialog(controller)
     }
     
-    func popDialog(_ controller: PresentedControllerType) {
-        let cover = CoverPresentation(
-            directionShow: .left,
-            directionDismiss: .right,
-            uiConfiguration: PresentationUIConfiguration(
+    func popDialog(_ controller: PresentedControllerType, tapBackgroundToDismissEnabled: Bool = true) {
+        let fade = FadePresentation(
+            size: controller.preferredContentSize.presentationSize,
+            timing: PresentationTiming(
+                duration: .custom(duration: 0.25),
+                presentationCurve: .easeInOut,
+                dismissCurve: .easeInOut
+            ),
+            ui: PresentationUIConfiguration(
                 cornerRadius: 6,
                 backgroundStyle: .dimmed(alpha: 0.7),
-                isTapBackgroundToDismissEnabled: true,
+                isTapBackgroundToDismissEnabled: tapBackgroundToDismissEnabled,
                 corners: .allCorners
-            ),
-            size: controller.preferredContentSize.presentationSize,
-            alignment: PresentationAlignment(vertical: .center, horizontal: .center),
-            timing: PresentationTiming(duration: .normal, presentationCurve: .easeIn, dismissCurve: .easeOut)
+            )
         )
-        let animator = Animator(presentation: cover)
+        let animator = Animator(presentation: fade)
         controller.prepareAnimator(animator)
         presentingController.present(controller, animated: true)
     }
@@ -300,7 +301,32 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
     
     /// 添加事件
     /// 调用时机: viewDidload -> afterViewLoadedConfigure
-    func prepareTargets() {}
+    func prepareTargets() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillShow),
+            name: UIControl.keyboardWillShowNotification,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillHide),
+            name: UIControl.keyboardWillHideNotification,
+            object: nil
+        )
+    }
+    
+    @objc private func keyboardWillShow(_ note: Notification) {
+        guard let presentation = KeyboardPresentation(state: .presenting, note) else { return }
+        keyboardPresentation(presentation)
+    }
+    
+    @objc private func keyboardWillHide(_ note: Notification) {
+        guard let presentation = KeyboardPresentation(state: .dismissing, note) else { return }
+        keyboardPresentation(presentation)
+    }
+    
+    func keyboardPresentation(_ presentation: KeyboardPresentation) {}
     
     @objc func leftBarButtonItemTriggered() {
         escape(animated: true)
@@ -378,6 +404,10 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
     
     override func forceEnableInteractivePopGestureRecognizer() -> Bool {
         true
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 }
 
