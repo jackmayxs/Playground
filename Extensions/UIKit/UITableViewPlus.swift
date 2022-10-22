@@ -10,18 +10,32 @@ import UIKit
 
 extension UITableView {
 	
-    func performAllCellSelection(_ selected: Bool) {
+    var numberOfRows: Int {
+        (0..<numberOfSections).reduce(0) { rowCount, section in
+            rowCount + numberOfRows(inSection: section)
+        }
+    }
+    
+    func performAllCellSelection(_ performSelection: Bool) {
         for section in 0..<numberOfSections {
             for row in 0..<numberOfRows(inSection: section) {
                 let indexPath = IndexPath(row: row, section: section)
-                if selected {
-                    _ = delegate?.tableView?(self, willSelectRowAt: indexPath)
-                    selectRow(at: indexPath, animated: false, scrollPosition: .none)
-                    delegate?.tableView?(self, didSelectRowAt: indexPath)
-                } else {
-                    _ = delegate?.tableView?(self, willDeselectRowAt: indexPath)
-                    deselectRow(at: indexPath, animated: false)
-                    delegate?.tableView?(self, didDeselectRowAt: indexPath)
+                if let cell = cellForRow(at: indexPath) {
+                    if performSelection {
+                        /// 未选中的行才执行选中操作,避免重复调用
+                        if !cell.isSelected {
+                            _ = delegate?.tableView?(self, willSelectRowAt: indexPath)
+                            selectRow(at: indexPath, animated: false, scrollPosition: .none)
+                            delegate?.tableView?(self, didSelectRowAt: indexPath)
+                        }
+                    } else {
+                        /// 选中的行才执行反选操作,避免重复调用
+                        if cell.isSelected {
+                            _ = delegate?.tableView?(self, willDeselectRowAt: indexPath)
+                            deselectRow(at: indexPath, animated: false)
+                            delegate?.tableView?(self, didDeselectRowAt: indexPath)
+                        }
+                    }
                 }
             }
         }
@@ -64,4 +78,21 @@ extension UITableViewHeaderFooterView {
 	static func dequeueReusableHeaderFooterView(from tableView: UITableView) -> Self? {
 		tableView.dequeueReusableHeaderFooterView(withIdentifier: reuseId) as? Self
 	}
+}
+
+// MARK: - KK<UITableView>
+extension KK where Base: UITableView {
+    
+    /// 刷新列表
+    /// - Parameter keepLastSelections: 重新选择上次选中的行
+    func reloadData(keepLastSelections: Bool) {
+        if keepLastSelections, let lastSelections = base.indexPathsForSelectedRows {
+            base.reloadData()
+            lastSelections.forEach { indexPath in
+                base.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+            }
+        } else {
+            base.reloadData()
+        }
+    }
 }

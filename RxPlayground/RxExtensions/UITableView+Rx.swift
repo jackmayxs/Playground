@@ -8,49 +8,91 @@
 import RxSwift
 import RxCocoa
 
-extension Reactive where Base: UITableView {
+extension UITableView {
     
-    var numberOfRows: Observable<Int> {
-        dataReloaded.map { tableView in
-            guard let dataSource = tableView.dataSource else { return 0 }
-            let sectionCount = dataSource.numberOfSections?(in: base) ?? 1
-            return (0..<sectionCount).reduce(0) { partialResult, section in
-                partialResult + dataSource.tableView(base, numberOfRowsInSection: section)
-            }
+    /// 监听 | 刷新之后重新选中之前的选中行
+    /// 只有latestSelectedIndexPaths订阅的时候这个方法才会调用
+    fileprivate func observeToReselect() {
+        /// 这里可以获取到正常的indexPathsForSelectedRows
+        /// 可见这里的时间节点是在reloadData之前的
+        guard let lastSelected = indexPathsForSelectedRows else { return }
+        _ = rx.didReloadData.once.bind { emitedTable in
+            emitedTable.rx.selectedIndexPaths.onNext(lastSelected)
         }
     }
     
-    var dataReloaded: Observable<Base> {
-        methodInvoked(#selector(UITableView.reloadData))
+    /// 最新选中的IndexPaths
+    fileprivate var latestSelectedIndexPaths: Observable<[IndexPath]> {
+        rx.indexPathsAfterSelectionChanged
+            .do(onSubscribe: observeToReselect)
+            .startWith(indexPathsForSelectedRows.orEmpty)
+    }
+    
+    /// 检查是否选中所有行
+    /// - Parameter selectedIndexPaths: 选中行
+    /// - Returns: 是否全部选中
+    fileprivate func checkAllRowsSelected(_ selectedIndexPaths: [IndexPath]) -> Bool {
+        selectedIndexPaths.isEmpty ? false : selectedIndexPaths.count == numberOfRows
+    }
+}
+
+extension Reactive where Base: UITableView {
+    
+    var numberOfRows: Observable<Int> {
+        didReloadData.map(\.numberOfRows)
+    }
+    
+    var isAllRowsSelected: Driver<Bool> {
+        selectedIndexPaths
+            .map(base.checkAllRowsSelected)
+            .startWith(false)
+            .distinctUntilChanged()
+            .asDriver(onErrorJustReturn: false)
+    }
+    
+    /// 选中的IndexPaths
+    fileprivate var observeSelectedIndexPaths: Observable<[IndexPath]> {
+        willReloadData.startWith(base).flatMapLatest(\.latestSelectedIndexPaths)
+    }
+    fileprivate var selectedIndexPathsBinder: Binder<[IndexPath]> {
+        Binder(base) { table, selectedIndexPaths in
+            guard selectedIndexPaths != table.indexPathsForSelectedRows else { return }
+            selectedIndexPaths.forEach { indexPath in
+                table.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+            }
+        }
+    }
+    var selectedIndexPaths: ControlProperty<[IndexPath]> {
+        ControlProperty(values: observeSelectedIndexPaths, valueSink: selectedIndexPathsBinder)
+    }
+    
+    /// 调用reloadData之后的通知
+    var didReloadData: Observable<Base> {
+        methodInvoked(#selector(base.reloadData))
             .withUnretained(base)
             .map(\.0)
     }
     
-    var isAllRowsSelected: Observable<Bool> {
-        selectedIndexPaths.map { selectedPaths in
-            let sectionCount = base.numberOfSections
-            var rowsCount = 0
-            for section in 0..<sectionCount {
-                rowsCount += base.numberOfRows(inSection: section)
-            }
-            return selectedPaths.count == rowsCount
-        }
+    /// 调用reloadData之前的通知
+    var willReloadData: Observable<Base> {
+        sentMessage(#selector(base.reloadData))
+            .withUnretained(base)
+            .map(\.0)
     }
     
-    var selectedIndexPaths: Observable<[IndexPath]> {
+    fileprivate var indexPathsAfterSelectionChanged: Observable<[IndexPath]> {
         rowSelectionChanged
             .withUnretained(base)
             .map(\.0.indexPathsForSelectedRows.orEmpty)
     }
     
-    var rowSelectionChanged: Observable<IndexPath> {
-        Observable.of(selectRowAt, itemSelected.observable, itemDeselected.observable).merge()
+    private var rowSelectionChanged: Observable<IndexPath> {
+        Observable.merge(selectRowAt, itemSelected.observable, itemDeselected.observable)
     }
     
     private var selectRowAt: Observable<IndexPath> {
-        base.rx.methodInvoked(#selector(UITableView.selectRow(at:animated:scrollPosition:)))
-            .map(\.first)
-            .unwrapped
+        base.rx.methodInvoked(#selector(base.selectRow(at:animated:scrollPosition:)))
+            .compactMap(\.first)
             .as(IndexPath.self)
     }
 }

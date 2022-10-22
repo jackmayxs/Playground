@@ -218,6 +218,20 @@ extension ObservableConvertibleType {
     }
 }
 
+// MARK: - Observable of Collection
+extension ObservableConvertibleType where Element: Collection {
+    
+    /// Emit nil if the collection is empty
+    var ifEmptyEmitNil: Observable<Element?> {
+        asObservable()
+            .map { collection in
+                if collection.isEmpty { return nil }
+                return collection
+            }
+    }
+}
+
+// MARK: - Observable of OptionalType
 extension ObservableConvertibleType where Element: OptionalType {
     
     func or(_ validElement: Element.Wrapped) -> Observable<Element.Wrapped> {

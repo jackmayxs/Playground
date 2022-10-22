@@ -240,7 +240,7 @@ extension UIView {
     /// 注: 这时自身底部的约束就不好设置成相对父视图的safeAreaLayoutGuide了, 直接相对于父视图本身能达到效果.
     /// 可能不是最优解,待后续优化
     @available(iOS 11.0, *)
-    var additionalSafeAreaInsetsForSuperView: UIEdgeInsets {
+    var additionalSafeAreaInsetsFromSuperView: UIEdgeInsets {
         .bottom(bottomSafeAreaPadding + frame.height)
     }
     
