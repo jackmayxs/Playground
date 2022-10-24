@@ -98,11 +98,25 @@ class BaseTableViewController: BaseViewController, UITableViewDataSource, UITabl
     /// 组尾估算高度
     func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat { 50.0 }
     
+    /// 将要选中行
+    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        indexPath
+    }
+    
     /// 选中一行
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if deselectCellAfterCellSelection {
             tableView.deselectRow(at: indexPath, animated: true)
         }
+    }
+    
+    /// 将要反选一行
+    func tableView(_ tableView: UITableView, willDeselectRowAt indexPath: IndexPath) -> IndexPath? {
+        indexPath
+    }
+    
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        
     }
     
     /// 组头

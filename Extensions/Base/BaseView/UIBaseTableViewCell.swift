@@ -52,10 +52,10 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
             /// 高亮或者选中时隐藏分割线
             if state.isHighlighted || state.isSelected {
                 separator.isHidden = true
-                teammateCellBelow?.separator.isHidden = true
+//                teammateCellBelow?.separator.isHidden = true
                 contentView.backgroundColor = .secondarySystemGroupedBackground
             } else {
-                teammateCellBelow?.separator.isHidden = false
+//                teammateCellBelow?.separator.isHidden = false
                 adjustSeparatorFor(tableView, at: indexPath)
                 contentView.backgroundColor = defaultBackgroundColor
             }
