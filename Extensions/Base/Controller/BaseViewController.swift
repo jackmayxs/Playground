@@ -421,11 +421,15 @@ extension BaseViewController {
         updateNotifier.take(1)
     }
     
+    var latestMessage: String? {
+        get { nil }
+        set {
+            popToast(newValue)
+        }
+    }
+    
     func popToast(_ message: String?) {
-        let tips = QMUITips.createTips(to: view)
-        let animator = QMUIToastAnimator(toastView: tips)
-        tips.toastAnimator = animator
-        tips.showInfo(message, hideAfterDelay: 2.0)
+        view.popToast(message)
     }
     
     func fetchPhotos(count: Int = 1, targetImageSize: CGSize? = nil, allowsEditing: Bool = false) {
