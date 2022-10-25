@@ -20,22 +20,14 @@ extension UITableView {
         for section in 0..<numberOfSections {
             for row in 0..<numberOfRows(inSection: section) {
                 let indexPath = IndexPath(row: row, section: section)
-                if let cell = cellForRow(at: indexPath) {
-                    if performSelection {
-                        /// 未选中的行才执行选中操作,避免重复调用
-                        if !cell.isSelected {
-                            _ = delegate?.tableView?(self, willSelectRowAt: indexPath)
-                            selectRow(at: indexPath, animated: false, scrollPosition: .none)
-                            delegate?.tableView?(self, didSelectRowAt: indexPath)
-                        }
-                    } else {
-                        /// 选中的行才执行反选操作,避免重复调用
-                        if cell.isSelected {
-                            _ = delegate?.tableView?(self, willDeselectRowAt: indexPath)
-                            deselectRow(at: indexPath, animated: false)
-                            delegate?.tableView?(self, didDeselectRowAt: indexPath)
-                        }
-                    }
+                if performSelection {
+                    _ = delegate?.tableView?(self, willSelectRowAt: indexPath)
+                    selectRow(at: indexPath, animated: false, scrollPosition: .none)
+                    delegate?.tableView?(self, didSelectRowAt: indexPath)
+                } else {
+                    _ = delegate?.tableView?(self, willDeselectRowAt: indexPath)
+                    deselectRow(at: indexPath, animated: false)
+                    delegate?.tableView?(self, didDeselectRowAt: indexPath)
                 }
             }
         }
