@@ -10,6 +10,10 @@ import RxCocoa
 
 extension Reactive where Base: UIView {
     
+    var didMoveToWindow: Observable<UIWindow?> {
+        base.rx.methodInvoked(#selector(base.didMoveToWindow)).map { _ in base.window }
+    }
+    
     var didLayoutSubviews: Observable<Base> {
         base.rx.methodInvoked(#selector(base.layoutSubviews)).map { _ in base }
     }
