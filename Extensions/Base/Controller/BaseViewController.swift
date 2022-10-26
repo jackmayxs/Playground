@@ -178,6 +178,12 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
     /// 是否显示导航栏
     var doHideNavigationBar: Bool { false }
     
+    /// 是否可以返回
+    var isBackAvailable = true
+    
+    /// 不能返回时给出的提示
+    var tipsForBackUnavailable: String?
+    
     /// 控制器配置 | 调用时机: init
     func initialConfigure() {
         
@@ -332,7 +338,38 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
         escape(animated: true)
     }
     
+    /// 开启可返回
+    func enableBack() {
+        makeIsBackAvailable(true)
+    }
+    
+    /// 关闭可返回
+    func disableBack() {
+        makeIsBackAvailable(false)
+    }
+    
+    /// 调整可否返回
+    /// - Parameter available: 是否可返回
+    private func makeIsBackAvailable(_ available: Bool) {
+        isBackAvailable = available
+    }
+    
+    /// 检查是否可以返回
+    /// - Returns: 是否可返回
+    private func checkIsBackAvailable() -> Bool {
+        guard isBackAvailable else {
+            if let tipsForBackUnavailable {
+                popToast(tipsForBackUnavailable)
+            }
+            return false
+        }
+        return isBackAvailable
+    }
+    
     @objc func escape(animated: Bool = true) {
+        guard checkIsBackAvailable() else {
+            return
+        }
         if let navigationController = navigationController {
             if navigationController.viewControllers.count > 1 {
                 goBack(animated: animated)
@@ -403,7 +440,7 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
     }
     
     override func forceEnableInteractivePopGestureRecognizer() -> Bool {
-        true
+        isBackAvailable
     }
     
     deinit {
