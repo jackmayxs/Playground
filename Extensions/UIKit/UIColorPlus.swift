@@ -49,21 +49,22 @@ extension UIColor {
         return UIGraphicsGetImageFromCurrentImageContext()
     }
     
-    func viewWithSize(_ size: CGFloat) -> UIView {
-        view(UIView.self, size: size)
+    func viewWithSize(_ size: CGFloat, constrained: Bool = true) -> UIView {
+        view(UIView.self, size: size, constrained: constrained)
     }
     
-    func view<T>(_ type: T.Type, size: CGFloat) -> T where T: UIView {
-        view(type, width: size, height: size)
+    func view<T>(_ type: T.Type, size: CGFloat, constrained: Bool = true) -> T where T: UIView {
+        view(type, width: size, height: size, constrained: constrained)
     }
     
-    func view<T>(_ type: T.Type, width: CGFloat, height: CGFloat) -> T where T: UIView {
+    func view<T>(_ type: T.Type, width: CGFloat, height: CGFloat, constrained: Bool = true) -> T where T: UIView {
         let size = CGSize(width: width, height: height)
         let rect = CGRect(origin: .zero, size: size)
         let view = T(frame: rect)
         view.backgroundColor = self
-        view.widthAnchor.constraint(equalToConstant: width).isActive = true
-        view.heightAnchor.constraint(equalToConstant: height).isActive = true
+        if constrained {
+            view.fix(width: width, height: height)
+        }
         return view
     }
 }
