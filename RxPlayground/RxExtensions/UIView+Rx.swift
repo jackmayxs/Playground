@@ -11,11 +11,15 @@ import RxCocoa
 extension Reactive where Base: UIView {
     
     var didMoveToWindow: Observable<UIWindow?> {
-        base.rx.methodInvoked(#selector(base.didMoveToWindow)).map { _ in base.window }
+        base.rx.methodInvoked(#selector(base.didMoveToWindow))
+            .withUnretained(base)
+            .map { baseView, _ in baseView.window }
     }
-    
+
     var didLayoutSubviews: Observable<Base> {
-        base.rx.methodInvoked(#selector(base.layoutSubviews)).map { _ in base }
+        base.rx.methodInvoked(#selector(base.layoutSubviews))
+            .withUnretained(base)
+            .map { baseView, _ in baseView }
     }
     
     var superView: Observable<UIView> {

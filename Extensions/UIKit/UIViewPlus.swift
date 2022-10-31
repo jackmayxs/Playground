@@ -288,13 +288,15 @@ extension UIView {
     /// 固定宽高
     /// - Returns: 自己
     func fix(width: CGFloat? = nil, height: CGFloat? = nil) -> Self {
-        if let width = width {
-            widthAnchor.constraint(equalToConstant: width).isActive = true
-        }
-        if let height = height {
-            heightAnchor.constraint(equalToConstant: height).isActive = true
-        }
         translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate {
+            if let width = width {
+                widthAnchor.constraint(equalToConstant: width)
+            }
+            if let height = height {
+                heightAnchor.constraint(equalToConstant: height)
+            }
+        }
         return self
     }
     
