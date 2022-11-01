@@ -27,9 +27,9 @@ func dprint(_ items: Any..., file: String = #fileID, function: String = #functio
 
 var isDebugging: Bool {
     #if DEBUG
-    return true
+    true
     #else
-    return false
+    false
     #endif
 }
 
