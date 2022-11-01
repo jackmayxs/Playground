@@ -46,7 +46,7 @@ public extension Reactive where Base: AnyObject {
 
 // MARK: - Error & Activity Tracker
 protocol ErrorTracker: UIResponder {
-    func trackError(_ error: Error?)
+    func trackError(_ error: Error?, isFatal: Bool)
 }
 
 protocol ActivityTracker: NSObject {
@@ -97,7 +97,7 @@ extension ObservableConvertibleType {
     ///   - tracker: 错误跟踪者
     ///   - respondDepth: 响应深度 | nextResponder的深度, 如UIView的父视图
     /// - Returns: 观察序列
-    func trackError(_ tracker: ErrorTracker?, respondDepth: Int = 0) -> Observable<Element> {
+    func trackError(_ tracker: ErrorTracker?, isFatal: Bool = true, respondDepth: Int = 0) -> Observable<Element> {
         asObservable()
             .do { _ in
                 
@@ -109,7 +109,7 @@ extension ObservableConvertibleType {
                         responder = nextTracker
                     }
                 }
-                responder?.trackError(error)
+                responder?.trackError(error, isFatal: isFatal)
             }
     }
 }

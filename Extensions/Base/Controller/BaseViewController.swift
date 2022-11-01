@@ -426,9 +426,13 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
         picker.dismiss(animated: true)
     }
     
-    func trackError(_ error: Error?) {
+    func trackError(_ error: Error?, isFatal: Bool = true) {
         guard let error else { return }
-        view.popFailToast(error.localizedDescription)
+        if isFatal {
+            view.popFailToast(error.localizedDescription)
+        } else {
+            view.popToast(error.localizedDescription)
+        }
     }
     
     func trackActivity(_ isProcessing: Bool) {

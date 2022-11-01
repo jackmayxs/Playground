@@ -113,8 +113,12 @@ class UIBaseView: UIView, ControllerBaseView {
 
 extension UIView: ErrorTracker {
     
-    func trackError(_ error: Error?) {
-        guard let validError = error else { return }
-        QMUITips.showError(validError.localizedDescription, in: self)
+    func trackError(_ error: Error?, isFatal: Bool = true) {
+        guard let error else { return }
+        if isFatal {
+            popFailToast(error.localizedDescription)
+        } else {
+            popToast(error.localizedDescription)
+        }
     }
 }
