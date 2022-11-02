@@ -369,14 +369,39 @@ extension UIView {
 			bounds.size.width = width
 		}
 	}
+    
+    func superview(where predicate: (UIView) -> Bool) -> UIView? {
+        superview(UIView.self, where: predicate)
+    }
+    
+    /// 找到符合条件的父视图
+    /// - Parameter predicate: 判断父视图是否合规的判决条件
+    /// - Returns: 满足条件的父视图
+    func superview<SuperView: UIView>(_ type: SuperView.Type, where predicate: (SuperView) -> Bool) -> SuperView? {
+        var targetSuperview: SuperView?
+        var nextResponder = next
+        while let unwrapResponder = nextResponder {
+            if let nextSuperview = unwrapResponder as? SuperView {
+                if predicate(nextSuperview) {
+                    targetSuperview = nextSuperview
+                    break
+                }
+            }
+            nextResponder = unwrapResponder.next
+        }
+        return targetSuperview
+    }
 	
 	/// 获取父视图
 	/// - Parameter type: 父视图类型
 	/// - Returns: 有效的父视图
-	func parentSuperView<SuperView: UIView>(_ type: SuperView.Type) -> SuperView? {
+	func superview<SuperView: UIView>(_ type: SuperView.Type) -> SuperView? {
+        /// 确保有父视图
 		guard let validSuperview = superview else { return nil }
+        /// 转换成指定类型的父视图
 		guard let matchedSuperview = validSuperview as? SuperView else {
-			return validSuperview.parentSuperView(SuperView.self)
+            /// 如果转换失败则查找父视图的parentSuperView
+			return validSuperview.superview(SuperView.self)
 		}
 		return matchedSuperview
 	}

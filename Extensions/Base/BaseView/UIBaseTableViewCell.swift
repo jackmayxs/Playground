@@ -182,7 +182,7 @@ extension UIBaseTableViewCell {
         if let tableView_ {
             return tableView_
         } else {
-            tableView_ = parentSuperView(UITableView.self)
+            tableView_ = superview(UITableView.self)
             return tableView_
         }
     }

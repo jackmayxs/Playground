@@ -8,10 +8,6 @@
 import UIKit
 
 struct KeyboardPresentation {
-    enum State {
-        case presenting
-        case dismissing
-    }
     let state: State
     let fromRect: CGRect
     let toRect: CGRect
@@ -42,5 +38,36 @@ struct KeyboardPresentation {
             return nil
         }
         self.animationCurve = animationCurve
+    }
+}
+
+extension KeyboardPresentation {
+    enum State {
+        case presenting
+        case dismissing
+    }
+}
+
+extension KeyboardPresentation {
+    
+    /// 根据键盘显示/隐藏调整相应父视图的坐标
+    /// - Parameter closeSubview: 父视图的直接子视图(superview.subviews contains closeSubview)
+    /// 注: 通过调整父视图的bounds属性实现子视图整体上移,以达到避免键盘遮挡的问题
+    func adjustBoundsOfSuperviewIfNeeded(closeSubview: UIView?) {
+        guard let closeSubview else { return }
+        guard let superview = closeSubview.superview else { return }
+        switch state {
+        case .presenting:
+            /// 键盘顶部间距
+            let padding = 30.0
+            /// 键盘顶部的Y值 - 键盘顶部间距
+            let keyboardTolerance = toRect.minY - padding
+            let extraPadding = closeSubview.frame.maxY - keyboardTolerance
+            if extraPadding > 0 {
+                superview.bounds.origin.y = extraPadding
+            }
+        case .dismissing:
+            superview.bounds.origin.y = 0
+        }
     }
 }

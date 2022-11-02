@@ -8,6 +8,8 @@
 
 import UIKit
 
+fileprivate typealias FirstResponderHandoff = (UIResponder) -> Void
+
 extension UIApplication {
     
     struct Release {
@@ -83,4 +85,38 @@ extension UIApplication {
 			shared.openURL(urlToOpen)
 		}
 	}
+    
+    /// 将第一响应者转换为UIView
+    var firstResponderView: UIView? {
+        firstResponder as? UIView
+    }
+    
+    /// 获得应用当前的第一响应者
+    var firstResponder: UIResponder? {
+        
+        /// 声明第一响应者临时变量
+        var _firstResponder: UIResponder?
+        
+        /// 定义回传闭包
+        let reportAsFirstHandler: FirstResponderHandoff = { responder in
+            _firstResponder = responder
+        }
+        
+        /// 将闭包通过这个方法发送出去
+        sendAction(#selector(UIResponder.reportAsFirst), to: nil, from: reportAsFirstHandler, for: nil)
+        
+        /// 第一响应者被赋值之后返回
+        return _firstResponder
+    }
+}
+
+extension UIResponder {
+
+    @objc fileprivate func reportAsFirst(_ sender: Any) {
+        if let handoff = sender as? FirstResponderHandoff {
+            /// 第一响应者回传
+            handoff(self)
+        }
+    }
+
 }
