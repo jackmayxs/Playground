@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 class BaseStandardViewController<MainView: UIBaseView, ViewModel: ViewModelType>: BaseViewController {
     
@@ -15,5 +17,16 @@ class BaseStandardViewController<MainView: UIBaseView, ViewModel: ViewModelType>
     
     override func loadView() {
         view = mainView
+    }
+    
+    override func prepareTargets() {
+        super.prepareTargets()
+        rx.disposeBag.insert {
+            UIApplication.shared.rx.latestResponderViewAndKeyboardPresentation
+                .bindErrorIgnored {
+                    [unowned self] responder, presentation in
+                    presentation.adjustBoundsOfSuperview(mainView, firstResponder: responder)
+                }
+        }
     }
 }

@@ -35,3 +35,10 @@ extension Locale {
 	static let chineseSimplified = Locale(identifier: "zh_CN")
 	static let chineseTraditional = Locale(identifier: "zh-Hant_CN")
 }
+
+// MARK: - ClosedRange<Int>
+extension ClosedRange where Bound == Int {
+    var isSingleRange: Bool {
+        upperBound - lowerBound == 0
+    }
+}

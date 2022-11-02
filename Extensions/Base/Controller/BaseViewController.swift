@@ -323,12 +323,12 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
     }
     
     @objc private func keyboardWillShow(_ note: Notification) {
-        guard let presentation = KeyboardPresentation(state: .presenting, note) else { return }
+        guard let presentation = KeyboardPresentation(note) else { return }
         keyboardPresentation(presentation)
     }
     
     @objc private func keyboardWillHide(_ note: Notification) {
-        guard let presentation = KeyboardPresentation(state: .dismissing, note) else { return }
+        guard let presentation = KeyboardPresentation(note) else { return }
         keyboardPresentation(presentation)
     }
     

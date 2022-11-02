@@ -13,8 +13,15 @@ struct KeyboardPresentation {
     let toRect: CGRect
     let animationDuration: TimeInterval
     let animationCurve: UIView.AnimationCurve
-    init?(state: State, _ notification: Notification) {
-        self.state = state
+    init?(_ notification: Notification) {
+        /// 判断键盘状态
+        if notification.name == UIResponder.keyboardWillShowNotification {
+            state = .presenting
+        } else if notification.name == UIResponder.keyboardWillHideNotification {
+            state = .dismissing
+        } else {
+            return nil
+        }
         
         guard let userInfo = notification.userInfo else { return nil }
         
@@ -51,18 +58,31 @@ extension KeyboardPresentation {
 extension KeyboardPresentation {
     
     /// 根据键盘显示/隐藏调整相应父视图的坐标
-    /// - Parameter closeSubview: 父视图的直接子视图(superview.subviews contains closeSubview)
-    /// 注: 通过调整父视图的bounds属性实现子视图整体上移,以达到避免键盘遮挡的问题
-    func adjustBoundsOfSuperviewIfNeeded(closeSubview: UIView?) {
-        guard let closeSubview else { return }
-        guard let superview = closeSubview.superview else { return }
+    /// - Parameters:
+    ///   - type: 父视图的类型
+    ///   - firstResponder: 第一响应者
+    func adjustBoundsOfSuperview<Superview: UIView>(type: Superview.Type, firstResponder: UIView?) {
+        guard let firstResponder else { return }
+        guard let superview = firstResponder.superview(type) else { return }
+        adjustBoundsOfSuperview(superview, firstResponder: firstResponder)
+    }
+    
+    
+    /// 根据键盘显示/隐藏调整相应父视图的坐标
+    /// - Parameters:
+    ///   - superview: 要调整bounds的父视图
+    ///   - firstResponder: 第一响应者
+    func adjustBoundsOfSuperview(_ superview: UIView?, firstResponder: UIView?) {
+        guard let firstResponder else { return }
+        guard let superview else { return }
+        guard let frameFromWindow = firstResponder.globalFrame else { return }
         switch state {
         case .presenting:
             /// 键盘顶部间距
-            let padding = 30.0
+            let padding = 0.0
             /// 键盘顶部的Y值 - 键盘顶部间距
             let keyboardTolerance = toRect.minY - padding
-            let extraPadding = closeSubview.frame.maxY - keyboardTolerance
+            let extraPadding = frameFromWindow.maxY - keyboardTolerance
             if extraPadding > 0 {
                 superview.bounds.origin.y = extraPadding
             }

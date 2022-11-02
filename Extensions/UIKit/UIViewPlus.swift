@@ -94,6 +94,20 @@ extension UIView {
         static var backgroundViewKey = UUID()
     }
     
+    /// 获取相对于Window的origin
+    var globalPoint :CGPoint? {
+        superview?.convert(frame.origin, to: nil)
+    }
+
+    /// 获取相对于Window的frame
+    var globalFrame :CGRect? {
+        superview?.convert(frame, to: nil)
+    }
+    
+    func relativeFrameTo(_ target: UIView) -> CGRect? {
+        superview?.convert(frame, to: target)
+    }
+    
     func tagged(_ tag: Int) -> Self {
         self.tag = tag
         return self
