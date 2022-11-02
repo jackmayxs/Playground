@@ -42,3 +42,10 @@ var isMainQueue: Bool {
 	}
 	return DispatchQueue.getSpecific(key: mainQueueSpecificKey) == mainQueueID
 }
+
+
+/// 隐藏键盘
+func dismissKeyboard() {
+    /// to: 指定参数为nil, 此方法会将Action发送给当前的第一响应者, 从而达到隐藏键盘的效果
+    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+}

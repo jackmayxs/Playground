@@ -8,8 +8,6 @@
 
 import UIKit
 
-fileprivate typealias FirstResponderHandoff = (UIResponder) -> Void
-
 extension UIApplication {
     
     struct Release {
@@ -67,56 +65,22 @@ extension UIApplication {
         openURL(settingsURL)
     }
     
-	/// UIApplication.openURL的封装方法
-	/// - Parameters:
-	///   - urlToOpen: 传入URL
-	///   - options: 参数(带默认值)
-	///   - completionHandler: 完成回调
-	static func openURL(_ urlToOpen: URL,
-						options: [OpenExternalURLOptionsKey : Any] = [:],
-						completionHandler: ((Bool) -> Void)? = nil) {
-		guard shared.canOpenURL(urlToOpen) else {
-			assertionFailure("Can't open the given URL. Check and re-check.")
-			return
-		}
-		if #available(iOS 10, *) {
-			shared.open(urlToOpen, options: options, completionHandler: completionHandler)
-		} else {
-			shared.openURL(urlToOpen)
-		}
-	}
-    
-    /// 将第一响应者转换为UIView
-    var firstResponderView: UIView? {
-        firstResponder as? UIView
-    }
-    
-    /// 获得应用当前的第一响应者
-    var firstResponder: UIResponder? {
-        
-        /// 声明第一响应者临时变量
-        var _firstResponder: UIResponder?
-        
-        /// 定义回传闭包
-        let reportAsFirstHandler: FirstResponderHandoff = { responder in
-            _firstResponder = responder
+    /// UIApplication.openURL的封装方法
+    /// - Parameters:
+    ///   - urlToOpen: 传入URL
+    ///   - options: 参数(带默认值)
+    ///   - completionHandler: 完成回调
+    static func openURL(_ urlToOpen: URL,
+                        options: [OpenExternalURLOptionsKey : Any] = [:],
+                        completionHandler: ((Bool) -> Void)? = nil) {
+        guard shared.canOpenURL(urlToOpen) else {
+            assertionFailure("Can't open the given URL. Check and re-check.")
+            return
         }
-        
-        /// 将闭包通过这个方法发送出去
-        sendAction(#selector(UIResponder.reportAsFirst), to: nil, from: reportAsFirstHandler, for: nil)
-        
-        /// 第一响应者被赋值之后返回
-        return _firstResponder
-    }
-}
-
-extension UIResponder {
-
-    @objc fileprivate func reportAsFirst(_ sender: Any) {
-        if let handoff = sender as? FirstResponderHandoff {
-            /// 第一响应者回传
-            handoff(self)
+        if #available(iOS 10, *) {
+            shared.open(urlToOpen, options: options, completionHandler: completionHandler)
+        } else {
+            shared.openURL(urlToOpen)
         }
     }
-
 }
