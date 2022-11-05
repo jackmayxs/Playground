@@ -22,12 +22,11 @@ extension Reactive where Base: UIView {
             .map(\.0)
     }
     
-    var superView: Observable<UIView> {
+    var superView: Observable<UIView?> {
         base.rx.methodInvoked(#selector(base.didMoveToSuperview))
             .withUnretained(base)
             .map(\.0.superview)
             .startWith(base.superview)
-            .compactMap(\.itself)
             .distinctUntilChanged()
     }
     
