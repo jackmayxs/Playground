@@ -10,6 +10,14 @@ import RxCocoa
 
 extension Reactive where Base: UIButton {
     
+    var normalImage: ControlProperty<UIImage?> {
+        controlProperty(editingEvents: .allTouchEvents) { button in
+            button.image(for: .normal)
+        } setter: { button, newImage in
+            button.setImage(newImage, for: .normal)
+        }
+    }
+    
     var isSelected: ControlProperty<Bool> {
         controlProperty(editingEvents: .touchUpInside) { button in
             button.isSelected
