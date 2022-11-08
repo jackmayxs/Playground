@@ -222,7 +222,8 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
         /// 控制导航栏是否显示
         navigationController.setNavigationBarHidden(doHideNavigationBar, animated: true)
         
-        /// 重新开启右滑返回
+        /// 重新开启右滑返回(禁用) | 这种写法会导致有时push了控制器但是没显示的问题
+        /// 替换方案: 重写QMUI的 forceEnableInteractivePopGestureRecognizer() 方法
 //        navigationController.interactivePopGestureRecognizer?.delegate = self
 //        navigationController.interactivePopGestureRecognizer?.isEnabled = true
 //        navigationController.delegate = self
