@@ -77,7 +77,25 @@ extension Optional where Wrapped == String {
 
 // MARK: - __________ StringProtocol __________
 extension StringProtocol {
-	
+    
+    /// 将字符串按照十六进制转换成十进制
+    var intFromHex: Int? {
+        intFromRadix(16)
+    }
+    
+    /// 将字符串按照指定的进制转换成十进制
+    /// FF -> 255
+    /// 0000FF -> 255
+    /// - Parameter radix: 进制: 取值范围: 2...36
+    /// - Returns: 转换成功返回十进制数字
+    func intFromRadix(_ radix: Int) -> Int? {
+        guard (2...36) ~= radix else {
+            assertionFailure("NO SUCH RADIX 🤯")
+            return nil
+        }
+        return Int(self, radix: radix)
+    }
+    
 	/// 返回一个字符串占用多少字节数
 	var utf8ByteCount: Int {
 		lengthOfBytes(using: .utf8)

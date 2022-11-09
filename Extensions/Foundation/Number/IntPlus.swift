@@ -22,6 +22,27 @@ extension UInt16 {
 }
 
 // MARK: - Common
+
+extension BinaryInteger {
+    
+    var hexString: String {
+        stringOfRadix(16, uppercase: true)
+    }
+    
+    /// 数字转换为指定进制字符串
+    /// - Parameters:
+    ///   - radix: 进制: 取值范围: 2...36
+    ///   - uppercase: 字母是否大写
+    /// - Returns: 转换成功后的字符串
+    func stringOfRadix(_ radix: Int, uppercase: Bool = true) -> String {
+        guard (2...36) ~= radix else {
+            assertionFailure("NO SUCH RADIX 🤯")
+            return ""
+        }
+        return String(self, radix: radix, uppercase: uppercase)
+    }
+}
+
 extension Int {
 	
 	// 获取一个整形数字个十百千...位上的数字. 例如:
