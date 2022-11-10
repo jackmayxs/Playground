@@ -119,6 +119,24 @@ extension ObservableType {
 
 extension ObservableConvertibleType {
     
+    /// Observable 稳定性测试 | 指定时间内是否发出指定个数的事件
+    /// - Parameters:
+    ///   - timeSpan: 经过的时间 | 默认不检查时间 0 纳秒
+    ///   - unStableCount: 最多发出的事件数量 | 默认 1 个
+    ///   - scheduler: 运行的Scheduler | 默认留空, 默认创建一个串行队列
+    /// - Returns: Observable是否输出稳定的事件序列
+    func stabilityCheck(timeSpan: RxTimeInterval = .nanoseconds(0), unStableCount: Int = 1, scheduler: SchedulerType? = nil) -> Observable<Bool> {
+        let queueName = "com.chek.observable.stable.or.not"
+        lazy var defaultScheduler = SerialDispatchQueueScheduler(qos: .default, internalSerialQueueName: queueName)
+        return asObservable()
+            .window(timeSpan: timeSpan, count: .max, scheduler: scheduler ?? defaultScheduler)
+            .flatMapLatest { observable in
+                observable.toArray().map(\.count).map { arrayCount in
+                    arrayCount < unStableCount
+                }
+            }
+    }
+    
     /// 将可观察数组的元素转换为指定的类型
     /// - Parameter type: 指定转换类型
     /// - Returns: 新的数组序列
