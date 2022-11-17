@@ -25,6 +25,21 @@ extension UInt16 {
 
 extension BinaryInteger {
     
+    
+    /// 以自身类型的长度转换成二进制
+    var data: Data {
+        dataInBytes(MemoryLayout.size(ofValue: self))
+    }
+    
+    /// 整型 -> 二进制
+    /// - Parameter byteCount: 放入几个字节中
+    /// - Returns: 二进制对象
+    func dataInBytes(_ byteCount: Int? = nil) -> Data {
+        var myInt = self
+        let count = byteCount ?? MemoryLayout.size(ofValue: myInt)
+        return Data(bytes: &myInt, count: count)
+    }
+    
     var hexString: String {
         stringOfRadix(16, uppercase: true)
     }

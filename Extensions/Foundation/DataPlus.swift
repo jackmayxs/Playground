@@ -16,12 +16,14 @@ extension Optional where Wrapped == Data {
 
 extension Data {
     
+    private func hex(_ byte: Element) -> String {
+        /// %02hhx: Lower cased
+        String(format: "%02hhX", byte)
+    }
+    
     /// 2进制转16进制字符串
     var hexString: String {
-        func hex(_ byte: Element) -> String {
-            String(format: "%02x", byte)
-        }
-        return map(hex).joined()
+        reversed().map(hex).joined()
     }
     
 	var cfData: CFData {
