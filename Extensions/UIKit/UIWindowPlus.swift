@@ -13,10 +13,11 @@ extension UIWindow {
 	static var keyWindow: UIWindow? {
 		
 		if #available(iOS 13.0, *) {
-			var windowScene: UIWindowScene? {
-				UIApplication.shared.connectedScenes.randomElement() as? UIWindowScene
-			}
-			return windowScene?.windows.first
+            return UIApplication.shared
+                .connectedScenes
+                .as(UIWindowScene.self)
+                .flatMap(\.windows)
+                .first(where: \.isKeyWindow)
 		} else {
 			return UIApplication.shared.keyWindow
 		}
