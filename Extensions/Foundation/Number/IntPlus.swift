@@ -25,19 +25,36 @@ extension UInt16 {
 
 extension BinaryInteger {
     
-    
-    /// 以自身类型的长度转换成二进制
+    /// 二进制
     var data: Data {
-        dataInBytes(MemoryLayout.size(ofValue: self))
+        dataInBytes(bitSize)
+    }
+    
+    /// 字节翻转过的二进制
+    var byteFlippedData: Data {
+        byteFlippedDataInBytes(bitSize)
     }
     
     /// 整型 -> 二进制
     /// - Parameter byteCount: 放入几个字节中
     /// - Returns: 二进制对象
     func dataInBytes(_ byteCount: Int? = nil) -> Data {
+        let sequence = byteFlippedDataInBytes(byteCount).reversed()
+        return Data(sequence)
+    }
+    
+    /// 整型 -> 二进制(字节翻转过的)
+    /// - Parameter byteCount: 放入几个字节中
+    /// - Returns: 字节翻转后的二进制对象
+    func byteFlippedDataInBytes(_ byteCount: Int? = nil) -> Data {
         var myInt = self
         let count = byteCount ?? MemoryLayout.size(ofValue: myInt)
         return Data(bytes: &myInt, count: count)
+    }
+    
+    /// 占用的二进制位数
+    var bitSize: Int {
+        MemoryLayout.size(ofValue: self)
     }
     
     var hexString: String {
