@@ -40,7 +40,7 @@ extension Array where Element: Equatable {
     /// 替换指定元素
     /// - Parameter newElement: 新元素
     /// - Returns: 是否替换成功
-    mutating func replaceElement(_ newElement: Element) -> Bool {
+    mutating func replace(with newElement: Element) -> Bool {
         if let index = firstIndex(of: newElement) {
             let range = index..<index + 1
             let updated = [newElement]
@@ -49,6 +49,17 @@ extension Array where Element: Equatable {
         } else {
             return false
         }
+    }
+    
+    @discardableResult
+    /// 移除指定元素
+    /// - Parameter element: 要移除的元素
+    /// - Returns: 更新后的数组
+    public mutating func remove(_ element: Element) -> Array {
+        if let foundIndex = firstIndex(of: element) {
+            remove(at: foundIndex)
+        }
+        return self
     }
 }
 
