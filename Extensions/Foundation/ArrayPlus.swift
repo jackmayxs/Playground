@@ -40,13 +40,20 @@ extension Array where Element: Equatable {
     /// 替换指定元素
     /// - Parameter newElement: 新元素
     /// - Returns: 是否替换成功
-    mutating func replace(with newElement: Element) -> Bool {
-        if let index = firstIndex(of: newElement) {
+    public mutating func replace(
+        with newElement: Element,
+        if prediction: (_ old: Element, _ new: Element) -> Bool = { $0 == $1 }
+    ) -> Bool {
+        let index = firstIndex { oldElement in
+            prediction(oldElement, newElement)
+        }
+        if let index {
             let range = index..<index + 1
             let updated = [newElement]
             replaceSubrange(range, with: updated)
             return true
         } else {
+            append(newElement)
             return false
         }
     }
