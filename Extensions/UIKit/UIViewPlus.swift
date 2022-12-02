@@ -92,6 +92,7 @@ extension UIView {
     enum Associated {
         static var shadowViewKey = UUID()
         static var backgroundViewKey = UUID()
+        static var mournFilterViewKey = UUID()
     }
     
     /// 获取相对于Window的origin
@@ -102,6 +103,36 @@ extension UIView {
     /// 获取相对于Window的frame
     var globalFrame :CGRect? {
         superview?.convert(frame, to: nil)
+    }
+    
+    var mournView: UIView? {
+        get {
+            objc_getAssociatedObject(self, &Associated.mournFilterViewKey) as? UIView
+        }
+        set {
+            objc_setAssociatedObject(self, &Associated.mournFilterViewKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+    
+    /// 哀悼(给视图加上黑白滤镜)
+    @available(iOS 12.0, *)
+    public func mourn(_ mourn: Bool = true) {
+        if let mournView {
+            if mourn {
+                mournView.frame = bounds
+            } else {
+                mournView.removeFromSuperview()
+                self.mournView = nil
+            }
+        } else if mourn {
+            let mournFilter = UIView(frame: bounds)
+            mournFilter.isUserInteractionEnabled = false
+            mournFilter.backgroundColor = .lightGray
+            mournFilter.layer.compositingFilter = "saturationBlendMode"
+            mournFilter.layer.zPosition = .greatestFiniteMagnitude
+            addSubview(mournFilter)
+            self.mournView = mournFilter
+        }
     }
     
     func relativeFrameTo(_ target: UIView) -> CGRect? {
