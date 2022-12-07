@@ -96,6 +96,10 @@ extension UIImage {
 		return UIGraphicsGetImageFromCurrentImageContext()
 	}
 	
+    var jpegCompressedData: Data? {
+        jpegData(compressionQuality: 0.3)
+    }
+    
 	/// 图片二进制类型
 	var data: Data? {
 		if let data = pngData() {
