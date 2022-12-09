@@ -43,6 +43,25 @@ var isMainQueue: Bool {
 	return DispatchQueue.getSpecific(key: mainQueueSpecificKey) == mainQueueID
 }
 
+/// 方法转换
+/// - Parameters:
+///   - value: 被引用的对象
+///   - closure: 具体的执行代码
+/// - Returns: A closure
+func combine<A, B>(_ value: A, with closure: @escaping (A) -> B) -> () -> B {
+    { closure(value) }
+}
+
+/// 方法转换
+/// - Parameter output: 默认返回值
+/// - Returns: A Closure which will return the output by default.
+func sink<In, Out>(_ output: Out) -> (In) -> Out {
+    { _ in output }
+}
+
+func sink<In>(_ simpleCallBack: @escaping SimpleCallback) -> (In) -> Void {
+    { _ in simpleCallBack() }
+}
 
 /// 隐藏键盘
 func dismissKeyboard() {

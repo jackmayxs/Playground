@@ -7,6 +7,12 @@
 
 import Foundation
 
+extension ClosedRange where Bound == Int {
+    var isSingleRange: Bool {
+        upperBound - lowerBound == 0
+    }
+}
+
 extension Range {
     
     /// 判断左面的范围是否包含右面
