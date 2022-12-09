@@ -353,7 +353,19 @@ extension String {
 	}
 }
 
+// MARK: - 转换
 extension String {
+    
+    /// 将Base64编码过后的字符串转换成Image
+    var imageFromBase64EncodedString: UIImage? {
+        guard let dataFromBase64EncodedString else { return nil }
+        return UIImage(data: dataFromBase64EncodedString)
+    }
+    
+    /// 将Base64编码过后的字符串转换成二进制
+    var dataFromBase64EncodedString: Data? {
+        Data(base64Encoded: self, options: .ignoreUnknownCharacters)
+    }
     
     var url: URL? {
         URL(string: self)
