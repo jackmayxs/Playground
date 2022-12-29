@@ -218,7 +218,7 @@ enum StringType {
 
 extension String {
     
-    /// 用于唯一标记设备,具体效果及是否能上架App Store还有待测试
+    /// 用于唯一标记设备(❌,不插卡的手机获取的值为空),是否能上架App Store还有待测试
     static var markMACAddress: String {
         
         func getMACAddressFromIPv6(ip: String) -> String{
