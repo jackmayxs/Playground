@@ -51,6 +51,11 @@ var isMainQueue: Bool {
 	return DispatchQueue.getSpecific(key: mainQueueSpecificKey) == mainQueueID
 }
 
+/// 获取当前队列名称
+var currentQueueName: String? {
+    String(cString: __dispatch_queue_get_label(nil), encoding: .utf8)
+}
+
 /// 方法转换
 /// - Parameters:
 ///   - value: 被引用的对象
