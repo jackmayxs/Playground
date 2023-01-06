@@ -581,57 +581,75 @@ extension BaseViewController: PHPickerViewControllerDelegate {
         }
         
         DispatchQueue.global().async {
-            
-            let identifiers = results.compactMap(\.assetIdentifier)
-            let finalResult: PHFetchResult = PHAsset.fetchAssets(withLocalIdentifiers: identifiers, options: nil)
-            finalResult.enumerateObjects { asset, index, tag in
-                let resources = PHAssetResource.assetResources(for: asset)
-                if let first = resources.first, let url = first.value(forKey: "privateFileURL") as? URL {
-                    imageURLs.append(url)
+            do {
+                var imageItems: [ImageItem] = []
+                let semaphore = DispatchSemaphore(value: 0)
+                for result in results {
+                    result.itemProvider.loadObject(ofClass: UIImage.self) { object, error in
+                        if let image = object as? UIImage {
+                            let item = ImageItem(image: image)
+                            imageItems.append(item)
+                        }
+                        semaphore.signal()
+                    }
+                    semaphore.wait()
                 }
-                doneProcess()
+                DispatchQueue.main.async {
+                    /// 隐藏提示
+                    QMUITips.hideAllTips(in: picker.view)
+                    self.didGetImages(imageItems)
+                    picker.dismiss(animated: true)
+                }
             }
             
-//            for result in results {
-//                let itemProvider = result.itemProvider
-//                /// In this code, the order of the UTType check is deliberate(故意的).
-//                /// A live photo can be supplied in a simple UIImage representation, so if we test for images before live photos, we won’t learn that the result is a live photo.
-//                if itemProvider.hasItemConformingToTypeIdentifier(UTType.movie.identifier) {
-//                    // it's a video
-//                } else if itemProvider.canLoadObject(ofClass: PHLivePhoto.self) {
-//                    // it's a live photo
-//                } else if itemProvider.canLoadObject(ofClass: UIImage.self) {
-//                    // it's a photo
-//                    let commonImageTypes: [UTType] = [.jpeg, .png, .heic, .heif]
-//                    var iterator = commonImageTypes.makeIterator()
-//                    var notFound = true
-//                    while let imageType = iterator.next(), notFound {
-//                        let semaphore = DispatchSemaphore(value: 0)
-//                        itemProvider.loadFileRepresentation(forTypeIdentifier: imageType.identifier) { url, error in
-//                            dprint("haha", url.asAny)
-//                        }
-//                        itemProvider.loadInPlaceFileRepresentation(forTypeIdentifier: imageType.identifier) { url, flag, error in
-//                            if let validURL = url {
-//                                imageURLs.append(validURL)
-//                                notFound = false
-//                                doneProcess()
-//                            } else {
-//                                dprint("无法处理")
-//                            }
-//                            semaphore.signal()
-//                        }
-//                        semaphore.wait()
+//            /// 方法2
+//            do {
+//                let identifiers = results.compactMap(\.assetIdentifier)
+//                let finalResult: PHFetchResult = PHAsset.fetchAssets(withLocalIdentifiers: identifiers, options: nil)
+//                finalResult.enumerateObjects { asset, index, tag in
+//                    let resources = PHAssetResource.assetResources(for: asset)
+//                    if let first = resources.first, let url = first.value(forKey: "privateFileURL") as? URL {
+//                        imageURLs.append(url)
 //                    }
+//                    doneProcess()
 //                }
 //            }
             
-            
-            
-            
-            
-            
-            
-            
+//            /// 方法3
+//            do {
+//                for result in results {
+//                    let itemProvider = result.itemProvider
+//                    /// In this code, the order of the UTType check is deliberate(故意的).
+//                    /// A live photo can be supplied in a simple UIImage representation, so if we test for images before live photos, we won’t learn that the result is a live photo.
+//                    if itemProvider.hasItemConformingToTypeIdentifier(UTType.movie.identifier) {
+//                        // it's a video
+//                    } else if itemProvider.canLoadObject(ofClass: PHLivePhoto.self) {
+//                        // it's a live photo
+//                    } else if itemProvider.canLoadObject(ofClass: UIImage.self) {
+//                        // it's a photo
+//                        let commonImageTypes: [UTType] = [.jpeg, .png, .heic, .heif]
+//                        var iterator = commonImageTypes.makeIterator()
+//                        var notFound = true
+//                        while let imageType = iterator.next(), notFound {
+//                            let semaphore = DispatchSemaphore(value: 0)
+//                            itemProvider.loadFileRepresentation(forTypeIdentifier: imageType.identifier) { url, error in
+//                                dprint("haha", url.asAny)
+//                            }
+//                            itemProvider.loadInPlaceFileRepresentation(forTypeIdentifier: imageType.identifier) { url, flag, error in
+//                                if let validURL = url {
+//                                    imageURLs.append(validURL)
+//                                    notFound = false
+//                                    doneProcess()
+//                                } else {
+//                                    dprint("无法处理")
+//                                }
+//                                semaphore.signal()
+//                            }
+//                            semaphore.wait()
+//                        }
+//                    }
+//                }
+//            }
         }
     }
 }
