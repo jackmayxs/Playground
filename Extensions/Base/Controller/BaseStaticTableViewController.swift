@@ -28,7 +28,7 @@ extension UITableViewCell {
     }
 }
 
-protocol StaticTableDelegate: AnyObject {
+protocol StaticTableDelegate: UIViewController {
     func needsReload()
 }
 
