@@ -515,6 +515,9 @@ extension BaseViewController {
                 config.filter = .images
                 config.selectionLimit = count
                 config.preferredAssetRepresentationMode = .automatic
+                if #available(iOS 15.0, *) {
+                    config.preselectedAssetIdentifiers = []
+                }
                 
                 let picker = PHPickerViewController(configuration: config)
                 picker.modalPresentationStyle = .fullScreen
@@ -561,7 +564,7 @@ extension BaseViewController: PHPickerViewControllerDelegate {
         DispatchQueue.main.async {
             QMUITips.showLoading("正在处理", in: picker.view)
         }
-        var imageURLs: [URL] = []
+        let imageURLs: [URL] = []
         var precessedImage = 0
         func doneProcess() {
             precessedImage += 1

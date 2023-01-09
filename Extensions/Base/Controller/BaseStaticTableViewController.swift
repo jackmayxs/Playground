@@ -40,12 +40,16 @@ class StaticTable: ReactiveCompatible {
             unowned let cell: UITableViewCell
             let preferredHeight: CGFloat
             fileprivate var didSelect: SimpleCallback?
+            fileprivate var didSelectCallbacks: [SimpleCallback] = []
             init(cell: UITableViewCell, preferredHeight: CGFloat = UITableView.automaticDimension) {
                 self.cell = cell
                 self.preferredHeight = preferredHeight
             }
             func didSelect(execute: @escaping SimpleCallback) {
                 self.didSelect = execute
+            }
+            func appendDidSelect(execute: @escaping SimpleCallback) {
+                didSelectCallbacks.append(execute)
             }
         }
         
@@ -139,7 +143,12 @@ class BaseStaticTableViewController<Table: StaticTable>: BaseTableViewController
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         super.tableView(tableView, didSelectRowAt: indexPath)
         let row = staticTable[indexPath.section][indexPath.row]
-        row.didSelect?()
+        if let didSelect = row.didSelect {
+            didSelect()
+        }
+        row.didSelectCallbacks.forEach { callback in
+            callback()
+        }
     }
 }
 
