@@ -531,7 +531,7 @@ extension BaseViewController {
         switch source {
         case .camera:
             rx.disposeBag.insert {
-                AVAuthorizationStatus.checkValidCameraStatus
+                AVAuthorizationStatus.checkValidVideoStatus
                     .trackError(self)
                     .then(blockByError: true) { _ in
                         pickPhotoFrom(source)

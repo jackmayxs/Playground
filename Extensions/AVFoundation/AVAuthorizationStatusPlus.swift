@@ -95,17 +95,34 @@ extension AVAuthorizationStatus {
 
 extension AVAuthorizationStatus {
     
-    static var checkValidCameraStatus: Observable<AVAuthorizationStatus> {
-        checkCameraStatus.observable.map { status in
+    /// 返回可以拍照的权限 | 否则抛出错误
+    static var checkValidVideoStatus: Observable<AVAuthorizationStatus> {
+        checkVideoStatus.observable.map { status in
             try status.validStatus
         }
     }
     
-    // 检查相机权限
-    static var checkCameraStatus: Infallible<AVAuthorizationStatus> {
+    /// 当前相机状态,不请求权限
+    static var currentVideoStatus: Infallible<AVAuthorizationStatus> {
+        currentStatusFor(.video).asInfallible(onErrorJustReturn: .denied)
+    }
+    
+    /// 查询当前相机权限,如果为第一次请求则请求权限
+    static var checkVideoStatus: Infallible<AVAuthorizationStatus> {
         statusFor(.video).asInfallible(onErrorJustReturn: .denied)
     }
     
+    /// 只查询当前状态,不请求权限
+    /// - Parameter mediaType: 类型
+    /// - Returns: Single<AVAuthorizationStatus>
+    static func currentStatusFor(_ mediaType: AVMediaType) -> Single<AVAuthorizationStatus> {
+        let status = AVCaptureDevice.authorizationStatus(for: mediaType)
+        return .just(status)
+    }
+    
+    /// 查询当前状态,如果为第一次请求则请求权限
+    /// - Parameter mediaType: 类型
+    /// - Returns: Single<AVAuthorizationStatus>
     static func statusFor(_ mediaType: AVMediaType) -> Single<AVAuthorizationStatus> {
         Single.create { observer in
             let currentStatus = AVCaptureDevice.authorizationStatus(for: mediaType)
