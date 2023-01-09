@@ -470,6 +470,21 @@ extension BaseViewController {
         }
     }
     
+    /// 弹出相机授权失败对话框
+    /// - Parameter title: 相应的标题,提示具体使用相机的用途
+    func popCameraAccessDeniedDialog(title: String) {
+        presentor.popDialog {
+            ZKAlertDialog(
+                title: title,
+                message: localized.是否打开权限设置页面~) {
+                    ZKAction.cancel
+                    ZKAction(title: localized.确定~) {
+                        UIApplication.openSettings()
+                    }
+                }
+        }
+    }
+    
     func popToast(_ message: String?) {
         view.popToast(message)
     }
@@ -532,9 +547,10 @@ extension BaseViewController {
         case .camera:
             rx.disposeBag.insert {
                 AVAuthorizationStatus.checkValidVideoStatus
-                    .trackError(self)
-                    .then(blockByError: true) { _ in
+                    .subscribe(with: self) { weakSelf, status in
                         pickPhotoFrom(source)
+                    } onError: { weakSelf, error in
+                        weakSelf.popCameraAccessDeniedDialog(title: error.localizedDescription)
                     }
             }
         case .photoLibrary, .savedPhotosAlbum:
