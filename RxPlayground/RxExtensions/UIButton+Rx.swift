@@ -10,6 +10,11 @@ import RxCocoa
 
 extension Reactive where Base: UIButton {
     
+    var tapButton: ControlEvent<Base> {
+        let tappedButton = tap.withUnretained(base).map(\.0)
+        return ControlEvent(events: tappedButton)
+    }
+    
     var normalImage: ControlProperty<UIImage?> {
         controlProperty(editingEvents: .allTouchEvents) { button in
             button.image(for: .normal)
