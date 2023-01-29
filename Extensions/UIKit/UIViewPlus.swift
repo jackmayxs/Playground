@@ -114,6 +114,17 @@ extension UIView {
         }
     }
     
+    /// 计算自动布局下的尺寸
+    /// - Parameter maxSize: 最大尺寸
+    /// - Returns: 需要的尺寸
+    public func preferredSize(maxSize: CGSize? = nil) -> CGSize {
+        var systemLayoutSize = systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+        if let maxSize, systemLayoutSize.width > maxSize.width {
+            systemLayoutSize = systemLayoutSizeFitting(maxSize, withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel)
+        }
+        return systemLayoutSize
+    }
+    
     /// 哀悼(给视图加上黑白滤镜)
     @available(iOS 12.0, *)
     public func mourn(_ mourn: Bool = true) {
