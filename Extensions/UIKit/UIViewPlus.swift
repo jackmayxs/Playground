@@ -115,12 +115,25 @@ extension UIView {
     }
     
     /// 计算自动布局下的尺寸
-    /// - Parameter maxSize: 最大尺寸
-    /// - Returns: 需要的尺寸
-    public func preferredSize(maxSize: CGSize? = nil) -> CGSize {
+    /// - Parameters:
+    ///   - maxSize: 限制最大尺寸
+    ///   - priorAxis: 优先考虑的轴向(优先考虑的轴向上尺寸不变,另一轴向上拉伸)
+    /// - Returns: 需要的最小尺寸
+    public func preferredSize(maxSize: CGSize? = nil, priorAxis: NSLayoutConstraint.Axis = .horizontal) -> CGSize {
         var systemLayoutSize = systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
-        if let maxSize, systemLayoutSize.width > maxSize.width {
-            systemLayoutSize = systemLayoutSizeFitting(maxSize, withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel)
+        if let maxSize {
+            switch priorAxis {
+            case .horizontal:
+                if systemLayoutSize.width > maxSize.width {
+                    systemLayoutSize = systemLayoutSizeFitting(maxSize, withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel)
+                }
+            case .vertical:
+                if systemLayoutSize.height > maxSize.height {
+                    systemLayoutSize = systemLayoutSizeFitting(maxSize, withHorizontalFittingPriority: .fittingSizeLevel, verticalFittingPriority: .required)
+                }
+            @unknown default:
+                break
+            }
         }
         return systemLayoutSize
     }
