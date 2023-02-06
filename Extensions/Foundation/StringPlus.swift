@@ -424,6 +424,13 @@ extension String {
 // MARK: - 转换
 extension String {
     
+    /// 转换为utf8编码的二进制数据
+    /// 注: 其中系统属性utf8CString已经在尾部拼接上了\0(null-terminated)
+    var utf8Encoded: Data {
+        let bytes = utf8CString.map(UInt8.init)
+        return Data(bytes)
+    }
+    
     /// 将Base64编码过后的字符串转换成Image
     var imageFromBase64EncodedString: UIImage? {
         guard let dataFromBase64EncodedString else { return nil }
