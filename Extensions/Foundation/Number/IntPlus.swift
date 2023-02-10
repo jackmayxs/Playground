@@ -27,29 +27,22 @@ extension BinaryInteger {
     
     /// 二进制
     var data: Data {
-        dataInBytes(bitSize)
+        dataInBytes()
     }
     
-    /// 字节翻转过的二进制
-    var byteFlippedData: Data {
-        byteFlippedDataInBytes(bitSize)
-    }
-    
-    /// 整型 -> 二进制
-    /// - Parameter byteCount: 放入几个字节中
-    /// - Returns: 二进制对象
-    func dataInBytes(_ byteCount: Int? = nil) -> Data {
-        let sequence = byteFlippedDataInBytes(byteCount).reversed()
-        return Data(sequence)
-    }
-    
-    /// 整型 -> 二进制(字节翻转过的)
-    /// - Parameter byteCount: 放入几个字节中
-    /// - Returns: 字节翻转后的二进制对象
-    func byteFlippedDataInBytes(_ byteCount: Int? = nil) -> Data {
-        var myInt = self
-        let count = byteCount ?? MemoryLayout.size(ofValue: myInt)
-        return Data(bytes: &myInt, count: count)
+    /// 转换为二进制
+    /// - Parameters:
+    ///   - byteCount: 占用字节数, 如不指定则使用自身默认占用的字节数
+    ///   - bigEndian: 是否使用大字节序: true.则Data数组按高位往低位排序
+    /// - Returns: 转换后的二进制对象
+    func dataInBytes(_ byteCount: Int? = nil, bigEndian: Bool = false) -> Data {
+        var me = self
+        let count = byteCount ?? MemoryLayout.size(ofValue: me)
+        var data = Data(bytes: &me, count: count)
+        if bigEndian {
+            data.reverse()
+        }
+        return data
     }
     
     /// 占用的二进制位数
