@@ -6,7 +6,7 @@
 //  Copyright © 2021 Choi. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 func dprint(_ items: Any..., file: String = #fileID, function: String = #function, line: Int = #line) {
 	#if DEBUG
@@ -23,14 +23,6 @@ func dprint(_ items: Any..., file: String = #fileID, function: String = #functio
 		print("\(idx) ➜ \(item)")
 	}
 	#endif
-}
-
-/// 通过判断当前显示的名字是否是正式发布时的名字来判断
-var isTesterDebugging: Bool {
-    guard let displayName = Bundle.main.displayName else {
-        return true
-    }
-    return displayName != "Zeniko"
 }
 
 var isDebugging: Bool {
