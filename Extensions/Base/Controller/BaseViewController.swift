@@ -118,13 +118,13 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
     var targetImageSize: CGSize?
     
     private(set) lazy var backBarButtonItem = UIBarButtonItem(
-        image: rImage.backArrowDark.original,
+        image: assetImage.backArrowDark.original,
         style: .plain,
         target: self,
         action: #selector(leftBarButtonItemTriggered))
     
     private(set) lazy var closeBarButtonItem = UIBarButtonItem(
-        image: rImage.clear14P.original,
+        image: assetImage.clear14P.original,
         style: .plain,
         target: self,
         action: #selector(leftBarButtonItemTriggered))
@@ -476,9 +476,9 @@ extension BaseViewController {
         presentor.popDialog {
             ZKAlertDialog(
                 title: title,
-                message: localized.是否打开权限设置页面~) {
+                message: localized.inquiry_OPEN_PERMISSION_SETTINGS~) {
                     ZKAction.cancel
-                    ZKAction(title: localized.确定~) {
+                    ZKAction(title: localized.com_YES~) {
                         UIApplication.openSettings()
                     }
                 }
@@ -492,10 +492,10 @@ extension BaseViewController {
     func fetchPhotos(count: Int = 1, targetImageSize: CGSize? = nil, allowsEditing: Bool = false) {
         self.targetImageSize = targetImageSize
         let sheet = ZKActionSheetController {
-            ZKAction(title: localized.相册~) {
+            ZKAction(title: localized.com_PHOTO_ALBUM~) {
                 [unowned self] in getPhotos(count: count, from: .photoLibrary, allowsEditing: allowsEditing)
             }
-            ZKAction(title: localized.拍照~) {
+            ZKAction(title: localized.com_TAKE_A_PHOTO~) {
                 [unowned self] in getPhotos(count: 1, from: .camera, allowsEditing: allowsEditing)
             }
         }

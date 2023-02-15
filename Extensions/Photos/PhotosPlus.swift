@@ -19,7 +19,7 @@ extension PHAuthorizationStatus: LocalizedError {
         case .restricted:
             return "RESTRICTED"
         case .denied:
-            return localized.相册未授权~
+            return localized.alert_CAMERA_ACCESS_DENIED~
         case .authorized:
             return "AUTHORIZED"
         case .limited:
