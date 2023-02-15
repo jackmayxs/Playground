@@ -10,6 +10,24 @@ import Foundation
 
 extension CharacterSet {
 	
+    static func + (lhs: CharacterSet, rhs: CharacterSet) -> CharacterSet {
+        var characters = lhs
+        characters.formUnion(rhs)
+        return characters
+    }
+    
+    static func + (lhs: String, rhs: CharacterSet) -> CharacterSet {
+        var characters = CharacterSet(charactersIn: lhs)
+        characters.formUnion(rhs)
+        return characters
+    }
+    
+    static func + (lhs: CharacterSet, rhs: String) -> CharacterSet {
+        var characters = CharacterSet(charactersIn: rhs)
+        characters.formUnion(lhs)
+        return characters
+    }
+    
     static func ~= (lhs: Character, rhs: CharacterSet) -> Bool {
         rhs.contains(lhs)
     }
