@@ -12,7 +12,7 @@ class BaseTableViewController: BaseViewController, UITableViewDataSource, UITabl
     
 	lazy var tableView = makeTableView()
     
-    lazy var emptyView = ZKTableViewEmptyView()
+    lazy var emptyView = makeEmptyView()
     
     var tableViewStyle: UITableView.Style { .plain }
     
@@ -61,6 +61,11 @@ class BaseTableViewController: BaseViewController, UITableViewDataSource, UITabl
         table.delegate = self
         table.dataSource = self
         return table
+    }
+    
+    /// 创建空视图
+    func makeEmptyView() -> UIView {
+        ZKTableViewEmptyView()
     }
     // MARK: - Table View Delegate
     // 注意: 必须父类里有实现,代理方法才会调用

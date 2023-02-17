@@ -11,7 +11,7 @@ class BaseCollectionViewController: BaseViewController, UICollectionViewDelegate
 
     lazy var collectionView = makeCollectionView(layout: defaultLayout)
     
-    lazy var emptyView = UIView(color: .white)
+    lazy var emptyView = makeEmptyView()
     
     var defaultLayout: UICollectionViewLayout {
         UICollectionViewLayout()
@@ -54,6 +54,11 @@ class BaseCollectionViewController: BaseViewController, UICollectionViewDelegate
         collectionView.delegate = self
         collectionView.dataSource = self
         return collectionView
+    }
+    
+    /// 创建空视图
+    func makeEmptyView() -> UIView {
+        UIView()
     }
     // MARK: - CollectionView Delegates
     // 注意: 必须父类里有实现,代理方法才会调用
