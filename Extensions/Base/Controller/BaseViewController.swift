@@ -117,14 +117,16 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
     
     var targetImageSize: CGSize?
     
+    /// The image should defined as a global computed property in each project.
     private(set) lazy var backBarButtonItem = UIBarButtonItem(
-        image: assetImage.backArrowDark.original,
+        image: backBarButtonImage,
         style: .plain,
         target: self,
         action: #selector(leftBarButtonItemTriggered))
     
+    /// The image should defined as a global computed property in each project.
     private(set) lazy var closeBarButtonItem = UIBarButtonItem(
-        image: assetImage.clear14P.original,
+        image: closeBarButtonImage,
         style: .plain,
         target: self,
         action: #selector(leftBarButtonItemTriggered))
