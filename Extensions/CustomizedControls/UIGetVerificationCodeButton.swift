@@ -33,11 +33,11 @@ class UIGetVerificationCodeButton: QMLoadingButton {
         }
     }
     
-    init() {
+    init(tintColor: UIColor) {
         super.init(frame: .zero)
         titleLabel?.font = .systemFont(ofSize: 14.0)
         setTitle(localized.com_GET_VERIFICATION_CODE~, for: .normal)
-        setTitleColor(.actionable, for: .normal)
+        setTitleColor(tintColor, for: .normal)
         
         rx.disposeBag.insert {
             Observable.combineLatest($resignActiveDate.unwrapped, $activeDate.unwrapped)
