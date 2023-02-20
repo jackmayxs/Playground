@@ -182,10 +182,14 @@ extension UIView {
     ///   - insets: 缩进
     ///   - maskedCorners: 圆角位置
     ///   - backgroundColor: 圆角背景色
-    func add(cornerRadius: CGFloat, insets: UIEdgeInsets = .zero, maskedCorners: CACornerMask = .allCorners, backgroundColor: UIColor) {
+    func add(cornerRadius: CGFloat, insets: UIEdgeInsets = .zero, maskedCorners: CACornerMask = .allCorners, backgroundColor: UIColor, borderWidth: CGFloat? = nil, borderColor: UIColor? = nil) {
         let bgView = UIView(color: backgroundColor)
         bgView.layer.maskedCorners = maskedCorners
         bgView.layer.cornerRadius = cornerRadius
+        if let borderWidth, borderWidth > 0 {
+            bgView.layer.borderWidth = borderWidth
+            bgView.layer.borderColor = borderColor?.cgColor
+        }
         add(backgroundView: bgView, insets: insets)
     }
     
