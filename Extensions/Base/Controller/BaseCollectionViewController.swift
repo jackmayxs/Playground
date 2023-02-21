@@ -50,6 +50,7 @@ class BaseCollectionViewController: BaseViewController, UICollectionViewDelegate
     /// 调用时机:懒加载
     func makeCollectionView(layout: UICollectionViewLayout) -> UICollectionView {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.delaysContentTouches = false
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         collectionView.delegate = self
         collectionView.dataSource = self
