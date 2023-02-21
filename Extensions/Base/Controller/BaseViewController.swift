@@ -151,11 +151,7 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        if #available(iOS 13, *) {
-            return .darkContent
-        } else {
-            return .default
-        }
+        defaultStatusBarStyle
     }
     
     override func viewDidLoad() {
