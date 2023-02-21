@@ -56,16 +56,6 @@ class BaseWebViewController: BaseViewController, WKUIDelegate, WKNavigationDeleg
         }
     }
     
-    @available(iOS 13, *)
-    override func configureNavigationBarAppearance(_ barAppearance: UINavigationBarAppearance) {
-        super.configureNavigationBarAppearance(barAppearance)
-        barAppearance.backgroundColor = 0xF5F5F5.uiColor
-        barAppearance.titleTextAttributes = [
-            .foregroundColor: UIColor.Ox333333,
-            .font: UIFont.systemFont(ofSize: 16.0)
-        ]
-    }
-    
     func makeWebView() -> WKWebView {
 //        /// 适配文字大小
 //        let js = "var meta = document.createElement('meta'); meta.setAttribute('name', 'viewport'); meta.setAttribute('content', 'width=device-width'); document.getElementsByTagName('head')[0].appendChild(meta);"

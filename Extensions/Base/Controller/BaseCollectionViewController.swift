@@ -53,6 +53,7 @@ class BaseCollectionViewController: BaseViewController, UICollectionViewDelegate
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.backgroundColor = baseViewBackgroundColor
         return collectionView
     }
     

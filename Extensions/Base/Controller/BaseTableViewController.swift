@@ -60,6 +60,7 @@ class BaseTableViewController: BaseViewController, UITableViewDataSource, UITabl
         table.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         table.delegate = self
         table.dataSource = self
+        table.backgroundColor = baseViewBackgroundColor
         return table
     }
     
