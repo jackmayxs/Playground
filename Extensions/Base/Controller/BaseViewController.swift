@@ -108,6 +108,15 @@ protocol ViewControllerConfiguration: UIViewController {
 	func configureNavigationController(_ navigationController: UINavigationController)
 }
 
+enum NavigationBarStyle {
+    /// 毛玻璃效果(默认)
+    case `default`
+    /// 不透明
+    case opaqueBackground
+    /// 全透明
+    case transparentBackground
+}
+
 // MARK: - 基类控制器
 class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, ViewControllerConfiguration, ErrorTracker, ActivityTracker {
 	
@@ -268,22 +277,43 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
     
     @available(iOS 13, *)
     func configureNavigationBarAppearance(_ barAppearance: UINavigationBarAppearance) {
-        barAppearance.configureWithDefaultBackground() /// 毛玻璃效果(默认)
-        //barAppearance.configureWithOpaqueBackground() /// 不透明
-        //barAppearance.configureWithTransparentBackground() /// 全透明
+        
+        /// 设置导航栏样式
+        switch defaultNavigationBarStyle {
+        case .default:
+            barAppearance.configureWithDefaultBackground() /// 毛玻璃效果(默认)
+        case .opaqueBackground:
+            barAppearance.configureWithOpaqueBackground() /// 不透明
+        case .transparentBackground:
+            barAppearance.configureWithTransparentBackground() /// 全透明
+        }
+        
         /// 隐藏分割线
-        barAppearance.shadowColor = nil
+        barAppearance.shadowColor = navigationBarShadowColor
+        
         /// 设置返回按钮图片
         barAppearance.setBackIndicatorImage(nil, transitionMaskImage: nil)
+        
         /// This will result in true color, just like when you set barTintColor with isTranslucent = false.
-        //barAppearance.backgroundColor = .white
-        //barAppearance.titlePositionAdjustment
-        barAppearance.largeTitleTextAttributes = [
-            :
-        ]
-        barAppearance.titleTextAttributes = [
-            :
-        ]
+        if let navigationBarBackgroundColor = navigationBarBackgroundColor {
+            barAppearance.backgroundColor = navigationBarBackgroundColor
+        }
+        
+        /// 调整Title位置
+        barAppearance.titlePositionAdjustment = navigationTitlePositionAdjustment
+        
+        /// 设置大标题属性
+        var largeTitleTextAttributes: [NSAttributedString.Key: Any] = [:]
+        largeTitleTextAttributes[.foregroundColor] = navigationLargeTitleColor
+        largeTitleTextAttributes[.font] = navigationLargeTitleFont
+        barAppearance.largeTitleTextAttributes = largeTitleTextAttributes
+        
+        /// 设置标题属性
+        var titleTextAttributes: [NSAttributedString.Key: Any] = [:]
+        titleTextAttributes[.foregroundColor] = navigationTitleColor
+        titleTextAttributes[.font] = navigationTitleFont
+        barAppearance.titleTextAttributes = titleTextAttributes
+        
         //barAppearance.backgroundImage
         //barAppearance.backgroundEffect
         //barAppearance.backgroundImageContentMode
