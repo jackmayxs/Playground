@@ -15,8 +15,8 @@ class BaseStandardViewController<MainView: UIBaseView, ViewModel: ViewModelType>
     
     lazy var viewModel = ViewModel()
     
-    override func loadView() {
-        view = mainView
+    override var defaultMainView: UIView? {
+        mainView
     }
     
     override func prepareTargets() {

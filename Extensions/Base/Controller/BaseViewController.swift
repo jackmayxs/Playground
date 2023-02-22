@@ -126,6 +126,8 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
     
     var targetImageSize: CGSize?
     
+    var defaultMainView: UIView? { nil }
+    
     /// The image should defined as a global computed property in each project.
     private(set) lazy var backBarButtonItem = UIBarButtonItem(
         image: backBarButtonImage,
@@ -152,6 +154,14 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         defaultStatusBarStyle
+    }
+    
+    override func loadView() {
+        if let defaultMainView {
+            view = defaultMainView
+        } else {
+            super.loadView()
+        }
     }
     
     override func viewDidLoad() {

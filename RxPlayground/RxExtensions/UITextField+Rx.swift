@@ -1,24 +1,23 @@
 //
-//  UITextInput+Rx.swift
-//  RxPlayground
+//  UITextField+Rx.swift
+//  GodoxCine
 //
-//  Created by Choi on 2022/4/20.
+//  Created by Choi on 2023/2/22.
 //
 
+import UIKit
 import RxSwift
 import RxCocoa
 
-extension Reactive where Base: UITextView {
-    var unmarkedText: Observable<String> {
-        didChange
-            .withUnretained(base)
-            .map(\.0.unmarkedText)
-            .orEmpty
-            .distinctUntilChanged()
-    }
-}
-
 extension Reactive where Base: UITextField {
+    
+    var isEditing: Driver<Bool> {
+        controlEvent([.editingDidBegin, .editingDidEnd])
+            .withUnretained(base)
+            .map(\.0.isEditing)
+            .startWith(base.isEditing)
+            .asDriver(onErrorJustReturn: false)
+    }
     
     var unmarkedTextInput: TextInput<Base> {
         TextInput(base: base, text: maybeUnmarkedText)
