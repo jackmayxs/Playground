@@ -24,7 +24,14 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
     var contentInsets: UIEdgeInsets { .zero }
     
     /// 背景色
-    var defaultBackgroundColor: UIColor { .white }
+    var defaultBackgroundColor: UIColor {
+        defaultTableViewCellBackgroundColor ?? .white
+    }
+    
+    /// 高亮时的背景色
+    var defaultHighlightBackgroundColor: UIColor? {
+        defaultTableViewCellHighlightBackgroundColor
+    }
     
     /// 选中样式
     var defaultSelectionStyle: UITableViewCell.SelectionStyle { .default }
@@ -52,10 +59,8 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
             /// 高亮或者选中时隐藏分割线
             if state.isHighlighted || state.isSelected {
                 separator.isHidden = true
-//                teammateCellBelow?.separator.isHidden = true
-                contentView.backgroundColor = .secondarySystemGroupedBackground
+                contentView.backgroundColor = defaultHighlightBackgroundColor
             } else {
-//                teammateCellBelow?.separator.isHidden = false
                 adjustSeparatorFor(tableView, at: indexPath)
                 contentView.backgroundColor = defaultBackgroundColor
             }
@@ -70,6 +75,17 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         prepare()
+    }
+    
+    override func setHighlighted(_ highlighted: Bool, animated: Bool) {
+        super.setHighlighted(highlighted, animated: animated)
+        if highlighted, let color = defaultHighlightBackgroundColor {
+            contentView.backgroundColor = color
+            backgroundColor = color
+        } else {
+            contentView.backgroundColor = defaultBackgroundColor
+            backgroundColor = defaultBackgroundColor
+        }
     }
     
     func prepare() {

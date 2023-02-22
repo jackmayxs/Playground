@@ -33,7 +33,7 @@ struct ControllerPresentor {
                 corners: .allCorners
             )
         )
-        let animator = Animator(presentation: fade)
+        let animator = JellyAnimator(presentation: fade)
         controller.prepareAnimator(animator)
         presentingController.present(controller, animated: true)
     }
@@ -58,7 +58,7 @@ struct ControllerPresentor {
                 corners: .allCorners
             )
         )
-        let animator = Animator(presentation: fade)
+        let animator = JellyAnimator(presentation: fade)
         controller.prepareAnimator(animator)
         presentingController.present(controller, animated: true)
     }
@@ -66,6 +66,24 @@ struct ControllerPresentor {
     func slideIn(@SingleValueBuilder<PresentedControllerType> _ controllerBuilder: () -> PresentedControllerType) {
         let controller = controllerBuilder()
         slideIn(controller)
+    }
+    
+    func slideIn(_ controller: PresentedControllerType, from direction: Direction) {
+        let presentation = CoverPresentation(
+            directionShow: direction,
+            directionDismiss: direction,
+            uiConfiguration: PresentationUIConfiguration(
+                cornerRadius: 0,
+                backgroundStyle: .dimmed(alpha: 0.7),
+                isTapBackgroundToDismissEnabled: true
+            ),
+            size: controller.preferredContentSize.presentationSize,
+            alignment: PresentationAlignment(vertical: .center, horizontal: .right),
+            timing: PresentationTiming(duration: .normal, presentationCurve: .easeIn, dismissCurve: .easeOut)
+        )
+        let animator = JellyAnimator(presentation: presentation)
+        controller.prepareAnimator(animator)
+        presentingController.present(controller, animated: true)
     }
     
     func slideIn(_ controller: PresentedControllerType) {
@@ -82,7 +100,7 @@ struct ControllerPresentor {
             alignment: PresentationAlignment(vertical: .bottom, horizontal: .center),
             timing: PresentationTiming(duration: .normal, presentationCurve: .easeIn, dismissCurve: .easeOut)
         )
-        let animator = Animator(presentation: presentation)
+        let animator = JellyAnimator(presentation: presentation)
         controller.prepareAnimator(animator)
         presentingController.present(controller, animated: true)
     }
