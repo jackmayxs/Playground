@@ -42,7 +42,7 @@ class BaseFlowLayoutCollectionViewController<FlowLayout: UICollectionViewFlowLay
     // MARK: - UICollectionViewDelegateFlowLayout
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let sectionInset = flowLayout.sectionInsetsAt(indexPath).horizontal
-        let columnSpaces = (numberOfColumns - 1.0) * flowLayout.minimumLineSpacingForSectionAt(indexPath)
+        let columnSpaces = (numberOfColumns - 1.0) * flowLayout.minimumInteritemSpacingForSectionAt(indexPath)
         let itemsWidth = collectionView.bounds.width - sectionInset - columnSpaces
         let itemWidth = (itemsWidth / numberOfColumns) - 1.0
         return CGSize(width: itemWidth, height: cellHeight)
