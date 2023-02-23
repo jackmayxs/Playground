@@ -17,12 +17,22 @@ extension UIStackView {
 		spacing: CGFloat = 0.0,
 		@ArrayBuilder<UIView> content: () -> [UIView] = { [] }
 	) {
-		self.init(arrangedSubviews: content())
-		self.axis = axis
-		self.distribution = distribution
-		self.alignment = alignment
-		self.spacing = spacing
+        self.init(axis: axis, distribution: distribution, alignment: alignment, spacing: spacing, arrangedSubviews: content())
 	}
+    
+    convenience init(
+        axis: NSLayoutConstraint.Axis = .vertical,
+        distribution: UIStackView.Distribution = .fill,
+        alignment: UIStackView.Alignment = .leading,
+        spacing: CGFloat = 0.0,
+        arrangedSubviews: [UIView]
+    ) {
+        self.init(arrangedSubviews: arrangedSubviews)
+        self.axis = axis
+        self.distribution = distribution
+        self.alignment = alignment
+        self.spacing = spacing
+    }
     
     func refill(@ArrayBuilder<UIView> content: () -> [UIView]) {
         let subviews = content()
