@@ -12,7 +12,7 @@ class UIBaseTableViewHeaderFooterView: UITableViewHeaderFooterView, StandardLayo
     // 内容边距
     var contentInsets: UIEdgeInsets { .zero }
     // 背景色
-    var defaultBackgroundColor: UIColor { .white }
+    var defaultBackgroundColor: UIColor { baseViewBackgroundColor }
     // 圆角
     var preferredCornerRadius: CGFloat? { nil }
     
