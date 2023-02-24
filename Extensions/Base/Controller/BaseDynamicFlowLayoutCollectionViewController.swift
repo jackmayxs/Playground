@@ -7,7 +7,7 @@
 
 import UIKit
 
-class BaseDynamicFlowLayoutCollectionViewController<FlowLayout: UICollectionViewFlowLayout, Cell: UICollectionViewCell, ViewModel: PagableViewModelType>: BaseFlowLayoutCollectionViewController<FlowLayout>, PagableViewModelDelegate {
+class BaseDynamicFlowLayoutCollectionViewController<FlowLayout: UICollectionViewFlowLayout, Cell: UICollectionViewCell, Header: UICollectionReusableView, Footer: UICollectionReusableView, ViewModel: PagableViewModelType>: BaseFlowLayoutCollectionViewController<FlowLayout, Cell, Header, Footer>, PagableViewModelDelegate {
     
     lazy var viewModel = ViewModel(delegate: self)
     
@@ -27,23 +27,8 @@ class BaseDynamicFlowLayoutCollectionViewController<FlowLayout: UICollectionView
         viewModel.fetchMoreData()
     }
     
-    override func configureCollectionView() {
-        super.configureCollectionView()
-        Cell.registerFor(collectionView)
-    }
-    
-    func configureCell(_ cell: Cell, at indexPath: IndexPath) {
-        
-    }
-    
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         viewModel.numberOfItems
-    }
-    
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = Cell.dequeueReusableCell(from: collectionView, indexPath: indexPath)
-        configureCell(cell, at: indexPath)
-        return cell
     }
     
     // MARK: - PagableViewModelDelegate

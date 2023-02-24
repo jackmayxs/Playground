@@ -7,7 +7,7 @@
 
 import UIKit
 
-class BaseFlowLayoutCollectionViewController<FlowLayout: UICollectionViewFlowLayout>: BaseCollectionViewController, UICollectionViewDelegateFlowLayout {
+class BaseFlowLayoutCollectionViewController<FlowLayout: UICollectionViewFlowLayout, Cell: UICollectionViewCell, Header: UICollectionReusableView, Footer: UICollectionReusableView>: BaseCollectionViewController, UICollectionViewDelegateFlowLayout {
 
     lazy var flowLayout = makeFlowLayout()
     
@@ -23,14 +23,15 @@ class BaseFlowLayoutCollectionViewController<FlowLayout: UICollectionViewFlowLay
         50.0
     }
     
-    func makeFlowLayout() -> FlowLayout {
-        let layout = FlowLayout()
-        configureFlowLayout(layout)
-        return layout
-    }
-    
     override func makeEmptyView() -> UIView {
         ZKTableViewEmptyView()
+    }
+    
+    override func configureCollectionView() {
+        super.configureCollectionView()
+        Cell.registerFor(collectionView)
+        Header.registerFor(collectionView, kind: .header)
+        Footer.registerFor(collectionView, kind: .footer)
     }
     
     func configureFlowLayout(_ flowLayout: FlowLayout) {
@@ -39,6 +40,18 @@ class BaseFlowLayoutCollectionViewController<FlowLayout: UICollectionViewFlowLay
         flowLayout.sectionInset = 8
     }
     
+    func makeFlowLayout() -> FlowLayout {
+        let layout = FlowLayout()
+        configureFlowLayout(layout)
+        return layout
+    }
+    
+    func configureCell(_ cell: Cell, at indexPath: IndexPath) { }
+    
+    func configureHeader(_ header: Header, at indexPath: IndexPath) { }
+    
+    func configureFooter(_ footer: Footer, at indexPath: IndexPath) { }
+    
     // MARK: - UICollectionViewDelegateFlowLayout
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let sectionInset = flowLayout.sectionInsetsAt(indexPath).horizontal
@@ -46,5 +59,41 @@ class BaseFlowLayoutCollectionViewController<FlowLayout: UICollectionViewFlowLay
         let itemsWidth = collectionView.bounds.width - sectionInset - columnSpaces
         let itemWidth = (itemsWidth / numberOfColumns) - 1.0
         return CGSize(width: itemWidth, height: cellHeight)
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = Cell.dequeueReusableCell(from: collectionView, indexPath: indexPath)
+        configureCell(cell, at: indexPath)
+        return cell
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        guard let supplementaryViewKind = UICollectionReusableView.SupplementaryViewKind(rawValue: kind) else {
+            return super.collectionView(collectionView, viewForSupplementaryElementOfKind: kind, at: indexPath)
+        }
+        switch supplementaryViewKind {
+        case .header:
+            let header = Header.dequeReusableSupplementaryView(from: collectionView, kind: supplementaryViewKind, indexPath: indexPath)
+            configureHeader(header, at: indexPath)
+            return header
+        case .footer:
+            let footer = Footer.dequeReusableSupplementaryView(from: collectionView, kind: supplementaryViewKind, indexPath: indexPath)
+            configureFooter(footer, at: indexPath)
+            return footer
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        let indexPath = IndexPath(row: 0, section: section)
+        let headerView = self.collectionView(collectionView, viewForSupplementaryElementOfKind: UICollectionView.elementKindSectionHeader, at: indexPath)
+        let targetSize = CGSize(width: collectionView.frame.width, height: UIView.layoutFittingExpandedSize.height)
+        return headerView.systemLayoutSizeFitting(targetSize, withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
+        let indexPath = IndexPath(row: 0, section: section)
+        let headerView = self.collectionView(collectionView, viewForSupplementaryElementOfKind: UICollectionView.elementKindSectionFooter, at: indexPath)
+        let targetSize = CGSize(width: collectionView.frame.width, height: UIView.layoutFittingExpandedSize.height)
+        return headerView.systemLayoutSizeFitting(targetSize, withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel)
     }
 }

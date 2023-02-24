@@ -16,6 +16,14 @@ protocol StandardLayoutLifeCycle: UIView {
     func prepareConstraints()
 }
 
+extension StandardLayoutLifeCycle {
+    
+    func prepare() {
+        prepareSubviews()
+        prepareConstraints()
+    }
+}
+
 protocol ConditionCheckable {
 	func matchOrNil(condition: (Self) -> Bool) -> Self?
 }

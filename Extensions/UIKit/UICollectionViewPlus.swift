@@ -19,6 +19,15 @@ extension UICollectionReusableView {
 				case .footer: return UICollectionView.elementKindSectionFooter
 			}
 		}
+        init?(rawValue: String) {
+            if rawValue == UICollectionView.elementKindSectionHeader {
+                self = .header
+            } else if rawValue == UICollectionView.elementKindSectionFooter {
+                self = .footer
+            } else {
+                return nil
+            }
+        }
 	}
 	static func registerFor(_ collectionView: UICollectionView, kind: SupplementaryViewKind) {
 		collectionView.register(self, forSupplementaryViewOfKind: kind.raw, withReuseIdentifier: Self.reuseId)
