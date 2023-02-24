@@ -12,20 +12,23 @@ extension UITextField {
     struct Associated {
         static var placeholderColor = UUID()
     }
+}
+
+extension KK where Base: UITextField {
     
     public var placeholderColor: UIColor {
         
         get {
-            objc_getAssociatedObject(self, &Associated.placeholderColor) as! UIColor
+            objc_getAssociatedObject(self, &UITextField.Associated.placeholderColor) as! UIColor
         }
         
         set {
-            objc_setAssociatedObject(self, &Associated.placeholderColor, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            objc_setAssociatedObject(self, &UITextField.Associated.placeholderColor, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             let attributes: [NSAttributedString.Key: Any] = [
                 .foregroundColor: newValue,
-                .font: font ?? .systemFont(ofSize: 12)
+                .font: base.font ?? .systemFont(ofSize: 12)
             ]
-            attributedPlaceholder = NSMutableAttributedString(string: placeholder ?? "", attributes: attributes)
+            base.attributedPlaceholder = NSMutableAttributedString(string: base.placeholder ?? "", attributes: attributes)
         }
     }
 }
