@@ -64,6 +64,37 @@ final class ClamppedVariable<T>: Variable<T> where T: Comparable {
 
 extension ObservableType {
     
+    
+    /// 获取非空的上一个元素 和 当前元素
+    var validPreviousAndCurrentElement: Observable<(previous: Element, current: Element)> {
+        previousAndCurrentElement.compactMap { previous, current in
+            guard let previous else { return nil }
+            return (previous, current)
+        }
+    }
+    
+    /// 获取上一个元素 和 当前元素
+    var previousAndCurrentElement: Observable<(previous: Element?, current: Element)> {
+        scan(Array<Element>.empty) { array, next in
+            var tempArray = array
+            tempArray.append(next)
+            return tempArray.suffix(2)
+        }
+        .map { array in
+            (array.count > 1 ? array.first : nil, array.last.unsafelyUnwrapped)
+        }
+        
+//        /// 参考的网络上的实现
+//        multicast(PublishSubject.init) { subjectValues -> Observable<(current: Element, previous: Element)> in
+//            /// 合并时间线: 第一个元素 + 当前元素
+//            let previousValues = Observable.merge(subjectValues.take(1), subjectValues)
+//            /// 合并数据: 当前元素 + 上一个元素
+//            return Observable.combineLatest(subjectValues, previousValues) {
+//                ($0, $1)
+//            }
+//        }
+    }
+    
     /// 绑定忽略Error事件的序列
     /// 错误事件由上层调用.trackError(ErrorTracker)处理错误
     /// - Parameter observers: 观察者们
