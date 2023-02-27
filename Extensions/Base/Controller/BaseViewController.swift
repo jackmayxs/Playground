@@ -213,6 +213,12 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
     /// 是否显示导航栏
     var doHideNavigationBar: Bool { false }
     
+    /// 默认的导航栏样式
+    var defaultNavigationBarStyle: NavigationBarStyle { navigationBarStyle }
+    
+    /// 默认的导航栏背景色; 如果为空则使用defaultNavigationBarStyle的样式
+    var defaultNavigationBarBackgroundColor: UIColor? { navigationBarBackgroundColor }
+    
     /// 是否可以返回
     var isBackAvailable = true
     
@@ -319,8 +325,8 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
         barAppearance.setBackIndicatorImage(nil, transitionMaskImage: nil)
         
         /// This will result in true color, just like when you set barTintColor with isTranslucent = false.
-        if let navigationBarBackgroundColor = navigationBarBackgroundColor {
-            barAppearance.backgroundColor = navigationBarBackgroundColor
+        if let defaultNavigationBarBackgroundColor = defaultNavigationBarBackgroundColor {
+            barAppearance.backgroundColor = defaultNavigationBarBackgroundColor
         }
         
         /// 调整Title位置
