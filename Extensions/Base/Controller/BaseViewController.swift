@@ -216,6 +216,11 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
     /// 默认的导航栏样式
     var defaultNavigationBarStyle: NavigationBarStyle { navigationBarStyle }
     
+    /// 导航栏分割线颜色
+    var defaultNavigationBarShadowColor: UIColor? {
+        navigationBarShadowColor
+    }
+    
     /// 默认的导航栏背景色; 如果为空则使用defaultNavigationBarStyle的样式
     var defaultNavigationBarBackgroundColor: UIColor? { navigationBarBackgroundColor }
     
@@ -319,7 +324,7 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
         }
         
         /// 隐藏分割线
-        barAppearance.shadowColor = navigationBarShadowColor
+        barAppearance.shadowColor = defaultNavigationBarShadowColor
         
         /// 设置返回按钮图片
         barAppearance.setBackIndicatorImage(nil, transitionMaskImage: nil)
