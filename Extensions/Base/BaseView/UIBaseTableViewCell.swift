@@ -45,6 +45,9 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
     /// 圆角
     var preferredCornerRadius: CGFloat? { nil }
     
+    /// 分割线样式
+    var separatorStyle: SeparatorStyle = .inline
+    
     @available(iOS 14.0, *)
     var defaultBackgroundConfiguration: UIBackgroundConfiguration {
         .clear()
@@ -122,18 +125,21 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
                 /// 设置分割线
                 if let separatorPixelHeight {
                     /// 根据缩进布局分割线
-                    var separatorIndets: UIEdgeInsets {
-                        UIEdgeInsets(
-                            top: 0,
+                    var separatorInsets: UIEdgeInsets {
+                        let position: SeparatorPosition = separatorStyle == .regular(position: .bottom) ? .bottom : .top
+                        let separatorVerticalOffset = bounds.height - separatorPixelHeight.cgFloat / UIScreen.main.scale
+                        let insets = UIEdgeInsets(
+                            top: position == .bottom ? separatorVerticalOffset : 0,
                             left: separatorInset.left + indentationOffset,
-                            bottom: bounds.height - separatorPixelHeight.cgFloat / UIScreen.main.scale,
+                            bottom: position == .top ? separatorVerticalOffset : 0,
                             right: separatorInset.right
                         )
+                        return insets
                     }
                     /// 从TableView设置分割线颜色
                     separator.backgroundColor = tableView.separatorColor
                     /// 设置分割线位置
-                    separator.frame = bounds.inset(by: separatorIndets)
+                    separator.frame = bounds.inset(by: separatorInsets)
                     
                     /// 如果发现系统的分割线则隐藏它
                     /// 注: 第一次进入Table的时候,有的Cell会出现系统分割线
@@ -167,6 +173,21 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
     
     override func systemLayoutSizeFitting(_ targetSize: CGSize, withHorizontalFittingPriority horizontalFittingPriority: UILayoutPriority, verticalFittingPriority: UILayoutPriority) -> CGSize {
         super.systemLayoutSizeFitting(targetSize, withHorizontalFittingPriority: horizontalFittingPriority, verticalFittingPriority: verticalFittingPriority) + indentedContentInsets
+    }
+}
+
+extension UIBaseTableViewCell {
+    
+    enum SeparatorPosition: Equatable {
+        case top
+        case bottom
+    }
+    
+    enum SeparatorStyle: Equatable {
+        /// 总是显示Cell(底部)分割线
+        case regular(position: SeparatorPosition)
+        /// 只显示分组内的分割线(隐藏组尾Cell的分割线)
+        case inline
     }
 }
 
@@ -224,10 +245,15 @@ extension UIBaseTableViewCell {
             let sectionFooterRect = tableView.rectForFooter(inSection: indexPath.section)
             /// Cells Height
             let sectionCellsHeight = sectionHeight - sectionHeaderRect.height - sectionFooterRect.height
-            if sectionCellsHeight > self.frame.height {
-                self.separator.isHidden = indexPath.row == 0
+            if case .regular = self.separatorStyle {
+                self.separator.isHidden = false
             } else {
-                self.separator.isHidden = self.frame.maxY == sectionFooterRect.minY
+                if sectionCellsHeight > self.frame.height {
+                    self.separator.isHidden = indexPath.row == 0
+                } else {
+                    /// 分组内只有一行的情况
+                    self.separator.isHidden = self.frame.maxY == sectionFooterRect.minY
+                }
             }
         }
     }
