@@ -8,6 +8,21 @@
 import RxSwift
 import RxCocoa
 
+extension Array where Element == ControlProperty<Bool> {
+    
+    /// 让数组里的ControlProperty<Bool>互斥(开启一个的时候其它的全部关闭)
+    var mutualExclusion: Disposable {
+        let disposables = enumerated().flatMap { index, property in
+            var currentExcluded = self
+            currentExcluded.remove(at: index)
+            return currentExcluded.map { otherControlProperty in
+                property.filter(\.itself).map(\.toggled).bind(to: otherControlProperty)
+            }
+        }
+        return Disposables.create(disposables)
+    }
+}
+
 extension Array where Element: ObservableConvertibleType {
     var merged: Observable<Element.Element> {
         Observable.from(self).merge()
