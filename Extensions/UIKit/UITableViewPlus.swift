@@ -16,6 +16,21 @@ extension UITableView {
         }
     }
     
+    public func selectRows(at indexPaths: [IndexPath] = [], animated: Bool = true, scrollPosition: UITableView.ScrollPosition = .none) {
+        for indexPath in indexPaths {
+            if let indexPathsForSelectedRows, indexPathsForSelectedRows.contains(indexPath) {
+                continue
+            }
+            selectRow(at: indexPath, animated: animated, scrollPosition: scrollPosition)
+        }
+    }
+
+    public func deselectRows(at indexPaths: [IndexPath], animated: Bool = true) {
+        for indexPath in indexPaths {
+            deselectRow(at: indexPath, animated: animated)
+        }
+    }
+    
     func performAllCellSelection(_ performSelection: Bool) {
         for section in 0..<numberOfSections {
             for row in 0..<numberOfRows(inSection: section) {
