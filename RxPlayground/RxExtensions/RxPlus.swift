@@ -150,6 +150,10 @@ extension ObservableType {
 
 extension ObservableConvertibleType {
     
+    static var empty: Observable<Element> {
+        .empty()
+    }
+    
     /// Observable 稳定性测试 | 指定时间内是否发出指定个数的事件
     /// - Parameters:
     ///   - timeSpan: 经过的时间 | 默认不检查时间 0 纳秒
@@ -311,18 +315,6 @@ extension ObservableConvertibleType where Element == Int {
     var isEmpty: Observable<Bool> {
         asObservable()
             .map { $0 <= 0 }
-    }
-}
-
-extension Infallible {
-    static var empty: Self {
-        empty()
-    }
-}
-
-extension SharedSequence {
-    static var empty: Self {
-        empty()
     }
 }
 
