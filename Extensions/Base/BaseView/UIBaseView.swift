@@ -47,6 +47,7 @@ class BasePagableViewModel<Model>: BaseViewModel, PagableViewModelType {
     
     required init() {
         super.init()
+        didInitialize()
         fetchMoreData()
     }
     
@@ -54,6 +55,8 @@ class BasePagableViewModel<Model>: BaseViewModel, PagableViewModelType {
         self.delegate = delegate
         super.init()
     }
+    
+    func didInitialize() {}
     
     func fetchMoreData() {}
     
@@ -72,11 +75,11 @@ class PagableViewModel<Target: TargetType, Model: Codable>: BasePagableViewModel
 
     var target: Target? { nil }
     
-    override func fetchMoreData() {
+    override func didInitialize() {
         guard let validTarget = target else { return }
         rx.disposeBag.insert {
             Network.request(validTarget)
-                .map([Model].self, atKeyPath: "data")
+                .map(Array<Model>.self, atKeyPath: "data")
                 .do(afterSuccess: rx.items.onNext)
                 .subscribe()
         }
