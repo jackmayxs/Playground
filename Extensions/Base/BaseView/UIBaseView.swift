@@ -48,12 +48,12 @@ class BasePagableViewModel<Model>: BaseViewModel, PagableViewModelType {
     required init() {
         super.init()
         didInitialize()
-        fetchMoreData()
     }
     
     required init(delegate: PagableViewModelDelegate) {
         self.delegate = delegate
         super.init()
+        didInitialize()
     }
     
     func didInitialize() {}
