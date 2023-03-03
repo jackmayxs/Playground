@@ -79,6 +79,14 @@ extension Optional {
         return transform()
     }
     
+    static func <-- (lhs: Wrapped?, rhs: Wrapped?) -> Wrapped? {
+        lhs ?? rhs
+    }
+    
+    static func --> (lhs: Wrapped?, rhs: Wrapped?) -> Wrapped? {
+        rhs ?? lhs
+    }
+    
     /// Optional Error
     enum OptionalError: LocalizedError {
         case badValue
