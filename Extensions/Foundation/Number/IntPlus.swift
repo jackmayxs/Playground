@@ -25,6 +25,43 @@ extension UInt16 {
 
 extension BinaryInteger {
     
+    var int: Int {
+        Int(truncatingIfNeeded: self)
+    }
+    
+    var int64: Int64 {
+        Int64(truncatingIfNeeded: self)
+    }
+    
+    var int32: Int32 {
+        Int32(truncatingIfNeeded: self)
+    }
+    
+    var int16: Int16 {
+        Int16(truncatingIfNeeded: self)
+    }
+    
+    var int8: Int8 {
+        Int8(truncatingIfNeeded: self)
+    }
+    
+    var uInt64: UInt64 {
+        UInt64(truncatingIfNeeded: self)
+    }
+    
+    var uInt32: UInt32 {
+        UInt32(truncatingIfNeeded: self)
+    }
+    
+    public var uInt16: UInt16 {
+        UInt16(truncatingIfNeeded: self)
+    }
+    
+    public var uInt8: UInt8 {
+        UInt8(truncatingIfNeeded: self)
+    }
+    
+    
     /// 二进制
     var data: Data {
         dataInBytes()
@@ -33,16 +70,11 @@ extension BinaryInteger {
     /// 转换为二进制
     /// - Parameters:
     ///   - byteCount: 占用字节数, 如不指定则使用自身默认占用的字节数
-    ///   - bigEndian: 是否使用大字节序: true.则Data数组按高位往低位排序
-    /// - Returns: 转换后的二进制对象
-    func dataInBytes(_ byteCount: Int? = nil, bigEndian: Bool = false) -> Data {
-        var me = self
-        let count = byteCount ?? MemoryLayout.size(ofValue: me)
-        var data = Data(bytes: &me, count: count)
-        if bigEndian {
-            data.reverse()
-        }
-        return data
+    /// - Returns: 转换后的二进制对象(字节翻转过的数组: 从左到右为低位到高位排列)
+    func dataInBytes(_ byteCount: Int? = nil) -> Data {
+        var copy = self
+        let count = byteCount ?? MemoryLayout.size(ofValue: copy)
+        return Data(bytes: &copy, count: count)
     }
     
     /// 占用的二进制位数
