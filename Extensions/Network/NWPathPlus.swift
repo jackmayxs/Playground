@@ -36,70 +36,70 @@ extension NWPath {
         /// 最终的IP地址
         var ipAddress: String?
         /// 最终的子网掩码
-        var subnetMask: String?
+        var netmask: String?
         /// 最终的广播地址
         var broadcast: String?
 
         /// 获取本地所有的接口列表
-        var ifaddr: UnsafeMutablePointer<ifaddrs>?
-        guard getifaddrs(&ifaddr) == 0 else { return nil }
-        guard let firstAddr = ifaddr else { return nil }
+        var ifaddrs: UnsafeMutablePointer<ifaddrs>?
+        guard getifaddrs(&ifaddrs) == 0 else { return nil }
+        guard let ifaddrs else { return nil }
 
         /// 遍历所有接口
-        for ifptr in sequence(first: firstAddr, next: \.pointee.ifa_next) {
-            let interface = ifptr.pointee
+        for ifaddr in sequence(first: ifaddrs, next: \.pointee.ifa_next) {
+            let pointee = ifaddr.pointee
             
             /// IP版本
-            let addrFamily = interface.ifa_addr.pointee.sa_family
+            let saFamily = pointee.ifa_addr.pointee.sa_family
             /// IPv4
-            if addrFamily == UInt8(AF_INET) {
+            if saFamily == UInt8(AF_INET) {
                 /// 接口名称(e.g. :en0 en1 etc.)
-                let name = String(cString: interface.ifa_name)
+                let name = String(cString: pointee.ifa_name)
                 if name == interfaceName {
                     /// 将接口地址转换为人类可读的字符串
-                    var hostname = [CChar](repeating: 0, count: Int(NI_MAXHOST))
-                    var subnetmaskName = [CChar](repeating: 0, count: Int(NI_MAXHOST))
-                    var broadcastName = [CChar](repeating: 0, count: Int(NI_MAXHOST))
+                    var ipAddressChars = [CChar](repeating: 0, count: Int(NI_MAXHOST))
+                    var netmaskChars = [CChar](repeating: 0, count: Int(NI_MAXHOST))
+                    var broadcastChars = [CChar](repeating: 0, count: Int(NI_MAXHOST))
                     
-                    /// 获取IP地址信息
-                    getnameinfo(interface.ifa_addr,
-                                socklen_t(interface.ifa_addr.pointee.sa_len),
-                                &hostname,
-                                socklen_t(hostname.count),
+                    /// 获取IP地址
+                    getnameinfo(pointee.ifa_addr,
+                                socklen_t(pointee.ifa_addr.pointee.sa_len),
+                                &ipAddressChars,
+                                socklen_t(ipAddressChars.count),
                                 nil,
                                 socklen_t(0),
                                 NI_NUMERICHOST)
                     
-                    /// 获取子网掩码信息
-                    var netmask = interface.ifa_netmask.pointee
-                    getnameinfo(&netmask,
-                                socklen_t(netmask.sa_len),
-                                &subnetmaskName,
-                                socklen_t(subnetmaskName.count),
+                    /// 获取子网掩码
+                    var netmaskPointee = pointee.ifa_netmask.pointee
+                    getnameinfo(&netmaskPointee,
+                                socklen_t(netmaskPointee.sa_len),
+                                &netmaskChars,
+                                socklen_t(netmaskChars.count),
                                 nil,
                                 socklen_t(0),
                                 NI_NUMERICHOST)
                     
-                    /// 获取网关信息
-                    var broadcastPointee = interface.ifa_dstaddr.pointee
+                    /// 获取广播地址
+                    var broadcastPointee = pointee.ifa_dstaddr.pointee
                     getnameinfo(&broadcastPointee,
-                                socklen_t(netmask.sa_len),
-                                &broadcastName,
-                                socklen_t(broadcastName.count),
+                                socklen_t(broadcastPointee.sa_len),
+                                &broadcastChars,
+                                socklen_t(broadcastChars.count),
                                 nil,
                                 socklen_t(0),
                                 NI_NUMERICHOST)
-                    ipAddress = String(cString: hostname)
-                    subnetMask = String(cString: subnetmaskName)
-                    broadcast = String(cString: broadcastName)
+                    ipAddress = String(cString: ipAddressChars)
+                    netmask = String(cString: netmaskChars)
+                    broadcast = String(cString: broadcastChars)
                 }
             }
         }
-        freeifaddrs(ifaddr)
+        freeifaddrs(ifaddrs)
 
         return IPv4Config(
             ip: IPv4Address(ipAddress.orEmpty),
-            subnetMask: IPv4Address(subnetMask.orEmpty),
+            subnetMask: IPv4Address(netmask.orEmpty),
             broadCastIP: IPv4Address(broadcast.orEmpty)
         )
     }
