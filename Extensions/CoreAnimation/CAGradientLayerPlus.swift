@@ -20,7 +20,7 @@ struct ColorStop {
     /// - Parameters:
     ///   - hue: 色相 (范围: 0 - 1)
     static func fromHue(_ hue: Double) -> ColorStop {
-        let color = UIColor(hue: hue, saturation: 1.0, brightness: 1.0, alpha: 1.0)
+        let color = UIColor(hue: hue)
         return self.init(color: color)
     }
 }

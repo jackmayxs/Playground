@@ -21,6 +21,24 @@ extension UIColor {
 
 extension UIColor {
 	
+    var hue: CGFloat {
+        guard let hsba else { return 0.0 }
+        return hsba.0
+    }
+    
+    var hsba: (CGFloat, CGFloat, CGFloat, CGFloat)? {
+        var h: CGFloat = 0.0
+        var s: CGFloat = 0.0
+        var b: CGFloat = 0.0
+        var a: CGFloat = 0.0
+        guard getHue(&h, saturation: &s, brightness: &b, alpha: &a) else { return nil }
+        return (h, s, b, a)
+    }
+    
+    convenience init(hue: Double) {
+        self.init(hue: hue, saturation: 1.0, brightness: 1.0, alpha: 1.0)
+    }
+    
     @available(iOS 13.0, *)
     convenience init(dark: UIColor, light: UIColor) {
         self.init { traitCollection in
