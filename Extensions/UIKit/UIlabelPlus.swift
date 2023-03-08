@@ -15,9 +15,11 @@ extension UILabel {
 		text: String? = nil,
 		textColor: UIColor? = nil,
 		fontSize: Double = 12.0,
-		fontWeight: UIFont.Weight = .regular) {
+		fontWeight: UIFont.Weight = .regular,
+        alignment: NSTextAlignment = .left) {
 			let font = UIFont.systemFont(ofSize: fontSize, weight: fontWeight)
 			self.init(text: text, textColor: textColor, font: font)
+            textAlignment = alignment
 		}
 	
 	convenience init(
