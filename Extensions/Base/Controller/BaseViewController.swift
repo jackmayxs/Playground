@@ -438,7 +438,7 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
         guard checkIsBackAvailable() else {
             return
         }
-        if let navigationController = navigationController {
+        if let navigationController {
             if navigationController.viewControllers.count > 1 {
                 goBack(animated: animated)
             } else {
