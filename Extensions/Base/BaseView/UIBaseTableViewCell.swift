@@ -42,6 +42,9 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
     /// 分割线像素高度 | 子类重写此属性并返回nil则不显示自定义的分割线
     var separatorPixelHeight: Int? { 1 }
     
+    /// 为了方便静态表格视图中,给某一类Cell直接设置分割线的显示隐藏
+    var showSeparator = true
+    
     /// 圆角
     var preferredCornerRadius: CGFloat? { nil }
     
@@ -123,7 +126,7 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
             if let tableView, let indexPath = tableView.indexPath(for: self) {
                 
                 /// 设置分割线
-                if let separatorPixelHeight {
+                if let separatorPixelHeight, showSeparator {
                     /// 根据缩进布局分割线
                     var separatorInsets: UIEdgeInsets {
                         let position: SeparatorPosition = separatorStyle == .regular(position: .bottom) ? .bottom : .top
