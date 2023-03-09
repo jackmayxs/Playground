@@ -123,7 +123,7 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
             if let tableView, let indexPath = tableView.indexPath(for: self) {
                 
                 /// 设置分割线
-                if let separatorPixelHeight, tableView.separatorStyle != .none {
+                if let separatorPixelHeight {
                     /// 根据缩进布局分割线
                     var separatorInsets: UIEdgeInsets {
                         let position: SeparatorPosition = separatorStyle == .regular(position: .bottom) ? .bottom : .top
