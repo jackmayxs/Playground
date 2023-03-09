@@ -15,12 +15,12 @@ extension Reactive where Base: UIButton {
         return ControlEvent(events: tappedButton)
     }
     
-    var normalImage: ControlProperty<UIImage?> {
-        controlProperty(editingEvents: .allTouchEvents) { button in
-            button.image(for: .normal)
-        } setter: { button, newImage in
-            button.setImage(newImage, for: .normal)
-        }
+    var normalTitle: Binder<String?> {
+        title(for: .normal)
+    }
+    
+    var normalImage: Binder<UIImage?> {
+        image(for: .normal)
     }
     
     var isSelected: ControlProperty<Bool> {

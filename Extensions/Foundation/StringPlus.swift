@@ -20,20 +20,23 @@ extension String {
 }
 
 extension String {
-	
+    
 	/// 返回SF Symbol图片
     var systemImage: UIImage? {
-        if #available(iOS 13, *) {
-            return UIImage(systemName: self)
-        } else {
-            return nil
-        }
+        guard #available(iOS 13.0, *) else { return nil }
+        return UIImage(systemName: self)
 	}
 	
 	/// 生成图片
 	var uiImage: UIImage? {
 		UIImage(named: self)
 	}
+    
+    @available(iOS 13.0, *)
+    public func systemImage(_ pointSize: CGFloat, weight: UIImage.SymbolWeight = .regular, scale: UIImage.SymbolScale = .default) -> UIImage? {
+        let config = UIImage.SymbolConfiguration(pointSize: pointSize, weight: weight, scale: scale)
+        return UIImage(systemName: self, withConfiguration: config)
+    }
 }
 
 // MARK: - __________ String: LocalizedError __________
