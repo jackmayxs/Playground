@@ -19,7 +19,7 @@ final class UISpinningImageView: UIImageView, ActivityTracker {
     
     private func spin(_ state: Bool) {
         if state {
-            let link = CADisplayLink(target: proxy, selector: #selector(rotate))
+            let link = CADisplayLink(target: proxy, selector: #selector(rotateImage))
             link.add(to: .main, forMode: .common)
             if #available(iOS 15.0, *) {
                 link.preferredFrameRateRange = CAFrameRateRange(minimum: 60, maximum: 60)
@@ -37,7 +37,7 @@ final class UISpinningImageView: UIImageView, ActivityTracker {
         }
     }
     
-    @objc private func rotate() {
+    @objc private func rotateImage() {
         angle += 0.08
         transform = CGAffineTransform(rotationAngle: angle)
     }

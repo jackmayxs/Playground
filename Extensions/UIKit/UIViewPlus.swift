@@ -114,6 +114,13 @@ extension UIView {
         }
     }
     
+    /// 翻转
+    /// - Parameter degree: 翻转读数: 一周为360°
+    public func rotate(_ degree: Int) {
+        let angle = (CGFloat.pi / 180.0) * degree.cgFloat
+        transform = CGAffineTransform(rotationAngle: angle)
+    }
+    
     /// 计算自动布局下的尺寸
     /// - Parameters:
     ///   - maxSize: 限制最大尺寸
