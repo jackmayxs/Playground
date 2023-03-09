@@ -176,6 +176,53 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
     override func systemLayoutSizeFitting(_ targetSize: CGSize, withHorizontalFittingPriority horizontalFittingPriority: UILayoutPriority, verticalFittingPriority: UILayoutPriority) -> CGSize {
         super.systemLayoutSizeFitting(targetSize, withHorizontalFittingPriority: horizontalFittingPriority, verticalFittingPriority: verticalFittingPriority) + indentedContentInsets
     }
+    
+    /// 实现Cell直接加分割线的效果
+    /// - Parameters:
+    ///   - tableView: Cell容器TableView
+    ///   - indexPath: 所在的indexPath
+    func adjustSeparatorFor(_ tableView: UITableView, at indexPath: IndexPath) {
+        /// 在TableView初始化的时候就要设置separatorStyle = .none
+        /// 第一次进入TableViewController时获取的sectionHeight不正常 所以这里做延迟1ms处理
+        DispatchQueue.main.asyncAfter(deadline: indexPath.section + indexPath.row == 0 ? 0.001 : 0.0) {
+            /// HeaderHeight + CellsHeight + FooterHeight
+            let sectionHeight = tableView.rect(forSection: indexPath.section).height
+            /// Section Header's frame
+            let sectionHeaderRect = tableView.rectForHeader(inSection: indexPath.section)
+            /// Section Footer's frame
+            let sectionFooterRect = tableView.rectForFooter(inSection: indexPath.section)
+            /// Cells Height
+            let sectionCellsHeight = sectionHeight - sectionHeaderRect.height - sectionFooterRect.height
+            if case .regular = self.separatorStyle {
+                self.separator.isHidden = false
+            } else {
+                if sectionCellsHeight > self.frame.height {
+                    self.separator.isHidden = indexPath.row == 0
+                } else {
+                    /// 分组内只有一行的情况
+                    self.separator.isHidden = self.frame.maxY == sectionFooterRect.minY
+                }
+            }
+        }
+    }
+    
+    /// 实现分组样式时,第一行和最后一行分别加圆角
+    /// 调用时机:tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath)
+    /// - Parameters:
+    ///   - tableView: Cell容器TableView
+    ///   - indexPath: 所在的indexPath
+    /// - Returns: Cell本身
+    func setCornerRadius(_ cornerRadius: CGFloat, for tableView: UITableView, at indexPath: IndexPath) {
+        if indexPath.row == 0, tableView.numberOfRows(inSection: indexPath.section) == indexPath.row + 1 {
+            contentView.roundCorners(corners: .allCorners, cornerRadius: cornerRadius)
+        } else if indexPath.row == 0 {
+            contentView.roundCorners(corners: [.topLeft, .topRight], cornerRadius: cornerRadius)
+        } else if tableView.numberOfRows(inSection: indexPath.section) == indexPath.row + 1 {
+            contentView.roundCorners(corners: [.bottomLeft, .bottomRight], cornerRadius: cornerRadius)
+        } else {
+            contentView.roundCorners(corners: .allCorners, cornerRadius: 0.0)
+        }
+    }
 }
 
 extension UIBaseTableViewCell {
@@ -229,52 +276,5 @@ extension UIBaseTableViewCell {
     // 所在的indexPath
     var indexPath: IndexPath? {
         tableView?.indexPath(for: self)
-    }
-    
-    /// 实现Cell直接加分割线的效果
-    /// - Parameters:
-    ///   - tableView: Cell容器TableView
-    ///   - indexPath: 所在的indexPath
-    private func adjustSeparatorFor(_ tableView: UITableView, at indexPath: IndexPath) {
-        /// 在TableView初始化的时候就要设置separatorStyle = .none
-        /// 第一次进入TableViewController时获取的sectionHeight不正常 所以这里做延迟1ms处理
-        DispatchQueue.main.asyncAfter(deadline: indexPath.section + indexPath.row == 0 ? 0.001 : 0.0) {
-            /// HeaderHeight + CellsHeight + FooterHeight
-            let sectionHeight = tableView.rect(forSection: indexPath.section).height
-            /// Section Header's frame
-            let sectionHeaderRect = tableView.rectForHeader(inSection: indexPath.section)
-            /// Section Footer's frame
-            let sectionFooterRect = tableView.rectForFooter(inSection: indexPath.section)
-            /// Cells Height
-            let sectionCellsHeight = sectionHeight - sectionHeaderRect.height - sectionFooterRect.height
-            if case .regular = self.separatorStyle {
-                self.separator.isHidden = false
-            } else {
-                if sectionCellsHeight > self.frame.height {
-                    self.separator.isHidden = indexPath.row == 0
-                } else {
-                    /// 分组内只有一行的情况
-                    self.separator.isHidden = self.frame.maxY == sectionFooterRect.minY
-                }
-            }
-        }
-    }
-    
-    /// 实现分组样式时,第一行和最后一行分别加圆角
-    /// 调用时机:tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath)
-    /// - Parameters:
-    ///   - tableView: Cell容器TableView
-    ///   - indexPath: 所在的indexPath
-    /// - Returns: Cell本身
-    private func setCornerRadius(_ cornerRadius: CGFloat, for tableView: UITableView, at indexPath: IndexPath) {
-        if indexPath.row == 0, tableView.numberOfRows(inSection: indexPath.section) == indexPath.row + 1 {
-            contentView.roundCorners(corners: .allCorners, cornerRadius: cornerRadius)
-        } else if indexPath.row == 0 {
-            contentView.roundCorners(corners: [.topLeft, .topRight], cornerRadius: cornerRadius)
-        } else if tableView.numberOfRows(inSection: indexPath.section) == indexPath.row + 1 {
-            contentView.roundCorners(corners: [.bottomLeft, .bottomRight], cornerRadius: cornerRadius)
-        } else {
-            contentView.roundCorners(corners: .allCorners, cornerRadius: 0.0)
-        }
     }
 }
