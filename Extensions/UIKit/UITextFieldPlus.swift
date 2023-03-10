@@ -22,7 +22,7 @@ extension KK where Base: UITextField {
             objc_getAssociatedObject(self, &UITextField.Associated.placeholderColor) as! UIColor
         }
         
-        set {
+        nonmutating set {
             objc_setAssociatedObject(self, &UITextField.Associated.placeholderColor, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             let attributes: [NSAttributedString.Key: Any] = [
                 .foregroundColor: newValue,
