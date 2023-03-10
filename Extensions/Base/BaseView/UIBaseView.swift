@@ -21,9 +21,9 @@ protocol PagableViewModelType<Model>: ViewModelType {
     init(delegate: PagableViewModelDelegate)
 }
 
-protocol ControllerBaseView: StandardLayoutLifeCycle {
+protocol ControllerBaseView<ViewModel>: StandardLayoutLifeCycle {
     associatedtype ViewModel: ViewModelType
-    func setupViewModel(_ viewModel: Self.ViewModel)
+    func setupViewModel(_ viewModel: ViewModel)
 }
 
 class BaseViewModel: ViewModelType, ReactiveCompatible {
@@ -86,8 +86,7 @@ class PagableViewModel<Target: TargetType, Model: Codable>: BasePagableViewModel
     }
 }
 
-class UIBaseView: UIView, ControllerBaseView {
-    typealias ViewModel = BaseViewModel
+class UIBaseView: UIView {
     
     var defaultBackgroundColor: UIColor { baseViewBackgroundColor }
     
@@ -110,8 +109,6 @@ class UIBaseView: UIView, ControllerBaseView {
     func prepareSubviews() {}
     
     func prepareConstraints() {}
-    
-    func setupViewModel(_ viewModel: BaseViewModel) {}
 }
 
 extension UIView: ErrorTracker {
