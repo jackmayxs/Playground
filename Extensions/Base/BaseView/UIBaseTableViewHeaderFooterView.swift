@@ -21,6 +21,9 @@ class UIBaseTableViewHeaderFooterView: UITableViewHeaderFooterView, StandardLayo
         .listPlainHeaderFooter()
     }
     
+    /// 弱引用Cell本身的TableView | 用于分类中对TableView的缓存
+    private weak var tableView_: UITableView?
+    
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         prepare()
@@ -60,4 +63,20 @@ class UIBaseTableViewHeaderFooterView: UITableViewHeaderFooterView, StandardLayo
             contentView.roundCorners(cornerRadius: preferredCornerRadius)
         }
     }
+}
+
+extension UIBaseTableViewHeaderFooterView {
+    
+    var tableView: UITableView? {
+        if let tableView_ {
+            return tableView_
+        } else {
+            tableView_ = superview(UITableView.self)
+            return tableView_
+        }
+    }
+//
+//    var section: Int? {
+//        tableView?.qmui_indexForSectionHeader(at: self)
+//    }
 }
