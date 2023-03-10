@@ -144,6 +144,12 @@ extension String {
 }
 extension String {
     
+    
+    /// 拼接冒号并返回
+    var withColon: String {
+        self + ": "
+    }
+    
     /// 返回指定个数的头部子字符串
     /// - Parameter characterCount: 字符个数
     /// - Returns: 子字符串
