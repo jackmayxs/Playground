@@ -150,6 +150,19 @@ extension String {
         self + ": "
     }
     
+    /// 如果不包含指定字符串则拼接
+    /// - Parameter string: 指定字符串
+    /// - Returns: 新的字符串
+    func appendingIfNeeded(_ anyString: any StringProtocol) -> String {
+        let contains: Bool
+        if #available(iOS 16.0, *) {
+            contains = ranges(of: anyString).isEmpty
+        } else {
+            contains = ranges(of: anyString.description).isEmpty
+        }
+        return contains ? appending(anyString) : self
+    }
+    
     /// 返回指定个数的头部子字符串
     /// - Parameter characterCount: 字符个数
     /// - Returns: 子字符串
