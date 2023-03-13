@@ -12,6 +12,10 @@ fileprivate typealias FirstResponderHandoff = (UIResponder) -> Void
 
 extension UIResponder {
 	
+    var parentController: UIViewController? {
+        parentController(UIViewController.self)
+    }
+    
 	/// 获取Parent控制器
 	/// - Parameter type: 控制器类型
 	/// - Returns: 匹配的控制器
