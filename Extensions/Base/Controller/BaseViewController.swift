@@ -541,7 +541,7 @@ extension BaseViewController {
     /// - Parameter title: 相应的标题,提示具体使用相机的用途
     func popCameraAccessDeniedDialog(title: String) {
         presentor.popDialog {
-            ZKAlertDialog(
+            AlertDialog(
                 title: title,
                 message: localized.inquiry_OPEN_PERMISSION_SETTINGS~) {
                     ZKAction.cancel
@@ -558,7 +558,7 @@ extension BaseViewController {
     
     func fetchPhotos(count: Int = 1, targetImageSize: CGSize? = nil, allowsEditing: Bool = false) {
         self.targetImageSize = targetImageSize
-        let sheet = ZKActionSheetController {
+        let sheet = ActionSheetController {
             ZKAction(title: localized.com_PHOTO_ALBUM~) {
                 [unowned self] in getPhotos(count: count, from: .photoLibrary, allowsEditing: allowsEditing)
             }
