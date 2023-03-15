@@ -21,10 +21,12 @@ protocol PagableViewModelType<Model>: ViewModelType {
     init(delegate: PagableViewModelDelegate)
 }
 
-protocol ControllerBaseView<ViewModel>: StandardLayoutLifeCycle {
+protocol ViewModelConfigurable<ViewModel> {
     associatedtype ViewModel: ViewModelType
     func setupViewModel(_ viewModel: ViewModel)
 }
+
+typealias ControllerBaseView = ViewModelConfigurable & StandardLayoutLifeCycle
 
 class BaseViewModel: ViewModelType, ReactiveCompatible {
     required init() {}
