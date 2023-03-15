@@ -102,6 +102,12 @@ class StaticTable: ReactiveCompatible {
         let result = sectionsBuilder()
         sections.append(contentsOf: result)
     }
+    
+    var numberOfRows: Int {
+        sections.reduce(0) { partialResult, section in
+            partialResult + section.rows.count
+        }
+    }
 }
 
 class BaseStaticTableViewController<Table: StaticTable>: BaseTableViewController {
