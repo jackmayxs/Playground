@@ -394,9 +394,23 @@ extension UIView {
     /// - Returns: 自己
     func limit(minWidth: CGFloat? = nil, minHeight: CGFloat? = nil) -> Self {
         if let minWidth {
+            let existedConstraints = constraints.filter { constraint in
+                guard constraint.relation == .greaterThanOrEqual else { return false }
+                guard constraint.firstAttribute == .width else { return false }
+                guard constraint.secondAttribute == .notAnAttribute else { return false }
+                return true
+            }
+            removeConstraints(existedConstraints)
             widthAnchor.constraint(greaterThanOrEqualToConstant: minWidth).isActive = true
         }
         if let minHeight {
+            let existedConstraints = constraints.filter { constraint in
+                guard constraint.relation == .greaterThanOrEqual else { return false }
+                guard constraint.firstAttribute == .height else { return false }
+                guard constraint.secondAttribute == .notAnAttribute else { return false }
+                return true
+            }
+            removeConstraints(existedConstraints)
             heightAnchor.constraint(greaterThanOrEqualToConstant: minHeight).isActive = true
         }
         translatesAutoresizingMaskIntoConstraints = false
@@ -408,9 +422,23 @@ extension UIView {
     /// - Returns: 自己
     func limit(maxWidth: CGFloat? = nil, maxHeight: CGFloat? = nil) -> Self {
         if let maxWidth {
+            let existedConstraints = constraints.filter { constraint in
+                guard constraint.relation == .lessThanOrEqual else { return false }
+                guard constraint.firstAttribute == .width else { return false }
+                guard constraint.secondAttribute == .notAnAttribute else { return false }
+                return true
+            }
+            removeConstraints(existedConstraints)
             widthAnchor.constraint(lessThanOrEqualToConstant: maxWidth).isActive = true
         }
         if let maxHeight {
+            let existedConstraints = constraints.filter { constraint in
+                guard constraint.relation == .lessThanOrEqual else { return false }
+                guard constraint.firstAttribute == .height else { return false }
+                guard constraint.secondAttribute == .notAnAttribute else { return false }
+                return true
+            }
+            removeConstraints(existedConstraints)
             heightAnchor.constraint(lessThanOrEqualToConstant: maxHeight).isActive = true
         }
         translatesAutoresizingMaskIntoConstraints = false
