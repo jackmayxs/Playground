@@ -9,14 +9,19 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class BaseStandardViewController<MainView: UIBaseView, ViewModel: ViewModelType>: BaseViewController {
+class BaseStandardViewController<MainView: ControllerBaseView>: BaseViewController {
     
     lazy var mainView = MainView()
     
-    lazy var viewModel = ViewModel()
+    lazy var viewModel = MainView.ViewModel()
     
     override var defaultMainView: UIView? {
         mainView
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        mainView.setupViewModel(viewModel)
     }
     
     override func prepareTargets() {

@@ -26,6 +26,10 @@ protocol ViewModelConfigurable<ViewModel> {
     func setupViewModel(_ viewModel: ViewModel)
 }
 
+extension ViewModelConfigurable {
+    func setupViewModel(_ viewModel: ViewModel) {}
+}
+
 typealias ControllerBaseView = ViewModelConfigurable & StandardLayoutLifeCycle
 
 class BaseViewModel: ViewModelType, ReactiveCompatible {
