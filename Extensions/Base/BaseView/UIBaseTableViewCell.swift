@@ -33,6 +33,16 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
         defaultTableViewCellHighlightBackgroundColor
     }
     
+    /// 选中时的背景色
+    var defaultSelectedBackgroundColor: UIColor? {
+        defaultTableViewCellSelectedBackgroundColor
+    }
+    
+    /// 是否在高亮状态自动显示/隐藏分割线
+    var adjustSeparatorWhenHighlighted: Bool {
+        false
+    }
+    
     /// 选中样式
     var defaultSelectionStyle: UITableViewCell.SelectionStyle { .default }
     
@@ -52,25 +62,33 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
     var separatorStyle: SeparatorStyle = .inline
     
     @available(iOS 14.0, *)
-    var defaultBackgroundConfiguration: UIBackgroundConfiguration {
-        .clear()
-    }
-    
-    @available(iOS 14.0, *)
     override func updateConfiguration(using state: UICellConfigurationState) {
         super.updateConfiguration(using: state)
+        var background = UIBackgroundConfiguration.listPlainCell()
+        if state.isHighlighted {
+            background.backgroundColor = defaultHighlightBackgroundColor ?? .clear
+        } else if state.isSelected {
+            background.backgroundColor = defaultSelectedBackgroundColor ?? .clear
+        } else {
+            background.backgroundColor = defaultBackgroundColor
+        }
         
-        /// 如果选中样式为.none的话,就不执行隐藏自定义分割线的操作
-        if selectionStyle != .none, let tableView, let indexPath = tableView.indexPath(for: self) {
-            /// 高亮或者选中时隐藏分割线
-            if state.isHighlighted || state.isSelected {
-                separator.isHidden = true
-                contentView.backgroundColor = defaultHighlightBackgroundColor
-            } else {
-                adjustSeparatorFor(tableView, at: indexPath)
-                contentView.backgroundColor = defaultBackgroundColor
+        /// 设置分割线显示隐藏
+        if adjustSeparatorWhenHighlighted {
+            separator.isHidden = state.isHighlighted
+            switch separatorStyle {
+            case .regular(position: .bottom):
+                if let teammateCellAbove {
+                    teammateCellAbove.separator.isHidden = state.isHighlighted
+                }
+            case .inline, .regular(position: .top):
+                if let teammateCellBelow {
+                    teammateCellBelow.separator.isHidden = state.isHighlighted
+                }
             }
         }
+        
+        backgroundConfiguration = background
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -85,21 +103,22 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
     
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {
         super.setHighlighted(highlighted, animated: animated)
-        if highlighted, let color = defaultHighlightBackgroundColor {
-            contentView.backgroundColor = color
-            backgroundColor = color
-        } else {
-            contentView.backgroundColor = defaultBackgroundColor
-            backgroundColor = defaultBackgroundColor
+        if #unavailable(iOS 14.0) {
+            if highlighted, let color = defaultHighlightBackgroundColor {
+                contentView.backgroundColor = color
+                backgroundColor = color
+            } else {
+                contentView.backgroundColor = defaultBackgroundColor
+                backgroundColor = defaultBackgroundColor
+            }
         }
     }
     
     func prepare() {
-        if #available(iOS 14.0, *) {
-            backgroundConfiguration = defaultBackgroundConfiguration
-        }
         selectionStyle = defaultSelectionStyle
-        contentView.backgroundColor = defaultBackgroundColor
+        if #unavailable(iOS 14.0) {
+            contentView.backgroundColor = defaultBackgroundColor
+        }
         prepareSubviews()
         prepareConstraints()
     }
@@ -236,7 +255,7 @@ extension UIBaseTableViewCell {
     }
     
     enum SeparatorStyle: Equatable {
-        /// 总是显示Cell(底部)分割线
+        /// 总是显示Cell分割线(可设置分割线显示的位置在顶部或在底部)
         case regular(position: SeparatorPosition)
         /// 只显示分组内的分割线(隐藏组尾Cell的分割线)
         case inline
@@ -254,7 +273,16 @@ extension UIBaseTableViewCell {
         return neighborCellBelow
     }
     
-    /// 可见的邻居Cell(可能是不同分组的Cell)
+    /// 同组的上面的Cell
+    var teammateCellAbove: UIBaseTableViewCell? {
+        guard let indexPath else { return nil }
+        guard let neighborCellAbove else { return nil }
+        guard let neighborIndexPath = neighborCellAbove.indexPath else { return nil }
+        guard indexPath.section == neighborIndexPath.section else { return nil }
+        return neighborCellAbove
+    }
+    
+    /// 可见的邻居(本Cell下面的)Cell(可能是不同分组的Cell)
     var neighborCellBelow: UIBaseTableViewCell? {
         guard let tableView else { return nil }
         /// 取得可见Cell数组
@@ -265,6 +293,19 @@ extension UIBaseTableViewCell {
         let nextIndex = visibleCells.index(myIndex, offsetBy: 1)
         /// 类型转换并返回
         return visibleCells.itemAt(nextIndex) as? UIBaseTableViewCell
+    }
+    
+    /// 可见的邻居(本Cell上面的)Cell(可能是不同分组的Cell)
+    var neighborCellAbove: UIBaseTableViewCell? {
+        guard let tableView else { return nil }
+        /// 取得可见Cell数组
+        let visibleCells = tableView.visibleCells
+        /// 确保找到自己在数组中的位置并保证数组下标安全
+        guard let myIndex = visibleCells.firstIndex(of: self), myIndex - 1 >= visibleCells.startIndex else { return nil }
+        /// 得出上一个可见Cell的下标
+        let lastIndex = visibleCells.index(myIndex, offsetBy: -1)
+        /// 类型转换并返回
+        return visibleCells.itemAt(lastIndex) as? UIBaseTableViewCell
     }
     
     var tableView: UITableView? {
