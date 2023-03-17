@@ -9,17 +9,24 @@ import UIKit
 
 class UIBaseTableViewHeaderFooterView: UITableViewHeaderFooterView, StandardLayoutLifeCycle {
     
-    // 内容边距
+    /// 内容边距
     var contentInsets: UIEdgeInsets { .zero }
-    // 背景色
+    
+    /// 背景色
     var defaultBackgroundColor: UIColor { baseViewBackgroundColor }
+    
+    /// 高亮时的背景色
+    var defaultHighlightBackgroundColor: UIColor? {
+        defaultBackgroundColor
+    }
+    
+    /// 选中时的背景色
+    var defaultSelectedBackgroundColor: UIColor? {
+        defaultBackgroundColor
+    }
+    
     // 圆角
     var preferredCornerRadius: CGFloat? { nil }
-    
-    @available(iOS 14.0, *)
-    var defaultBackgroundConfiguration: UIBackgroundConfiguration {
-        .listPlainHeaderFooter()
-    }
     
     /// 弱引用Cell本身的TableView | 用于分类中对TableView的缓存
     private weak var tableView_: UITableView?
@@ -32,6 +39,25 @@ class UIBaseTableViewHeaderFooterView: UITableViewHeaderFooterView, StandardLayo
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         prepare()
+    }
+    
+    @available(iOS 14.0, *)
+    override func updateConfiguration(using state: UIViewConfigurationState) {
+        super.updateConfiguration(using: state)
+        var background = UIBackgroundConfiguration.listPlainHeaderFooter()
+        if state.isHighlighted {
+            background.backgroundColor = defaultHighlightBackgroundColor ?? .clear
+        } else if state.isSelected {
+            background.backgroundColor = defaultSelectedBackgroundColor ?? .clear
+        } else {
+            background.backgroundColor = defaultBackgroundColor
+        }
+        /**
+         一种新的设置颜色的方法
+         */
+//        background.backgroundColorTransformer = UIConfigurationColorTransformer { color in
+//            color.withAlphaComponent(0.3)
+//        }
     }
     
     // 复写frame属性
@@ -47,19 +73,20 @@ class UIBaseTableViewHeaderFooterView: UITableViewHeaderFooterView, StandardLayo
     }
     
     func prepare() {
-        if #available(iOS 14.0, *) {
-            backgroundConfiguration = defaultBackgroundConfiguration
+        if #unavailable(iOS 14.0) {
+            contentView.backgroundColor = defaultBackgroundColor
         }
-        contentView.backgroundColor = defaultBackgroundColor
         prepareSubviews()
         prepareConstraints()
     }
+    
     func prepareSubviews() {}
+    
     func prepareConstraints() {}
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        if let preferredCornerRadius {
+        if #unavailable (iOS 14), let preferredCornerRadius {
             contentView.roundCorners(cornerRadius: preferredCornerRadius)
         }
     }
@@ -75,8 +102,4 @@ extension UIBaseTableViewHeaderFooterView {
             return tableView_
         }
     }
-//
-//    var section: Int? {
-//        tableView?.qmui_indexForSectionHeader(at: self)
-//    }
 }
