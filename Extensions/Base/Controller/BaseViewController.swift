@@ -569,8 +569,7 @@ extension BaseViewController {
         presentor.slideIn(sheet)
     }
     
-    private func getPhotos(count: Int, from source: UIImagePickerController.SourceType, allowsEditing: Bool = false) {
-        
+    func getPhotos(count: Int, from source: UIImagePickerController.SourceType, allowsEditing: Bool = false) {
         /// 检查图片源是否可用
         guard UIImagePickerController.isSourceTypeAvailable(source) else {
             trackError("Not supported source type.")
@@ -584,30 +583,31 @@ extension BaseViewController {
             picker.sourceType = imageSource
             picker.allowsEditing = allowsEditing
             picker.delegate = self
-            picker.modalPresentationStyle = .fullScreen
+            picker.modalPresentationStyle = UIDevice.current.userInterfaceIdiom == .phone ? .fullScreen : .pageSheet
             present(picker, animated: true)
         }
         
         /// 显示图片选择器
         let showPickerController = {
-            [unowned self] in
-            if #available(iOS 14, *) {
-                let photoLibrary = PHPhotoLibrary.shared()
-                var config = PHPickerConfiguration(photoLibrary: photoLibrary)
-                config.filter = .images
-                config.selectionLimit = count
-                config.preferredAssetRepresentationMode = .automatic
-                if #available(iOS 15.0, *) {
-                    config.preselectedAssetIdentifiers = []
-                }
-                
-                let picker = PHPickerViewController(configuration: config)
-                picker.modalPresentationStyle = .fullScreen
-                picker.delegate = self
-                self.present(picker, animated: true)
-            } else {
-                pickPhotoFrom(source)
-            }
+            pickPhotoFrom(source)
+            return
+//            if #available(iOS 14, *) {
+//                let photoLibrary = PHPhotoLibrary.shared()
+//                var config = PHPickerConfiguration(photoLibrary: photoLibrary)
+//                config.filter = .images
+//                config.selectionLimit = count
+//                config.preferredAssetRepresentationMode = .automatic
+//                if #available(iOS 15.0, *) {
+//                    config.preselectedAssetIdentifiers = []
+//                }
+//
+//                let picker = PHPickerViewController(configuration: config)
+//                picker.modalPresentationStyle = UIDevice.current.userInterfaceIdiom == .phone ? .fullScreen : .pageSheet
+//                picker.delegate = self
+//                self.present(picker, animated: true)
+//            } else {
+//                pickPhotoFrom(source)
+//            }
         }
         
         switch source {
