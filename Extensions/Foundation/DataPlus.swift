@@ -119,6 +119,10 @@ extension Data {
         String(format: "%02hhX", byte)
     }
     
+    var utf8String: String {
+        String(data: self, encoding: .utf8).orEmpty
+    }
+    
     /// 2进制转16进制字符串
     var hexString: String {
         reversed().map(hex).joined()
