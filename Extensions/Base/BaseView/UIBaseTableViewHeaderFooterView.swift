@@ -58,6 +58,7 @@ class UIBaseTableViewHeaderFooterView: UITableViewHeaderFooterView, StandardLayo
 //        background.backgroundColorTransformer = UIConfigurationColorTransformer { color in
 //            color.withAlphaComponent(0.3)
 //        }
+        backgroundConfiguration = background
     }
     
     // 复写frame属性
