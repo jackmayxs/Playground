@@ -95,6 +95,17 @@ extension ObservableType {
 //        }
     }
     
+    /// onNext事件触发执行一个简单回调
+    /// - Parameter execute: 回调方法
+    /// - Returns: Disposable
+    public func trigger(_ execute: @escaping SimpleCallback) -> Disposable {
+        subscribe { _ in
+            execute()
+        } onError: { error in
+            dprint(error)
+        }
+    }
+    
     /// 绑定忽略Error事件的序列
     /// 错误事件由上层调用.trackError(ErrorTracker)处理错误
     /// - Parameter observers: 观察者们

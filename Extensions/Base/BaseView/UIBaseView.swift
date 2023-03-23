@@ -32,8 +32,12 @@ extension ViewModelConfigurable {
 
 typealias ControllerBaseView = ViewModelConfigurable & StandardLayoutLifeCycle
 
-class BaseViewModel: ViewModelType, ReactiveCompatible {
-    required init() {}
+class BaseViewModel: NSObject, ViewModelType {
+    /// 使用NSObject子类实现ViewModel
+    /// 是为了某些情况下监听rx.deallocating通知, 以做一些逻辑处理
+    /// 而纯Swift的Class只能监听到rx.deallocated事件, 无法监听到rx.deallocating事件
+    /// 后来证明在VM里监听rx.deallocating没什么意义, 因为这时自身已经快销毁了, 很多属性都无效了
+    /// 但还是暂时用NSObjct的子类来实现吧, 以防万一
 }
 
 protocol PagableViewModelDelegate: AnyObject {
@@ -57,7 +61,7 @@ class BasePagableViewModel<Model>: BaseViewModel, PagableViewModelType {
         }
     }
     
-    required init() {
+    override init() {
         super.init()
         didInitialize()
     }
