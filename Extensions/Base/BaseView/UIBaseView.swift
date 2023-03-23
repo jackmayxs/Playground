@@ -41,9 +41,15 @@ protocol PagableViewModelDelegate: AnyObject {
 }
 
 class BasePagableViewModel<Model>: BaseViewModel, PagableViewModelType {
-    weak var delegate: PagableViewModelDelegate?
     var itemsPerPage = 50
     var page = 1
+    
+    weak var delegate: PagableViewModelDelegate? {
+        didSet {
+            /// 设置完代理之后主动调用一次更新方法
+            delegate?.itemsUpdated()
+        }
+    }
     
     @Variable var items: [Model] = [] {
         didSet {
@@ -56,10 +62,10 @@ class BasePagableViewModel<Model>: BaseViewModel, PagableViewModelType {
         didInitialize()
     }
     
-    required init(delegate: PagableViewModelDelegate) {
+    /// 注意这里必须用convenience初始化方法, 否则某些情况下会循环调用didInitialize()方法!!!
+    required convenience init(delegate: PagableViewModelDelegate) {
+        self.init()
         self.delegate = delegate
-        super.init()
-        didInitialize()
     }
     
     func didInitialize() {}
