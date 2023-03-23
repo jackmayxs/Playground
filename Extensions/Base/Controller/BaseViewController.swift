@@ -544,8 +544,8 @@ extension BaseViewController {
             AlertDialog(
                 title: title,
                 message: localized.inquiry_OPEN_PERMISSION_SETTINGS~) {
-                    ZKAction.cancel
-                    ZKAction(title: localized.com_YES~) {
+                    DialogAction.cancel
+                    DialogAction(title: localized.com_YES~) {
                         UIApplication.openSettings()
                     }
                 }
@@ -559,10 +559,10 @@ extension BaseViewController {
     func fetchPhotos(count: Int = 1, targetImageSize: CGSize? = nil, allowsEditing: Bool = false) {
         self.targetImageSize = targetImageSize
         let sheet = ActionSheetController {
-            ZKAction(title: localized.com_PHOTO_ALBUM~) {
+            DialogAction(title: localized.com_PHOTO_ALBUM~) {
                 [unowned self] in getPhotos(count: count, from: .photoLibrary, allowsEditing: allowsEditing)
             }
-            ZKAction(title: localized.com_TAKE_A_PHOTO~) {
+            DialogAction(title: localized.com_TAKE_A_PHOTO~) {
                 [unowned self] in getPhotos(count: 1, from: .camera, allowsEditing: allowsEditing)
             }
         }
