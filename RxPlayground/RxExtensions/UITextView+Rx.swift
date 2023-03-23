@@ -1,6 +1,5 @@
 //
 //  UITextView+Rx.swift
-//  GodoxCine
 //
 //  Created by Choi on 2023/2/22.
 //
