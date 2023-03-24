@@ -9,15 +9,29 @@
 import Foundation
 
 @propertyWrapper
-struct Cached<T> {
+struct Cached<T: Codable> {
+    
+    private lazy var jsonEncoder = JSONEncoder()
+    private lazy var jsonDecoder = JSONDecoder()
     
     var wrappedValue: T? {
-        get {
-            UserDefaults.standard.value(forKey: key) as? T
+        mutating get {
+            do {
+                guard let data = UserDefaults.standard.data(forKey: key) else { return nil }
+                let value = try jsonDecoder.decode(T.self, from: data)
+                return value
+            } catch {
+                return nil
+            }
         }
         set {
             guard let validValue = newValue else { return }
-            UserDefaults.standard.setValue(validValue, forKey: key)
+            do {
+                let data = try jsonEncoder.encode(validValue)
+                UserDefaults.standard.set(data, forKey: key)
+            } catch {
+                dprint("Cache failed! - \(error)")
+            }
         }
     }
     let key: String
