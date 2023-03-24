@@ -27,10 +27,7 @@ public extension Reactive where Base: MoyaProviderType {
                     single(.failure(error))
                 }
             }
-
-            return Disposables.create {
-                cancellableToken.cancel()
-            }
+            return Disposables.create(with: cancellableToken.cancel)
         }
     }
 
