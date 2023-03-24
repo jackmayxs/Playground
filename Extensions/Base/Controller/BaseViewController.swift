@@ -522,12 +522,14 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
 
 extension BaseViewController {
     
-    func doneUpdate<T>(_ type: T.Type) -> Observable<T> {
-        doneUpdate.as(type)
+    /// 持续通知更新, 根据具体情况在使用时加上.once订阅一次通知
+    func update<T>(_ type: T.Type) -> Observable<T> {
+        update.as(type)
     }
     
-    var doneUpdate: Observable<Any> {
-        updateNotifier.take(1)
+    /// 持续通知更新, 根据具体情况在使用时加上.once订阅一次通知
+    var update: Observable<Any> {
+        updateNotifier.asObservable()
     }
     
     var latestMessage: String? {
