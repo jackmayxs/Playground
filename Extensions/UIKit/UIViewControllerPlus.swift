@@ -11,6 +11,20 @@ import UIKit
 extension UIViewController {
     
     
+    /// Dismiss所有的presentedViewController | 最后dismiss自己
+    func dismissPresentedViewControllerIfNeeded(_ completion: SimpleCallback? = nil) {
+        if let presentedViewController {
+            /// 不加动画
+            presentedViewController.dismiss(animated: false) {
+                [unowned self] in dismissPresentedViewControllerIfNeeded()
+            }
+        } else {
+            /// 如果presentedViewController为空,则dismiss自己 | 带动画
+            dismiss(animated: true, completion: completion)
+        }
+    }
+    
+    
     /// 获取目标导航控制器
     /// - Parameter navigationType: 导航控制器类型
     /// - Returns: 目标导航控制器

@@ -95,6 +95,25 @@ extension ObservableType {
 //        }
     }
     
+    /// 订阅完成事件
+    ///   - object: 弱引用对象
+    /// - Parameter completed: 完成回调
+    /// - Returns: Disposable
+    public func subscribeCompletedEvent<Object: AnyObject>(
+        with object: Object,
+        _ completed: @escaping (Object) -> Void)
+    -> Disposable {
+        subscribe(with: object, onCompleted: completed)
+    }
+    
+    /// 订阅完成事件
+    /// - Parameter completed: 完成回调
+    /// - Returns: Disposable
+    public func subscribeCompletedEvent(_ completed: @escaping SimpleCallback) -> Disposable {
+        subscribe(onCompleted: completed)
+    }
+    
+    
     /// onNext事件触发执行一个简单回调
     /// - Parameter execute: 回调方法
     /// - Returns: Disposable
