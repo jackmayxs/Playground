@@ -8,6 +8,31 @@
 
 import Foundation
 
+
+@propertyWrapper
+/// 让值在某个范围内循环
+struct CycledValue<T: Comparable> {
+    
+    var wrappedValue: T {
+        get { innerValue }
+        set {
+            if newValue > range.upperBound {
+                innerValue = range.lowerBound
+            } else if newValue < range.lowerBound {
+                innerValue = range.upperBound
+            } else {
+                innerValue = newValue
+            }
+        }
+    }
+    private var innerValue: T
+    private let range: ClosedRange<T>
+    init(wrappedValue: T, range: ClosedRange<T>) {
+        self.innerValue = wrappedValue
+        self.range = range
+    }
+}
+
 @propertyWrapper
 struct Cached<T: Codable> {
     
