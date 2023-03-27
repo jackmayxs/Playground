@@ -38,6 +38,13 @@ class BaseViewModel: NSObject, ViewModelType {
     /// 而纯Swift的Class只能监听到rx.deallocated事件, 无法监听到rx.deallocating事件
     /// 后来证明在VM里监听rx.deallocating没什么意义, 因为这时自身已经快销毁了, 很多属性都无效了
     /// 但还是暂时用NSObjct的子类来实现吧, 以防万一
+    
+    override init() {
+        super.init()
+        didInitialize()
+    }
+    
+    func didInitialize() {}
 }
 
 protocol PagableViewModelDelegate: AnyObject {
@@ -61,18 +68,11 @@ class BasePagableViewModel<Model>: BaseViewModel, PagableViewModelType {
         }
     }
     
-    override init() {
-        super.init()
-        didInitialize()
-    }
-    
     /// 注意这里必须用convenience初始化方法, 否则某些情况下会循环调用didInitialize()方法!!!
     required convenience init(delegate: PagableViewModelDelegate) {
         self.init()
         self.delegate = delegate
     }
-    
-    func didInitialize() {}
     
     func fetchMoreData() {}
     

@@ -138,6 +138,11 @@ extension Int {
         self > 0
     }
     
+    /// 索引转换成序号
+    var number: Int {
+        self + 1
+    }
+    
     /// 转换成索引值
     var index: Int {
         Swift.max(0, self - 1)
