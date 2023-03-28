@@ -8,6 +8,35 @@
 
 import UIKit
 
+public struct ChangedBytes: CustomStringConvertible {
+    /// 字节在二进制中的索引
+    var lowerBound: Data.Index
+    /// 字节在二进制中的索引
+    var upperBound: Data.Index
+    /// 改动的字节数组
+    var bytes: [Data.Element]
+    
+    public var description: String {
+        "changed: \(lowerBound) - \(upperBound): \(bytes)"
+    }
+    
+    static func <-- (lhs: [ChangedBytes], rhs: ChangedBytes) -> [ChangedBytes] {
+        guard lhs.isNotEmpty else {
+            return [rhs]
+        }
+        var tempResults = lhs
+        guard var tempLast = lhs.last else { return lhs }
+        if rhs.lowerBound == tempLast.upperBound + 1 {
+            tempLast.upperBound = rhs.upperBound
+            _ = tempResults.popLast()
+            tempResults.append(tempLast)
+        } else {
+            tempResults.append(rhs)
+        }
+        return tempResults
+    }
+}
+
 extension Optional where Wrapped == Data {
     var orEmpty: Data {
         self ?? Data()
@@ -101,6 +130,36 @@ extension Data {
         binaryInteger(UInt8.self) ?? 0
     }
     
+    /// 比较相同数量的二进制对象, 返回变化的字节数组
+    /// - Parameter newData: 新数组
+    /// - Returns: 变化的数组,带变化的索引
+    func changedBytes(newData: Data) -> [ChangedBytes] {
+        let count = Swift.min(self.count, newData.count)
+        var changedBytesArray: [ChangedBytes] = []
+        for i in 0 ..< count {
+            let oldByte = self[i]
+            let newByte = newData[i]
+            if newByte != oldByte {
+                guard var temp = changedBytesArray.last else {
+                    let newItem = ChangedBytes(lowerBound: i, upperBound: i, bytes: [newByte])
+                    changedBytesArray.append(newItem)
+                    continue
+                }
+                let nextUpperBound = temp.upperBound + 1
+                if i == nextUpperBound {
+                    temp.upperBound = nextUpperBound
+                    temp.bytes.append(newByte)
+                    _ = changedBytesArray.popLast()
+                    changedBytesArray.append(temp)
+                } else {
+                    let newItem = ChangedBytes(lowerBound: i, upperBound: i, bytes: [newByte])
+                    changedBytesArray.append(newItem)
+                }
+            }
+        }
+        return changedBytesArray
+    }
+    
     func binaryInteger<T>(_ numberType: T.Type) -> T? where T: BinaryInteger {
         do {
             return try withUnsafeBytes { rawBufferPointer in
@@ -125,7 +184,7 @@ extension Data {
     
     /// 2进制转16进制字符串
     var hexString: String {
-        reversed().map(hex).joined()
+        map(hex).joined()
     }
     
 	var cfData: CFData {
