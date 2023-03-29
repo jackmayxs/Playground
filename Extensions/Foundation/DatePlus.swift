@@ -32,6 +32,14 @@ extension Date {
 		return DispatchWallTime(timespec: timespec)
 	}
 	
+    var dateString: String {
+        dateString("/")
+    }
+    
+    func dateString(_ separator: String) -> String {
+        string(dateFormat: "yyyy\(separator)MM\(separator)dd")
+    }
+    
 	func string(dateFormat: String) -> String {
 		DateFormatter.shared.set
 			.dateFormat(dateFormat)
