@@ -8,6 +8,13 @@
 
 import Foundation
 
+extension CharacterSet: ExpressibleByStringLiteral {
+    public typealias StringLiteralType = String
+    public init(stringLiteral value: StringLiteralType) {
+        self.init(charactersIn: value)
+    }
+}
+
 extension CharacterSet {
 	
     static func + (lhs: CharacterSet, rhs: CharacterSet) -> CharacterSet {
