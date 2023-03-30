@@ -21,6 +21,22 @@ extension UIColor {
 
 extension UIColor {
 	
+    var int: Int? {
+        guard let components = cgColor.components, components.count >= 3 else { return nil }
+        let red = Int(components[0] * 255.0)
+        let green = Int(components[1] * 255.0)
+        let blue = Int(components[2] * 255.0)
+        switch components.count {
+        case 3:
+            return (red << 16) ^ (green << 8) ^ blue
+        case 4:
+            let alpha = Int(components[3] * 255.0)
+            return (alpha << 24) ^ (red << 16) ^ (green << 8) ^ blue
+        default:
+            return nil
+        }
+    }
+    
     var hue: CGFloat {
         guard let hsba else { return 0.0 }
         return hsba.0
