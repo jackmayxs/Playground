@@ -38,6 +38,10 @@ extension UITableView {
 
 extension Reactive where Base: UITableView {
     
+    var shouldHideScrollBar: Observable<Bool> {
+        didLayoutSubviews.map(\.shouldHideScrollBar)
+    }
+    
     var numberOfRows: Observable<Int> {
         didReloadData.map(\.numberOfRows)
     }

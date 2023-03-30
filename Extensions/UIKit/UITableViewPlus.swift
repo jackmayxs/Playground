@@ -10,6 +10,10 @@ import UIKit
 
 extension UITableView {
 	
+    var shouldHideScrollBar: Bool {
+        contentSize <= bounds.size
+    }
+    
     var numberOfRows: Int {
         (0..<numberOfSections).reduce(0) { rowCount, section in
             rowCount + numberOfRows(inSection: section)
