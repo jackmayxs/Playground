@@ -19,7 +19,7 @@ extension Array {
     }
     
     public func itemAt(_ index: Index) -> Element? {
-        guard index < count else { return nil }
+        guard (startIndex..<count) ~= index else { return nil }
         return self[index]
     }
     
