@@ -11,9 +11,21 @@ import UIKit
 fileprivate typealias FirstResponderHandoff = (UIResponder) -> Void
 
 extension UIResponder {
+    enum Associated {
+        static var parentController = UUID()
+    }
+}
+
+extension UIResponder {
 	
+    
     var parentController: UIViewController? {
-        parentController(UIViewController.self)
+        if let controller = objc_getAssociatedObject(self, &Associated.parentController) as? UIViewController {
+            return controller
+        }
+        let fetchedController = parentController(UIViewController.self)
+        objc_setAssociatedObject(self, &Associated.parentController, fetchedController, .OBJC_ASSOCIATION_ASSIGN)
+        return fetchedController
     }
     
 	/// 获取Parent控制器
