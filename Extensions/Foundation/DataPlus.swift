@@ -90,6 +90,20 @@ enum DataError: Error {
 
 extension Data {
     
+    func jsonString(_ options: JSONSerialization.WritingOptions = []) -> String? {
+        guard let jsonObject else { return nil }
+        do {
+            let data = try JSONSerialization.data(withJSONObject: jsonObject, options: options)
+            return String(data: data, encoding: .utf8)
+        } catch {
+            return nil
+        }
+    }
+    
+    var jsonObject: Any? {
+        try? JSONSerialization.jsonObject(with: self)
+    }
+    
     var int: Int {
         binaryInteger(Int.self) ?? 0
     }
