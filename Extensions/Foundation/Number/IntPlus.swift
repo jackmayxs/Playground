@@ -70,10 +70,12 @@ extension BinaryInteger {
     /// 转换为二进制
     /// - Parameters:
     ///   - byteCount: 占用字节数, 如不指定则使用自身默认占用的字节数
+    ///   - byteOrder: 字节序, 默认为小字节序
     /// - Returns: 转换后的二进制对象(字节翻转过的数组: 从左到右为低位到高位排列)
-    func dataInBytes(_ byteCount: Int? = nil) -> Data {
-        var copy = self
-        let count = byteCount ?? MemoryLayout.size(ofValue: copy)
+    /// 加注: 默认为小字节序: 二进制从左往右为数字的二进制从低位(右侧)到高位(左侧)按字节依次填充
+    func dataInBytes(_ byteCount: Int? = nil, byteOrder: Data.ByteOrder = .littleEndian) -> Data {
+        var copy = byteOrder == .bigEndian ? int.bigEndian : int.littleEndian
+        let count = byteCount ?? MemoryLayout.size(ofValue: self)
         return Data(bytes: &copy, count: count)
     }
     

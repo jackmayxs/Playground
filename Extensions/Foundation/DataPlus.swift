@@ -84,8 +84,14 @@ extension Data {
     }
 }
 
-enum DataError: Error {
-    case overFlow
+extension Data {
+    enum DataError: Error {
+        case overFlow
+    }
+    enum ByteOrder {
+        case bigEndian
+        case littleEndian
+    }
 }
 
 extension Data {
