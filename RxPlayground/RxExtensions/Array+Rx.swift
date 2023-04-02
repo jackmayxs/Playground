@@ -23,6 +23,14 @@ extension Array where Element == ControlProperty<Bool> {
     }
 }
 
+extension Array where Element == any ObservableConvertibleType {
+    var chained: Completable {
+        reduce(Completable.empty) { lastCompletable, nextObservable in
+            lastCompletable.andThen(nextObservable.completed)
+        }
+    }
+}
+
 extension Array where Element: ObservableConvertibleType {
     var merged: Observable<Element.Element> {
         Observable.from(self).merge()

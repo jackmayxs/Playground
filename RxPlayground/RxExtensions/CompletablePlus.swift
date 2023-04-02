@@ -7,15 +7,11 @@
 
 import RxSwift
 
-extension Array where Element == Completable {
-    var chained: Completable {
-        reduce(Completable.empty()) { chainedCompletable, element in
-            chainedCompletable.andThen(element)
-        }
-    }
-}
-
 extension Completable {
+    
+    static var empty: Completable {
+        .empty()
+    }
     
     func andThen(_ completableBuilder: () -> Completable) -> Completable {
         andThen(completableBuilder())
