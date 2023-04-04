@@ -44,7 +44,16 @@ public extension Reactive where Base: AnyObject {
     }
 }
 
-// MARK: - Error & Activity Tracker
+// MARK: - Trackers Protocol
+protocol ProgressTrackable {
+    var progress: Double { get }
+}
+
+protocol ProgressTracker: AnyObject {
+    /// 如果progress为空, 则表示未完成
+    func trackProgress(_ progress: Double?)
+}
+
 protocol ErrorTracker: UIResponder {
     func trackError(_ error: Error?, isFatal: Bool)
 }
@@ -110,6 +119,23 @@ extension ObservableConvertibleType {
                     }
                 }
                 responder?.trackError(error, isFatal: isFatal)
+            }
+    }
+}
+
+extension ObservableConvertibleType where Element: ProgressTrackable {
+    
+    func trackProgress(_ tracker: any ProgressTracker) -> Observable<Element> {
+        asObservable()
+            .do {
+                [weak tracker] element in
+                tracker?.trackProgress(element.progress)
+            } onError: {
+                [weak tracker] _ in
+                tracker?.trackProgress(.none)
+            } onCompleted: {
+                [weak tracker] in
+                tracker?.trackProgress(1.0)
             }
     }
 }

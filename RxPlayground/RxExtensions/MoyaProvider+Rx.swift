@@ -44,10 +44,7 @@ public extension Reactive where Base: MoyaProviderType {
                     observer.onError(error)
                 }
             }
-
-            return Disposables.create {
-                cancellableToken.cancel()
-            }
+            return Disposables.create(with: cancellableToken.cancel)
         }
 
         // Accumulate all progress and combine them when the result comes

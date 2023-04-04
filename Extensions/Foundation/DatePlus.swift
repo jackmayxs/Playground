@@ -31,6 +31,11 @@ extension Date {
 		/// 返回绝对时间
 		return DispatchWallTime(timespec: timespec)
 	}
+    
+    /// 毫秒的时间戳
+    var millisecondTimeIntervalSince1970: Int {
+        Int(timeIntervalSince1970 * 1000)
+    }
 	
     var dateString: String {
         dateString("/")
