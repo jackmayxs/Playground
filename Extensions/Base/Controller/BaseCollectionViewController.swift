@@ -19,6 +19,9 @@ class BaseCollectionViewController: BaseViewController, UICollectionViewDelegate
     /// 选中Cell之后是否立刻反选
     var deselectCellAfterCellSelection = true
     
+    /// 是否开启双指滑动多选 | 只在必要的地方开启, 否则会导致进入多选状态之后无法点击cell进入下一级页面
+    var isMultipleSelectionInteractionEnabled = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         /// 配置Collection View
@@ -89,7 +92,7 @@ class BaseCollectionViewController: BaseViewController, UICollectionViewDelegate
     
     /// 滑动多选代理方法
     func collectionView(_ collectionView: UICollectionView, shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath) -> Bool {
-        true
+        isMultipleSelectionInteractionEnabled
     }
     
     func collectionView(_ collectionView: UICollectionView, didBeginMultipleSelectionInteractionAt indexPath: IndexPath) {

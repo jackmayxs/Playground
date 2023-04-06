@@ -49,7 +49,5 @@ extension KKCompatible {
     }
 }
 
-import Foundation
-
 /// Extend NSObject with `rx` proxy.
 extension NSObject: KKCompatible { }
