@@ -50,7 +50,7 @@ extension Array where Element: UIButton {
     /// - Parameter firstSelected: 首次选中的按钮
     /// - Returns: ControlProperty<Element?>
     func selectedButton(startWith firstSelected: Element?) -> ControlProperty<Element?> {
-        let values = switchSelectedButton(startWith: firstSelected).optionalElement
+        let values = switchSelectedButton(startButton: firstSelected).optionalElement
         let observer = AnyObserver<Element?> { event in
             switch event {
             case .next(let button) where button.isNotValid:
@@ -65,7 +65,7 @@ extension Array where Element: UIButton {
     /// 切换选中的按钮
     /// - Parameter firstSelected: 第一个选中的按钮
     /// - Returns: 选中按钮的事件序列
-    func switchSelectedButton(startWith firstSelected: Element? = nil) -> Observable<Element> {
+    func switchSelectedButton(startButton firstSelected: Element? = nil) -> Observable<Element> {
         let selectedButton = tappedButton
             .optionalElement
             .startWith(firstSelected)
@@ -77,11 +77,15 @@ extension Array where Element: UIButton {
     /// 切换选中的按钮
     /// - Parameter firstSelection: 按钮在数组中的索引
     /// - Returns: 选中按钮的事件序列
-    func switchSelectedButton(startWith firstSelection: Self.Index) -> Observable<Element> {
-        guard let selectedButton = itemAt(firstSelection) else {
-            fatalError("Index out of range!")
+    func switchSelectedButton(startIndex firstSelection: Self.Index? = nil) -> Observable<Element> {
+        if let firstSelection {
+            guard let selectedButton = itemAt(firstSelection) else {
+                return switchSelectedButton(startButton: nil)
+            }
+            return switchSelectedButton(startButton: selectedButton)
+        } else {
+            return switchSelectedButton(startButton: nil)
         }
-        return switchSelectedButton(startWith: selectedButton)
     }
     
     /// 处理按钮选中/反选

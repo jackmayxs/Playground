@@ -42,7 +42,7 @@ class UIStackScrollView: UIBaseView {
         stackView.add(content: subviewsBuilder)
     }
     
-    func refillSubviews(@ArrayBuilder<UIView> subviewsBuilder: () -> [UIView]) {
+    func refillArrangedSubviews(@ArrayBuilder<UIView> subviewsBuilder: () -> [UIView]) {
         stackView.refill(content: subviewsBuilder)
     }
     
