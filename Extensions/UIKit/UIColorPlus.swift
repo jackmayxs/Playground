@@ -20,7 +20,8 @@ extension UIColor {
 }
 
 extension UIColor {
-	
+    
+    /// 返回argb颜色
     var int: Int? {
         guard let components = cgColor.components, components.count >= 3 else { return nil }
         let red = Int(components[0] * 255.0)
