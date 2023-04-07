@@ -25,6 +25,11 @@ extension UInt16 {
 
 extension BinaryInteger {
     
+    /// 去掉argb的alpha通道
+    var rgb: Int {
+        Int((uInt32 << 8) >> 8)
+    }
+    
     var int: Int {
         Int(truncatingIfNeeded: self)
     }
