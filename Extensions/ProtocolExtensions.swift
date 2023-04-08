@@ -15,6 +15,12 @@ extension Equatable {
 
 // MARK: - __________ Collection __________
 extension Collection {
+    
+    /// 如果为空则返回nil
+    var filledOrNil: Self? {
+        isNotEmpty ? self : nil
+    }
+    
 	var isNotEmpty: Bool {
 		!isEmpty
 	}
