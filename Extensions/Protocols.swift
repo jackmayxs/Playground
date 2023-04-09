@@ -27,6 +27,7 @@ extension StandardLayoutLifeCycle {
 protocol ConditionCheckable {
 	func matchOrNil(condition: (Self) -> Bool) -> Self?
 }
+
 extension ConditionCheckable {
 	func matchOrNil(condition: (Self) -> Bool) -> Self? {
 		if condition(self) {
@@ -47,18 +48,26 @@ extension String: ConditionCheckable { }
 
 @dynamicMemberLookup
 struct Configurator<Object> {
+    
 	var stabilized: Object { target }
+    
 	private let target: Object
+    
 	init(_ target: Object) {
 		self.target = target
 	}
-	subscript<Value>(dynamicMember keyPath: ReferenceWritableKeyPath<Object, Value>)
-	-> ( (Value) -> Configurator<Object> ) {
+    
+	public subscript<Value>(dynamicMember keyPath: ReferenceWritableKeyPath<Object, Value>) -> (Value) -> Configurator<Object> {
 		{ value in
 			target[keyPath: keyPath] = value
 			return self
 		}
 	}
+    
+    public subscript<Value>(dynamicMember keyPath: ReferenceWritableKeyPath<Object, Value>) -> (Value) -> Void where Object: AnyObject {
+        setter(for: target, keyPath: keyPath)
+    }
+    
 	func stabilize(_ configure: (Object) -> Void) -> Object {
 		configure(target)
 		return self.stabilized
