@@ -54,7 +54,9 @@ var currentQueueName: String? {
 ///   - closure: 具体的执行代码
 /// - Returns: A closure
 func combine<A, B>(_ value: A, with closure: @escaping (A) -> B) -> () -> B {
-    { closure(value) }
+    {
+        closure(value)
+    }
 }
 
 /// 方法转换
@@ -66,6 +68,13 @@ func sink<In, Out>(_ output: Out) -> (In) -> Out {
 
 func sink<In>(_ simpleCallBack: @escaping SimpleCallback) -> (In) -> Void {
     { _ in simpleCallBack() }
+}
+
+/// 通过KeyPath获取属性的Setter方法, 为属性赋值
+func setter<Object: AnyObject, Value>(for object: Object, keyPath: ReferenceWritableKeyPath<Object, Value>) -> (Value) -> Void {
+    {
+        [weak object] value in object?[keyPath: keyPath] = value
+    }
 }
 
 /// 隐藏键盘
