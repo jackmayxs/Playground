@@ -9,9 +9,9 @@
 import UIKit
 
 // MARK: - Optional<Int>
-extension Optional where Wrapped == Int {
+extension Optional where Wrapped: BinaryInteger {
     
-    var orZero: Int { self ?? 0 }
+    var orZero: Wrapped { self ?? 0 }
 }
 
 // MARK: - UInt16

@@ -111,43 +111,43 @@ extension Data {
     }
     
     var int: Int {
-        binaryInteger(Int.self) ?? 0
+        binaryInteger(Int.self).orZero
     }
     
     var int64: Int64 {
-        binaryInteger(Int64.self) ?? 0
+        binaryInteger(Int64.self).orZero
     }
     
     var int32: Int32 {
-        binaryInteger(Int32.self) ?? 0
+        binaryInteger(Int32.self).orZero
     }
     
     var int16: Int16 {
-        binaryInteger(Int16.self) ?? 0
+        binaryInteger(Int16.self).orZero
     }
     
     var int8: Int8 {
-        binaryInteger(Int8.self) ?? 0
+        binaryInteger(Int8.self).orZero
     }
     
     var uint: UInt {
-        binaryInteger(UInt.self) ?? 0
+        binaryInteger(UInt.self).orZero
     }
     
     var uint64: UInt64 {
-        binaryInteger(UInt64.self) ?? 0
+        binaryInteger(UInt64.self).orZero
     }
     
     var uint32: UInt32 {
-        binaryInteger(UInt32.self) ?? 0
+        binaryInteger(UInt32.self).orZero
     }
     
     var uint16: UInt16 {
-        binaryInteger(UInt16.self) ?? 0
+        binaryInteger(UInt16.self).orZero
     }
     
     var uint8: UInt8 {
-        binaryInteger(UInt8.self) ?? 0
+        binaryInteger(UInt8.self).orZero
     }
     
     /// 比较相同数量的二进制对象, 返回变化的字节数组
