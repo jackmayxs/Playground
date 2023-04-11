@@ -446,6 +446,15 @@ extension String {
 // MARK: - 转换
 extension String {
     
+    var stringFromBase64: String? {
+        guard let data = Data(base64Encoded: self) else { return nil }
+        return String(data: data, encoding: .utf8)
+    }
+    
+    var base64: String {
+        Data(utf8).base64EncodedString()
+    }
+    
     /// 转换为utf8编码的二进制数据
     /// 注: 其中系统属性utf8CString已经在尾部拼接上了\0(null-terminated)
     var utf8Encoded: Data {
