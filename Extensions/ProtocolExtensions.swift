@@ -16,6 +16,27 @@ extension Equatable {
 // MARK: - __________ Collection __________
 extension Collection {
     
+    func removeDuplicates<Value>(for keyPath: KeyPath<Element, Value>) -> [Element] where Value: Equatable {
+        removeDuplicates { element1, element2 in
+            element1[keyPath: keyPath] == element2[keyPath: keyPath]
+        }
+    }
+    
+    func removeDuplicates(includeElement: (Element, Element) -> Bool) -> [Element]{
+        var results = [Element]()
+        
+        forEach { element in
+            let existingElements = results.filter {
+                return includeElement(element, $0)
+            }
+            if existingElements.count == 0 {
+                results.append(element)
+            }
+        }
+        
+        return results
+    }
+    
     /// 如果为空则返回nil
     var filledOrNil: Self? {
         isNotEmpty ? self : nil

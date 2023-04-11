@@ -180,6 +180,7 @@ extension ObservableType {
 
 extension ObservableConvertibleType {
     
+    
     static var empty: Observable<Element> {
         .empty()
     }
@@ -304,13 +305,15 @@ extension ObservableConvertibleType {
 // MARK: - Observable of Collection
 extension ObservableConvertibleType where Element: Collection {
     
+    func removeDuplicates<Value>(for keyPath: KeyPath<Element.Element, Value>) -> Observable<[Element.Element]> where Value: Equatable {
+        asObservable().map { collection in
+            collection.removeDuplicates(for: keyPath)
+        }
+    }
+    
     /// Emit nil if the collection is empty
-    var ifEmptyEmitNil: Observable<Element?> {
-        asObservable()
-            .map { collection in
-                if collection.isEmpty { return nil }
-                return collection
-            }
+    var filledOrNil: Observable<Element?> {
+        asObservable().map(\.filledOrNil)
     }
 }
 
