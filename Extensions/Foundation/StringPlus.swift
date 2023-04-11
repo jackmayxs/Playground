@@ -145,6 +145,10 @@ extension String {
 extension String {
     
     
+    var characterSet: CharacterSet {
+        CharacterSet(charactersIn: self)
+    }
+    
     /// 拼接冒号并返回
     var withColon: String {
         self + ": "
