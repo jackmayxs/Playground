@@ -86,3 +86,5 @@ final class _NSObjectProxy<T: NSObjectProtocol>: NSObject {
 		_target.debugDescription
 	}
 }
+
+extension NSObject: SimpleInitializer {}
