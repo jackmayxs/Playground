@@ -27,7 +27,7 @@ extension Reactive where Base: UICollectionView {
     }
     
     var selectedIndexPaths: Observable<[IndexPath]> {
-        itemSelectionChanged
+        Observable.combineLatest(itemSelectionChanged, dataReloaded)
             .withUnretained(base)
             .map(\.0.indexPathsForSelectedItems.orEmpty)
     }
