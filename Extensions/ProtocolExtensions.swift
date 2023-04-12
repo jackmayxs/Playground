@@ -67,3 +67,31 @@ extension Sequence {
 		}
 	}
 }
+
+// MARK: - __________ 扩展BinaryInteger协议 __________
+extension BinaryInteger {
+    
+    static postfix func ++(input: inout Self) -> Self {
+        defer {
+            input += 1
+        }
+        return input
+    }
+    
+    static prefix func ++(input: inout Self) -> Self {
+        input += 1
+        return input
+    }
+    
+    static postfix func --(input: inout Self) -> Self {
+        defer {
+            input -= 1
+        }
+        return input
+    }
+    
+    static prefix func --(input: inout Self) -> Self {
+        input -= 1
+        return input
+    }
+}

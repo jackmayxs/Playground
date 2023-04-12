@@ -217,11 +217,3 @@ extension Int {
 		Double.timeInterval(in: component)
 	}
 }
-
-// MARK: - Int 操作符
-extension Int {
-    
-    static postfix func ++(input: inout Int) {
-        input += 1
-    }
-}
