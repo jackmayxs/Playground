@@ -96,6 +96,10 @@ extension Data {
 
 extension Data {
     
+    var rawBytes: String {
+        map(\.string).joined(separator: ",")
+    }
+    
     func jsonString(_ options: JSONSerialization.WritingOptions = []) -> String? {
         guard let jsonObject else { return nil }
         do {
