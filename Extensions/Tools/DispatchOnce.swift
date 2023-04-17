@@ -29,4 +29,12 @@ struct Dispatch {
 		tokens.insert(token)
 		execute()
 	}
+    
+    public static func once(userDefaultKey: String, execute: () -> Void) {
+        if UserDefaults.standard.value(forKey: userDefaultKey).isValid {
+            return
+        }
+        UserDefaults.standard.setValue(String.random, forKey: userDefaultKey)
+        once(token: userDefaultKey, execute: execute)
+    }
 }
