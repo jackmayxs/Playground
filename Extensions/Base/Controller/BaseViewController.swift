@@ -7,104 +7,11 @@
 //
 
 import UIKit
-import Jelly
 import QMUIKit
 import Photos
 import PhotosUI
 import RxSwift
 import RxCocoa
-
-// MARK: - 控制器Presentor
-struct ControllerPresentor {
-
-    weak var presentingController: UIViewController!
-    
-    init(presentingController: UIViewController) {
-        self.presentingController = presentingController
-    }
-    
-    func fadeIn(_ controller: PresentedControllerType, tapBackgroundToDismissEnabled: Bool = true) {
-        let fade = FadePresentation(
-            size: controller.preferredContentSize.presentationSize,
-            ui: PresentationUIConfiguration(
-                cornerRadius: 6,
-                backgroundStyle: .dimmed(alpha: 0.7),
-                isTapBackgroundToDismissEnabled: tapBackgroundToDismissEnabled,
-                corners: .allCorners
-            )
-        )
-        let animator = JellyAnimator(presentation: fade)
-        controller.prepareAnimator(animator)
-        presentingController.present(controller, animated: true)
-    }
-    
-    func popDialog(tapBackgroundToDismissEnabled: Bool = true, @SingleValueBuilder<PresentedControllerType> _ controllerBuilder: () -> PresentedControllerType) {
-        let controller = controllerBuilder()
-        popDialog(controller)
-    }
-    
-    func popDialog(_ controller: PresentedControllerType, tapBackgroundToDismissEnabled: Bool = true) {
-        let fade = FadePresentation(
-            size: controller.preferredContentSize.presentationSize,
-            timing: PresentationTiming(
-                duration: .custom(duration: 0.25),
-                presentationCurve: .easeInOut,
-                dismissCurve: .easeInOut
-            ),
-            ui: PresentationUIConfiguration(
-                cornerRadius: 6,
-                backgroundStyle: .dimmed(alpha: 0.7),
-                isTapBackgroundToDismissEnabled: tapBackgroundToDismissEnabled,
-                corners: .allCorners
-            )
-        )
-        let animator = JellyAnimator(presentation: fade)
-        controller.prepareAnimator(animator)
-        presentingController.present(controller, animated: true)
-    }
-    
-    func slideIn(@SingleValueBuilder<PresentedControllerType> _ controllerBuilder: () -> PresentedControllerType) {
-        let controller = controllerBuilder()
-        slideIn(controller)
-    }
-    
-    func slideIn(_ controller: PresentedControllerType, from direction: Direction) {
-        let presentation = CoverPresentation(
-            directionShow: direction,
-            directionDismiss: direction,
-            uiConfiguration: PresentationUIConfiguration(
-                cornerRadius: 0,
-                backgroundStyle: .dimmed(alpha: 0.7),
-                isTapBackgroundToDismissEnabled: true
-            ),
-            size: controller.preferredContentSize.presentationSize,
-            alignment: PresentationAlignment(vertical: .center, horizontal: .right),
-            timing: PresentationTiming(duration: .normal, presentationCurve: .easeIn, dismissCurve: .easeOut)
-        )
-        let animator = JellyAnimator(presentation: presentation)
-        controller.prepareAnimator(animator)
-        presentingController.present(controller, animated: true)
-    }
-    
-    func slideIn(_ controller: PresentedControllerType) {
-        let presentation = CoverPresentation(
-            directionShow: .bottom,
-            directionDismiss: .bottom,
-            uiConfiguration: PresentationUIConfiguration(
-                cornerRadius: 20,
-                backgroundStyle: .dimmed(alpha: 0.7),
-                isTapBackgroundToDismissEnabled: true,
-                corners: [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-            ),
-            size: controller.preferredContentSize.presentationSize,
-            alignment: PresentationAlignment(vertical: .bottom, horizontal: .center),
-            timing: PresentationTiming(duration: .normal, presentationCurve: .easeIn, dismissCurve: .easeOut)
-        )
-        let animator = JellyAnimator(presentation: presentation)
-        controller.prepareAnimator(animator)
-        presentingController.present(controller, animated: true)
-    }
-}
 
 // MARK: - 控制器配置协议
 protocol ViewControllerConfiguration: UIViewController {
