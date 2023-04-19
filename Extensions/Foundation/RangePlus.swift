@@ -43,3 +43,9 @@ extension ClosedRange {
         rhs.clamped(to: lhs) == rhs
     }
 }
+
+extension ClosedRange: Comparable where Bound: Comparable {
+    public static func < (lhs: ClosedRange<Bound>, rhs: ClosedRange<Bound>) -> Bool {
+        lhs.upperBound < rhs.lowerBound
+    }
+}
