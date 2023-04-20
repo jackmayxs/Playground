@@ -23,15 +23,4 @@ class BaseStandardViewController<MainView: ControllerBaseView>: BaseViewControll
         super.viewDidLoad()
         mainView.setupViewModel(viewModel)
     }
-    
-    override func prepareTargets() {
-        super.prepareTargets()
-        rx.disposeBag.insert {
-            UIApplication.shared.rx.latestResponderViewAndKeyboardPresentation
-                .bindErrorIgnored {
-                    [unowned self] responder, presentation in
-                    presentation.adjustBoundsOfSuperview(mainView, firstResponder: responder)
-                }
-        }
-    }
 }

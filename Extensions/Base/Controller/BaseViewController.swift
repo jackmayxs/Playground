@@ -283,28 +283,12 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
     /// 添加事件
     /// 调用时机: viewDidload -> afterViewLoadedConfigure
     func prepareTargets() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(keyboardWillShow),
-            name: UIControl.keyboardWillShowNotification,
-            object: nil
-        )
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(keyboardWillHide),
-            name: UIControl.keyboardWillHideNotification,
-            object: nil
-        )
-    }
-    
-    @objc private func keyboardWillShow(_ note: Notification) {
-        guard let presentation = KeyboardPresentation(note) else { return }
-        keyboardPresentation(presentation)
-    }
-    
-    @objc private func keyboardWillHide(_ note: Notification) {
-        guard let presentation = KeyboardPresentation(note) else { return }
-        keyboardPresentation(presentation)
+        rx.disposeBag.insert {
+            UIApplication.shared.rx.latestKeyboardPresentation.bindErrorIgnored {
+                [unowned self] presentation in
+                keyboardPresentation(presentation)
+            }
+        }
     }
     
     func keyboardPresentation(_ presentation: KeyboardPresentation) {}
