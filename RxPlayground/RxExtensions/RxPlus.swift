@@ -337,6 +337,12 @@ extension ObservableConvertibleType where Element == String? {
         asObservable()
             .map(\.orEmpty)
     }
+    func mapValidString(or defaultValue: String) -> Observable<String> {
+        asObservable()
+            .map { element in
+                element.validStringOr(defaultValue)
+            }
+    }
 }
 
 extension ObservableConvertibleType where Element == Int {
