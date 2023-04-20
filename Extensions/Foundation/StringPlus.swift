@@ -72,6 +72,10 @@ extension Optional where Wrapped == String {
 	var validString: Wrapped {
 		isEmptyString ? "" : unsafelyUnwrapped
 	}
+    
+    func validStringOr(_ defaultValue: Wrapped) -> Wrapped {
+        validStringOrNone.or(defaultValue)
+    }
 	
 	/// 返回有效的字符串或.none
 	var validStringOrNone: Self {
