@@ -9,6 +9,11 @@ import Foundation
 
 extension ClosedRange where Bound == Int {
     
+    /// 将范围映射成索引
+    var indexRange: ClosedRange<Int> {
+        lowerBound.index...upperBound.index
+    }
+    
     var isSingleRange: Bool {
         upperBound - lowerBound == 0
     }
