@@ -30,4 +30,16 @@ extension UIDevice {
 	static var isRearCameraAvailable: Bool {
 		UIImagePickerController.isCameraDeviceAvailable(.rear)
 	}
+    
+    /// 获取设备名. e.g. iPhone13,4
+    static var modelName: String {
+        var systemInfo = utsname()
+        uname(&systemInfo)
+        let machineMirror = Mirror(reflecting: systemInfo.machine)
+        let identifier = machineMirror.children.reduce("") { identifier, element in
+            guard let value = element.value as? Int8, value != 0 else { return identifier }
+            return identifier + String(UnicodeScalar(UInt8(value)))
+        }
+        return identifier
+    }
 }
