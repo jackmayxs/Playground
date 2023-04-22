@@ -81,6 +81,14 @@ extension BinaryInteger {
         Int((uInt32 << 8) >> 8)
     }
     
+    var cgFloat: CGFloat {
+        CGFloat(self)
+    }
+    
+    var double: Double {
+        Double(self)
+    }
+    
     var int: Int {
         Int(truncatingIfNeeded: self)
     }

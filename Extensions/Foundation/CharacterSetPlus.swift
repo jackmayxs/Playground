@@ -48,6 +48,9 @@ extension CharacterSet {
     
 	/// 阿拉伯数字
 	static let arabicNumbers = CharacterSet(charactersIn: "0123456789")
+    
+    /// 小数 | 阿拉伯数字加小数点
+    static let decimals = arabicNumbers.union(".")
 	
 	#if DEBUG
 	

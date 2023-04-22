@@ -14,13 +14,6 @@ extension Optional where Wrapped: BinaryInteger {
     var orZero: Wrapped { self ?? 0 }
 }
 
-// MARK: - UInt16
-extension UInt16 {
-    var int: Int {
-        Int(self)
-    }
-}
-
 extension Int {
 	
 	// 获取一个整形数字个十百千...位上的数字. 例如:
@@ -72,22 +65,6 @@ extension Int {
     var bool: Bool {
         self > 0 ? true : false
     }
-    
-	var cgFloat: CGFloat {
-		CGFloat(self)
-	}
-	
-	var double: Double {
-		Double(self)
-	}
-	
-	var int32: Int32 {
-		Int32(self)
-	}
-	
-	var int64: Int64 {
-		Int64(self)
-	}
     
     var nsNumber: NSNumber {
         NSNumber(value: self)

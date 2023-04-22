@@ -9,9 +9,15 @@ import RxSwift
 import RxCocoa
 
 extension DisposeBag {
+    
     func insert(@ArrayBuilder<Disposable> builder: () -> [Disposable]) {
         let disposables = builder()
         insert(disposables)
+    }
+    
+    public convenience init(@ArrayBuilder<Disposable> builder: () -> [Disposable]) {
+        let disposables = builder()
+        self.init(disposing: disposables)
     }
 }
 

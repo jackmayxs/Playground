@@ -109,16 +109,16 @@ extension StringProtocol {
 		lengthOfBytes(using: .utf8)
 	}
 	
-	var cgFloat: CGFloat {
-		CGFloat(double)
+	var cgFloat: CGFloat? {
+        double?.cgFloat
 	}
     
     var int: Int? {
         Int(self)
     }
     
-	var double: Double {
-		Double(self).or(0.0)
+	var double: Double? {
+		Double(self)
 	}
 }
 
@@ -465,9 +465,13 @@ extension String {
     
     /// 转换为utf8编码的二进制数据
     /// 注: 其中系统属性utf8CString已经在尾部拼接上了\0(null-terminated)
-    var utf8Encoded: Data {
+    var nullTerminatedUTF8Encoded: Data {
         let bytes = utf8CString.map(UInt8.init)
         return Data(bytes)
+    }
+    
+    var utf8Encoded: Data? {
+        data(using: .utf8)
     }
     
     /// 将Base64编码过后的字符串转换成Image
