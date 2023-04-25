@@ -109,6 +109,10 @@ extension BinaryInteger {
         Int8(truncatingIfNeeded: self)
     }
     
+    var uInt: UInt {
+        UInt(truncatingIfNeeded: self)
+    }
+    
     var uInt64: UInt64 {
         UInt64(truncatingIfNeeded: self)
     }
@@ -117,11 +121,11 @@ extension BinaryInteger {
         UInt32(truncatingIfNeeded: self)
     }
     
-    public var uInt16: UInt16 {
+    var uInt16: UInt16 {
         UInt16(truncatingIfNeeded: self)
     }
     
-    public var uInt8: UInt8 {
+    var uInt8: UInt8 {
         UInt8(truncatingIfNeeded: self)
     }
     

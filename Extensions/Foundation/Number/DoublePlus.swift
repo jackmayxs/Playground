@@ -146,8 +146,12 @@ extension Double {
     
     /// 保留两位小数的字符串
     var f2: String {
+        f(2)
+    }
+    
+    func f(_ minimumFractionDigits: Int) -> String {
         decimalFormatter.configure { make in
-            make.minimumFractionDigits = 2
+            make.minimumFractionDigits = minimumFractionDigits
         }.transform { fmt -> String in
             fmt.string(from: nsNumber) ?? ""
         }
