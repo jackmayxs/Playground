@@ -148,6 +148,24 @@ extension String {
 }
 extension String {
     
+    static var deviceIdentifier: String? {
+        let item = KeychainItem<String>(
+            service: KeychainService.deviceInfo.rawValue,
+            account: KeychainService.DeviceInfo.deviceIdentifier.rawValue)
+        do {
+            return try item.read()
+        } catch KeychainError.noPassword {
+            do {
+                let newIdentifier = String.random
+                try item.save(newIdentifier)
+                return newIdentifier
+            } catch {
+                return nil
+            }
+        } catch {
+            return nil
+        }
+    }
     
     var characterSet: CharacterSet {
         CharacterSet(charactersIn: self)
