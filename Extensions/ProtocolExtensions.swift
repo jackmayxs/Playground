@@ -37,6 +37,10 @@ extension Collection {
         return results
     }
     
+    func filledOr(_ defaultValue: Self) -> Self {
+        isNotEmpty ? self : defaultValue
+    }
+    
     /// 如果为空则返回nil
     var filledOrNil: Self? {
         isNotEmpty ? self : nil
