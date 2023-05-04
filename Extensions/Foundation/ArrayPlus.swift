@@ -108,10 +108,6 @@ extension Array where Element : Hashable {
     static func +> (lhs: Self, rhs: Self) -> Self {
         rhs.reduce(lhs, +>)
     }
-    
-    var set: Set<Element> {
-        Set(self)
-    }
 }
 
 // MARK: - ArraySlice

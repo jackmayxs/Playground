@@ -72,6 +72,12 @@ extension Sequence {
 	}
 }
 
+extension Sequence where Element: Hashable {
+    var set: Set<Element> {
+        Set(self)
+    }
+}
+
 // MARK: - __________ 扩展BinaryInteger协议 __________
 
 extension BinaryInteger {
