@@ -8,6 +8,30 @@
 
 import Foundation
 
+@propertyWrapper
+struct Clampped<T: Comparable> {
+    
+    var wrappedValue: T {
+        get { _wrappedValue }
+        set {
+            if newValue > range.upperBound {
+                _wrappedValue = range.upperBound
+            } else if newValue < range.lowerBound {
+                _wrappedValue = range.lowerBound
+            } else {
+                _wrappedValue = newValue
+            }
+        }
+    }
+    
+    private var _wrappedValue: T!
+    private let range: ClosedRange<T>
+    init(wrappedValue: T, range: ClosedRange<T>) {
+        self.range = range
+        self.wrappedValue = wrappedValue
+    }
+}
+
 /// 源源不断的将新赋的有效值储存在内部的数组内, 自身返回最新值.
 /// 用$语法取projectedValue使用
 /// 配合Configurator的keyPath dynamicMemberLookup赋值效果更加
