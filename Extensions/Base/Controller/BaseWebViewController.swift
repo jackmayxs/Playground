@@ -8,7 +8,7 @@
 import UIKit
 import WebKit
 
-class BaseWebViewController: BaseViewController, WKUIDelegate, WKNavigationDelegate {
+class BaseWebViewController: BaseViewController, WKUIDelegate, WKNavigationDelegate, UIScrollViewDelegate {
     
     private lazy var webview = makeWebView()
     private lazy var progressView = UIProgressView(progressViewStyle: .bar).configure { make in
@@ -76,6 +76,7 @@ class BaseWebViewController: BaseViewController, WKUIDelegate, WKNavigationDeleg
         
         
         let webview = WKWebView(frame: .zero, configuration: config)
+        webview.scrollView.delegate = self
         webview.isOpaque = false
         webview.backgroundColor = .white
         webview.uiDelegate = self
@@ -108,6 +109,14 @@ class BaseWebViewController: BaseViewController, WKUIDelegate, WKNavigationDeleg
     deinit {
         titleObservation = nil
         progressObservation = nil
+    }
+    
+    // MARK: - ScrollView Delegate
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        /// 禁止水平方向回弹
+        if scrollView.contentOffset.x != 0 {
+            scrollView.contentOffset.x = 0
+        }
     }
 }
 
