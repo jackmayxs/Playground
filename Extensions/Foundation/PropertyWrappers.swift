@@ -7,6 +7,34 @@
 //
 
 import Foundation
+import UIKit
+
+@propertyWrapper
+final class UIReusePool<T: UIView> {
+    
+    let wrappedValue: () -> T
+    
+    var pool: Set<T> = []
+    
+    var projectedValue: UIReusePool<T> {
+        self
+    }
+    
+    init(wrappedValue: @escaping () -> T) {
+        self.wrappedValue = wrappedValue
+    }
+    
+    var fetched: T {
+        let availableItem = pool.first(where: \.superview.isNotValid)
+        if let availableItem {
+            return availableItem
+        } else {
+            let newItem = wrappedValue()
+            pool.insert(newItem)
+            return newItem
+        }
+    }
+}
 
 @propertyWrapper
 struct Clampped<T: Comparable> {
