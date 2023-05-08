@@ -7,6 +7,15 @@
 
 import Foundation
 
+extension ClosedRange where Bound: Strideable, Bound.Stride: SignedInteger {
+    
+    init(_ slice: Slice<Self>) {
+        let lower = slice.base[slice.startIndex]
+        let upper = slice.base[slice.index(before: slice.endIndex)]
+        self.init(uncheckedBounds: (lower: lower, upper: upper))
+    }
+}
+
 extension ClosedRange where Bound == Int {
     
     /// 将范围映射成索引
