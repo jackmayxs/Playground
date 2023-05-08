@@ -20,6 +20,10 @@ public struct ChangedBytes: CustomStringConvertible {
         "changed: \(lowerBound) - \(upperBound): \(bytes)"
     }
     
+    var indexRange: ClosedRange<Data.Index> {
+        lowerBound...upperBound
+    }
+    
     static func <-- (lhs: [ChangedBytes], rhs: ChangedBytes) -> [ChangedBytes] {
         guard lhs.isNotEmpty else {
             return [rhs]

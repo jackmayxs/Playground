@@ -13,6 +13,10 @@ extension ClosedRange where Bound == Int {
     var indexRange: ClosedRange<Int> {
         lowerBound.index...upperBound.index
     }
+    
+    var numberRange: ClosedRange<Int> {
+        lowerBound.number...upperBound.number
+    }
 }
 
 extension ClosedRange where Bound: FixedWidthInteger {
