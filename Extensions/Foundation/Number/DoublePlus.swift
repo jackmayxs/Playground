@@ -56,6 +56,10 @@ extension Double {
     var cgFloat: CGFloat {
         CGFloat(self)
     }
+    
+    var decimal: Decimal {
+        Decimal(self)
+    }
 }
 
 // MARK: - __________ Date __________
