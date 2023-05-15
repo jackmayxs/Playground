@@ -10,6 +10,49 @@ import RxCocoa
 
 extension Reactive where Base: UICollectionView {
     
+    var page: ControlProperty<Int> {
+        let finalOffset = didEndDecelerating.withUnretained(base).map(\.0.contentOffset)
+        let targetOffset = willEndDragging.map(\.targetContentOffset.pointee)
+        let mergedOffset = Observable.merge(finalOffset, targetOffset)
+        
+        let observedPage = mergedOffset.withUnretained(base).map { collectionView, offset in
+            let contentSize = collectionView.contentSize
+            var axis = NSLayoutConstraint.Axis.horizontal
+            if contentSize.height > collectionView.bounds.height {
+                axis = .vertical
+            }
+            switch axis {
+            case .horizontal:
+                guard collectionView.bounds.width > 0 else { return 0 }
+                return Int(offset.x / collectionView.bounds.width)
+            case .vertical:
+                guard collectionView.bounds.height > 0 else { return 0 }
+                return Int(offset.y / collectionView.bounds.height)
+            @unknown default:
+                return 0
+            }
+        }
+            .distinctUntilChanged()
+        
+        let binder = Binder(base, scheduler: MainScheduler.instance) { collectionView, page in
+            guard 0... ~= page else { return }
+            let contentSize = collectionView.contentSize
+            var axis = NSLayoutConstraint.Axis.horizontal
+            if contentSize.height > collectionView.bounds.height {
+                axis = .vertical
+            }
+            switch axis {
+            case .horizontal:
+                collectionView.contentOffset = CGPoint(x: page.double * collectionView.bounds.width, y: 0)
+            case .vertical:
+                collectionView.contentOffset = CGPoint(x: 0, y: page.double * collectionView.bounds.height)
+            @unknown default:
+                break
+            }
+        }
+        return ControlProperty(values: observedPage, valueSink: binder)
+    }
+    
     var numberOfItems: Observable<Int> {
         dataReloaded.map { collectionView in
             guard let dataSource = collectionView.dataSource else { return 0 }
