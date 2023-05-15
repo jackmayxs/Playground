@@ -31,3 +31,9 @@ extension URL {
         FileManager.default.urls(for: path, in: .userDomainMask).first
     }
 }
+
+extension URL: OptionalType {
+    var optionalValue: URL? {
+        self
+    }
+}

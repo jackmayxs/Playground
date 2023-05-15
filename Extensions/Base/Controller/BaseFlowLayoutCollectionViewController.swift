@@ -26,8 +26,8 @@ class BaseFlowLayoutCollectionViewController<FlowLayout: UICollectionViewFlowLay
         ZKTableViewEmptyView()
     }
     
-    override func configureCollectionView() {
-        super.configureCollectionView()
+    override func configureCollectionView(_ collectionView: UICollectionView) {
+        super.configureCollectionView(collectionView)
         Cell.registerFor(collectionView)
         Header.registerFor(collectionView, kind: .header)
         Footer.registerFor(collectionView, kind: .footer)

@@ -25,20 +25,20 @@ class BaseCollectionViewController: BaseViewController, UICollectionViewDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         /// 配置Collection View
-        configureCollectionView()
+        configureCollectionView(collectionView)
         /// 添加Collection View
-        addCollectionView()
+        addCollectionView(collectionView)
     }
     
     /// 添加Collection View
     /// 调用时机:viewDidLoad()
-    func addCollectionView() {
+    func addCollectionView(_ collectionView: UICollectionView) {
         collectionView.frame = view.bounds
         view.addSubview(collectionView)
     }
     
     /// 调用时机:viewDidLoad()
-    func configureCollectionView() {
+    func configureCollectionView(_ collectionView: UICollectionView) {
         collectionView.backgroundView = emptyView
 
         /// 占位图默认隐藏
