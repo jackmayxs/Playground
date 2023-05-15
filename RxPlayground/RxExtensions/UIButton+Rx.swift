@@ -23,14 +23,6 @@ extension Reactive where Base: UIButton {
         image(for: .normal)
     }
     
-    var isSelected: ControlProperty<Bool> {
-        controlProperty(editingEvents: .touchUpInside) { button in
-            button.isSelected
-        } setter: { button, selected in
-            button.isSelected = selected
-        }
-    }
-    
     /// 限制按钮连续点击
     /// 时间:800毫秒
     var throttledTap: Observable<Void> {
