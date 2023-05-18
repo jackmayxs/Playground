@@ -111,20 +111,28 @@ struct CycledValue<T: Comparable> {
     var wrappedValue: T {
         get { innerValue }
         set {
-            if newValue > range.upperBound {
-                innerValue = range.lowerBound
-            } else if newValue < range.lowerBound {
+            switch newValue {
+            case ..<range.lowerBound:
                 innerValue = range.upperBound
-            } else {
+            case range:
                 innerValue = newValue
+            default:
+                innerValue = range.lowerBound
             }
         }
     }
     private var innerValue: T
     private let range: ClosedRange<T>
     init(wrappedValue: T, range: ClosedRange<T>) {
-        self.innerValue = wrappedValue
         self.range = range
+        switch wrappedValue {
+        case ..<range.lowerBound:
+            innerValue = range.lowerBound
+        case range:
+            innerValue = wrappedValue
+        default:
+            innerValue = range.upperBound
+        }
     }
 }
 
