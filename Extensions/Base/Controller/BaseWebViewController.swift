@@ -125,4 +125,16 @@ extension BaseWebViewController {
         self.init()
         load(url)
     }
+    
+    /// Webview背景颜色
+    var webViewBackgroundColor: UIColor? {
+        get { webview.backgroundColor }
+        set { webview.backgroundColor = newValue }
+    }
+    
+    /// 网页背景颜色
+    var webBackgroundColor: UIColor? {
+        get { webview.scrollView.backgroundColor }
+        set { webview.scrollView.backgroundColor = newValue }
+    }
 }
