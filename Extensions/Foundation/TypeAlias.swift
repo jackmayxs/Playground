@@ -8,4 +8,5 @@
 
 import Foundation
 
+public typealias IndexPathSet = Set<IndexPath>
 public typealias SimpleCallback = () -> Void

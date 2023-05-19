@@ -73,6 +73,10 @@ class BaseCollectionViewController: BaseViewController, UICollectionViewDelegate
         }
     }
     
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        
+    }
+    
     // MARK: - CollectionView Datasource
     
     /// 每组条目数
