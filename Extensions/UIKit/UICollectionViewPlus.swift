@@ -68,3 +68,38 @@ extension UICollectionViewFlowLayout {
         return delegate.collectionView?(collectionView, layout: self, minimumLineSpacingForSectionAt: indexPath.section) ?? minimumLineSpacing
     }
 }
+
+extension UICollectionView {
+    
+    /// 判断分组内的Item是否全部选中
+    /// - Parameter section: 分组(0 indexed)
+    /// - Returns: 分组内的Item是否全部选中
+    func isAllItemSelectedInSection(_ section: Int) -> Bool {
+        /// 取出所有选中的IndexPath
+        guard let selectedIndexPaths = indexPathsForSelectedItems else {
+            return false
+        }
+        /// 过滤出指定分组的IndexPath
+        let selectedSectionIndexPaths = selectedIndexPaths.filter { indexPath in
+            indexPath.section == section
+        }
+        /// 对比指定分组选中的IndexPath数量是否和分组内的Item数量相等
+        return numberOfItems(inSection: section) == selectedSectionIndexPaths.count
+    }
+    
+    /// 判断是否所有Item都被选中
+    var isAllItemSelected: Bool {
+        /// 取出所有选中的IndexPath
+        guard let selectedIndexPaths = indexPathsForSelectedItems else {
+            return false
+        }
+        return numberOfItems == selectedIndexPaths.count
+    }
+    
+    /// 所有Item的数量
+    var numberOfItems: Int {
+        (0..<numberOfSections).reduce(0) { itemCount, section in
+            itemCount + numberOfItems(inSection: section)
+        }
+    }
+}
