@@ -47,9 +47,9 @@ class BaseFlowLayoutCollectionViewController<FlowLayout: UICollectionViewFlowLay
     
     func configureCell(_ cell: Cell, at indexPath: IndexPath) { }
     
-    func configureHeader(_ header: Header, at indexPath: IndexPath) { }
+    func configureHeader(_ header: Header, at section: Int) { }
     
-    func configureFooter(_ footer: Footer, at indexPath: IndexPath) { }
+    func configureFooter(_ footer: Footer, at section: Int) { }
     
     // MARK: - UICollectionViewDelegateFlowLayout
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -73,11 +73,11 @@ class BaseFlowLayoutCollectionViewController<FlowLayout: UICollectionViewFlowLay
         switch supplementaryViewKind {
         case .header:
             let header = Header.dequeReusableSupplementaryView(from: collectionView, kind: supplementaryViewKind, indexPath: indexPath)
-            configureHeader(header, at: indexPath)
+            configureHeader(header, at: indexPath.section)
             return header
         case .footer:
             let footer = Footer.dequeReusableSupplementaryView(from: collectionView, kind: supplementaryViewKind, indexPath: indexPath)
-            configureFooter(footer, at: indexPath)
+            configureFooter(footer, at: indexPath.section)
             return footer
         }
     }

@@ -71,6 +71,12 @@ extension UICollectionViewFlowLayout {
 
 extension UICollectionView {
     
+    /// 刷新项目
+    /// - Parameter indexPath: 要刷新的IndexPath
+    func reloadItem(at indexPath: IndexPath) {
+        reloadItems(at: [indexPath])
+    }
+    
     /// 判断分组内的Item是否全部选中
     /// - Parameter section: 分组(0 indexed)
     /// - Returns: 分组内的Item是否全部选中
@@ -101,5 +107,13 @@ extension UICollectionView {
         (0..<numberOfSections).reduce(0) { itemCount, section in
             itemCount + numberOfItems(inSection: section)
         }
+    }
+}
+
+
+extension UICollectionView.ScrollPosition {
+    
+    static var none: UICollectionView.ScrollPosition {
+        []
     }
 }
