@@ -10,9 +10,8 @@ import AVFoundation
 import RxSwift
 import RxCocoa
 
-extension AVAuthorizationStatus: LocalizedError {
-    
-    public var errorDescription: String? {
+extension AVAuthorizationStatus: CustomStringConvertible {
+    public var description: String {
         switch self {
         case .notDetermined:
             return "NOT DETERMINED."
@@ -26,53 +25,27 @@ extension AVAuthorizationStatus: LocalizedError {
             return "UNKNOWN STATUS"
         }
     }
+}
+
+extension AVAuthorizationStatus: LocalizedError {
+    
+    public var errorDescription: String? {
+        description
+    }
 
     /// A localized message describing the reason for the failure.
     public var failureReason: String? {
-        switch self {
-        case .notDetermined:
-            return "NOT DETERMINED."
-        case .restricted:
-            return "RESTRICTED"
-        case .denied:
-            return "DENIED"
-        case .authorized:
-            return "AUTHORIZED"
-        @unknown default:
-            return "UNKNOWN STATUS"
-        }
+        description
     }
 
     /// A localized message describing how one might recover from the failure.
     public var recoverySuggestion: String? {
-        switch self {
-        case .notDetermined:
-            return "NOT DETERMINED."
-        case .restricted:
-            return "RESTRICTED"
-        case .denied:
-            return "DENIED"
-        case .authorized:
-            return "AUTHORIZED"
-        @unknown default:
-            return "UNKNOWN STATUS"
-        }
+        description
     }
 
     /// A localized message providing "help" text if the user requests help.
     public var helpAnchor: String? {
-        switch self {
-        case .notDetermined:
-            return "NOT DETERMINED."
-        case .restricted:
-            return "RESTRICTED"
-        case .denied:
-            return "DENIED"
-        case .authorized:
-            return "AUTHORIZED"
-        @unknown default:
-            return "UNKNOWN STATUS"
-        }
+        description
     }
 }
 
