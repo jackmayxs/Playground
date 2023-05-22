@@ -9,6 +9,9 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+/// 因为UICollectionViewCell也继承自UICollectionReusableView
+/// 所以UICollectionViewCell也用这个属性
+
 extension Reactive where Base: UICollectionReusableView {
     var prepareForReuse: Observable<[Any]> {
         methodInvoked(#selector(UICollectionReusableView.prepareForReuse))

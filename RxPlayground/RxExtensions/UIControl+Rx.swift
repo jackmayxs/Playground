@@ -15,7 +15,7 @@ extension Reactive where Base: UIControl {
         Observable.combineLatest(isEnabled, isSelected, isHighlighted)
             .withUnretained(base)
             .map(\.0.state)
-            .startWith(.normal)
+            .startWith(base.state)
             .distinctUntilChanged()
     }
     
