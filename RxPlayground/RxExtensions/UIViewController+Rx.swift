@@ -72,8 +72,8 @@ public extension Reactive where Base: UIViewController {
 	
 	//表示视图是否显示的可观察序列，当VC显示状态改变时会触发
 	var isVisible: Observable<Bool> {
-		let viewDidAppearObservable = base.rx.viewDidAppear.map { _ in true }
-		let viewWillDisappearObservable = base.rx.viewWillDisappear.map { _ in false }
+		let viewDidAppearObservable = viewDidAppear.map { _ in true }
+		let viewWillDisappearObservable = viewWillDisappear.map { _ in false }
 		return Observable<Bool>
             .merge(viewDidAppearObservable, viewWillDisappearObservable)
             .startWith(false)

@@ -80,7 +80,7 @@ extension Reactive where Base: UICollectionView {
     }
     
     private var selectItemAt: Observable<IndexPath> {
-        base.rx.methodInvoked(#selector(UICollectionView.selectItem(at:animated:scrollPosition:)))
+        methodInvoked(#selector(UICollectionView.selectItem(at:animated:scrollPosition:)))
             .map(\.first)
             .unwrapped
             .as(IndexPath.self)

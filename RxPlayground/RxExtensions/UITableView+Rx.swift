@@ -95,7 +95,7 @@ extension Reactive where Base: UITableView {
     }
     
     private var selectRowAt: Observable<IndexPath> {
-        base.rx.methodInvoked(#selector(base.selectRow(at:animated:scrollPosition:)))
+        methodInvoked(#selector(base.selectRow(at:animated:scrollPosition:)))
             .compactMap(\.first)
             .as(IndexPath.self)
     }

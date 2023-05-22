@@ -71,7 +71,7 @@ extension Reactive where Base: ActivityTracker {
                 return indicator
             } else {
                 let indicator = ActivityIndicator()
-                base.rx.disposeBag.insert {
+                disposeBag.insert {
                     indicator.drive(with: base) { weakBase, processing in
                         weakBase.trackActivity(processing)
                     }

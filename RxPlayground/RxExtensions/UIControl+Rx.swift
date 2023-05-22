@@ -20,7 +20,7 @@ extension Reactive where Base: UIControl {
     }
     
     public var isHighlighted: ControlProperty<Bool> {
-        let observeIsHighlighted = base.rx.observe(\.isHighlighted, options: [.initial, .new])
+        let observeIsHighlighted = observe(\.isHighlighted, options: [.initial, .new])
         let binder = Binder(base, scheduler: MainScheduler.instance) { control, isHighlighted in
             guard isHighlighted != control.isHighlighted else { return }
             control.isHighlighted = isHighlighted
@@ -29,7 +29,7 @@ extension Reactive where Base: UIControl {
     }
     
     public var isSelected: ControlProperty<Bool> {
-        let observeIsSelected = base.rx.observe(\.isSelected, options: [.initial, .new])
+        let observeIsSelected = observe(\.isSelected, options: [.initial, .new])
         let binder = Binder(base, scheduler: MainScheduler.instance) { control, isSelected in
             guard isSelected != control.isSelected else { return }
             control.isSelected = isSelected
@@ -38,7 +38,7 @@ extension Reactive where Base: UIControl {
     }
     
     public var isEnabled: ControlProperty<Bool> {
-        let observeIsEnabled = base.rx.observe(\.isEnabled, options: [.initial, .new])
+        let observeIsEnabled = observe(\.isEnabled, options: [.initial, .new])
         let binder = Binder(base, scheduler: MainScheduler.instance) { control, isEnabled in
             guard isEnabled != control.isEnabled else { return }
             control.isEnabled = isEnabled

@@ -45,7 +45,7 @@ extension Reactive where Base: UIApplication {
     /// 观察当前的第一响应者
     var firstResponder: Observable<UIResponder> {
         /// func sendAction(_ action: Selector, to target: Any?, from sender: Any?, for event: UIEvent?) -> Bool
-        base.rx.methodInvoked(#selector(UIApplication.sendAction))
+        methodInvoked(#selector(UIApplication.sendAction))
             .compactMap { args in
                 /// 取第三个参数
                 guard let thirdParameter = args.itemAt(2) else { return nil }
