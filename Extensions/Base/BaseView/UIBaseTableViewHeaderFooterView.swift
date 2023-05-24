@@ -87,8 +87,8 @@ class UIBaseTableViewHeaderFooterView: UITableViewHeaderFooterView, StandardLayo
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        if #unavailable (iOS 14), let preferredCornerRadius {
-            contentView.roundCorners(cornerRadius: preferredCornerRadius)
+        if let preferredCornerRadius {
+            roundCorners(cornerRadius: preferredCornerRadius)
         }
     }
 }
