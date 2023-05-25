@@ -9,7 +9,32 @@ import RxSwift
 import RxCocoa
 
 extension Reactive where Base: UIScrollView {
-	
+    
+    /// 合并事件
+    /// 用于更新自定义滚动条
+    var contentSizeAndVisibleContentBounds: Observable<(CGSize, CGRect)> {
+        Observable.combineLatest(contentSize, visibleContentBounds)
+    }
+    
+    var contentSize: ControlProperty<CGSize> {
+        let binder = Binder(base, scheduler: MainScheduler.instance) { scroll, newContentSize in
+            guard newContentSize != scroll.contentSize else { return }
+            scroll.contentSize = newContentSize
+        }
+        return ControlProperty(values: observedContentSize, valueSink: binder)
+    }
+    
+    /// KVO contentSize
+    var observedContentSize: Observable<CGSize> {
+        observe(\.contentSize, options: [.initial, .new]).distinctUntilChanged()
+    }
+    
+    /// base.contentOffset +
+    /// base.bounds.size
+    var visibleContentBounds: Observable<CGRect> {
+        didLayoutSubviews.map(\.bounds)
+    }
+    
 	var reachedBottom: Signal<()> {
 		contentOffset.asDriver()
 			.flatMap { [weak base] contentOffset -> Signal<()> in
