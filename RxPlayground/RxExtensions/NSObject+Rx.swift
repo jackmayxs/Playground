@@ -9,10 +9,8 @@ import Foundation
 import RxSwift
 import RxCocoa
 import ObjectiveC
-import Combine
 
 fileprivate var disposeBagContext: UInt8 = 0
-fileprivate var disposeSetContext: UInt8 = 0
 
 extension Reactive where Base: AnyObject {
     func synchronized<T>( _ action: () -> T) -> T {
@@ -24,25 +22,6 @@ extension Reactive where Base: AnyObject {
 }
 
 public extension Reactive where Base: AnyObject {
-
-    @available(iOS 13.0, *)
-    var disposeSet: Set<AnyCancellable> {
-        get {
-            synchronized {
-                if let disposeSet = objc_getAssociatedObject(base, &disposeSetContext) as? Set<AnyCancellable> {
-                    return disposeSet
-                }
-                let disposeSet = Set<AnyCancellable>()
-                objc_setAssociatedObject(base, &disposeSetContext, disposeSet, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-                return disposeSet
-            }
-        }
-        nonmutating set {
-            synchronized {
-                objc_setAssociatedObject(base, &disposeSetContext, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-            }
-        }
-    }
     
     /// a unique DisposeBag that is related to the Reactive.Base instance only for Reference type
     var disposeBag: DisposeBag {
