@@ -9,11 +9,13 @@ import Foundation
 import RxSwift
 import RxCocoa
 import ObjectiveC
+import Combine
 
 fileprivate var disposeBagContext: UInt8 = 0
+fileprivate var disposeSetContext: UInt8 = 0
 
 extension Reactive where Base: AnyObject {
-    func synchronizedBag<T>( _ action: () -> T) -> T {
+    func synchronized<T>( _ action: () -> T) -> T {
         objc_sync_enter(base)
         let result = action()
         objc_sync_exit(base)
@@ -23,10 +25,29 @@ extension Reactive where Base: AnyObject {
 
 public extension Reactive where Base: AnyObject {
 
+    @available(iOS 13.0, *)
+    var disposeSet: Set<AnyCancellable> {
+        get {
+            synchronized {
+                if let disposeSet = objc_getAssociatedObject(base, &disposeSetContext) as? Set<AnyCancellable> {
+                    return disposeSet
+                }
+                let disposeSet = Set<AnyCancellable>()
+                objc_setAssociatedObject(base, &disposeSetContext, disposeSet, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                return disposeSet
+            }
+        }
+        nonmutating set {
+            synchronized {
+                objc_setAssociatedObject(base, &disposeSetContext, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            }
+        }
+    }
+    
     /// a unique DisposeBag that is related to the Reactive.Base instance only for Reference type
     var disposeBag: DisposeBag {
         get {
-            synchronizedBag {
+            synchronized {
                 if let disposeObject = objc_getAssociatedObject(base, &disposeBagContext) as? DisposeBag {
                     return disposeObject
                 }
@@ -37,7 +58,7 @@ public extension Reactive where Base: AnyObject {
         }
         
         nonmutating set {
-            synchronizedBag {
+            synchronized {
                 objc_setAssociatedObject(base, &disposeBagContext, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             }
         }
@@ -66,7 +87,7 @@ fileprivate var activityIndicatorKey = UUID()
 
 extension Reactive where Base: ActivityTracker {
     var activity: ActivityIndicator {
-        synchronizedBag {
+        synchronized {
             if let indicator = objc_getAssociatedObject(base, &activityIndicatorKey) as? ActivityIndicator {
                 return indicator
             } else {
