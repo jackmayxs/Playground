@@ -13,20 +13,27 @@ class UIBaseTableViewHeaderFooterView: UITableViewHeaderFooterView, StandardLayo
     var contentInsets: UIEdgeInsets { .zero }
     
     /// 背景色
-    var defaultBackgroundColor: UIColor { baseViewBackgroundColor }
-    
-    /// 高亮时的背景色
-    var defaultHighlightBackgroundColor: UIColor? {
-        defaultBackgroundColor
-    }
-    
-    /// 选中时的背景色
-    var defaultSelectedBackgroundColor: UIColor? {
-        defaultBackgroundColor
+    var defaultBackgroundColor: UIColor {
+        baseViewBackgroundColor
     }
     
     // 圆角
     var preferredCornerRadius: CGFloat? { nil }
+    
+    /// 分配的分组
+    var assignedSection: Int?
+    
+    /// 背景样式设置模式
+    var backgroundStyleMode: UIBackgroundStyleMode = .modern {
+        didSet {
+            if #available(iOS 14.0, *) {
+                setNeedsUpdateConfiguration()
+            }
+            if backgroundStyleMode == .legacy {
+                contentView.backgroundColor = defaultBackgroundColor
+            }
+        }
+    }
     
     /// 弱引用Cell本身的TableView | 用于分类中对TableView的缓存
     private weak var tableView_: UITableView?
@@ -44,12 +51,11 @@ class UIBaseTableViewHeaderFooterView: UITableViewHeaderFooterView, StandardLayo
     @available(iOS 14.0, *)
     override func updateConfiguration(using state: UIViewConfigurationState) {
         super.updateConfiguration(using: state)
-        var background = UIBackgroundConfiguration.listPlainHeaderFooter()
-        if state.isHighlighted {
-            background.backgroundColor = defaultHighlightBackgroundColor ?? .clear
-        } else if state.isSelected {
-            background.backgroundColor = defaultSelectedBackgroundColor ?? .clear
+        var background: UIBackgroundConfiguration
+        if backgroundStyleMode == .legacy {
+            background = .clear()
         } else {
+            background = UIBackgroundConfiguration.listPlainHeaderFooter()
             background.backgroundColor = defaultBackgroundColor
         }
         /**
@@ -74,9 +80,7 @@ class UIBaseTableViewHeaderFooterView: UITableViewHeaderFooterView, StandardLayo
     }
     
     func prepare() {
-        if #unavailable(iOS 14.0) {
-            contentView.backgroundColor = defaultBackgroundColor
-        }
+        contentView.backgroundColor = defaultBackgroundColor
         prepareSubviews()
         prepareConstraints()
     }
@@ -87,13 +91,45 @@ class UIBaseTableViewHeaderFooterView: UITableViewHeaderFooterView, StandardLayo
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        if let preferredCornerRadius {
-            roundCorners(cornerRadius: preferredCornerRadius)
+        if let preferredCornerRadius, let tableView, let section {
+            let headerRect = tableView.rectForHeader(inSection: section)
+            let footerRect = tableView.rectForFooter(inSection: section)
+            let haveRows = headerRect.maxY != footerRect.minY
+            let isHeaderView = headerRect != .zero && headerRect == frame
+            let maskedCorners = maskedCorners(isHeaderView, haveRows: haveRows)
+            roundCorners(corners: maskedCorners, cornerRadius: preferredCornerRadius)
+        }
+    }
+    
+    /// 圆角位置
+    /// - Parameters:
+    ///   - isHeader: 是否给组头加圆角
+    ///   - haveRows: 行数是否非空
+    /// - Returns: 要切的圆角位置
+    func maskedCorners(_ isHeader: Bool, haveRows: Bool) -> UIRectCorner {
+        switch (isHeader, haveRows) {
+        case (true, true): /// 组头,行不为空
+            return .topCorners
+        case (false, true): /// 组尾,行不为空
+            return .bottomCorners
+        default:
+            return .allCorners
         }
     }
 }
 
 extension UIBaseTableViewHeaderFooterView {
+    
+    var section: Int? {
+        assignedSection ?? indexPath?.section
+    }
+    
+    /// 计算得出的indexPath
+    /// 但是在组内的cell为0的时候无效, 需要配合assignedSection使用
+    private var indexPath: IndexPath? {
+        let sectionFirstRowMinOrigin = CGPoint(x: 0.0, y: frame.maxY)
+        return tableView?.indexPathForRow(at: sectionFirstRowMinOrigin)
+    }
     
     var tableView: UITableView? {
         if let tableView_ {

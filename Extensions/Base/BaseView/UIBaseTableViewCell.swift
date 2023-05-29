@@ -8,6 +8,14 @@
 
 import UIKit
 
+/// 背景样式设置模式
+enum UIBackgroundStyleMode {
+    /// 传统的样式设置背景色
+    case legacy
+    /// 使用iOS14的Configuration设置背景色
+    case modern
+}
+
 class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
     /// 分割线类
     fileprivate final class _UIBaseTableViewCellSeparatorView: UIView {}
@@ -65,7 +73,7 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
     var separatorStyle: SeparatorStyle = .inline
     
     /// 背景样式设置模式
-    var backgroundStyleMode: BackgroundStyleMode = .modern {
+    var backgroundStyleMode: UIBackgroundStyleMode = .modern {
         didSet {
             if #available(iOS 14.0, *) {
                 setNeedsUpdateConfiguration()
@@ -317,14 +325,6 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
 }
 
 extension UIBaseTableViewCell {
-    
-    /// 背景样式设置模式
-    enum BackgroundStyleMode {
-        /// 传统的样式设置背景色
-        case legacy
-        /// 使用iOS14的Configuration设置背景色
-        case modern
-    }
     
     enum SeparatorPosition: Equatable {
         case top
