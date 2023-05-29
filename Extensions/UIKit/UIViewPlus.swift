@@ -380,9 +380,23 @@ extension UIView {
         translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate {
             if let width = width {
+                let existedConstraints = constraints.filter { constraint in
+                    guard constraint.relation == .equal else { return false }
+                    guard constraint.firstAttribute == .width else { return false }
+                    guard constraint.secondAttribute == .notAnAttribute else { return false }
+                    return true
+                }
+                removeConstraints(existedConstraints)
                 widthAnchor.constraint(equalToConstant: width)
             }
             if let height = height {
+                let existedConstraints = constraints.filter { constraint in
+                    guard constraint.relation == .equal else { return false }
+                    guard constraint.firstAttribute == .height else { return false }
+                    guard constraint.secondAttribute == .notAnAttribute else { return false }
+                    return true
+                }
+                removeConstraints(existedConstraints)
                 heightAnchor.constraint(equalToConstant: height)
             }
         }
@@ -390,9 +404,10 @@ extension UIView {
     }
     
     @discardableResult
-    /// 限制最小宽高
+    /// 限制宽高范围
     /// - Returns: 自己
-    func limit(minWidth: CGFloat? = nil, minHeight: CGFloat? = nil) -> Self {
+    func limit(minWidth: CGFloat? = nil, maxWidth: CGFloat? = nil, minHeight: CGFloat? = nil, maxHeight: CGFloat? = nil) -> Self {
+        translatesAutoresizingMaskIntoConstraints = false
         if let minWidth {
             let existedConstraints = constraints.filter { constraint in
                 guard constraint.relation == .greaterThanOrEqual else { return false }
@@ -402,6 +417,16 @@ extension UIView {
             }
             removeConstraints(existedConstraints)
             widthAnchor.constraint(greaterThanOrEqualToConstant: minWidth).isActive = true
+        }
+        if let maxWidth {
+            let existedConstraints = constraints.filter { constraint in
+                guard constraint.relation == .lessThanOrEqual else { return false }
+                guard constraint.firstAttribute == .width else { return false }
+                guard constraint.secondAttribute == .notAnAttribute else { return false }
+                return true
+            }
+            removeConstraints(existedConstraints)
+            widthAnchor.constraint(lessThanOrEqualToConstant: maxWidth).isActive = true
         }
         if let minHeight {
             let existedConstraints = constraints.filter { constraint in
@@ -413,24 +438,6 @@ extension UIView {
             removeConstraints(existedConstraints)
             heightAnchor.constraint(greaterThanOrEqualToConstant: minHeight).isActive = true
         }
-        translatesAutoresizingMaskIntoConstraints = false
-        return self
-    }
-    
-    @discardableResult
-    /// 限制最大宽高
-    /// - Returns: 自己
-    func limit(maxWidth: CGFloat? = nil, maxHeight: CGFloat? = nil) -> Self {
-        if let maxWidth {
-            let existedConstraints = constraints.filter { constraint in
-                guard constraint.relation == .lessThanOrEqual else { return false }
-                guard constraint.firstAttribute == .width else { return false }
-                guard constraint.secondAttribute == .notAnAttribute else { return false }
-                return true
-            }
-            removeConstraints(existedConstraints)
-            widthAnchor.constraint(lessThanOrEqualToConstant: maxWidth).isActive = true
-        }
         if let maxHeight {
             let existedConstraints = constraints.filter { constraint in
                 guard constraint.relation == .lessThanOrEqual else { return false }
@@ -441,7 +448,6 @@ extension UIView {
             removeConstraints(existedConstraints)
             heightAnchor.constraint(lessThanOrEqualToConstant: maxHeight).isActive = true
         }
-        translatesAutoresizingMaskIntoConstraints = false
         return self
     }
 	
