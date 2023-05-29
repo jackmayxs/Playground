@@ -10,7 +10,7 @@ import UIKit
 
 class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
     /// 分割线类
-    final class _UIBaseTableViewCellSeparatorView: UIView {}
+    fileprivate final class _UIBaseTableViewCellSeparatorView: UIView {}
     
     /// 弱引用Cell本身的TableView | 用于分类中对TableView的缓存
     private weak var tableView_: UITableView?
@@ -47,7 +47,7 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
     var defaultSelectionStyle: UITableViewCell.SelectionStyle { .default }
     
     /// 分割线
-    private lazy var separator = _UIBaseTableViewCellSeparatorView(frame: .zero)
+    fileprivate lazy var separator = _UIBaseTableViewCellSeparatorView(frame: .zero)
     
     /// 分割线像素高度 | 子类重写此属性并返回nil则不显示自定义的分割线
     var separatorPixelHeight: Int? { 1 }
@@ -58,20 +58,43 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
     /// 圆角
     var preferredCornerRadius: CGFloat? { nil }
     
+    /// 分组圆角的位置
+    var sectionMaskedCorners = UIRectCorner.allCorners
+    
     /// 分割线样式
     var separatorStyle: SeparatorStyle = .inline
+    
+    /// 背景样式设置模式
+    var backgroundStyleMode: BackgroundStyleMode = .modern {
+        didSet {
+            if #available(iOS 14.0, *) {
+                setNeedsUpdateConfiguration()
+            }
+            if backgroundStyleMode == .legacy {
+                setHighlighted(isHighlighted, animated: false)
+                setSelected(isSelected, animated: false)
+            }
+        }
+    }
     
     @available(iOS 14.0, *)
     override func updateConfiguration(using state: UICellConfigurationState) {
         super.updateConfiguration(using: state)
-        var background = UIBackgroundConfiguration.listPlainCell()
-        if state.isHighlighted {
-            background.backgroundColor = defaultHighlightBackgroundColor ?? .clear
-        } else if state.isSelected {
-            background.backgroundColor = defaultSelectedBackgroundColor ?? .clear
+        var background: UIBackgroundConfiguration
+        if backgroundStyleMode == .legacy {
+            background = .clear()
         } else {
-            background.backgroundColor = defaultBackgroundColor
+            background = .listPlainCell()
+            if state.isHighlighted {
+                background.backgroundColor = defaultHighlightBackgroundColor ?? .clear
+            } else if state.isSelected {
+                background.backgroundColor = defaultSelectedBackgroundColor ?? .clear
+            } else {
+                background.backgroundColor = defaultBackgroundColor
+            }
         }
+        
+        backgroundConfiguration = background
         
         /// 设置分割线显示隐藏
         if adjustSeparatorWhenHighlighted {
@@ -88,7 +111,6 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
             }
         }
         
-        backgroundConfiguration = background
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -104,21 +126,23 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {
         super.setHighlighted(highlighted, animated: animated)
         if #unavailable(iOS 14.0) {
-            if highlighted, let color = defaultHighlightBackgroundColor {
-                contentView.backgroundColor = color
-                backgroundColor = color
-            } else {
-                contentView.backgroundColor = defaultBackgroundColor
-                backgroundColor = defaultBackgroundColor
-            }
+            contentView.backgroundColor = highlighted ? defaultHighlightBackgroundColor : defaultBackgroundColor
+        } else if backgroundStyleMode == .legacy {
+            contentView.backgroundColor = highlighted ? defaultHighlightBackgroundColor : defaultBackgroundColor
+        }
+    }
+    
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        if #unavailable(iOS 14.0) {
+            contentView.backgroundColor = selected ? defaultSelectedBackgroundColor : defaultBackgroundColor
+        } else if backgroundStyleMode == .legacy {
+            contentView.backgroundColor = selected ? defaultSelectedBackgroundColor : defaultBackgroundColor
         }
     }
     
     func prepare() {
         selectionStyle = defaultSelectionStyle
-        if #unavailable(iOS 14.0) {
-            contentView.backgroundColor = defaultBackgroundColor
-        }
         prepareSubviews()
         prepareConstraints()
     }
@@ -235,19 +259,72 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
     ///   - indexPath: 所在的indexPath
     /// - Returns: Cell本身
     func setCornerRadius(_ cornerRadius: CGFloat, for tableView: UITableView, at indexPath: IndexPath) {
-        if indexPath.row == 0, tableView.numberOfRows(inSection: indexPath.section) == indexPath.row + 1 {
-            contentView.roundCorners(corners: .allCorners, cornerRadius: cornerRadius)
-        } else if indexPath.row == 0 {
-            contentView.roundCorners(corners: [.topLeft, .topRight], cornerRadius: cornerRadius)
-        } else if tableView.numberOfRows(inSection: indexPath.section) == indexPath.row + 1 {
-            contentView.roundCorners(corners: [.bottomLeft, .bottomRight], cornerRadius: cornerRadius)
-        } else {
+        lazy var haveHeader: Bool = {
+            guard let tableDelegate = tableView.delegate else { return false }
+            let headerHeight = tableDelegate.tableView?(tableView, heightForHeaderInSection: indexPath.section) ?? 0.0
+            let headerView = tableDelegate.tableView?(tableView, viewForHeaderInSection: indexPath.section)
+            return headerHeight != 0.0 && headerView.isValid
+        }()
+        lazy var haveFooter: Bool = {
+            guard let tableDelegate = tableView.delegate else { return false }
+            let footerHeight = tableDelegate.tableView?(tableView, heightForFooterInSection: indexPath.section) ?? 0.0
+            let footerView = tableDelegate.tableView?(tableView, viewForFooterInSection: indexPath.section)
+            return footerHeight != 0.0 && footerView.isValid
+        }()
+        /// 分组内只有1行的情况
+        if indexPath.row == 0, tableView.numberOfRows(inSection: indexPath.section) == 1 {
+            var corners: UIRectCorner {
+                var result = sectionMaskedCorners
+                if haveHeader {
+                    /// 减去顶部的圆角
+                    result.subtract(.topCorners)
+                }
+                if haveFooter {
+                    /// 减去底部的圆角
+                    result.subtract(.bottomCorners)
+                }
+                return result
+            }
+            contentView.roundCorners(corners: corners, cornerRadius: cornerRadius)
+        }
+        /// 第一行
+        else if indexPath.row == 0 {
+            /// 有组头
+            if haveHeader {
+                contentView.roundCorners(corners: .allCorners, cornerRadius: 0.0)
+            }
+            /// 无组头
+            else {
+                contentView.roundCorners(corners: sectionMaskedCorners.topCorners, cornerRadius: cornerRadius)
+            }
+        }
+        /// 最后一行
+        else if tableView.numberOfRows(inSection: indexPath.section) == indexPath.row + 1 {
+            /// 有组尾
+            if haveFooter {
+                contentView.roundCorners(corners: .allCorners, cornerRadius: 0)
+            }
+            /// 无组尾
+            else {
+                contentView.roundCorners(corners: sectionMaskedCorners.bottomCorners, cornerRadius: cornerRadius)
+            }
+        }
+        /// 中间行
+        else {
             contentView.roundCorners(corners: .allCorners, cornerRadius: 0.0)
         }
     }
 }
 
 extension UIBaseTableViewCell {
+    
+    /// 背景样式设置模式
+    enum BackgroundStyleMode {
+        /// 传统的样式设置背景色
+        case legacy
+        /// 使用iOS14的Configuration设置背景色
+        case modern
+    }
     
     enum SeparatorPosition: Equatable {
         case top
