@@ -1,6 +1,5 @@
 //
 //  ArrayPlus.swift
-//  zeniko
 //
 //  Created by Choi on 2022/10/21.
 //

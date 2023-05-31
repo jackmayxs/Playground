@@ -1,6 +1,5 @@
 //
 //  UICollectionReusableView+Rx.swift
-//  KnowLED
 //
 //  Created by Choi on 2023/5/20.
 //

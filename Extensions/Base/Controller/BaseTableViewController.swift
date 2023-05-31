@@ -1,6 +1,5 @@
 //
 //  BaseTableViewController.swift
-//  zeniko
 //
 //  Created by Choi on 2022/8/2.
 //  Copyright © 2022 GODOX Photo Equipment Co.,Ltd. All rights reserved.

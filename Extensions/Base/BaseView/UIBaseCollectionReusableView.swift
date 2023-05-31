@@ -1,6 +1,5 @@
 //
 //  UIBaseCollectionReusableView.swift
-//  KnowLED
 //
 //  Created by Choi on 2023/5/22.
 //

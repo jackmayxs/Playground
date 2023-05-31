@@ -1,6 +1,5 @@
 //
 //  UITextFieldPlus.swift
-//  zeniko
 //
 //  Created by Choi on 2022/12/1.
 //

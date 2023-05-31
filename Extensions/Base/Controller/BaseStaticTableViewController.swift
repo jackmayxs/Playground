@@ -1,6 +1,5 @@
 //
 //  BaseStaticTableViewController.swift
-//  zeniko
 //
 //  Created by Choi on 2022/8/11.
 //

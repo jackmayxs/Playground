@@ -1,6 +1,5 @@
 //
 //  JustifiedLabel.swift
-//  zeniko
 //
 //  Created by Choi on 2022/9/24.
 //
