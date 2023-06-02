@@ -65,7 +65,7 @@ extension UIColor {
     
 	/// 生成一个随机颜色
     static var random: UIColor {
-        UIColor(red: .random, green: .random, blue: .random, alpha: 1)
+        UIColor(red: .randomPercent, green: .randomPercent, blue: .randomPercent, alpha: 1)
     }
     
     static func hex(_ hexValue: Int) -> UIColor {
@@ -108,32 +108,37 @@ extension Int {
 	
     @available(iOS 13.0, *)
     var cgColor: CGColor {
-		guard let argb = argb else { return UIColor.clear.cgColor }
-		return CGColor(red: argb.r, green: argb.g, blue: argb.b, alpha: argb.a)
+		guard let aRGB else { return UIColor.clear.cgColor }
+		return CGColor(red: aRGB.r, green: aRGB.g, blue: aRGB.b, alpha: aRGB.a)
 	}
 	
 	var uiColor: UIColor {
-		guard let argb = argb else { return .clear }
-		return UIColor(red: argb.r, green: argb.g, blue: argb.b, alpha: argb.a)
+		guard let aRGB else { return .clear }
+		return UIColor(red: aRGB.r, green: aRGB.g, blue: aRGB.b, alpha: aRGB.a)
 	}
-	
-	var argb: (a: CGFloat, r: CGFloat, g: CGFloat, b: CGFloat)? {
-		guard 0...0xFF_FF_FF_FF ~= self else { return nil }
-		// 带透明度的情况
-		if self > 0xFF_FF_FF {
-			let alpha   = CGFloat((self & 0xFF_00_00_00) >> 24) / 0xFF
-			let red     = CGFloat((self & 0x00_FF_00_00) >> 16) / 0xFF
-			let green   = CGFloat((self & 0x00_00_FF_00) >>  8) / 0xFF
-			let blue    = CGFloat( self & 0x00_00_00_FF       ) / 0xFF
-			return (alpha, red, green, blue)
-		}
-		// 不带透明度的情况
-		else {
-			let red     = CGFloat((self & 0xFF_00_00) >> 16) / 0xFF
-			let green   = CGFloat((self & 0x00_FF_00) >>  8) / 0xFF
-			let blue    = CGFloat( self & 0x00_00_FF       ) / 0xFF
-			return (1.0, red, green, blue)
-		}
+    
+    /// 整型 -> ARGB
+	var aRGB: (a: CGFloat, r: CGFloat, g: CGFloat, b: CGFloat)? {
+        let maxRGB = 0xFF_FF_FF
+        let maxARGB = 0xFF_FF_FF_FF
+        switch self {
+        case 0...maxRGB:
+            /// 不带透明度的情况
+            let red     = CGFloat((self & 0xFF_00_00) >> 16) / 0xFF
+            let green   = CGFloat((self & 0x00_FF_00) >>  8) / 0xFF
+            let blue    = CGFloat( self & 0x00_00_FF       ) / 0xFF
+            return (1.0, red, green, blue)
+        case maxRGB.number...maxARGB:
+            /// 带透明度的情况
+            let alpha   = CGFloat((self & 0xFF_00_00_00) >> 24) / 0xFF
+            let red     = CGFloat((self & 0x00_FF_00_00) >> 16) / 0xFF
+            let green   = CGFloat((self & 0x00_00_FF_00) >>  8) / 0xFF
+            let blue    = CGFloat( self & 0x00_00_00_FF       ) / 0xFF
+            return (alpha, red, green, blue)
+        default:
+            /// 其他情况
+            return nil
+        }
 	}
 }
 
