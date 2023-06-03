@@ -40,6 +40,11 @@ class BaseCollectionViewController: BaseViewController, UICollectionViewDelegate
     /// 调用时机:viewDidLoad()
     func configureCollectionView(_ collectionView: UICollectionView) {
         collectionView.backgroundView = emptyView
+        collectionView.delaysContentTouches = false
+        collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.backgroundColor = baseViewBackgroundColor
 
         /// 占位图默认隐藏
         emptyView.isHidden = true
@@ -51,13 +56,7 @@ class BaseCollectionViewController: BaseViewController, UICollectionViewDelegate
     
     /// 调用时机:懒加载
     func makeCollectionView(layout: UICollectionViewLayout) -> UICollectionView {
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.delaysContentTouches = false
-        collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        collectionView.backgroundColor = baseViewBackgroundColor
-        return collectionView
+        UICollectionView(frame: .zero, collectionViewLayout: layout)
     }
     
     /// 创建空视图
