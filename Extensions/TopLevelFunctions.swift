@@ -48,6 +48,19 @@ var currentQueueName: String? {
     String(cString: __dispatch_queue_get_label(nil), encoding: .utf8)
 }
 
+/// 同步锁
+/// - Parameters:
+///   - obj: 锁对象
+///   - action: 创建回调
+/// - Returns: 对象实例
+func synchronized<T>(lock: AnyObject, _ closure: () throws -> T) rethrows -> T {
+    objc_sync_enter(lock)
+    defer {
+        objc_sync_exit(lock)
+    }
+    return try closure()
+}
+
 /// 方法转换
 /// - Parameters:
 ///   - value: 被引用的对象

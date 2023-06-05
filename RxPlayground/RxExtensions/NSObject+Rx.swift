@@ -11,21 +11,12 @@ import ObjectiveC
 
 fileprivate var disposeBagContext: UInt8 = 0
 
-extension Reactive where Base: AnyObject {
-    func synchronized<T>( _ action: () -> T) -> T {
-        objc_sync_enter(base)
-        let result = action()
-        objc_sync_exit(base)
-        return result
-    }
-}
-
 public extension Reactive where Base: AnyObject {
     
     /// a unique DisposeBag that is related to the Reactive.Base instance only for Reference type
     var disposeBag: DisposeBag {
         get {
-            synchronized {
+            synchronized(lock: base) {
                 if let disposeObject = objc_getAssociatedObject(base, &disposeBagContext) as? DisposeBag {
                     return disposeObject
                 }
@@ -36,7 +27,7 @@ public extension Reactive where Base: AnyObject {
         }
         
         nonmutating set {
-            synchronized {
+            synchronized(lock: base) {
                 objc_setAssociatedObject(base, &disposeBagContext, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             }
         }
@@ -65,7 +56,7 @@ fileprivate var activityIndicatorKey = UUID()
 
 extension Reactive where Base: ActivityTracker {
     var activity: ActivityIndicator {
-        synchronized {
+        synchronized(lock: base) {
             if let indicator = objc_getAssociatedObject(base, &activityIndicatorKey) as? ActivityIndicator {
                 return indicator
             } else {

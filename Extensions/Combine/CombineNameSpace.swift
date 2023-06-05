@@ -55,21 +55,12 @@ extension NSObject: CombineCompatible { }
 
 fileprivate var disposeSetContext: UInt8 = 0
 
-extension CB where Base: AnyObject {
-    func synchronized<T>( _ action: () -> T) -> T {
-        objc_sync_enter(base)
-        let result = action()
-        objc_sync_exit(base)
-        return result
-    }
-}
-
 public extension CB where Base: AnyObject {
     
     @available(iOS 13.0, *)
     var disposeSet: Set<AnyCancellable> {
         get {
-            synchronized {
+            synchronized(lock: base) {
                 if let disposeSet = objc_getAssociatedObject(base, &disposeSetContext) as? Set<AnyCancellable> {
                     return disposeSet
                 }
@@ -79,7 +70,7 @@ public extension CB where Base: AnyObject {
             }
         }
         nonmutating set {
-            synchronized {
+            synchronized(lock: base) {
                 objc_setAssociatedObject(base, &disposeSetContext, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             }
         }
