@@ -37,8 +37,13 @@ class UIBaseCollectionViewCell: UICollectionViewCell, StandardLayoutLifeCycle {
     @available(iOS 14.0, *)
     override func updateConfiguration(using state: UICellConfigurationState) {
         super.updateConfiguration(using: state)
-        var background = UIBackgroundConfiguration.listPlainCell()
-        background.backgroundColor = defaultBackgroundColor
+        var background: UIBackgroundConfiguration
+        if let defaultBackgroundColor {
+            background = .listPlainCell()
+            background.backgroundColor = defaultBackgroundColor
+        } else {
+            background = .clear()
+        }
         
         backgroundConfiguration = background
     }
