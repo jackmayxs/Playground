@@ -17,3 +17,10 @@ extension Set where Element: Cancellable {
 		formUnion(newSet)
 	}
 }
+
+extension Publisher where Output: OptionalType {
+    var unwrapped: AnyPublisher<Output.Wrapped, Failure> {
+        compactMap(\.optionalValue)
+            .eraseToAnyPublisher()
+    }
+}
