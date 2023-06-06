@@ -10,6 +10,16 @@ import CoreGraphics
 
 extension CGRect {
 	
+    /// 从当前Frame生成随机Frame
+    /// - Parameter fixSize: 固定随机Rect尺寸
+    /// - Returns: 随机尺寸
+    func randomPosition(fixSize: CGSize) -> CGRect {
+        let x = CGFloat.random(in: minX...maxX - fixSize.width)
+        let y = CGFloat.random(in: minY...maxY - fixSize.height)
+        let origin = CGPoint(x: x, y: y)
+        return CGRect(origin: origin, size: fixSize)
+    }
+    
     func withNew(size: CGSize) -> CGRect {
         CGRect(origin: origin, size: size)
     }
