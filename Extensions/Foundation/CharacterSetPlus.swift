@@ -18,21 +18,15 @@ extension CharacterSet: ExpressibleByStringLiteral {
 extension CharacterSet {
 	
     static func + (lhs: CharacterSet, rhs: CharacterSet) -> CharacterSet {
-        var characters = lhs
-        characters.formUnion(rhs)
-        return characters
+        lhs.union(rhs)
     }
     
     static func + (lhs: String, rhs: CharacterSet) -> CharacterSet {
-        var characters = CharacterSet(charactersIn: lhs)
-        characters.formUnion(rhs)
-        return characters
+        lhs.characterSet.union(rhs)
     }
     
     static func + (lhs: CharacterSet, rhs: String) -> CharacterSet {
-        var characters = CharacterSet(charactersIn: rhs)
-        characters.formUnion(lhs)
-        return characters
+        lhs.union(rhs.characterSet)
     }
     
     static func ~= (lhs: Character, rhs: CharacterSet) -> Bool {
@@ -49,8 +43,14 @@ extension CharacterSet {
 	/// 阿拉伯数字
 	static let arabicNumbers = CharacterSet(charactersIn: "0123456789")
     
+    /// 整数(阿拉伯数字 + 负号)
+    static let integer = arabicNumbers.union("-")
+    
     /// 小数 | 阿拉伯数字加小数点
     static let decimals = arabicNumbers.union(".")
+    
+    /// 实数(小数 + 负号
+    static let realNumber = decimals.union("-")
 	
 	#if DEBUG
 	
