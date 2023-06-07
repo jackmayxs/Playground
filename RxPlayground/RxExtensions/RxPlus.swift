@@ -386,6 +386,12 @@ extension ObservableType where Element == Bool {
 	}
 }
 
+extension Observable {
+    static func merge<T>(@ArrayBuilder<T> sequences: () -> [T]) -> Observable<T.Element> where T: ObservableConvertibleType {
+        sequences().merged
+    }
+}
+
 extension Observable where Element == Error {
     
     func tryAfter(_ timeInterval: RxTimeInterval, maxRetryCount: Int) -> Observable<Int> {

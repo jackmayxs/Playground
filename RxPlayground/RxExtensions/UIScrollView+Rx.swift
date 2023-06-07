@@ -34,6 +34,17 @@ extension Reactive where Base: UIScrollView {
         observe(\.contentSize, options: [.initial, .new]).distinctUntilChanged()
     }
     
+    /// 实时的ContentOffset
+    /// RxCocoa里带的那个contentOffset: ControlProperty<CGPoint> 使用起来有点问题:
+    /// 如果在设置delegate之前订阅contentOffset, 之后再设置delegate属性, 则订阅只会输出初始值, 后续不再更新值.
+    /// 如果只订阅contentOffset, 后面不设置delegate属性就没问题, 但通常Tableview, CollectionView都会设置delegate属性的
+    /// 如果在设置了delegate之后再次订阅此属性才可以正常订阅到offset.
+    /// 并且如果在设置delegate前后都订阅了此属性, 那么前后两次订阅都可以订阅到更新的offset
+    /// 所以为保险起见, 重新用visibleContentBounds的origin作为values重新生成一个ControlProperty
+    var liveContentOffset: ControlProperty<CGPoint> {
+        ControlProperty(values: visibleContentBounds.map(\.origin), valueSink: contentOffset)
+    }
+    
     /// base.contentOffset +
     /// base.bounds.size
     var visibleContentBounds: Observable<CGRect> {

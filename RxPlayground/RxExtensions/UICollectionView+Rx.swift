@@ -55,7 +55,7 @@ extension Reactive where Base: UICollectionView {
     var numberOfItems: Observable<Int> {
         dataReloaded.map { collectionView in
             guard let dataSource = collectionView.dataSource else { return 0 }
-            let sectionCount = dataSource.numberOfSections?(in: base) ?? 1
+            guard let sectionCount = dataSource.numberOfSections?(in: base) else { return 0 }
             return (0..<sectionCount).reduce(0) { partialResult, section in
                 partialResult + dataSource.collectionView(base, numberOfItemsInSection: section)
             }
@@ -75,11 +75,37 @@ extension Reactive where Base: UICollectionView {
     }
     
     var itemSelectionChanged: Observable<IndexPath> {
-        Observable.of(selectItemAt, itemSelected.observable, itemDeselected.observable).merge()
+        Observable<IndexPath>.merge {
+            invokedSelectItemAtIndexPath
+            invokedDeselectItemAtIndexPath
+            delegateInvokedItemSelected
+            delegateInvokedItemDeselected
+        }
     }
     
-    private var selectItemAt: Observable<IndexPath> {
+    private var delegateInvokedItemSelected: Observable<IndexPath> {
+        itemSelected.observable
+    }
+    
+    private var delegateInvokedItemDeselected: Observable<IndexPath> {
+        itemDeselected.observable
+    }
+    
+    /// Instance method selectItem(at:animated:scrollPosition:) invoked
+    /// Element: The input indexPath
+    /// Tip: The method doesn’t cause any selection-related delegate methods to be called.
+    private var invokedSelectItemAtIndexPath: Observable<IndexPath> {
         methodInvoked(#selector(UICollectionView.selectItem(at:animated:scrollPosition:)))
+            .map(\.first)
+            .unwrapped
+            .as(IndexPath.self)
+    }
+    
+    /// Instance method deselectItem(at:animated:) invoked
+    /// Element: The input deselected indexPath
+    /// Tip: The method doesn’t cause any selection-related delegate methods to be called.
+    private var invokedDeselectItemAtIndexPath: Observable<IndexPath> {
+        methodInvoked(#selector(UICollectionView.deselectItem(at:animated:)))
             .map(\.first)
             .unwrapped
             .as(IndexPath.self)

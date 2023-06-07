@@ -105,4 +105,12 @@ class BaseCollectionViewController: BaseViewController, UICollectionViewDelegate
     func collectionViewDidEndMultipleSelectionInteraction(_ collectionView: UICollectionView) {
         
     }
+    
+    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        true
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, shouldDeselectItemAt indexPath: IndexPath) -> Bool {
+        true
+    }
 }
