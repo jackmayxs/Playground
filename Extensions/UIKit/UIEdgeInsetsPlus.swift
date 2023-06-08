@@ -151,3 +151,24 @@ extension NSDirectionalEdgeInsets: ExpressibleByIntegerLiteral {
 		self.init(top: cgFloatValue, leading: cgFloatValue, bottom: cgFloatValue, trailing: cgFloatValue)
 	}
 }
+
+extension UIEdgeInsets {
+    
+    static func +(lhs: UIEdgeInsets, rhs: Double) -> UIEdgeInsets {
+        UIEdgeInsets(
+            top: lhs.top + rhs,
+            left: lhs.left + rhs,
+            bottom: lhs.bottom + rhs,
+            right: lhs.right + rhs
+        )
+    }
+    
+    static func +(lhs: UIEdgeInsets, rhs: UIEdgeInsets) -> UIEdgeInsets {
+        UIEdgeInsets(
+            top: lhs.top + rhs.top,
+            left: lhs.left + rhs.left,
+            bottom: lhs.bottom + rhs.bottom,
+            right: lhs.right + rhs.right
+        )
+    }
+}

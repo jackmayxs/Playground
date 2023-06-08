@@ -7,6 +7,7 @@
 //
 
 import CoreGraphics
+import UIKit
 
 extension CGRect {
 	
@@ -56,4 +57,11 @@ extension CGRect {
 	func offsetBySize(_ size: CGSize) -> CGRect {
 		offsetBy(dx: size.width, dy: size.height)
 	}
+}
+
+extension CGRect {
+    
+    static func +(lhs: CGRect, rhs: UIEdgeInsets) -> CGRect {
+        lhs.inset(by: rhs)
+    }
 }
