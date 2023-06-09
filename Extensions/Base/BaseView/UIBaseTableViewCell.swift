@@ -20,9 +20,6 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
     /// 分割线类
     fileprivate final class _UIBaseTableViewCellSeparatorView: UIView {}
     
-    /// 弱引用Cell本身的TableView | 用于分类中对TableView的缓存
-    private weak var tableView_: UITableView?
-    
     /// 缩进之后的边距
     private var indentedContentInsets: UIEdgeInsets {
         contentInsets.leftInset(indentationOffset)
@@ -82,6 +79,24 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
                 setHighlighted(isHighlighted, animated: false)
                 setSelected(isSelected, animated: false)
             }
+        }
+    }
+    
+    private var indexPath_: IndexPath?
+    
+    // 所在的indexPath
+    var indexPath: IndexPath? {
+        get {
+            let maybeIndexPath = tableView?.indexPath(for: self)
+            defer {
+                if let maybeIndexPath {
+                    indexPath_ = maybeIndexPath
+                }
+            }
+            return indexPath_ ?? maybeIndexPath
+        }
+        set {
+            indexPath_ = newValue
         }
     }
     
@@ -383,19 +398,5 @@ extension UIBaseTableViewCell {
         let lastIndex = visibleCells.index(myIndex, offsetBy: -1)
         /// 类型转换并返回
         return visibleCells.itemAt(lastIndex) as? UIBaseTableViewCell
-    }
-    
-    var tableView: UITableView? {
-        if let tableView_ {
-            return tableView_
-        } else {
-            tableView_ = superview(UITableView.self)
-            return tableView_
-        }
-    }
-    
-    // 所在的indexPath
-    var indexPath: IndexPath? {
-        tableView?.indexPath(for: self)
     }
 }

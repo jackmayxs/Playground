@@ -8,6 +8,23 @@ import UIKit
 
 class UIBaseCollectionReusableView: UICollectionReusableView, StandardLayoutLifeCycle {
 
+    private var indexPath_: IndexPath?
+    
+    var indexPath: IndexPath? {
+        get {
+            let maybeIndexPath = collectionView?.indexPathForItem(at: center)
+            defer {
+                if let maybeIndexPath {
+                    indexPath_ = maybeIndexPath
+                }
+            }
+            return indexPath_ ?? maybeIndexPath
+        }
+        set {
+            indexPath_ = newValue
+        }
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         prepare()

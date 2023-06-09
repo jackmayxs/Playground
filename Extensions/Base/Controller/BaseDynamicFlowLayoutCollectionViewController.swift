@@ -6,7 +6,16 @@
 
 import UIKit
 
-class BaseDynamicFlowLayoutCollectionViewController<FlowLayout: UICollectionViewFlowLayout, Cell: UICollectionViewCell, Header: UICollectionReusableView, Footer: UICollectionReusableView, ViewModel: PagableViewModelType>: BaseFlowLayoutCollectionViewController<FlowLayout, Cell, Header, Footer>, PagableViewModelDelegate {
+class BaseDynamicFlowLayoutCollectionViewController<
+FlowLayout: UICollectionViewFlowLayout,
+Cell: UICollectionViewCell,
+Header: UICollectionReusableView,
+Footer: UICollectionReusableView,
+ViewModel: PagableViewModelType>: BaseFlowLayoutCollectionViewController<
+FlowLayout,
+Cell,
+Header,
+Footer>, PagableViewModelDelegate {
     
     lazy var viewModel = ViewModel(delegate: self)
     

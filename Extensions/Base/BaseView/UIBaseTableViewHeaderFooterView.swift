@@ -20,7 +20,20 @@ class UIBaseTableViewHeaderFooterView: UITableViewHeaderFooterView, StandardLayo
     var preferredCornerRadius: CGFloat? { nil }
     
     /// 分配的分组
-    var assignedSection: Int?
+    private var section_: Int?
+    
+    var section: Int? {
+        get {
+            let maybeSection = indexPath?.section
+            defer {
+                if let maybeSection {
+                    section_ = maybeSection
+                }
+            }
+            return section_ ?? maybeSection
+        }
+        set { section_ = newValue }
+    }
     
     /// 背景样式设置模式
     var backgroundStyleMode: UIBackgroundStyleMode = .modern {
@@ -33,9 +46,6 @@ class UIBaseTableViewHeaderFooterView: UITableViewHeaderFooterView, StandardLayo
             }
         }
     }
-    
-    /// 弱引用Cell本身的TableView | 用于分类中对TableView的缓存
-    private weak var tableView_: UITableView?
     
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
@@ -119,23 +129,10 @@ class UIBaseTableViewHeaderFooterView: UITableViewHeaderFooterView, StandardLayo
 
 extension UIBaseTableViewHeaderFooterView {
     
-    var section: Int? {
-        assignedSection ?? indexPath?.section
-    }
-    
     /// 计算得出的indexPath
     /// 但是在组内的cell为0的时候无效, 需要配合assignedSection使用
     private var indexPath: IndexPath? {
         let sectionFirstRowMinOrigin = CGPoint(x: 0.0, y: frame.maxY)
         return tableView?.indexPathForRow(at: sectionFirstRowMinOrigin)
-    }
-    
-    var tableView: UITableView? {
-        if let tableView_ {
-            return tableView_
-        } else {
-            tableView_ = superview(UITableView.self)
-            return tableView_
-        }
     }
 }

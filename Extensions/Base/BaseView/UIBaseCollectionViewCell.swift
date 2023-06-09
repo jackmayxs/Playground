@@ -23,7 +23,22 @@ class UIBaseCollectionViewCell: UICollectionViewCell, StandardLayoutLifeCycle {
         }
     }
     
-    private weak var collectionView_: UICollectionView?
+    private var indexPath_: IndexPath?
+    
+    var indexPath: IndexPath? {
+        get {
+            let maybeIndexPath = collectionView?.indexPathForItem(at: center)
+            defer {
+                if let maybeIndexPath {
+                    indexPath_ = maybeIndexPath
+                }
+            }
+            return indexPath_ ?? maybeIndexPath
+        }
+        set {
+            indexPath_ = newValue
+        }
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -58,21 +73,4 @@ class UIBaseCollectionViewCell: UICollectionViewCell, StandardLayoutLifeCycle {
     
     func prepareConstraints() {}
     
-}
-
-extension UIBaseCollectionViewCell {
-    
-    var collectionView: UICollectionView? {
-        if let collectionView_ {
-            return collectionView_
-        } else {
-            collectionView_ = superview(UICollectionView.self)
-            return collectionView_
-        }
-    }
-    
-    // 所在的indexPath
-    var indexPath: IndexPath? {
-        collectionView?.indexPath(for: self)
-    }
 }

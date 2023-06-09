@@ -33,11 +33,7 @@ class BaseFlowLayoutCollectionViewController<FlowLayout: UICollectionViewFlowLay
         Footer.registerFor(collectionView, kind: .footer)
     }
     
-    func configureFlowLayout(_ flowLayout: FlowLayout) {
-        flowLayout.minimumLineSpacing = 8
-        flowLayout.minimumInteritemSpacing = 8
-        flowLayout.sectionInset = 8
-    }
+    func configureFlowLayout(_ flowLayout: FlowLayout) {}
     
     func makeFlowLayout() -> FlowLayout {
         let layout = FlowLayout()
