@@ -38,17 +38,33 @@ class StaticTable: ReactiveCompatible {
             /// MARK: - Row Implementation
             unowned let cell: UITableViewCell
             let preferredHeight: CGFloat
-            fileprivate var didSelect: SimpleCallback?
+            fileprivate var didSelectCallback: SimpleCallback?
             fileprivate var didSelectCallbacks: [SimpleCallback] = []
             init(cell: UITableViewCell, preferredHeight: CGFloat = UITableView.automaticDimension) {
                 self.cell = cell
                 self.preferredHeight = preferredHeight
             }
+            
+            /// 设置单个的选中回调方法
+            /// - Parameter execute: 执行回调
             func didSelect(execute: @escaping SimpleCallback) {
-                self.didSelect = execute
+                didSelectCallback = execute
             }
+            
+            /// 设置多个回调Closure
+            /// - Parameter execute: 执行的Closure
             func appendDidSelect(execute: @escaping SimpleCallback) {
                 didSelectCallbacks.append(execute)
+            }
+            
+            /// 执行相关的回调方法
+            func doSelect() {
+                if let didSelectCallback {
+                    didSelectCallback()
+                }
+                didSelectCallbacks.forEach { closure in
+                    closure()
+                }
             }
         }
         
@@ -147,13 +163,7 @@ class BaseStaticTableViewController<Table: StaticTable>: BaseTableViewController
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         super.tableView(tableView, didSelectRowAt: indexPath)
-        let row = staticTable[indexPath.section][indexPath.row]
-        if let didSelect = row.didSelect {
-            didSelect()
-        }
-        row.didSelectCallbacks.forEach { callback in
-            callback()
-        }
+        staticTable[indexPath.section][indexPath.row].doSelect()
     }
 }
 
