@@ -12,6 +12,11 @@ extension Array {
         self.init(itemsBuilder())
     }
     
+    public mutating func refill(@ArrayBuilder<Element> _ builder: () -> [Element]) {
+        removeAll()
+        append(builder)
+    }
+    
     public mutating func append(@ArrayBuilder<Element> _ builder: () -> [Element]) {
         let elements = builder()
         append(contentsOf: elements)
