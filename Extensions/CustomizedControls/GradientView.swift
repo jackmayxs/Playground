@@ -13,14 +13,11 @@ class GradientView: UIView {
     
     override class var layerClass: AnyClass { GradientLayer.self }
     
-    convenience init() {
-        self.init(direction: .right) {}
-    }
     private(set) var gradientColors: GradientColors = []
-    init(direction: CGVector = .right, @ArrayBuilder<ColorStop> _ gradientBuilder: GradientColorsBuilder) {
+    
+    init(direction: CGVector = .right, gradientColors: GradientColors = []) {
         super.init(frame: .zero)
         /// 设置渐变色
-        let gradientColors = gradientBuilder()
         setGradientColors(gradientColors)
         /// 设置方向
         setDirection(direction)
@@ -46,6 +43,11 @@ class GradientView: UIView {
 }
 
 extension GradientView {
+    
+    convenience init(direction: CGVector = .right, @ArrayBuilder<ColorStop> _ gradientBuilder: GradientColorsBuilder) {
+        let gradientColors = gradientBuilder()
+        self.init(direction: direction, gradientColors: gradientColors)
+    }
     
     /// 渐变图层
     var gradientLayer: GradientLayer {

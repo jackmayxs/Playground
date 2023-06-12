@@ -50,22 +50,35 @@ extension CAGradientLayer {
         setColors(colors)
     }
     
+    /// 设置渐变方向
+    /// - Parameter vector: 方向
     func setDirection(_ vector: CGVector) {
         let points = vector.positivePoints
         startPoint = points.start
         endPoint = points.end
     }
     
+    /// 设置渐变色
+    /// - Parameter gradientColors: 渐变色数组
     func setColors(_ gradientColors: GradientColors) {
-        colors = gradientColors.map(\.color.cgColor)
+        
+        if gradientColors.count == 1 {
+            colors = [gradientColors.first, gradientColors.last].unwrapped.map(\.color.cgColor)
+        } else {
+            colors = gradientColors.map(\.color.cgColor)
+        }
         
         /// 设置渐变图层颜色停顿位置
-        let stopsAreLegal = gradientColors.allSatisfy { colorStop in
-            colorStop.stop >= 0 && colorStop.stop <= 1
-        }
-        if gradientColors.count > 0, stopsAreLegal {
-            locations = gradientColors.map(\.stop).map(NSNumber.init)
-        } else {
+        switch gradientColors.count {
+        case 1:
+            locations = [0.0, 1.0].map(\.nsNumber)
+        case 2...:
+            let stopsAreLegal = gradientColors.allSatisfy { colorStop in
+                0.0...1.0 ~= colorStop.stop
+            }
+            guard stopsAreLegal else { return locations = nil }
+            locations = gradientColors.map(\.stop).map(\.nsNumber)
+        default:
             locations = nil
         }
     }
