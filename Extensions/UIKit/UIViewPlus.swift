@@ -95,6 +95,14 @@ extension UIView {
         static var mournFilterViewKey = UUID()
     }
     
+    var isPortrait: Bool {
+        frame.size.isPortrait
+    }
+    
+    var isLandscape: Bool {
+        frame.size.isLandscape
+    }
+    
     /// 获取相对于Window的origin
     var globalPoint :CGPoint? {
         superview?.convert(frame.origin, to: nil)

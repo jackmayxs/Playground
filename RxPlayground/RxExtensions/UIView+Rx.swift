@@ -9,6 +9,20 @@ import RxCocoa
 
 extension Reactive where Base: UIView {
     
+    /// 是否横屏
+    var isLandscape: Observable<Bool> {
+        window.unwrapped.once.flatMap { window in
+            NotificationCenter.default.rx.notification(UIDevice.orientationDidChangeNotification)
+                .map { _ in
+                    UIDevice.current.orientation
+                }
+                .filter(\.isValidInterfaceOrientation)
+                .map(\.isLandscape)
+                .distinctUntilChanged()
+                .startWith(window.isLandscape)
+        }
+    }
+    
     var window: Observable<UIWindow?> {
         didMoveToWindow.startWith(base.window)
     }

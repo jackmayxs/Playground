@@ -25,6 +25,14 @@ extension CGSize: SizeExtendable {
 
 extension CGSize {
     
+    var isPortrait: Bool {
+        !isLandscape
+    }
+    
+    var isLandscape: Bool {
+        width > height
+    }
+    
 	init(_ edges: CGFloat...) {
 		guard let width = edges.first else { self.init(width: 0, height: 0); return }
 		guard let height = edges.last else { self.init(width: 0, height: 0); return }
