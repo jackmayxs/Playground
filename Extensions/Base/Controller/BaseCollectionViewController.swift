@@ -12,6 +12,16 @@ class BaseCollectionViewController: BaseViewController, UICollectionViewDelegate
     
     lazy var emptyView = makeEmptyView()
     
+    var isLandscape: Bool? {
+        didSet {
+            defaultLayout.invalidateLayout()
+        }
+    }
+    
+    var preferredCellSize: CGSize? {
+        nil
+    }
+    
     var defaultLayout: UICollectionViewLayout {
         UICollectionViewLayout()
     }
@@ -28,6 +38,11 @@ class BaseCollectionViewController: BaseViewController, UICollectionViewDelegate
         configureCollectionView(collectionView)
         /// 添加Collection View
         addCollectionView(collectionView)
+    }
+    
+    override func prepareTargets() {
+        super.prepareTargets()
+        view.rx.isLandscape.bind(to: rx.isLandscape).disposed(by: rx.disposeBag)
     }
     
     /// 添加Collection View
@@ -65,6 +80,11 @@ class BaseCollectionViewController: BaseViewController, UICollectionViewDelegate
     }
     // MARK: - CollectionView Delegates
     // 注意: 必须父类里有实现,代理方法才会调用
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        preferredCellSize ?? .zero
+    }
+    
     /// 选中条目
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if deselectCellAfterCellSelection {

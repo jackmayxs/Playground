@@ -6,7 +6,11 @@
 
 import UIKit
 
-class BaseFlowLayoutCollectionViewController<FlowLayout: UICollectionViewFlowLayout, Cell: UICollectionViewCell, Header: UICollectionReusableView, Footer: UICollectionReusableView>: BaseCollectionViewController, UICollectionViewDelegateFlowLayout {
+class BaseFlowLayoutCollectionViewController<
+FlowLayout: UICollectionViewFlowLayout,
+Cell: UICollectionViewCell,
+Header: UICollectionReusableView,
+Footer: UICollectionReusableView>: BaseCollectionViewController, UICollectionViewDelegateFlowLayout {
 
     lazy var flowLayout = makeFlowLayout()
     
@@ -14,8 +18,8 @@ class BaseFlowLayoutCollectionViewController<FlowLayout: UICollectionViewFlowLay
         flowLayout
     }
     
-    var numberOfColumns: CGFloat {
-        2.0
+    var numberOfColumns: Int {
+        2
     }
     
     var cellHeight: CGFloat {
@@ -48,11 +52,18 @@ class BaseFlowLayoutCollectionViewController<FlowLayout: UICollectionViewFlowLay
     func configureFooter(_ footer: Footer, at section: Int) { }
     
     // MARK: - UICollectionViewDelegateFlowLayout
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        var columnCount = numberOfColumns.cgFloat
+        var cellHeight = cellHeight
+        if let preferredCellSize {
+            columnCount = collectionView.bounds.width / preferredCellSize.width
+            columnCount = columnCount.double.rounded(.toNearestOrEven).cgFloat
+            cellHeight = preferredCellSize.height
+        }
         let sectionInset = flowLayout.sectionInsetsAt(indexPath).horizontal
-        let columnSpaces = (numberOfColumns - 1.0) * flowLayout.minimumInteritemSpacingForSectionAt(indexPath)
+        let columnSpaces = (columnCount - 1.0) * flowLayout.minimumInteritemSpacingForSectionAt(indexPath)
         let itemsWidth = collectionView.bounds.width - sectionInset - columnSpaces
-        let itemWidth = (itemsWidth / numberOfColumns) - 1.0
+        let itemWidth = (itemsWidth / columnCount) - 1.0
         return CGSize(width: itemWidth, height: cellHeight)
     }
     
