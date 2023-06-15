@@ -52,18 +52,38 @@ Footer: UICollectionReusableView>: BaseCollectionViewController, UICollectionVie
     func configureFooter(_ footer: Footer, at section: Int) { }
     
     // MARK: - UICollectionViewDelegateFlowLayout
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        .leastNormalMagnitude
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        .leastNormalMagnitude
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        .zero
+    }
+    
     override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        /// 列数
         var columnCount = numberOfColumns.cgFloat
+        /// Item高度
         var cellHeight = cellHeight
+        /// 如果设定了优先的尺寸, 则根据设置的尺寸设定列数和Item高度
         if let preferredCellSize {
             columnCount = collectionView.bounds.width / preferredCellSize.width
             columnCount = columnCount.double.rounded(.toNearestOrEven).cgFloat
             cellHeight = preferredCellSize.height
         }
+        /// 分组边距占掉的宽度
         let sectionInset = flowLayout.sectionInsetsAt(indexPath).horizontal
+        /// Item间隔占用的宽度
         let columnSpaces = (columnCount - 1.0) * flowLayout.minimumInteritemSpacingForSectionAt(indexPath)
+        /// 横向所有Item占用的总宽度
         let itemsWidth = collectionView.bounds.width - sectionInset - columnSpaces
-        let itemWidth = (itemsWidth / columnCount) - 1.0
+        /// 每个Item的宽度
+        let itemWidth = itemsWidth / columnCount
         return CGSize(width: itemWidth, height: cellHeight)
     }
     
