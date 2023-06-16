@@ -7,6 +7,19 @@
 
 import Foundation
 
+extension IndexPath {
+    
+    /// 在自身的基础上对item/row进行偏移
+    func offset(_ offset: Int) -> IndexPath {
+        guard offset >= 0 else { return self }
+        return IndexPath(item: item + offset, section: section)
+    }
+    
+    static func +(lhs: IndexPath, rhs: Int) -> IndexPath {
+        lhs.offset(rhs)
+    }
+}
+
 extension IndexPath: ExpressibleByIntegerLiteral {
     
     /// 通过整型字面量创建IndexPath
@@ -18,9 +31,9 @@ extension IndexPath: ExpressibleByIntegerLiteral {
 extension IndexPath: ExpressibleByStringLiteral {
     
     /// 通过字符串字面量创建IndexPath
-    /// 例如: 0.1, 表示第0组第1项
+    /// 例如: 0-1 表示第0组第1项
     public init(stringLiteral value: StringLiteralType) {
-        let components = value.components(separatedBy: ".")
+        let components = value.components(separatedBy: "-")
         if components.count == 2 {
             if let section = components.first?.int, let row = components.last?.int {
                 self.init(row: row, section: section)
