@@ -87,13 +87,12 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
     // 所在的indexPath
     var indexPath: IndexPath? {
         get {
-            let maybeIndexPath = tableView?.indexPath(for: self)
-            defer {
-                if let maybeIndexPath {
-                    indexPath_ = maybeIndexPath
-                }
+            guard let indexPath_ else {
+                guard let fetchIndexPath = tableView?.indexPath(for: self) else { return nil }
+                indexPath_ = fetchIndexPath
+                return fetchIndexPath
             }
-            return indexPath_ ?? maybeIndexPath
+            return indexPath_
         }
         set {
             indexPath_ = newValue

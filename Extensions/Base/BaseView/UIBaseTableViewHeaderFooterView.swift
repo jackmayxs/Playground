@@ -24,13 +24,12 @@ class UIBaseTableViewHeaderFooterView: UITableViewHeaderFooterView, StandardLayo
     
     var section: Int? {
         get {
-            let maybeSection = indexPath?.section
-            defer {
-                if let maybeSection {
-                    section_ = maybeSection
-                }
+            guard let section_ else {
+                guard let fetchSection = indexPath?.section else { return nil }
+                section_ = fetchSection
+                return fetchSection
             }
-            return section_ ?? maybeSection
+            return section_
         }
         set { section_ = newValue }
     }

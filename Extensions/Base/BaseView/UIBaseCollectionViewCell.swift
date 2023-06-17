@@ -27,13 +27,12 @@ class UIBaseCollectionViewCell: UICollectionViewCell, StandardLayoutLifeCycle {
     
     var indexPath: IndexPath? {
         get {
-            let maybeIndexPath = collectionView?.indexPathForItem(at: center)
-            defer {
-                if let maybeIndexPath {
-                    indexPath_ = maybeIndexPath
-                }
+            guard let indexPath_ else {
+                guard let fetchIndexPath = collectionView?.indexPath(for: self) else { return nil }
+                indexPath_ = fetchIndexPath
+                return fetchIndexPath
             }
-            return indexPath_ ?? maybeIndexPath
+            return indexPath_
         }
         set {
             indexPath_ = newValue
