@@ -10,6 +10,14 @@ import RxCocoa
 
 extension Reactive where Base: UIScrollView {
     
+    /// 是否在指定方向上隐藏滚动条
+    /// - Parameter direction: 滚动方向
+    func shouldHideScrollBar(at direction: UICollectionView.ScrollDirection) -> Observable<Bool> {
+        didLayoutSubviews.map {
+            $0.shouldHideScrollBar(at: direction)
+        }
+    }
+    
     /// 合并事件
     /// 用于更新自定义滚动条
     var contentSizeAndVisibleContentBounds: Observable<(CGSize, CGRect)> {

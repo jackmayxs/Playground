@@ -11,7 +11,7 @@ import UIKit
 extension UITableView {
 	
     var shouldHideScrollBar: Bool {
-        contentSize <= bounds.size
+        shouldHideScrollBar(at: .vertical)
     }
     
     var numberOfRows: Int {
