@@ -23,21 +23,7 @@ class UIBaseCollectionViewCell: UICollectionViewCell, StandardLayoutLifeCycle {
         }
     }
     
-    private var indexPath_: IndexPath?
-    
-    var indexPath: IndexPath? {
-        get {
-            guard let indexPath_ else {
-                guard let fetchIndexPath = collectionView?.indexPath(for: self) else { return nil }
-                indexPath_ = fetchIndexPath
-                return fetchIndexPath
-            }
-            return indexPath_
-        }
-        set {
-            indexPath_ = newValue
-        }
-    }
+    @Published var indexPath: IndexPath?
     
     override init(frame: CGRect) {
         super.init(frame: frame)

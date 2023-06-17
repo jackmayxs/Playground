@@ -16,23 +16,11 @@ class UIBaseTableViewHeaderFooterView: UITableViewHeaderFooterView, StandardLayo
         baseViewBackgroundColor
     }
     
-    // 圆角
+    /// 圆角
     var preferredCornerRadius: CGFloat? { nil }
     
     /// 分配的分组
-    private var section_: Int?
-    
-    var section: Int? {
-        get {
-            guard let section_ else {
-                guard let fetchSection = indexPath?.section else { return nil }
-                section_ = fetchSection
-                return fetchSection
-            }
-            return section_
-        }
-        set { section_ = newValue }
-    }
+    @Published var section: Int?
     
     /// 背景样式设置模式
     var backgroundStyleMode: UIBackgroundStyleMode = .modern {

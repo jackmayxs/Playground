@@ -82,22 +82,8 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
         }
     }
     
-    private var indexPath_: IndexPath?
-    
-    // 所在的indexPath
-    var indexPath: IndexPath? {
-        get {
-            guard let indexPath_ else {
-                guard let fetchIndexPath = tableView?.indexPath(for: self) else { return nil }
-                indexPath_ = fetchIndexPath
-                return fetchIndexPath
-            }
-            return indexPath_
-        }
-        set {
-            indexPath_ = newValue
-        }
-    }
+    /// 分配的IndexPath
+    @Published var indexPath: IndexPath?
     
     @available(iOS 14.0, *)
     override func updateConfiguration(using state: UICellConfigurationState) {
