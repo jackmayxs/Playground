@@ -13,6 +13,10 @@ extension UITableViewCell {
         static var tableView = UUID()
     }
     
+    var inferredIndexPath: IndexPath? {
+        tableView?.indexPath(for: self)
+    }
+    
     var tableView: UITableView? {
         get {
             tableView(UITableView.self)

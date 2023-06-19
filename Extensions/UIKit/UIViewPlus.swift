@@ -61,7 +61,7 @@ extension Tapable where Self: UIView {
 
 extension UIView {
 	
-	convenience init(_ color: UIColor) {
+	convenience init(color: UIColor) {
 		self.init(frame: .zero)
 		backgroundColor = color
 	}
@@ -207,7 +207,7 @@ extension UIView {
     ///   - maskedCorners: 圆角位置
     ///   - backgroundColor: 圆角背景色
     func add(cornerRadius: CGFloat, insets: UIEdgeInsets = .zero, maskedCorners: CACornerMask = .allCorners, backgroundColor: UIColor, borderWidth: CGFloat? = nil, borderColor: UIColor? = nil) {
-        let bgView = UIView(backgroundColor)
+        let bgView = UIView(color: backgroundColor)
         bgView.layer.maskedCorners = maskedCorners
         bgView.layer.cornerRadius = cornerRadius
         if let borderWidth, borderWidth > 0 {
