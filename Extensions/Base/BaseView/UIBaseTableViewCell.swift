@@ -343,19 +343,19 @@ extension UIBaseTableViewCell {
     
     /// 同组的下面的Cell
     var teammateCellBelow: UIBaseTableViewCell? {
-        guard let indexPath else { return nil }
+        guard let maybeIndexPath else { return nil }
         guard let neighborCellBelow else { return nil }
-        guard let neighborIndexPath = neighborCellBelow.indexPath else { return nil }
-        guard indexPath.section == neighborIndexPath.section else { return nil }
+        guard let neighborIndexPath = neighborCellBelow.maybeIndexPath else { return nil }
+        guard maybeIndexPath.section == neighborIndexPath.section else { return nil }
         return neighborCellBelow
     }
     
     /// 同组的上面的Cell
     var teammateCellAbove: UIBaseTableViewCell? {
-        guard let indexPath else { return nil }
+        guard let maybeIndexPath else { return nil }
         guard let neighborCellAbove else { return nil }
-        guard let neighborIndexPath = neighborCellAbove.indexPath else { return nil }
-        guard indexPath.section == neighborIndexPath.section else { return nil }
+        guard let neighborIndexPath = neighborCellAbove.maybeIndexPath else { return nil }
+        guard maybeIndexPath.section == neighborIndexPath.section else { return nil }
         return neighborCellAbove
     }
     
@@ -383,5 +383,10 @@ extension UIBaseTableViewCell {
         let lastIndex = visibleCells.index(myIndex, offsetBy: -1)
         /// 类型转换并返回
         return visibleCells.itemAt(lastIndex) as? UIBaseTableViewCell
+    }
+    
+    /// 按indexPath -> inferredIndexPath获取IndexPath
+    var maybeIndexPath: IndexPath? {
+        indexPath ?? inferredIndexPath
     }
 }

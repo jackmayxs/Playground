@@ -13,6 +13,10 @@ extension UICollectionReusableView {
         static var collectionView = UUID()
     }
     
+    var inferredIndexPath: IndexPath? {
+        collectionView?.indexPathForItem(at: center)
+    }
+    
     var collectionView: UICollectionView? {
         get {
             collectionView(UICollectionView.self)

@@ -69,9 +69,16 @@ extension Reactive where Base: UICollectionView {
     }
     
     var selectedIndexPaths: Observable<[IndexPath]> {
-        Observable.combineLatest(itemSelectionChanged, dataReloaded)
-            .withUnretained(base)
-            .map(\.0.indexPathsForSelectedItems.orEmpty)
+        /// 这里使用.startWith(base)操作符是为了保证在任何时间订阅都能产生事件序列
+        dataReloaded
+            .startWith(base)
+            .distinctUntilChanged()
+            .flatMapLatest { collectionView in
+                itemSelectionChanged
+                    .withUnretained(collectionView)
+                    .map(\.0.indexPathsForSelectedItems.orEmpty)
+                    .startWith(collectionView.indexPathsForSelectedItems.orEmpty)
+            }
     }
     
     var itemSelectionChanged: Observable<IndexPath> {

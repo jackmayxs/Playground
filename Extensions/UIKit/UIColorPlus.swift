@@ -63,6 +63,11 @@ extension UIColor {
         }
     }
     
+    /// 添加透明色
+    static func +(lhs: UIColor, rhs: CGFloat) -> UIColor {
+        lhs.withAlphaComponent(rhs)
+    }
+    
 	/// 生成一个随机颜色
     static var random: UIColor {
         UIColor(red: .randomPercent, green: .randomPercent, blue: .randomPercent, alpha: 1)
