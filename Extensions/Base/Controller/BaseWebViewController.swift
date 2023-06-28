@@ -84,19 +84,6 @@ class BaseWebViewController: BaseViewController, WKUIDelegate, WKNavigationDeleg
         return webview
     }
     
-    func load(_ url: URL?) {
-        load { url }
-    }
-    
-    func load(@SingleValueBuilder<URL?> buildURL: () -> URL?) {
-        guard let url = buildURL() else {
-            trackError("无法加载")
-            return
-        }
-        let request = URLRequest(url: url)
-        webview.load(request)
-    }
-    
     override func goBack(animated: Bool = true) {
         if webview.canGoBack {
             webview.goBack()
@@ -120,6 +107,7 @@ class BaseWebViewController: BaseViewController, WKUIDelegate, WKNavigationDeleg
 }
 
 extension BaseWebViewController {
+    
     convenience init(url: URL?) {
         self.init()
         load(url)
@@ -135,5 +123,33 @@ extension BaseWebViewController {
     var webBackgroundColor: UIColor? {
         get { webview.scrollView.backgroundColor }
         set { webview.scrollView.backgroundColor = newValue }
+    }
+    
+    func load(clearCache: Bool = true, @SingleValueBuilder<URL?> buildURL: () -> URL?) {
+        load(buildURL(), clearCache: clearCache)
+    }
+    
+    /// 加载地址
+    /// - Parameters:
+    ///   - url: 地址
+    ///   - clearCache: 是否先执行清除缓存操作
+    func load(_ url: URL?, clearCache: Bool = true) {
+        guard let url else {
+            return trackError("无法加载")
+        }
+        /// 如果需要的话,清除缓存
+        if clearCache {
+            self.clearCache()
+        }
+        /// 请求网页
+        let request = URLRequest(url: url)
+        webview.load(request)
+    }
+    
+    /// 清除缓存
+    func clearCache() {
+        let allTypes = WKWebsiteDataStore.allWebsiteDataTypes()
+        let dataStore = WKWebsiteDataStore.default()
+        dataStore.removeData(ofTypes: allTypes, modifiedSince: .distantPast) {}
     }
 }
