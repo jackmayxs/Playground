@@ -23,25 +23,8 @@ extension IndexPath {
 extension IndexPath: ExpressibleByIntegerLiteral {
     
     /// 通过整型字面量创建IndexPath
-    public init(integerLiteral value: IntegerLiteralType) {
-        self.init(row: value, section: 0)
-    }
-}
-
-extension IndexPath: ExpressibleByStringLiteral {
-    
-    /// 通过字符串字面量创建IndexPath
-    /// 例如: 0-1 表示第0组第1项
-    public init(stringLiteral value: StringLiteralType) {
-        let components = value.components(separatedBy: "-")
-        if components.count == 2 {
-            if let section = components.first?.int, let row = components.last?.int {
-                self.init(row: row, section: section)
-            } else {
-                self.init(row: 0, section: 0)
-            }
-        } else {
-            self.init(row: 0, section: 0)
-        }
+    /// 另外还可以通过数组字面量创建IndexPath: [0, 1](只能是两个整型元素)
+    public init(integerLiteral literal: IntegerLiteralType) {
+        self.init(row: literal, section: 0)
     }
 }
