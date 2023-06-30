@@ -56,6 +56,35 @@ extension Optional {
         return unwrapped
     }
     
+    /// 解包
+    /// - Parameters:
+    ///   - transform: 转换解包后的值
+    ///   - defaultValue: 默认值
+    /// - Returns: 转换后的值
+    func unwrap<T>(_ transform: (Wrapped) -> T, or defaultValue: @autoclosure () -> T) -> T {
+        guard let unwrapped = try? unwrap() else {
+            return defaultValue()
+        }
+        return transform(unwrapped)
+    }
+    
+    /// 解包
+    /// - Parameters:
+    ///   - defaultValue: 默认值
+    ///   - transform: 转换闭包
+    /// - Returns: 转换后的值
+    /// 注: 和上面的unwrap方法作用一样, 但是在将尾随闭包作为转换回调时可以使代码看起来更清晰. 如:
+    /// let num: Int? = 0
+    /// num.or("") { num in
+    ///     num.string
+    /// }
+    func or<T>(_ defaultValue: @autoclosure () -> T, else transform: (Wrapped) -> T) -> T {
+        guard let wrapped = try? unwrap() else {
+            return defaultValue()
+        }
+        return transform(wrapped)
+    }
+    
     /// 解包Optional
     /// - Parameter defaultValue: 自动闭包
     /// - Returns: Wrapped Value
@@ -64,18 +93,6 @@ extension Optional {
             return defaultValue()
         }
         return wrapped
-    }
-    func or<T>(_ defaultValue: T, else transform: (Wrapped) -> T) -> T {
-        guard let wrapped = try? unwrap() else {
-            return defaultValue
-        }
-        return transform(wrapped)
-    }
-    func or<T>(_ defaultValue: T, else transform: @autoclosure () -> T) -> T {
-        guard let _ = try? unwrap() else {
-            return defaultValue
-        }
-        return transform()
     }
     
     static func <-- (lhs: Wrapped?, rhs: Wrapped?) -> Wrapped? {
