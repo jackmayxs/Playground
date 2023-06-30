@@ -34,17 +34,19 @@ extension UIStackView {
         self.spacing = spacing
     }
     
-    func refill(@ArrayBuilder<UIView> content: () -> [UIView]) {
-        let subviews = content()
-        refill(arrangedSubviews: subviews)
+    func refill(@ArrayBuilder<UIView> _ arrangedSubviews: () -> [UIView]) {
+        refill(arrangedSubviews())
     }
     
-    func add(@ArrayBuilder<UIView> content: () -> [UIView]) {
-        let subviews = content()
-        add(arrangedSubviews: subviews)
+    func add(@ArrayBuilder<UIView> arrangedSubviews: () -> [UIView]) {
+        add(arrangedSubviews: arrangedSubviews())
     }
     
-    func refill<T>(arrangedSubviews: T) where T: Sequence, T.Element: UIView {
+    func refill<T>(_ arrangedSubviews: T...) where T: UIView {
+        refill(arrangedSubviews)
+    }
+    
+    func refill<T>(_ arrangedSubviews: T) where T: Sequence, T.Element: UIView {
         purgeArrangedSubviews()
         add(arrangedSubviews: arrangedSubviews)
     }
@@ -66,9 +68,7 @@ extension UIStackView {
     var refilledArrangedSubviews: [UIView] {
         get { arrangedSubviews }
         set {
-            refill {
-                newValue
-            }
+            refill(newValue)
         }
     }
     
@@ -78,7 +78,7 @@ extension UIStackView {
 			if #available(iOS 11, *) {
 				return directionalLayoutMargins.uiEdgeInsets
 			} else {
-				return isLayoutMarginsRelativeArrangement ? layoutMargins : .none
+                return layoutMargins
 			}
 		}
 		set {
