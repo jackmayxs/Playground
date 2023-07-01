@@ -79,20 +79,20 @@ extension Optional {
     ///     num.string
     /// }
     func or<T>(_ defaultValue: @autoclosure () -> T, else transform: (Wrapped) -> T) -> T {
-        guard let wrapped = try? unwrap() else {
+        guard let unwrapped = try? unwrap() else {
             return defaultValue()
         }
-        return transform(wrapped)
+        return transform(unwrapped)
     }
     
     /// 解包Optional
     /// - Parameter defaultValue: 自动闭包
     /// - Returns: Wrapped Value
     func or(_ defaultValue: @autoclosure () -> Wrapped) -> Wrapped {
-        guard let wrapped = try? unwrap() else {
+        guard let unwrapped = try? unwrap() else {
             return defaultValue()
         }
-        return wrapped
+        return unwrapped
     }
     
     static func <-- (lhs: Wrapped?, rhs: Wrapped?) -> Wrapped? {
