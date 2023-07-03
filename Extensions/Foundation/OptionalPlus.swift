@@ -42,18 +42,27 @@ extension Optional {
         return unwrapped
     }
     
+    /// 如果不为空则以解包后的值作为入参执行闭包
+    /// - Parameter execute: 回调闭包
+    @discardableResult
+    func unwrap(execute: (Wrapped) -> Void) -> Wrapped? {
+        guard let self else { return nil }
+        execute(self)
+        return self
+    }
+    
     /// 解包Optional
     /// - Parameter error: 抛出的错误
     /// - Returns: Wrapped Value
     func unwrap(onError error: Error? = nil) throws -> Wrapped {
-        guard let unwrapped = self else {
+        guard let self else {
             if let error = error {
                 throw error
             } else {
                 throw OptionalError.badValue
             }
         }
-        return unwrapped
+        return self
     }
     
     /// 解包
@@ -62,10 +71,10 @@ extension Optional {
     ///   - defaultValue: 默认值
     /// - Returns: 转换后的值
     func unwrap<T>(_ transform: (Wrapped) -> T, or defaultValue: @autoclosure () -> T) -> T {
-        guard let unwrapped = try? unwrap() else {
+        guard let self else {
             return defaultValue()
         }
-        return transform(unwrapped)
+        return transform(self)
     }
     
     /// 解包
@@ -79,20 +88,20 @@ extension Optional {
     ///     num.string
     /// }
     func or<T>(_ defaultValue: @autoclosure () -> T, else transform: (Wrapped) -> T) -> T {
-        guard let unwrapped = try? unwrap() else {
+        guard let self else {
             return defaultValue()
         }
-        return transform(unwrapped)
+        return transform(self)
     }
     
     /// 解包Optional
     /// - Parameter defaultValue: 自动闭包
     /// - Returns: Wrapped Value
     func or(_ defaultValue: @autoclosure () -> Wrapped) -> Wrapped {
-        guard let unwrapped = try? unwrap() else {
+        guard let self else {
             return defaultValue()
         }
-        return unwrapped
+        return self
     }
     
     static func <-- (lhs: Wrapped?, rhs: Wrapped?) -> Wrapped? {

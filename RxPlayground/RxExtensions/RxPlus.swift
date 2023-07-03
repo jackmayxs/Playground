@@ -198,7 +198,7 @@ extension ObservableConvertibleType {
     ///   - scheduler: 运行的Scheduler | 默认留空, 默认创建一个串行队列
     /// - Returns: Observable是否输出稳定的事件序列
     func stabilityCheck(timeSpan: RxTimeInterval = .nanoseconds(0), unStableCount: Int = 1, scheduler: SchedulerType? = nil) -> Observable<Bool> {
-        let queueName = "com.chek.observable.stable.or.not"
+        let queueName = "com.check.observable.stable.or.not"
         lazy var defaultScheduler = SerialDispatchQueueScheduler(qos: .default, internalSerialQueueName: queueName)
         return asObservable()
             .window(timeSpan: timeSpan, count: .max, scheduler: scheduler ?? defaultScheduler)
