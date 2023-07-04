@@ -88,15 +88,15 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
     @available(iOS 14.0, *)
     override func updateConfiguration(using state: UICellConfigurationState) {
         super.updateConfiguration(using: state)
-        var background: UIBackgroundConfiguration
+        var background = UIBackgroundConfiguration.listPlainCell()
         if backgroundStyleMode == .legacy {
             background = .clear()
         } else {
-            background = .listPlainCell()
+            /// 如果高亮或选中状态的颜色为空, 则使用tintColor作为默认颜色填充
             if state.isHighlighted {
-                background.backgroundColor = defaultHighlightBackgroundColor ?? .clear
+                background.backgroundColor = defaultHighlightBackgroundColor.or(.clear)
             } else if state.isSelected {
-                background.backgroundColor = defaultSelectedBackgroundColor ?? .clear
+                background.backgroundColor = defaultSelectedBackgroundColor.or(.clear)
             } else {
                 background.backgroundColor = defaultBackgroundColor
             }
@@ -133,23 +133,34 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
     
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {
         super.setHighlighted(highlighted, animated: animated)
+        
+        /// 如果是iOS 14.0以下的系统, 则对contentView直接设置颜色
         if #unavailable(iOS 14.0) {
             contentView.backgroundColor = highlighted ? defaultHighlightBackgroundColor : defaultBackgroundColor
-        } else if backgroundStyleMode == .legacy {
-            contentView.backgroundColor = highlighted ? defaultHighlightBackgroundColor : defaultBackgroundColor
+        } else {
+            /// 如果是iOS 14.0以上的系统, 则只有背景样式为.legacy的时候才直接对contentView设置背景色
+            if backgroundStyleMode == .legacy {
+                contentView.backgroundColor = highlighted ? defaultHighlightBackgroundColor : defaultBackgroundColor
+            }
         }
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
+        
+        /// 如果是iOS 14.0以下的系统, 则对contentView直接设置颜色
         if #unavailable(iOS 14.0) {
             contentView.backgroundColor = selected ? defaultSelectedBackgroundColor : defaultBackgroundColor
-        } else if backgroundStyleMode == .legacy {
-            contentView.backgroundColor = selected ? defaultSelectedBackgroundColor : defaultBackgroundColor
+        } else {
+            /// 如果是iOS 14.0以上的系统, 则只有背景样式为.legacy的时候才直接对contentView设置背景色
+            if backgroundStyleMode == .legacy {
+                contentView.backgroundColor = selected ? defaultSelectedBackgroundColor : defaultBackgroundColor
+            }
         }
     }
     
     func prepare() {
+        /// 默认的选中样式
         selectionStyle = defaultSelectionStyle
         prepareSubviews()
         prepareConstraints()
