@@ -67,10 +67,10 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
     var sectionMaskedCorners = UIRectCorner.allCorners
     
     /// 分割线样式
-    var separatorStyle: SeparatorStyle = .inline
+    var separatorStyle = SeparatorStyle.inline
     
     /// 背景样式设置模式
-    var backgroundStyleMode: UIBackgroundStyleMode = .modern {
+    var backgroundStyleMode = UIBackgroundStyleMode.modern {
         didSet {
             if #available(iOS 14.0, *) {
                 setNeedsUpdateConfiguration()
