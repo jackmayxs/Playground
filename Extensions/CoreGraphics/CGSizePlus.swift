@@ -25,6 +25,11 @@ extension CGSize: SizeExtendable {
 
 extension CGSize {
     
+    /// 面积
+    var area: CGFloat {
+        width * height
+    }
+    
     var isPortrait: Bool {
         !isLandscape
     }
