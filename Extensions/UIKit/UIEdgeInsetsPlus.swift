@@ -128,10 +128,20 @@ extension UIEdgeInsets: ExpressibleByFloatLiteral {
 }
 
 extension UIEdgeInsets: ExpressibleByIntegerLiteral {
-	public typealias IntegerLiteralType = Int
-	public init(integerLiteral literal: Int) {
+    public typealias IntegerLiteralType = Int
+    public init(integerLiteral literal: Int) {
         self.init(floatLiteral: literal.double)
-	}
+    }
+}
+
+extension UIEdgeInsets: ExpressibleByArrayLiteral {
+    public typealias ArrayLiteralElement = Double
+    public init(arrayLiteral literal: Double...) {
+        guard literal.count == 4 else {
+            fatalError("No enough element to build a NSDirectionalEdgeInsets")
+        }
+        self.init(top: literal[0], left: literal[1], bottom: literal[2], right: literal[3])
+    }
 }
 
 extension NSDirectionalEdgeInsets: ExpressibleByFloatLiteral {
@@ -142,10 +152,20 @@ extension NSDirectionalEdgeInsets: ExpressibleByFloatLiteral {
 }
 
 extension NSDirectionalEdgeInsets: ExpressibleByIntegerLiteral {
-	public typealias IntegerLiteralType = Int
-	public init(integerLiteral literal: Int) {
+    public typealias IntegerLiteralType = Int
+    public init(integerLiteral literal: Int) {
         self.init(floatLiteral: literal.double)
-	}
+    }
+}
+
+extension NSDirectionalEdgeInsets: ExpressibleByArrayLiteral {
+    public typealias ArrayLiteralElement = Double
+    public init(arrayLiteral literal: Double...) {
+        guard literal.count == 4 else {
+            fatalError("No enough element to build a NSDirectionalEdgeInsets")
+        }
+        self.init(top: literal[0], leading: literal[1], bottom: literal[2], trailing: literal[3])
+    }
 }
 
 extension UIEdgeInsets {

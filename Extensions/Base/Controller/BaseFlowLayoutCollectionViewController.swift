@@ -47,9 +47,9 @@ Footer: UICollectionReusableView>: BaseCollectionViewController, UICollectionVie
     
     func configureCell(_ cell: Cell, at indexPath: IndexPath) { }
     
-    func configureHeader(_ header: Header, at section: Int) { }
+    func configureHeader(_ header: Header, at indexPath: IndexPath) { }
     
-    func configureFooter(_ footer: Footer, at section: Int) { }
+    func configureFooter(_ footer: Footer, at indexPath: IndexPath) { }
     
     // MARK: - UICollectionViewDelegateFlowLayout
     
@@ -100,11 +100,11 @@ Footer: UICollectionReusableView>: BaseCollectionViewController, UICollectionVie
         switch supplementaryViewKind {
         case .header:
             let header = Header.dequeReusableSupplementaryView(from: collectionView, kind: supplementaryViewKind, indexPath: indexPath)
-            configureHeader(header, at: indexPath.section)
+            configureHeader(header, at: indexPath)
             return header
         case .footer:
             let footer = Footer.dequeReusableSupplementaryView(from: collectionView, kind: supplementaryViewKind, indexPath: indexPath)
-            configureFooter(footer, at: indexPath.section)
+            configureFooter(footer, at: indexPath)
             return footer
         }
     }
