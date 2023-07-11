@@ -77,13 +77,13 @@ Footer: UICollectionReusableView>: BaseCollectionViewController, UICollectionVie
             cellHeight = preferredCellSize.height
         }
         /// 分组边距占掉的宽度
-        let sectionInset = flowLayout.sectionInsetsAt(indexPath).horizontal
+        let sectionInsetWidth = flowLayout.sectionInsetsAt(indexPath).horizontal
         /// Item间隔占用的宽度
         let columnSpaces = (columnCount - 1.0) * flowLayout.minimumInteritemSpacingForSectionAt(indexPath)
         /// 横向所有Item占用的总宽度
-        let itemsWidth = collectionView.bounds.width - sectionInset - columnSpaces
-        /// 每个Item的宽度
-        let itemWidth = itemsWidth / columnCount
+        let itemsWidth = collectionView.bounds.width - sectionInsetWidth - columnSpaces
+        /// 每个Item的宽度 | 用floor方法包裹运算结果，可防止某些情况下（如缩放Item时）Item间隙会变得不均匀的问题
+        let itemWidth = floor(itemsWidth / columnCount)
         return CGSize(width: itemWidth, height: cellHeight)
     }
     
