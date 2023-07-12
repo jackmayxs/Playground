@@ -94,9 +94,7 @@ Footer: UICollectionReusableView>: BaseCollectionViewController, UICollectionVie
     }
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        guard let supplementaryViewKind = UICollectionReusableView.SupplementaryViewKind(rawValue: kind) else {
-            return super.collectionView(collectionView, viewForSupplementaryElementOfKind: kind, at: indexPath)
-        }
+        let supplementaryViewKind = UICollectionReusableView.SupplementaryViewKind(rawValue: kind)
         switch supplementaryViewKind {
         case .header:
             let header = Header.dequeReusableSupplementaryView(from: collectionView, kind: supplementaryViewKind, indexPath: indexPath)
@@ -106,6 +104,8 @@ Footer: UICollectionReusableView>: BaseCollectionViewController, UICollectionVie
             let footer = Footer.dequeReusableSupplementaryView(from: collectionView, kind: supplementaryViewKind, indexPath: indexPath)
             configureFooter(footer, at: indexPath)
             return footer
+        default:
+            return UICollectionReusableView()
         }
     }
     

@@ -13,19 +13,21 @@ extension UICollectionReusableView {
 	enum SupplementaryViewKind {
 		case header
 		case footer
+        case custom(String)
 		var raw: String {
-			switch self {
-				case .header: return UICollectionView.elementKindSectionHeader
-				case .footer: return UICollectionView.elementKindSectionFooter
-			}
+            switch self {
+            case .header: return UICollectionView.elementKindSectionHeader
+            case .footer: return UICollectionView.elementKindSectionFooter
+            case .custom(let kind): return kind
+            }
 		}
-        init?(rawValue: String) {
+        init(rawValue: String) {
             if rawValue == UICollectionView.elementKindSectionHeader {
                 self = .header
             } else if rawValue == UICollectionView.elementKindSectionFooter {
                 self = .footer
             } else {
-                return nil
+                self = .custom(rawValue)
             }
         }
 	}
