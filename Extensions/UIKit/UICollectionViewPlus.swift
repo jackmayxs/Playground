@@ -52,6 +52,13 @@ extension UICollectionViewCell {
 extension UICollectionViewFlowLayout {
     
     // MARK: - 先从代理方法里获取各项参数 | 再使用默认属性
+    
+    func itemSizeAt(_ indexPath: IndexPath) -> CGSize {
+        guard let collectionView else { return .zero }
+        guard let delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout else { return itemSize }
+        return delegate.collectionView?(collectionView, layout: self, sizeForItemAt: indexPath) ?? itemSize
+    }
+    
     func sectionInsetsAt(_ indexPath: IndexPath) -> UIEdgeInsets {
         guard let collectionView else { return sectionInset }
         guard let delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout else { return sectionInset }

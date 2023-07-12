@@ -22,6 +22,11 @@ class BaseCollectionViewController: BaseViewController, UICollectionViewDelegate
         nil
     }
     
+    @available(iOS 13.0, *)
+    var compositionalLayout: UICollectionViewCompositionalLayout? {
+        nil
+    }
+    
     var defaultLayout: UICollectionViewLayout {
         UICollectionViewLayout()
     }
@@ -60,7 +65,11 @@ class BaseCollectionViewController: BaseViewController, UICollectionViewDelegate
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.backgroundColor = baseViewBackgroundColor
-
+        if #available(iOS 13.0, *) {
+            if let compositionalLayout {
+                collectionView.setCollectionViewLayout(compositionalLayout, animated: false)
+            }
+        }
         /// 占位图默认隐藏
         emptyView.isHidden = true
 
