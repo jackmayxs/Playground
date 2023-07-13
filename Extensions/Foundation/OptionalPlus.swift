@@ -21,12 +21,8 @@ extension Optional {
     }
     
     var isValid: Bool {
-        do {
-            _ = try unwrap()
-            return true
-        } catch {
-            return false
-        }
+        guard let _ = self else { return false }
+        return true
     }
     
     /// 转换为Any类型
