@@ -228,9 +228,14 @@ public protocol ReusableView: AnyObject {
 	static var reuseId: String { get }
 }
 extension ReusableView {
+    
 	public static var reuseId: String {
 		String(describing: self)
 	}
+    
+    public static func registerFor(layout: UICollectionViewLayout) {
+        layout.register(self, forDecorationViewOfKind: reuseId)
+    }
 }
 
 
