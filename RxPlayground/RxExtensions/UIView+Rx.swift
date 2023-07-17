@@ -9,6 +9,10 @@ import RxCocoa
 
 extension Reactive where Base: UIView {
     
+    var intrinsicContentSize: Observable<CGSize> {
+        didLayoutSubviews.map(\.intrinsicContentSize)
+    }
+    
     /// 是否横屏
     var isLandscape: Observable<Bool> {
         window.unwrapped.once.flatMap { window in
