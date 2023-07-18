@@ -8,9 +8,8 @@
 
 import UIKit
 
-final class TouchesDelayedScrollView: UIScrollView {
+class TouchesDelayedScrollView: UIScrollView {
 	
-    
     /// 是否开启: 触摸到UIControl子类的时候阻断滚动视图的滚动
     var doBlockScrollWhenHitUIControls = true
     
