@@ -44,6 +44,24 @@ extension CGSize {
 		self.init(width: width, height: height)
 	}
     
+    
+    /// 限制尺寸 | 不能超过指定尺寸范围的宽高
+    /// - Parameters:
+    ///   - minSize: 最小尺寸
+    ///   - maxSize: 最大尺寸
+    func limit(minSize: CGSize? = nil, maxSize: CGSize? = nil) -> CGSize {
+        var tempSize = self
+        minSize.unwrap { minSize in
+            tempSize.width = max(width, minSize.width)
+            tempSize.height = max(height, minSize.height)
+        }
+        maxSize.unwrap { maxSize in
+            tempSize.width = min(width, maxSize.width)
+            tempSize.height = min(height, maxSize.height)
+        }
+        return tempSize
+    }
+    
     func heightOffset(_ heightOffset: CGFloat) -> CGSize {
         CGSize(width: width, height: height + heightOffset)
     }
