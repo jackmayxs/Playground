@@ -98,6 +98,10 @@ extension UIEdgeInsets {
 		return insets
 	}
 	
+    var origin: CGPoint {
+        CGPoint(x: left, y: top)
+    }
+    
 	var reversed: UIEdgeInsets {
 		UIEdgeInsets(top: -top, left: -left, bottom: -bottom, right: -right)
 	}
