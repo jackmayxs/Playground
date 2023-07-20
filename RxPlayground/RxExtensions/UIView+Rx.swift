@@ -9,6 +9,11 @@ import RxCocoa
 
 extension Reactive where Base: UIView {
     
+    /// UIScrollView及其子类不可使用此属性, 否则会发生运行时错误
+    var frame: Observable<CGRect> {
+        observe(\.frame, options: [.initial, .new])
+    }
+    
     var intrinsicContentSize: Observable<CGSize> {
         didLayoutSubviews.map(\.intrinsicContentSize)
     }
@@ -35,6 +40,18 @@ extension Reactive where Base: UIView {
         methodInvoked(#selector(base.didMoveToWindow))
             .withUnretained(base)
             .map(\.0.window)
+    }
+    
+    var willMoveToWindow: Observable<UIWindow?> {
+        methodInvoked(#selector(base.willMove(toWindow:)))
+            .map(\.first)
+            .asOptional(UIWindow.self)
+    }
+    
+    var willMoveToSuperView: Observable<UIView?> {
+        methodInvoked(#selector(base.willMove(toSuperview:)))
+            .map(\.first)
+            .asOptional(UIView.self)
     }
 
     var didLayoutSubviews: Observable<Base> {
