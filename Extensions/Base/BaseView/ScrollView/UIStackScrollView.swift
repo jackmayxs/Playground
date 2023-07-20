@@ -16,17 +16,11 @@ class UIStackScrollView: UIBaseView {
         willSet { stackView.spacing = newValue }
     }
     
-    override var backgroundColor: UIColor? {
-        get { scrollView.backgroundColor }
-        set { scrollView.backgroundColor = newValue }
-    }
+    lazy var stackView = UIStackView(axis: axis, distribution: .fill, alignment: .fill, spacing: spacing)
     
-    var contentInsets: UIEdgeInsets? {
-        get { stackView.contentInsets }
-        set { stackView.contentInsets = newValue }
+    let scrollView = TouchesDelayedScrollView.make { make in
+        make.alwaysBounceVertical = true
     }
-    
-    required init?(coder aDecoder: NSCoder) { nil }
     
     override init(frame: CGRect) {
         self.spacing = 0
@@ -41,28 +35,12 @@ class UIStackScrollView: UIBaseView {
         stackView.add(arrangedSubviews: subviewsBuilder)
     }
     
-    func refillArrangedSubviews(@ArrayBuilder<UIView> subviewsBuilder: () -> [UIView]) {
-        stackView.refill(subviewsBuilder)
-    }
+    required init?(coder aDecoder: NSCoder) { nil }
     
-    func addArrangedSubviews(_ subviews: [UIView]) {
-        subviews.forEach { subview in
-            addArrangedSubview(subview)
-        }
+    override var backgroundColor: UIColor? {
+        get { scrollView.backgroundColor }
+        set { scrollView.backgroundColor = newValue }
     }
-    
-    func addArrangedSubview(_ subview: UIView) {
-        stackView.addArrangedSubview(subview)
-    }
-    
-    let scrollView = TouchesDelayedScrollView.make { make in
-        make.alwaysBounceVertical = true
-    }
-    lazy var stackView = UIStackView(
-        axis: axis,
-        distribution: .fill,
-        alignment: .fill,
-        spacing: spacing)
     
     override func prepare() {
         super.prepare()
@@ -94,6 +72,28 @@ class UIStackScrollView: UIBaseView {
                 break
             }
         }
+    }
+    
+    func refillArrangedSubviews(@ArrayBuilder<UIView> subviewsBuilder: () -> [UIView]) {
+        stackView.refill(subviewsBuilder)
+    }
+    
+    func addArrangedSubviews(_ subviews: [UIView]) {
+        subviews.forEach { subview in
+            addArrangedSubview(subview)
+        }
+    }
+    
+    func addArrangedSubview(_ subview: UIView) {
+        stackView.addArrangedSubview(subview)
+    }
+}
+
+extension UIStackScrollView {
+    
+    var contentInsets: UIEdgeInsets? {
+        get { stackView.contentInsets }
+        set { stackView.contentInsets = newValue }
     }
 }
 
