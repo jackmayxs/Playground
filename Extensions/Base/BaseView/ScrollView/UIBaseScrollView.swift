@@ -11,7 +11,7 @@ class UIBaseScrollView: UIScrollView, StandardLayoutLifeCycle {
     /// 是否开启: 触摸到UIControl子类的时候阻断滚动视图的滚动
     var doBlockScrollWhenHitUIControls = true
     
-    lazy var contentView = UIView()
+    lazy var contentView = defaultContentView
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -46,6 +46,8 @@ class UIBaseScrollView: UIScrollView, StandardLayoutLifeCycle {
     }
     
     func prepare() {
+        prepareSubviews()
+        prepareConstraints()
         contentInsetAdjustmentBehavior = .automatic
         keyboardDismissMode = .interactive
         backgroundColor = .clear
@@ -61,5 +63,9 @@ class UIBaseScrollView: UIScrollView, StandardLayoutLifeCycle {
         contentView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+    }
+    
+    var defaultContentView: UIView {
+        UIView()
     }
 }

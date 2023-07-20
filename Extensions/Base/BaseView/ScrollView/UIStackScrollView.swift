@@ -6,63 +6,23 @@
 
 import UIKit
 
-class UIStackScrollView: UIBaseView {
+class UIStackScrollView: UIBaseScrollView {
     
-    var axis: NSLayoutConstraint.Axis {
-        willSet { stackView.axis = newValue }
-    }
+    lazy var stackView = UIStackView(axis: defaultAxis, distribution: .fill, alignment: .fill, spacing: 0.0)
     
-    var spacing: Double {
-        willSet { stackView.spacing = newValue }
-    }
-    
-    lazy var stackView = UIStackView(axis: axis, distribution: .fill, alignment: .fill, spacing: spacing)
-    
-    let scrollView = TouchesDelayedScrollView.make { make in
-        make.alwaysBounceVertical = true
-    }
-    
-    override init(frame: CGRect) {
-        self.spacing = 0
-        self.axis = .vertical
-        super.init(frame: frame)
-    }
-    
-    init(axis: NSLayoutConstraint.Axis, spacing: Double = 0, @ArrayBuilder<UIView> subviewsBuilder: () -> [UIView] = { [] }) {
-        self.axis = axis
-        self.spacing = spacing
-        super.init(frame: .zero)
-        stackView.add(arrangedSubviews: subviewsBuilder)
-    }
-    
-    required init?(coder aDecoder: NSCoder) { nil }
-    
-    override var backgroundColor: UIColor? {
-        get { scrollView.backgroundColor }
-        set { scrollView.backgroundColor = newValue }
+    override var defaultContentView: UIView {
+        stackView
     }
     
     override func prepare() {
         super.prepare()
-        scrollView.showsVerticalScrollIndicator = false
-        scrollView.showsHorizontalScrollIndicator = false
-        scrollView.backgroundColor = defaultBackgroundColor
+        showsVerticalScrollIndicator = false
+        showsHorizontalScrollIndicator = false
     }
-    
-    override func prepareSubviews() {
-        super.prepareSubviews()
-        scrollView.addSubview(stackView)
-        addSubview(scrollView)
-    }
-    
     
     override func prepareConstraints() {
         super.prepareConstraints()
-        scrollView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
         stackView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
             switch axis {
             case .horizontal:
                 make.height.equalToSuperview()
@@ -87,25 +47,55 @@ class UIStackScrollView: UIBaseView {
     func addArrangedSubview(_ subview: UIView) {
         stackView.addArrangedSubview(subview)
     }
+    
+    var defaultAxis: NSLayoutConstraint.Axis {
+        .vertical
+    }
 }
 
 extension UIStackScrollView {
     
+    convenience init(axis: NSLayoutConstraint.Axis, spacing: Double = 0, @ArrayBuilder<UIView> subviewsBuilder: () -> [UIView] = { [] }) {
+        let arrangedSubviews = subviewsBuilder()
+        self.init(axis: axis, spacing: spacing, arrangedSubviews: arrangedSubviews)
+    }
+    
+    convenience init(
+        axis: NSLayoutConstraint.Axis,
+        distribution: UIStackView.Distribution = .fill,
+        alignment: UIStackView.Alignment = .fill,
+        spacing: CGFloat = 0,
+        arrangedSubviews: [UIView] = .empty) {
+            self.init(frame: .zero)
+            self.axis = axis
+            self.distribution = distribution
+            self.alignment = alignment
+            self.spacing = spacing
+            self.stackView.refilledArrangedSubviews = arrangedSubviews
+        }
+    
+    var axis: NSLayoutConstraint.Axis {
+        get { stackView.axis }
+        set { stackView.axis = newValue }
+    }
+    
+    var distribution: UIStackView.Distribution {
+        get { stackView.distribution }
+        set { stackView.distribution = newValue }
+    }
+    
+    var alignment: UIStackView.Alignment {
+        get { stackView.alignment }
+        set { stackView.alignment = newValue }
+    }
+    
+    var spacing: Double {
+        get { stackView.spacing }
+        set { stackView.spacing = newValue }
+    }
+    
     var contentInsets: UIEdgeInsets? {
         get { stackView.contentInsets }
         set { stackView.contentInsets = newValue }
-    }
-}
-
-class UIVerticalStackScrollView: UIStackScrollView {
-    
-    required init?(coder aDecoder: NSCoder) { nil }
-    
-    override init(frame: CGRect) {
-        super.init(axis: .vertical)
-    }
-    
-    init(spacing: Double = 0, @ArrayBuilder<UIView> subviewsBuilder: () -> [UIView] = { [] }) {
-        super.init(axis: .vertical, spacing: spacing, subviewsBuilder: subviewsBuilder)
     }
 }
