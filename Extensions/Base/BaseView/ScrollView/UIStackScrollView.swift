@@ -34,20 +34,6 @@ class UIStackScrollView: UIBaseScrollView {
         }
     }
     
-    func refillArrangedSubviews(@ArrayBuilder<UIView> subviewsBuilder: () -> [UIView]) {
-        stackView.refill(subviewsBuilder)
-    }
-    
-    func addArrangedSubviews(_ subviews: [UIView]) {
-        subviews.forEach { subview in
-            addArrangedSubview(subview)
-        }
-    }
-    
-    func addArrangedSubview(_ subview: UIView) {
-        stackView.addArrangedSubview(subview)
-    }
-    
     var defaultAxis: NSLayoutConstraint.Axis {
         .vertical
     }
@@ -97,5 +83,23 @@ extension UIStackScrollView {
     var contentInsets: UIEdgeInsets? {
         get { stackView.contentInsets }
         set { stackView.contentInsets = newValue }
+    }
+    
+    func refillArrangedSubviews(@ArrayBuilder<UIView> subviewsBuilder: () -> [UIView]) {
+        stackView.refill(subviewsBuilder)
+    }
+    
+    func refillArrangedSubviews(_ arrangedSubviews: [UIView]) {
+        stackView.refill(arrangedSubviews)
+    }
+    
+    func addArrangedSubviews(_ subviews: [UIView]) {
+        subviews.forEach { subview in
+            addArrangedSubview(subview)
+        }
+    }
+    
+    func addArrangedSubview(_ subview: UIView) {
+        stackView.addArrangedSubview(subview)
     }
 }

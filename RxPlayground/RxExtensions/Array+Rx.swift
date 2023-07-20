@@ -63,39 +63,45 @@ extension Array where Element: UIButton {
     }
     
     /// 切换选中的按钮
+    /// - Parameter firstSelection: 按钮在数组中的索引
+    /// - Returns: 选中按钮的事件序列
+    func switchSelectedButton(startIndex firstSelection: Self.Index? = nil, toggleSelectedButton: Bool = false) -> Observable<Element> {
+        if let firstSelection {
+            guard let selectedButton = itemAt(firstSelection) else {
+                return switchSelectedButton(startButton: nil, toggleSelectedButton: toggleSelectedButton)
+            }
+            return switchSelectedButton(startButton: selectedButton, toggleSelectedButton: toggleSelectedButton)
+        } else {
+            return switchSelectedButton(startButton: nil, toggleSelectedButton: toggleSelectedButton)
+        }
+    }
+    
+    /// 切换选中的按钮
     /// - Parameter firstSelected: 第一个选中的按钮
     /// - Returns: 选中按钮的事件序列
-    func switchSelectedButton(startButton firstSelected: Element? = nil) -> Observable<Element> {
+    func switchSelectedButton(startButton firstSelected: Element? = nil, toggleSelectedButton: Bool = false) -> Observable<Element> {
         let selectedButton = tappedButton
             .optionalElement
             .startWith(firstSelected)
             .unwrapped
-        let disposable = handleSelectedButton(selectedButton)
+        let disposable = handleSelectedButton(selectedButton, toggleSelectedButton: toggleSelectedButton)
         return selectedButton.do(onDispose: disposable.dispose)
-    }
-    
-    /// 切换选中的按钮
-    /// - Parameter firstSelection: 按钮在数组中的索引
-    /// - Returns: 选中按钮的事件序列
-    func switchSelectedButton(startIndex firstSelection: Self.Index? = nil) -> Observable<Element> {
-        if let firstSelection {
-            guard let selectedButton = itemAt(firstSelection) else {
-                return switchSelectedButton(startButton: nil)
-            }
-            return switchSelectedButton(startButton: selectedButton)
-        } else {
-            return switchSelectedButton(startButton: nil)
-        }
     }
     
     /// 处理按钮选中/反选
     /// - Parameter selectedButton: 选中按钮的事件序列
     /// - Returns: Disposable
-    private func handleSelectedButton(_ selectedButton: Observable<Element>) -> Disposable {
+    private func handleSelectedButton(_ selectedButton: Observable<Element>, toggleSelectedButton: Bool = false) -> Disposable {
         selectedButton
             .scan([]) { lastResult, button -> [Element] in
-                /// 选中按钮
-                button.isSelected = true
+                
+                /// 处理最新点击的按钮
+                if toggleSelectedButton {
+                    button.isSelected.toggle()
+                } else {
+                    button.isSelected = true
+                }
+                
                 var buttons = lastResult
                 /// 按钮数组不包含按钮的时候,将点击的按钮添加到数组
                 if buttons.contains(button).isFalse {
