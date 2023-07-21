@@ -370,6 +370,25 @@ extension Array where Element: UIView {
 extension UIView {
     
     @discardableResult
+    /// 设置宽高比例
+    /// - Returns: 自己
+    func fix(proportion: CGSize) -> Self {
+        translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate {
+            let multiplier = proportion.width / proportion.height
+            let existedConstraints = constraints.filter { constraint in
+                guard constraint.relation == .equal else { return false }
+                guard constraint.firstAttribute == .width else { return false }
+                guard constraint.secondAttribute == .height else { return false }
+                return true
+            }
+            removeConstraints(existedConstraints)
+            widthAnchor.constraint(equalTo: heightAnchor, multiplier: multiplier)
+        }
+        return self
+    }
+    
+    @discardableResult
     /// 固定尺寸
     /// - Returns: 自己
     func fix(size: CGSize) -> Self {
