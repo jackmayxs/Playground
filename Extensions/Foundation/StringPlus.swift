@@ -304,7 +304,7 @@ extension String {
             guard let firstAddr = ifaddr else { return nil }
 
             // For each interface ...
-            for ifptr in sequence(first: firstAddr, next: { $0.pointee.ifa_next }) {
+            for ifptr in Swift.sequence(first: firstAddr, next: { $0.pointee.ifa_next }) {
                 let interface = ifptr.pointee
                 
                 // Check IPv6 interface:
