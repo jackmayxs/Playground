@@ -29,6 +29,11 @@ extension CGRect {
         CGRect(origin: origin, size: size)
     }
     
+    /// 对角线长度
+    var diagonal: CGFloat {
+        size.diagonal
+    }
+    
 	/// 中心点
 	var center: CGPoint {
 		CGPoint(x: midX, y: midY)

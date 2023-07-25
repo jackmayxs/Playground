@@ -100,6 +100,14 @@ extension CGSize {
         CGSize(width: lhs.width * rhs.width, height: lhs.height * rhs.height)
     }
     
+    /// 对角线长度
+    var diagonal: CGFloat {
+        /// 两边的平方和
+        let quadraticSum = pow(width, 2.0) + pow(height, 2.0)
+        /// 开平方
+        return sqrt(quadraticSum)
+    }
+    
     var ratio: CGFloat {
         height / width
     }
