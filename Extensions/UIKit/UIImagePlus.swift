@@ -71,7 +71,7 @@ extension UIImage {
 		}
 	}
 	
-	func expandedImage(with insets: UIEdgeInsets) -> UIImage {
+	func image(with insets: UIEdgeInsets) -> UIImage {
 		UIGraphicsBeginImageContextWithOptions(size + insets, false, scale)
 		let origin = CGPoint(x: insets.left, y: insets.top)
 		draw(at: origin)

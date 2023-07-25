@@ -11,6 +11,8 @@ import UIKit
 extension UIImageView {
 	
 	func setImageInsets(_ insets: UIEdgeInsets, and image: UIImage?) {
-		self.image = image?.expandedImage(with: insets)
+        self.image = image.flatMap { image in
+            image.image(with: insets)
+        }
 	}
 }
