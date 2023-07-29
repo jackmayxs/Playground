@@ -112,7 +112,7 @@ class UIBaseStaticTable: UITableView, StandardLayoutLifeCycle, UITableViewDelega
 extension UIBaseStaticTable {
     
     final class Row {
-        unowned let cell: UITableViewCell
+        let cell: UITableViewCell
         let preferredHeight: CGFloat
         fileprivate var didSelectCallback: SimpleCallback?
         fileprivate var didSelectCallbacks: [SimpleCallback] = []
@@ -165,6 +165,11 @@ extension UIBaseStaticTable {
         subscript(_ row: Int) -> StaticRow {
             rows[row]
         }
+        
+        func appendRows(@ArrayBuilder<StaticRow> _ rowsBuilder: () -> [StaticRow]) {
+            let rows = rowsBuilder()
+            self.rows.append(contentsOf: rows)
+        }
     }
 }
 
@@ -205,7 +210,7 @@ extension UITableViewCell {
             return row
         } else {
             let row = StaticRow(cell: self, preferredHeight: preferredHeight)
-            objc_setAssociatedObject(self, &Self.associatedRow, row, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            objc_setAssociatedObject(self, &Self.associatedRow, row, .OBJC_ASSOCIATION_ASSIGN)
             return row
         }
     }
