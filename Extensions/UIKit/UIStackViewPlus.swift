@@ -34,24 +34,24 @@ extension UIStackView {
         self.spacing = spacing
     }
     
-    func refill(@ArrayBuilder<UIView> _ arrangedSubviews: () -> [UIView]) {
-        refill(arrangedSubviews())
+    func reArrange(@ArrayBuilder<UIView> _ arrangedSubviews: () -> [UIView]) {
+        reArrange(arrangedSubviews())
     }
     
-    func add(@ArrayBuilder<UIView> arrangedSubviews: () -> [UIView]) {
-        add(arrangedSubviews: arrangedSubviews())
+    func arrange(@ArrayBuilder<UIView> arrangedSubviews: () -> [UIView]) {
+        arrange(arrangedSubviews: arrangedSubviews())
     }
     
-    func refill<T>(_ arrangedSubviews: T...) where T: UIView {
-        refill(arrangedSubviews)
+    func reArrange<T>(_ arrangedSubviews: T...) where T: UIView {
+        reArrange(arrangedSubviews)
     }
     
-    func refill<T>(_ arrangedSubviews: T) where T: Sequence, T.Element: UIView {
+    func reArrange<T>(_ arrangedSubviews: T) where T: Sequence, T.Element: UIView {
         purgeArrangedSubviews()
-        add(arrangedSubviews: arrangedSubviews)
+        arrange(arrangedSubviews: arrangedSubviews)
     }
     
-    func add<T>(arrangedSubviews: T) where T: Sequence, T.Element: UIView {
+    func arrange<T>(arrangedSubviews: T) where T: Sequence, T.Element: UIView {
         arrangedSubviews.forEach { subview in
             addArrangedSubview(subview)
         }
@@ -65,10 +65,10 @@ extension UIStackView {
         }
     }
 	
-    var refilledArrangedSubviews: [UIView] {
+    var reArrangedSubviews: [UIView] {
         get { arrangedSubviews }
         set {
-            refill(newValue)
+            reArrange(newValue)
         }
     }
     

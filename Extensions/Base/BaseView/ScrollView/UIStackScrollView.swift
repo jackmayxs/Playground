@@ -57,7 +57,7 @@ extension UIStackScrollView {
             self.distribution = distribution
             self.alignment = alignment
             self.spacing = spacing
-            self.stackView.refilledArrangedSubviews = arrangedSubviews
+            self.stackView.reArrangedSubviews = arrangedSubviews
         }
     
     var axis: NSLayoutConstraint.Axis {
@@ -85,12 +85,12 @@ extension UIStackScrollView {
         set { stackView.contentInsets = newValue }
     }
     
-    func refillArrangedSubviews(@ArrayBuilder<UIView> subviewsBuilder: () -> [UIView]) {
-        stackView.refill(subviewsBuilder)
+    func reArrangeSubviews(@ArrayBuilder<UIView> subviewsBuilder: () -> [UIView]) {
+        stackView.reArrange(subviewsBuilder)
     }
     
-    func refillArrangedSubviews(_ arrangedSubviews: [UIView]) {
-        stackView.refill(arrangedSubviews)
+    func reArrangeSubviews(_ arrangedSubviews: [UIView]) {
+        stackView.reArrange(arrangedSubviews)
     }
     
     func addArrangedSubviews(_ subviews: [UIView]) {
