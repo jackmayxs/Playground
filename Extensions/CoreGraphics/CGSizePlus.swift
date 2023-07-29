@@ -108,6 +108,8 @@ extension CGSize {
         return sqrt(quadraticSum)
     }
     
+    
+    /// height / width
     var ratio: CGFloat {
         height / width
     }
