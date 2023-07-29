@@ -31,7 +31,9 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
     /// 背景色
     var defaultBackgroundColor: UIColor? = defaultTableViewCellBackgroundColor {
         willSet {
-            contentView.backgroundColor = newValue
+            if #unavailable(iOS 14.0) {
+                contentView.backgroundColor = newValue
+            }
         }
         didSet {
             if #available(iOS 14.0, *) {
