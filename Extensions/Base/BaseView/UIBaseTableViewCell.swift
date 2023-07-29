@@ -29,18 +29,33 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
     var contentInsets: UIEdgeInsets { .zero }
     
     /// 背景色
-    var defaultBackgroundColor: UIColor {
-        defaultTableViewCellBackgroundColor ?? .white
+    var defaultBackgroundColor: UIColor? = defaultTableViewCellBackgroundColor {
+        willSet {
+            contentView.backgroundColor = newValue
+        }
+        didSet {
+            if #available(iOS 14.0, *) {
+                setNeedsUpdateConfiguration()
+            }
+        }
     }
     
     /// 高亮时的背景色
-    var defaultHighlightBackgroundColor: UIColor? {
-        defaultTableViewCellHighlightBackgroundColor
+    var defaultHighlightBackgroundColor: UIColor? = defaultTableViewCellHighlightBackgroundColor {
+        didSet {
+            if #available(iOS 14.0, *) {
+                setNeedsUpdateConfiguration()
+            }
+        }
     }
     
     /// 选中时的背景色
-    var defaultSelectedBackgroundColor: UIColor? {
-        defaultTableViewCellSelectedBackgroundColor
+    var defaultSelectedBackgroundColor: UIColor? = defaultTableViewCellSelectedBackgroundColor {
+        didSet {
+            if #available(iOS 14.0, *) {
+                setNeedsUpdateConfiguration()
+            }
+        }
     }
     
     /// 是否在高亮状态自动显示/隐藏分割线
@@ -98,7 +113,7 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
             } else if state.isSelected {
                 background.backgroundColor = defaultSelectedBackgroundColor.or(.clear)
             } else {
-                background.backgroundColor = defaultBackgroundColor
+                background.backgroundColor = defaultBackgroundColor.or(.white)
             }
         }
         
