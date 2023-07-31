@@ -52,6 +52,67 @@ extension UIColor {
         return (h, s, b, a)
     }
     
+    /// XY坐标创建颜色
+    /// - Parameters:
+    ///   - x: 0...0.8
+    ///   - y: 0...0.9
+    convenience init(x: Double, y: Double) {
+        let z = 1.0 - x - y
+        
+        let Y = 1.0
+        let X = (Y / y) * x
+        let Z = (Y / y) * z
+        
+        /// sRGB D65 CONVERSION
+        var r = X  * 3.2406 - Y * 1.5372 - Z * 0.4986
+        var g = -X * 0.9689 + Y * 1.8758 + Z * 0.0415
+        var b = X  * 0.0557 - Y * 0.2040 + Z * 1.0570
+        
+        if r > b && r > g && r > 1.0 {
+            // red is too big
+            g = g / r
+            b = b / r
+            r = 1.0
+        } else if g > b && g > r && g > 1.0 {
+            // green is too big
+            r = r / g
+            b = b / g
+            g = 1.0
+        } else if b > r && b > g && b > 1.0 {
+            // blue is too big
+            r = r / b
+            g = g / b
+            b = 1.0
+        }
+        // Apply gamma correction
+        r = r <= 0.0031308 ? 12.92 * r : (1.0 + 0.055) * pow(r, (1.0 / 2.4)) - 0.055
+        g = g <= 0.0031308 ? 12.92 * g : (1.0 + 0.055) * pow(g, (1.0 / 2.4)) - 0.055
+        b = b <= 0.0031308 ? 12.92 * b : (1.0 + 0.055) * pow(b, (1.0 / 2.4)) - 0.055
+        if r > b && r > g {
+            // red is biggest
+            if (r > 1.0) {
+                g = g / r
+                b = b / r
+                r = 1.0
+            }
+        } else if g > b && g > r {
+            // green is biggest
+            if g > 1.0 {
+                r = r / g
+                b = b / g
+                g = 1.0
+            }
+        } else if b > r && b > g {
+            // blue is biggest
+            if b > 1.0 {
+                r = r / b
+                g = g / b
+                b = 1.0
+            }
+        }
+        self.init(red: r, green: g, blue: b, alpha: 1.0)
+    }
+    
     convenience init(hue: Double) {
         self.init(hue: hue, saturation: 1.0, brightness: 1.0, alpha: 1.0)
     }
