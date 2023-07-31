@@ -10,7 +10,16 @@ import CoreGraphics
 import UIKit
 
 extension CGRect {
-	
+    
+    /// 将传入的点限制在自身区域中
+    /// - Parameter point: 传入的点
+    /// - Returns: 限制后的点
+    func constrainedPoint(_ point: CGPoint) -> CGPoint {
+        let x = (minX...maxX).constrainedValue(point.x)
+        let y = (minY...maxY).constrainedValue(point.y)
+        return CGPoint(x: x, y: y)
+    }
+    
     /// 从当前Frame生成随机Frame
     /// - Parameter fixSize: 固定随机Rect尺寸
     /// - Returns: 随机尺寸
