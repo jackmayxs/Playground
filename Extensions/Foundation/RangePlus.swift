@@ -53,7 +53,10 @@ extension ClosedRange {
         rhs.clamped(to: lhs) == rhs
     }
     
-    func fitValueFor(value: Bound) -> Bound {
+    /// 将传入的值限制在范围内部 | 过大或过小则取相应的极值
+    /// - Parameter value: 需要限制的传入值
+    /// - Returns: 限制过后的值
+    func constrainedValue(_ value: Bound) -> Bound {
         if value < lowerBound {
             return lowerBound
         } else if value > upperBound {
