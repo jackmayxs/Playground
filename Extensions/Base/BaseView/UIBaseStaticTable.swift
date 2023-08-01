@@ -85,7 +85,7 @@ class UIBaseStaticTable: UITableView, StandardLayoutLifeCycle, UITableViewDelega
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         UITableViewHeaderFooterView.dequeueReusableHeaderFooterView(from: tableView).unwrap { header in
-            header.backgroundColor = tableView.backgroundColor
+            header.contentView.backgroundColor = tableView.backgroundColor
         }
     }
     
@@ -95,7 +95,7 @@ class UIBaseStaticTable: UITableView, StandardLayoutLifeCycle, UITableViewDelega
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         UITableViewHeaderFooterView.dequeueReusableHeaderFooterView(from: tableView).unwrap { footer in
-            footer.backgroundColor = tableView.backgroundColor
+            footer.contentView.backgroundColor = tableView.backgroundColor
         }
     }
     
