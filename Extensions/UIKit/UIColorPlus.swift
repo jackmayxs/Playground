@@ -52,6 +52,48 @@ extension UIColor {
         return (h, s, b, a)
     }
     
+    
+    /// 和UIColor相互转换不一致,需要校准
+    var xy: (x: Double, y: Double) {
+        lazy var zero = (0.0, 0.0)
+        let cgColor = cgColor
+        guard let components = cgColor.components else { return zero }
+        var red = 1.0
+        var green = 1.0
+        var blue = 1.0
+        if cgColor.numberOfComponents == 4 {
+            /// Full color
+            red = components[0]
+            green = components[1]
+            blue = components[2]
+        } else if cgColor.numberOfComponents == 2 {
+            // Greyscale color
+            red = components[0]
+            green = components[0]
+            blue = components[0]
+        }
+        // Apply gamma correction
+        let r = (red   > 0.04045) ? pow((red   + 0.055) / (1.0 + 0.055), 2.4) : (red   / 12.92)
+        let g = (green > 0.04045) ? pow((green + 0.055) / (1.0 + 0.055), 2.4) : (green / 12.92)
+        let b = (blue  > 0.04045) ? pow((blue  + 0.055) / (1.0 + 0.055), 2.4) : (blue  / 12.92)
+        
+        // Wide gamut conversion D65
+        let X = r * 0.649926 + g * 0.103455 + b * 0.197109
+        //let Y = r * 0.234327 + g * 0.743075 + b * 0.022598
+        let Y = 1.0
+        let Z = r * 0.0000000 + g * 0.053077 + b * 1.035763
+        
+        var cx = X / (X + Y + Z)
+        var cy = Y / (X + Y + Z)
+        if cx.isNaN {
+            cx = 0.0
+        }
+        if cy.isNaN {
+            cy = 0.0
+        }
+        return (cx, cy)
+    }
+    
     /// XY坐标创建颜色
     /// - Parameters:
     ///   - x: 0...0.8
