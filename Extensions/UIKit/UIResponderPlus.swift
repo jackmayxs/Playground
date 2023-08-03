@@ -19,7 +19,7 @@ extension UIResponder {
 extension UIResponder {
 	
     
-    var parentController: UIViewController? {
+    var associatedParentController: UIViewController? {
         if let controller = objc_getAssociatedObject(self, &Associated.parentController) as? UIViewController {
             return controller
         }
