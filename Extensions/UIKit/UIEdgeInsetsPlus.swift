@@ -11,6 +11,10 @@ import UIKit
 @available(iOS 11.0, *)
 extension NSDirectionalEdgeInsets {
 	
+    var reversed: NSDirectionalEdgeInsets {
+        NSDirectionalEdgeInsets(top: -top, leading: -leading, bottom: -bottom, trailing: -trailing)
+    }
+    
 	var uiEdgeInsets: UIEdgeInsets {
 		switch UIApplication.shared.userInterfaceLayoutDirection {
 			case .leftToRight:
