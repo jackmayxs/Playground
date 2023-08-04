@@ -41,7 +41,7 @@ class Variable<Wrapped> {
 @propertyWrapper
 final class ClamppedVariable<T>: Variable<T> where T: Comparable {
     
-    private let range: ClosedRange<T>
+    let range: ClosedRange<T>
     
     init(wrappedValue: T, range: ClosedRange<T>) {
         self.range = range
@@ -65,6 +65,14 @@ final class ClamppedVariable<T>: Variable<T> where T: Comparable {
             }
             super.wrappedValue = newValue
         }
+    }
+    
+    var upperBound: T {
+        range.upperBound
+    }
+    
+    var lowerBound: T {
+        range.lowerBound
     }
 }
 
