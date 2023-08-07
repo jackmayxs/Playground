@@ -53,6 +53,10 @@ extension Reactive where Base: UIView {
             .map(\.first)
             .asOptional(UIView.self)
     }
+    
+    var removeFromSuperview: Observable<[Any]> {
+        methodInvoked(#selector(base.removeFromSuperview))
+    }
 
     var didLayoutSubviews: Observable<Base> {
         methodInvoked(#selector(base.layoutSubviews))
