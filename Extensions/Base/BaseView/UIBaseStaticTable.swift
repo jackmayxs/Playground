@@ -112,12 +112,12 @@ class UIBaseStaticTable: UITableView, StandardLayoutLifeCycle, UITableViewDelega
 extension UIBaseStaticTable {
     
     final class Row {
-        let cell: UITableViewCell
+        private weak var cell_: UITableViewCell?
         let preferredHeight: CGFloat
         fileprivate var didSelectCallback: SimpleCallback?
         fileprivate var didSelectCallbacks: [SimpleCallback] = []
         init(cell: UITableViewCell, preferredHeight: CGFloat = UITableView.automaticDimension) {
-            self.cell = cell
+            self.cell_ = cell
             self.preferredHeight = preferredHeight
         }
         
@@ -141,6 +141,10 @@ extension UIBaseStaticTable {
             didSelectCallbacks.forEach { closure in
                 closure()
             }
+        }
+        
+        var cell: UITableViewCell {
+            cell_ ?? UITableViewCell()
         }
     }
     
@@ -210,7 +214,7 @@ extension UITableViewCell {
             return row
         } else {
             let row = StaticRow(cell: self, preferredHeight: preferredHeight)
-            objc_setAssociatedObject(self, &Self.associatedRow, row, .OBJC_ASSOCIATION_ASSIGN)
+            objc_setAssociatedObject(self, &Self.associatedRow, row, .OBJC_ASSOCIATION_RETAIN)
             return row
         }
     }
