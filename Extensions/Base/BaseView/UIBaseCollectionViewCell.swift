@@ -23,6 +23,22 @@ class UIBaseCollectionViewCell: UICollectionViewCell, StandardLayoutLifeCycle {
         }
     }
     
+    var defaultSelectedBackgroundColor: UIColor? {
+        didSet {
+            if #available(iOS 14.0, *) {
+                setNeedsUpdateConfiguration()
+            }
+        }
+    }
+    
+    var defaultHighlightedBackgroundColor: UIColor? {
+        didSet {
+            if #available(iOS 14.0, *) {
+                setNeedsUpdateConfiguration()
+            }
+        }
+    }
+    
     @Published var indexPath: IndexPath?
     
     override init(frame: CGRect) {
@@ -37,12 +53,17 @@ class UIBaseCollectionViewCell: UICollectionViewCell, StandardLayoutLifeCycle {
     @available(iOS 14.0, *)
     override func updateConfiguration(using state: UICellConfigurationState) {
         super.updateConfiguration(using: state)
-        var background: UIBackgroundConfiguration
-        if let defaultBackgroundColor {
-            background = .listPlainCell()
-            background.backgroundColor = defaultBackgroundColor
+        var background: UIBackgroundConfiguration = .listPlainCell()
+        if let defaultSelectedBackgroundColor, state.isSelected {
+            background.backgroundColor = defaultSelectedBackgroundColor
+        } else if let defaultHighlightedBackgroundColor, state.isHighlighted {
+            background.backgroundColor = defaultHighlightedBackgroundColor
         } else {
-            background = .clear()
+            if let defaultBackgroundColor {
+                background.backgroundColor = defaultBackgroundColor
+            } else {
+                background = .clear()
+            }
         }
         
         backgroundConfiguration = background
