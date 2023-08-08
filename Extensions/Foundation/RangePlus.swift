@@ -17,6 +17,14 @@ extension ClosedRange where Bound: Strideable, Bound.Stride: SignedInteger {
 
 extension ClosedRange where Bound == Int {
     
+    /// 求出指定值在本范围内的进度
+    /// - Parameter value: 要计算进度的值
+    /// - Returns: 进度
+    func percentageAt(_ value: Bound) -> Double {
+        guard contains(value) else { return 0.0 }
+        return Double(value - lowerBound) / count.double
+    }
+    
     /// 将范围映射成索引
     var indexRange: ClosedRange<Int> {
         lowerBound.index...upperBound.index
