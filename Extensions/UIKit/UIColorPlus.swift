@@ -21,6 +21,12 @@ extension UIColor {
 
 extension UIColor {
     
+    var hexString: String? {
+        int.map { int in
+            "#" + int.hexString
+        }
+    }
+    
     /// 返回argb颜色
     var int: Int? {
         guard let components = cgColor.components, components.count >= 3 else { return nil }
