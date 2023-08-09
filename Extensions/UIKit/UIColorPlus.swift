@@ -8,6 +8,8 @@
 
 import UIKit
 
+typealias Kelvin = CGFloat
+
 extension UIColor {
     static let OxCCCCCC = 0xCCCCCC.uiColor
     static let OxEEEEEE = 0xEEEEEE.uiColor
@@ -29,16 +31,23 @@ extension UIColor {
     
     /// 返回argb颜色
     var int: Int? {
+        int(alphaIgnored: true)
+    }
+    
+    func int(alphaIgnored: Bool = true) -> Int? {
         guard let components = cgColor.components, components.count >= 3 else { return nil }
-        let red = Int(components[0] * 255.0)
-        let green = Int(components[1] * 255.0)
-        let blue = Int(components[2] * 255.0)
+        lazy var red = Int(components[0] * 255.0)
+        lazy var green = Int(components[1] * 255.0)
+        lazy var blue = Int(components[2] * 255.0)
+        lazy var rgb = (red << 16) ^ (green << 8) ^ blue
         switch components.count {
         case 3:
-            return (red << 16) ^ (green << 8) ^ blue
+            return rgb
         case 4:
-            let alpha = Int(components[3] * 255.0)
-            return (alpha << 24) ^ (red << 16) ^ (green << 8) ^ blue
+            /// 透明度
+            lazy var alpha = Int(components[3] * 255.0)
+            /// 是否忽略透明通道
+            return alphaIgnored ? rgb : (alpha << 24) ^ rgb
         default:
             return nil
         }
@@ -98,6 +107,29 @@ extension UIColor {
             cy = 0.0
         }
         return (cx, cy)
+    }
+    
+    /// 从色温创建颜色
+    /// - Parameter temperature: 色温 | 取值范围: (1000K to 40000K)
+    /// https://github.com/davidf2281/ColorTempToRGB
+    convenience init(temperature: Kelvin) {
+        
+        func clamp(_ value: CGFloat) -> CGFloat {
+            value > 255 ? 255 : (value < 0 ? 0 : value);
+        }
+        
+        func componentsForColorTemperature(temperature: Kelvin) -> (red: CGFloat, green: CGFloat, blue: CGFloat) {
+            let percentKelvin = temperature / 100;
+            let red, green, blue: CGFloat
+            red = clamp(percentKelvin <= 66 ? 255 : (329.698727446 * pow(percentKelvin - 60, -0.1332047592)));
+            green = clamp(percentKelvin <= 66 ? (99.4708025861 * log(percentKelvin) - 161.1195681661) : 288.1221695283 * pow(percentKelvin - 60, -0.0755148492));
+            blue = clamp(percentKelvin >= 66 ? 255 : (percentKelvin <= 19 ? 0 : 138.5177312231 * log(percentKelvin - 10) - 305.0447927307));
+            return (red: red / 255, green: green / 255, blue: blue / 255)
+        }
+        
+        let components = componentsForColorTemperature(temperature: temperature)
+        
+        self.init(red: components.red, green: components.green, blue: components.blue, alpha: 1.0)
     }
     
     /// XY坐标创建颜色
