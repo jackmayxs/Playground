@@ -110,12 +110,16 @@ class UIBaseTableViewCell: UITableViewCell, StandardLayoutLifeCycle {
             background = .clear()
         } else {
             /// 如果高亮或选中状态的颜色为空, 则使用tintColor作为默认颜色填充
-            if state.isHighlighted {
-                background.backgroundColor = defaultHighlightBackgroundColor.or(.clear)
-            } else if state.isSelected {
-                background.backgroundColor = defaultSelectedBackgroundColor.or(.clear)
+            if let defaultHighlightBackgroundColor, state.isHighlighted {
+                background.backgroundColor = defaultHighlightBackgroundColor
+            } else if let defaultSelectedBackgroundColor, state.isSelected {
+                background.backgroundColor = defaultSelectedBackgroundColor
             } else {
-                background.backgroundColor = defaultBackgroundColor.or(.white)
+                if let defaultBackgroundColor {
+                    background.backgroundColor = defaultBackgroundColor
+                } else {
+                    background = .clear()
+                }
             }
         }
         
