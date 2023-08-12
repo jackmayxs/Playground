@@ -6,14 +6,6 @@
 
 import Foundation
 
-extension Optional: OptionalType {
-    var optionalValue: Wrapped? { self }
-}
-
-extension Optional: SelfReflectable {
-    var itself: Optional<Wrapped> { self }
-}
-
 extension Optional {
     
     var isNotValid: Bool {

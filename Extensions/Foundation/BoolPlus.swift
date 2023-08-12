@@ -16,7 +16,3 @@ extension Bool {
         self == false
     }
 }
-
-extension Bool: SelfReflectable {
-    var itself: Bool { self }
-}
