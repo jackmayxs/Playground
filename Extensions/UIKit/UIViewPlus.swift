@@ -33,7 +33,7 @@ extension Tapable where Self: UIView {
     var tapped: ((Self) -> Void)? {
         get {
             if let target = objc_getAssociatedObject(self, &Self.tappedClosureKey) as? ClosureSleeve<Self> {
-                return target.closure
+                return target.actionCallback
             } else {
                 return nil
             }
@@ -41,10 +41,10 @@ extension Tapable where Self: UIView {
         set {
             isUserInteractionEnabled = true
             if let target = objc_getAssociatedObject(self, &Self.tappedClosureKey) as? ClosureSleeve<Self> {
-                target.closure = newValue
+                target.actionCallback = newValue
             } else {
                 let target = ClosureSleeve(sender: self, newValue)
-                let tapGesture = UITapGestureRecognizer(target: target, action: #selector(target.invoke))
+                let tapGesture = UITapGestureRecognizer(target: target, action: #selector(target.action))
                 addGestureRecognizer(tapGesture)
                 objc_setAssociatedObject(self, &Self.tappedClosureKey, target, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             }
@@ -53,7 +53,7 @@ extension Tapable where Self: UIView {
     
     func addTappedExecution(_ execute: ((Self) -> Void)?) {
         let target = ClosureSleeve(sender: self, execute)
-        let tapGesture = UITapGestureRecognizer(target: target, action: #selector(target.invoke))
+        let tapGesture = UITapGestureRecognizer(target: target, action: #selector(target.action))
         addGestureRecognizer(tapGesture)
         targets.add(target)
     }

@@ -36,7 +36,6 @@ extension UITableViewCell {
     }
 }
 
-extension UITableViewCell: ReusableView {}
 extension UITableViewCell {
     static func registerFor(_ tableView: UITableView) {
         tableView.register(self, forCellReuseIdentifier: reuseId)

@@ -15,3 +15,7 @@ protocol OptionalType {
 extension Optional: OptionalType {
     var optionalValue: Wrapped? { self }
 }
+
+extension URL: OptionalType {
+    var optionalValue: URL? { self }
+}

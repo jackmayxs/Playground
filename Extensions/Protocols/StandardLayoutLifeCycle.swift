@@ -5,7 +5,7 @@
 //  Created by Choi on 2023/8/12.
 //
 
-import Foundation
+import UIKit
 
 protocol StandardLayoutLifeCycle: UIView {
     

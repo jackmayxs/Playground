@@ -8,7 +8,6 @@
 
 import UIKit
 
-extension UICollectionReusableView: ReusableView {}
 extension UICollectionReusableView {
 	enum SupplementaryViewKind {
 		case header

@@ -15,3 +15,23 @@ protocol SizeExtendable {
     /// 水平方向扩展
     var horizontal: CGFloat { get }
 }
+
+extension Int: SizeExtendable {
+    var vertical: CGFloat { cgFloat }
+    var horizontal: CGFloat { cgFloat }
+}
+
+extension Double: SizeExtendable {
+    var vertical: CGFloat { self }
+    var horizontal: CGFloat { self }
+}
+
+extension CGSize: SizeExtendable {
+    var vertical: CGFloat { height }
+    var horizontal: CGFloat { width }
+}
+
+extension UIEdgeInsets: SizeExtendable {
+    var vertical: CGFloat { top + bottom }
+    var horizontal: CGFloat { left + right }
+}

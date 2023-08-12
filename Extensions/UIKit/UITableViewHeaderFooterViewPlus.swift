@@ -32,7 +32,6 @@ extension UITableViewHeaderFooterView {
     }
 }
 
-extension UITableViewHeaderFooterView: ReusableView {}
 extension UITableViewHeaderFooterView {
     static func registerFor(_ tableView: UITableView) {
         tableView.register(self, forHeaderFooterViewReuseIdentifier: reuseId)

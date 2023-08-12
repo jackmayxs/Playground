@@ -21,3 +21,7 @@ extension ReusableView {
         layout.register(self, forDecorationViewOfKind: reuseId)
     }
 }
+
+extension UICollectionReusableView: ReusableView {}
+extension UITableViewHeaderFooterView: ReusableView {}
+extension UITableViewCell: ReusableView {}

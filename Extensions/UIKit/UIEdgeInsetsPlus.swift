@@ -123,11 +123,6 @@ extension UIEdgeInsets {
 	}
 }
 
-extension UIEdgeInsets: SizeExtendable {
-	var vertical: CGFloat { top + bottom }
-	var horizontal: CGFloat { left + right }
-}
-
 extension UIEdgeInsets: ExpressibleByFloatLiteral {
 	public typealias FloatLiteralType = Double
 	public init(floatLiteral literal: Double) {
