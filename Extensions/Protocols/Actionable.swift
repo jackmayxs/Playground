@@ -54,13 +54,21 @@ extension Actionable where Self: UIControl {
     }
     
     
-    func trigger(_ event: UIControl.Event = .touchUpInside, _ action: @escaping ((Self) -> Void)) {
+    func trigger(_ event: UIControl.Event = .touchUpInside, _ callback: @escaping ((Self) -> Void)) {
+        
+        if #available(iOS 14, *) {
+            let action = UIAction { action in
+                guard let sender = action.sender as? Self else { return }
+                callback(sender)
+            }
+            return addAction(action, for: event)
+        }
         
         if let eventActions = self.eventActions[event.rawValue] {
-            eventActions.callbacks.append(action)
+            eventActions.callbacks.append(callback)
         } else {
             let eventActions = EventActions<Self>()
-            eventActions.callbacks.append(action)
+            eventActions.callbacks.append(callback)
             self.eventActions[event.rawValue] = eventActions
         }
         
