@@ -95,3 +95,17 @@ func dismissKeyboard() {
     /// to: 指定参数为nil, 此方法会将Action发送给当前的第一响应者, 从而达到隐藏键盘的效果
     UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
 }
+
+/// 削除Xcode15警告而定义的全局方法\
+
+func getAssociatedObject<T>(_ object: Any, _ key: T) -> Any? {
+    withUnsafePointer(to: key) { unsafePointer in
+        objc_getAssociatedObject(object, unsafePointer)
+    }
+}
+
+func setAssociatedObject<T>(_ object: Any, _ key: T, _ value: Any?, _ policy: objc_AssociationPolicy) {
+    withUnsafePointer(to: key) { unsafePointer in
+        objc_setAssociatedObject(object, unsafePointer, value, policy)
+    }
+}
