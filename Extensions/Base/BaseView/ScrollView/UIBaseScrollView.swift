@@ -11,6 +11,13 @@ class UIBaseScrollView: UIScrollView, StandardLayoutLifeCycle {
     /// 是否开启: 触摸到UIControl子类的时候阻断滚动视图的滚动
     var doBlockScrollWhenHitUIControls = true
     
+    var defaultBackgroundColor: UIColor? = baseViewBackgroundColor {
+        willSet {
+            backgroundColor = newValue
+            contentView.backgroundColor = newValue
+        }
+    }
+    
     lazy var contentView = defaultContentView
     
     override init(frame: CGRect) {
@@ -50,7 +57,7 @@ class UIBaseScrollView: UIScrollView, StandardLayoutLifeCycle {
         prepareConstraints()
         contentInsetAdjustmentBehavior = .automatic
         keyboardDismissMode = .interactive
-        backgroundColor = .clear
+        backgroundColor = defaultBackgroundColor
         showsVerticalScrollIndicator = false
         showsHorizontalScrollIndicator = false
     }
@@ -66,6 +73,6 @@ class UIBaseScrollView: UIScrollView, StandardLayoutLifeCycle {
     }
     
     var defaultContentView: UIView {
-        UIView()
+        UIView(color: defaultBackgroundColor)
     }
 }

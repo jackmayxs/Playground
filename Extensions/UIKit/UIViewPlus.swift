@@ -61,7 +61,7 @@ extension Tapable where Self: UIView {
 
 extension UIView {
 	
-	convenience init(color: UIColor) {
+	convenience init(color: UIColor?) {
 		self.init(frame: .zero)
 		backgroundColor = color
 	}
