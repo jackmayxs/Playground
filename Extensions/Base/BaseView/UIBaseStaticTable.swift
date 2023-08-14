@@ -210,11 +210,11 @@ extension UITableViewCell {
     }
     
     func row(preferredHeight: CGFloat) -> StaticRow {
-        if let row = objc_getAssociatedObject(self, &Self.associatedRow) as? StaticRow {
+        if let row = getAssociatedObject(self, &Self.associatedRow) as? StaticRow {
             return row
         } else {
             let row = StaticRow(cell: self, preferredHeight: preferredHeight)
-            objc_setAssociatedObject(self, &Self.associatedRow, row, .OBJC_ASSOCIATION_RETAIN)
+            setAssociatedObject(self, &Self.associatedRow, row, .OBJC_ASSOCIATION_RETAIN)
             return row
         }
     }

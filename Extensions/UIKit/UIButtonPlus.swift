@@ -59,9 +59,9 @@ extension UIButton {
 	
 	/// 是否使用背景图片尺寸作为按钮固有尺寸
 	var useBackgroundImageSize: Bool {
-		get { objc_getAssociatedObject(self, &Key.useBackgroundImageSize) as? Bool ?? false }
+		get { getAssociatedObject(self, &Key.useBackgroundImageSize) as? Bool ?? false }
 		set {
-			objc_setAssociatedObject(self, &Key.useBackgroundImageSize, newValue, .OBJC_ASSOCIATION_ASSIGN)
+			setAssociatedObject(self, &Key.useBackgroundImageSize, newValue, .OBJC_ASSOCIATION_ASSIGN)
 			invalidateIntrinsicContentSize()
 		}
 	}
@@ -69,23 +69,23 @@ extension UIButton {
 	/// 图片位置
 	var imagePlacement: ImagePlacement {
 		get {
-			guard let rawValue = objc_getAssociatedObject(self, &Key.imagePlacement) as? Int else {
+			guard let rawValue = getAssociatedObject(self, &Key.imagePlacement) as? Int else {
 				return .left
 			}
 			return ImagePlacement(rawValue: rawValue).unsafelyUnwrapped
 		}
 		set {
-			objc_setAssociatedObject(self, &Key.imagePlacement, newValue.rawValue, .OBJC_ASSOCIATION_ASSIGN)
+			setAssociatedObject(self, &Key.imagePlacement, newValue.rawValue, .OBJC_ASSOCIATION_ASSIGN)
 			setupImageTitleEdgeInsets()
 		}
 	}
 	
 	/// Image-Title间距(大于等于0; 最好是偶数,否则按钮显示可能会有小小误差<iOS中像素对齐导致的问题>)
 	var imagePadding: CGFloat {
-		get { objc_getAssociatedObject(self, &Key.imagePadding) as? CGFloat ?? 0 }
+		get { getAssociatedObject(self, &Key.imagePadding) as? CGFloat ?? 0 }
 		set {
 			assert(newValue >= 0, "A sane person will never do that🤪,right?")
-			objc_setAssociatedObject(self, &Key.imagePadding, newValue, .OBJC_ASSOCIATION_ASSIGN)
+			setAssociatedObject(self, &Key.imagePadding, newValue, .OBJC_ASSOCIATION_ASSIGN)
 			setupImageTitleEdgeInsets()
 		}
 	}

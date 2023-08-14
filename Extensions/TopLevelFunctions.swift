@@ -96,16 +96,10 @@ func dismissKeyboard() {
     UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
 }
 
-/// 削除Xcode15警告而定义的全局方法\
-
-func getAssociatedObject<T>(_ object: Any, _ key: T) -> Any? {
-    withUnsafePointer(to: key) { unsafePointer in
-        objc_getAssociatedObject(object, unsafePointer)
-    }
+func getAssociatedObject<T>(_ object: Any, _ key: inout T) -> Any? {
+    objc_getAssociatedObject(object, &key)
 }
 
-func setAssociatedObject<T>(_ object: Any, _ key: T, _ value: Any?, _ policy: objc_AssociationPolicy) {
-    withUnsafePointer(to: key) { unsafePointer in
-        objc_setAssociatedObject(object, unsafePointer, value, policy)
-    }
+func setAssociatedObject<T>(_ object: Any, _ key: inout T, _ value: Any?, _ policy: objc_AssociationPolicy) {
+    objc_setAssociatedObject(object, &key, value, policy)
 }

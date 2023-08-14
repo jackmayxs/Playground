@@ -18,11 +18,11 @@ extension UIControl: UIControlTargetType {
     
     /// 用于保存添加的target(ClosureSleeve)
     fileprivate var targets: NSMutableArray {
-        if let array = getAssociatedObject(self, Self.targetsArrayKey) as? NSMutableArray {
+        if let array = getAssociatedObject(self, &Self.targetsArrayKey) as? NSMutableArray {
             return array
         } else {
             let array = NSMutableArray()
-            setAssociatedObject(self, Self.targetsArrayKey, array, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            setAssociatedObject(self, &Self.targetsArrayKey, array, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             return array
         }
     }
@@ -30,7 +30,7 @@ extension UIControl: UIControlTargetType {
 
 extension UIControlTargetType where Self: UIControl {
     
-    func addEvents(_ events: UIControl.Event = .touchUpInside, _ callback: ((Self) -> Void)? = nil) {
+    func addEvents(_ events: UIControl.Event = .touchUpInside, _ callback: ((Self) -> Void)?) {
         if #available(iOS 14, *) {
             let action = UIAction { action in
                 guard let callback, let sender = action.sender as? Self else { return }

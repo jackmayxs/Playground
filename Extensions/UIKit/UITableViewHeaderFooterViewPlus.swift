@@ -18,16 +18,16 @@ extension UITableViewHeaderFooterView {
             tableView(UITableView.self)
         }
         set {
-            objc_setAssociatedObject(self, &Associated.tableView, newValue, .OBJC_ASSOCIATION_ASSIGN)
+            setAssociatedObject(self, &Associated.tableView, newValue, .OBJC_ASSOCIATION_ASSIGN)
         }
     }
     
     func tableView<T>(_ type: T.Type) -> T? where T: UITableView {
-        if let existedTableView = objc_getAssociatedObject(self, &Associated.tableView) as? T {
+        if let existedTableView = getAssociatedObject(self, &Associated.tableView) as? T {
             return existedTableView
         }
         let fetchTableView = superview(type)
-        objc_setAssociatedObject(self, &Associated.tableView, fetchTableView, .OBJC_ASSOCIATION_ASSIGN)
+        setAssociatedObject(self, &Associated.tableView, fetchTableView, .OBJC_ASSOCIATION_ASSIGN)
         return fetchTableView
     }
 }

@@ -18,11 +18,11 @@ extension UIView: Tapable {
     fileprivate static var targetsArrayKey = UUID()
     fileprivate static var tappedClosureKey = UUID()
     fileprivate var targets: NSMutableArray {
-        if let array = objc_getAssociatedObject(self, &Self.targetsArrayKey) as? NSMutableArray {
+        if let array = getAssociatedObject(self, &Self.targetsArrayKey) as? NSMutableArray {
             return array
         } else {
             let array = NSMutableArray()
-            objc_setAssociatedObject(self, &Self.targetsArrayKey, array, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            setAssociatedObject(self, &Self.targetsArrayKey, array, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             return array
         }
     }
@@ -32,7 +32,7 @@ extension Tapable where Self: UIView {
     
     var tapped: ((Self) -> Void)? {
         get {
-            if let target = objc_getAssociatedObject(self, &Self.tappedClosureKey) as? ClosureSleeve<Self> {
+            if let target = getAssociatedObject(self, &Self.tappedClosureKey) as? ClosureSleeve<Self> {
                 return target.actionCallback
             } else {
                 return nil
@@ -40,13 +40,13 @@ extension Tapable where Self: UIView {
         }
         set {
             isUserInteractionEnabled = true
-            if let target = objc_getAssociatedObject(self, &Self.tappedClosureKey) as? ClosureSleeve<Self> {
+            if let target = getAssociatedObject(self, &Self.tappedClosureKey) as? ClosureSleeve<Self> {
                 target.actionCallback = newValue
             } else {
                 let target = ClosureSleeve(sender: self, newValue)
                 let tapGesture = UITapGestureRecognizer(target: target, action: #selector(target.action))
                 addGestureRecognizer(tapGesture)
-                objc_setAssociatedObject(self, &Self.tappedClosureKey, target, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                setAssociatedObject(self, &Self.tappedClosureKey, target, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             }
         }
     }
@@ -80,10 +80,10 @@ extension KK where Base: UIView {
     
     /// 使用命名空间,避免和UICollectionView,UITableView的属性名冲突
     var backgroundView: UIView? {
-        get { objc_getAssociatedObject(base, &Associated.backgroundViewKey) as? UIView }
+        get { getAssociatedObject(base, &Associated.backgroundViewKey) as? UIView }
         nonmutating set {
             backgroundView?.removeFromSuperview()
-            objc_setAssociatedObject(base, &Associated.backgroundViewKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            setAssociatedObject(base, &Associated.backgroundViewKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
 }
@@ -115,10 +115,10 @@ extension UIView {
     
     var mournView: UIView? {
         get {
-            objc_getAssociatedObject(self, &Associated.mournFilterViewKey) as? UIView
+            getAssociatedObject(self, &Associated.mournFilterViewKey) as? UIView
         }
         set {
-            objc_setAssociatedObject(self, &Associated.mournFilterViewKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            setAssociatedObject(self, &Associated.mournFilterViewKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
     
@@ -586,7 +586,7 @@ extension UIView {
 	// MARK: - __________ 圆角 + 阴影 __________
 	final class _UIShadowView: UIView { }
 	var shadowView: _UIShadowView {
-		guard let shadow = objc_getAssociatedObject(self, &Associated.shadowViewKey) as? _UIShadowView else {
+		guard let shadow = getAssociatedObject(self, &Associated.shadowViewKey) as? _UIShadowView else {
 			let shadow = _UIShadowView(frame: bounds)
 			shadow.isUserInteractionEnabled = false
 			shadow.backgroundColor = .clear
@@ -597,7 +597,7 @@ extension UIView {
 				.flexibleWidth,
 				.flexibleHeight
 			]
-			objc_setAssociatedObject(self, &Associated.shadowViewKey, shadow, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+			setAssociatedObject(self, &Associated.shadowViewKey, shadow, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
 			return shadow
 		}
 		return shadow

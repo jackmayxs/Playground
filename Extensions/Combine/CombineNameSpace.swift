@@ -61,17 +61,17 @@ public extension CB where Base: AnyObject {
     var disposeSet: Set<AnyCancellable> {
         get {
             synchronized(lock: base) {
-                if let disposeSet = objc_getAssociatedObject(base, &disposeSetContext) as? Set<AnyCancellable> {
+                if let disposeSet = getAssociatedObject(base, &disposeSetContext) as? Set<AnyCancellable> {
                     return disposeSet
                 }
                 let disposeSet = Set<AnyCancellable>()
-                objc_setAssociatedObject(base, &disposeSetContext, disposeSet, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                setAssociatedObject(base, &disposeSetContext, disposeSet, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
                 return disposeSet
             }
         }
         nonmutating set {
             synchronized(lock: base) {
-                objc_setAssociatedObject(base, &disposeSetContext, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                setAssociatedObject(base, &disposeSetContext, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             }
         }
     }

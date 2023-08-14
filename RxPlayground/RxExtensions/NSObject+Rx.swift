@@ -17,18 +17,18 @@ public extension Reactive where Base: AnyObject {
     var disposeBag: DisposeBag {
         get {
             synchronized(lock: base) {
-                if let disposeObject = objc_getAssociatedObject(base, &disposeBagContext) as? DisposeBag {
+                if let disposeObject = getAssociatedObject(base, &disposeBagContext) as? DisposeBag {
                     return disposeObject
                 }
                 let disposeObject = DisposeBag()
-                objc_setAssociatedObject(base, &disposeBagContext, disposeObject, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                setAssociatedObject(base, &disposeBagContext, disposeObject, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
                 return disposeObject
             }
         }
         
         nonmutating set {
             synchronized(lock: base) {
-                objc_setAssociatedObject(base, &disposeBagContext, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                setAssociatedObject(base, &disposeBagContext, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             }
         }
     }
@@ -57,7 +57,7 @@ fileprivate var activityIndicatorKey = UUID()
 extension Reactive where Base: ActivityTracker {
     var activity: ActivityIndicator {
         synchronized(lock: base) {
-            if let indicator = objc_getAssociatedObject(base, &activityIndicatorKey) as? ActivityIndicator {
+            if let indicator = getAssociatedObject(base, &activityIndicatorKey) as? ActivityIndicator {
                 return indicator
             } else {
                 let indicator = ActivityIndicator()
@@ -66,7 +66,7 @@ extension Reactive where Base: ActivityTracker {
                         weakBase.trackActivity(processing)
                     }
                 }
-                objc_setAssociatedObject(base, &activityIndicatorKey, indicator, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                setAssociatedObject(base, &activityIndicatorKey, indicator, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
                 return indicator
             }
         }
