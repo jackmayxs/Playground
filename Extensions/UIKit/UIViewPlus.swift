@@ -429,6 +429,18 @@ extension UIView {
     /// 限制宽高范围
     /// - Returns: 自己
     func limit(minWidth: CGFloat? = nil, maxWidth: CGFloat? = nil, minHeight: CGFloat? = nil, maxHeight: CGFloat? = nil) -> Self {
+        limit(
+            minWidth: minWidth?.uiLayoutConstraint,
+            maxWidth: maxWidth?.uiLayoutConstraint,
+            minHeight: minHeight?.uiLayoutConstraint,
+            maxHeight: maxHeight?.uiLayoutConstraint
+        )
+    }
+    
+    @discardableResult
+    /// 限制宽高范围
+    /// - Returns: 自己
+    func limit(minWidth: UILayoutConstraint? = nil, maxWidth: UILayoutConstraint? = nil, minHeight: UILayoutConstraint? = nil, maxHeight: UILayoutConstraint? = nil) -> Self {
         translatesAutoresizingMaskIntoConstraints = false
         if let minWidth {
             let existedConstraints = constraints.filter { constraint in
@@ -438,7 +450,9 @@ extension UIView {
                 return true
             }
             removeConstraints(existedConstraints)
-            widthAnchor.constraint(greaterThanOrEqualToConstant: minWidth).isActive = true
+            let constraint = widthAnchor.constraint(greaterThanOrEqualToConstant: minWidth.constant)
+            constraint.isActive = true
+            constraint.priority = minWidth.priority
         }
         if let maxWidth {
             let existedConstraints = constraints.filter { constraint in
@@ -448,7 +462,9 @@ extension UIView {
                 return true
             }
             removeConstraints(existedConstraints)
-            widthAnchor.constraint(lessThanOrEqualToConstant: maxWidth).isActive = true
+            let constraint = widthAnchor.constraint(lessThanOrEqualToConstant: maxWidth.constant)
+            constraint.isActive = true
+            constraint.priority = maxWidth.priority
         }
         if let minHeight {
             let existedConstraints = constraints.filter { constraint in
@@ -458,7 +474,9 @@ extension UIView {
                 return true
             }
             removeConstraints(existedConstraints)
-            heightAnchor.constraint(greaterThanOrEqualToConstant: minHeight).isActive = true
+            let constraint = heightAnchor.constraint(greaterThanOrEqualToConstant: minHeight.constant)
+            constraint.isActive = true
+            constraint.priority = minHeight.priority
         }
         if let maxHeight {
             let existedConstraints = constraints.filter { constraint in
@@ -468,7 +486,9 @@ extension UIView {
                 return true
             }
             removeConstraints(existedConstraints)
-            heightAnchor.constraint(lessThanOrEqualToConstant: maxHeight).isActive = true
+            let constraint = heightAnchor.constraint(lessThanOrEqualToConstant: maxHeight.constant)
+            constraint.isActive = true
+            constraint.priority = maxHeight.priority
         }
         return self
     }
