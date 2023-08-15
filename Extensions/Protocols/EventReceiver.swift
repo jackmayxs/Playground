@@ -8,8 +8,8 @@
 import UIKit
 
 protocol EventReceiver {
-    associatedtype T = Self
-    func addEvents(_ events: UIControl.Event, _ callback: ((T) -> Void)?)
+    associatedtype Control: UIControl
+    func addEvents(_ events: UIControl.Event, _ callback: ((Control) -> Void)?)
 }
 
 extension UIControl: EventReceiver {
