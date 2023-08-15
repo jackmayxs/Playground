@@ -22,6 +22,10 @@ extension BinaryInteger {
         CGFloat(self)
     }
     
+    var float: Float {
+        Float(self)
+    }
+    
     var double: Double {
         Double(self)
     }

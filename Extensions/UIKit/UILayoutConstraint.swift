@@ -17,28 +17,42 @@ public struct UILayoutConstraint {
 }
 
 extension CGFloat {
-    var uiLayoutConstraint: UILayoutConstraint {
-        uiLayoutConstraint()
+    var constraint: UILayoutConstraint {
+        constraint(priority: .required)
     }
-    func uiLayoutConstraint(priority: UILayoutPriority = .required) -> UILayoutConstraint {
+    func constraint(priority: UILayoutPriority) -> UILayoutConstraint {
         UILayoutConstraint(constant: self, priority: priority)
     }
 }
 
 extension Double {
-    var uiLayoutConstraint: UILayoutConstraint {
-        uiLayoutConstraint()
+    var constraint: UILayoutConstraint {
+        constraint(priority: .required)
     }
-    func uiLayoutConstraint(priority: UILayoutPriority = .required) -> UILayoutConstraint {
+    func constraint(priority: UILayoutPriority) -> UILayoutConstraint {
         UILayoutConstraint(constant: self, priority: priority)
     }
 }
 
 extension Int {
-    var uiLayoutConstraint: UILayoutConstraint {
-        uiLayoutConstraint()
+    var constraint: UILayoutConstraint {
+        constraint(priority: .required)
     }
-    func uiLayoutConstraint(priority: UILayoutPriority = .required) -> UILayoutConstraint {
+    func constraint(priority: UILayoutPriority) -> UILayoutConstraint {
         UILayoutConstraint(constant: Double(self), priority: priority)
+    }
+}
+
+extension UILayoutPriority: ExpressibleByFloatLiteral {
+    public typealias FloatLiteralType = Float
+    public init(floatLiteral value: FloatLiteralType) {
+        self.init(rawValue: value)
+    }
+}
+
+extension UILayoutPriority: ExpressibleByIntegerLiteral {
+    public typealias IntegerLiteralType = Int
+    public init(integerLiteral value: IntegerLiteralType) {
+        self.init(rawValue: value.float)
     }
 }

@@ -429,12 +429,10 @@ extension UIView {
     /// 限制宽高范围
     /// - Returns: 自己
     func limit(minWidth: CGFloat? = nil, maxWidth: CGFloat? = nil, minHeight: CGFloat? = nil, maxHeight: CGFloat? = nil) -> Self {
-        limit(
-            minWidth: minWidth?.uiLayoutConstraint,
-            maxWidth: maxWidth?.uiLayoutConstraint,
-            minHeight: minHeight?.uiLayoutConstraint,
-            maxHeight: maxHeight?.uiLayoutConstraint
-        )
+        limit(minWidth: minWidth?.constraint,
+              maxWidth: maxWidth?.constraint,
+              minHeight: minHeight?.constraint,
+              maxHeight: maxHeight?.constraint)
     }
     
     @discardableResult
