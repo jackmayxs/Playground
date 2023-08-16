@@ -153,6 +153,10 @@ extension Double {
         f(2)
     }
     
+    var f4: String {
+        f(4)
+    }
+    
     func f(_ minimumFractionDigits: Int) -> String {
         decimalFormatter.configure { make in
             make.minimumFractionDigits = minimumFractionDigits
