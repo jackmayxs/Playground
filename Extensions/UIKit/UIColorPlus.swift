@@ -190,7 +190,12 @@ extension UIColor {
                 b = 1.0
             }
         }
-        self.init(red: r, green: g, blue: b, alpha: 1.0)
+        /// 限制在0...1范围内避免出现负值导致错误
+        let range = (0.0...1.0)
+        let cr = range.constrainedValue(r)
+        let cg = range.constrainedValue(g)
+        let cb = range.constrainedValue(b)
+        self.init(red: cr, green: cg, blue: cb, alpha: 1.0)
     }
     
     convenience init(hue: Double) {
