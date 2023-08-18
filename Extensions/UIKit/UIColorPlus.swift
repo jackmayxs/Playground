@@ -110,6 +110,13 @@ extension UIColor {
     }
     
     /// 从色温创建颜色
+    /// - Parameter kelvin: 色温 | 单位: 开尔文
+    /// - Returns: UIColor对象
+    static func fromTemperature(_ kelvin: Kelvin) -> UIColor {
+        UIColor(temperature: kelvin)
+    }
+    
+    /// 从色温创建颜色
     /// - Parameter temperature: 色温 | 取值范围: (1000K to 40000K)
     /// https://github.com/davidf2281/ColorTempToRGB
     convenience init(temperature: Kelvin) {
