@@ -38,6 +38,10 @@ extension CGRect {
         CGRect(origin: origin, size: size)
     }
     
+    var area: CGFloat {
+        size.area
+    }
+    
     /// 对角线长度
     var diagonal: CGFloat {
         size.diagonal
