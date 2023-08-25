@@ -239,11 +239,17 @@ extension String {
 // MARK: - __________ Verification __________
 
 enum StringType {
+    /// 中国手机号
     case cellphoneNumber
+    /// 邮箱地址
     case emailAddress
+    /// 身份证号
     case identityCardNumber
+    /// 正整数
     case number
+    /// 小数
     case decimalNumber
+    /// 密码
     case password(regex: String)
     
     private var regex: String {
@@ -255,7 +261,7 @@ enum StringType {
         case .identityCardNumber:
             return #"^[1-9]\d{5}(?:18|19|20)\d{2}(?:0[1-9]|10|11|12)(?:0[1-9]|[1-2]\d|30|31)\d{3}[\dXx]$"#
         case .number:
-            return "^[0-9]+([.]{1}[0-9]+){0,1}$"
+            return #"^[1-9]\d*|0$"#
         case .decimalNumber:
             return "^([0-9]{1,}[.][0-9]*)$"
         case .password(let regex):
