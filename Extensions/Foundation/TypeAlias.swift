@@ -10,3 +10,4 @@ import Foundation
 
 public typealias IndexPathSet = Set<IndexPath>
 public typealias SimpleCallback = () -> Void
+public typealias CompletedCallback = (Swift.Error?) -> Void
