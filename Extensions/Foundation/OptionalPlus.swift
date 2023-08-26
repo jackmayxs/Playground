@@ -33,9 +33,9 @@ extension Optional {
     /// 如果不为空则以解包后的值作为入参执行闭包
     /// - Parameter execute: 回调闭包
     @discardableResult
-    func unwrap(execute: (Wrapped) -> Void) -> Wrapped? {
+    func unwrap(execute: (Wrapped) throws -> Void) rethrows -> Wrapped? {
         guard let self else { return nil }
-        execute(self)
+        try execute(self)
         return self
     }
     
