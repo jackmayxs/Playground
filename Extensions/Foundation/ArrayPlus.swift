@@ -13,8 +13,16 @@ extension Array {
     }
     
     public mutating func refill(@ArrayBuilder<Element> _ builder: () -> [Element]) {
+        refill(builder())
+    }
+    
+    public mutating func refill(_ newElements: Element...) {
+        refill(newElements)
+    }
+    
+    public mutating func refill(_ newElements: [Element]) {
         removeAll()
-        append(builder)
+        append(contentsOf: newElements)
     }
     
     public mutating func append(@ArrayBuilder<Element> _ builder: () -> [Element]) {
