@@ -12,14 +12,9 @@ extension SKNode {
     
     func purge() {
         for child in children {
-            guard child.parent.isValid else { continue }
-            defer {
-                child.removeFromParent()
-            }
-            for grandSon in child.children {
-                grandSon.purge()
-            }
+            child.purge()
         }
+        removeAllChildren()
     }
     
     func replaceAction(_ action: SKAction, withKey actionKey: String) {
