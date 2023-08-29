@@ -10,6 +10,16 @@ import SpriteKit
 
 extension SKNode {
     
+    /// 开启 | 关闭手势
+    /// - Parameter enabled: 是否启用顶层SKView的手势
+    func setGesturesEnabled(_ enabled: Bool) {
+        if let gestures = scene?.view?.gestureRecognizers {
+            gestures.forEach { gesture in
+                gesture.isEnabled = enabled
+            }
+        }
+    }
+    
     func purge() {
         for child in children {
             child.purge()
