@@ -216,6 +216,16 @@ extension UIColor {
         }
     }
     
+    /// 使用RGB创建UIColor | 用于某些情况下使用.map方法快速映射成UIColor
+    convenience init(red: CGFloat, green: CGFloat, blue: CGFloat) {
+        self.init(red: red, green: green, blue: blue, alpha: 1.0)
+    }
+    
+    /// 使用RGB创建UIColor | 用于某些情况下使用.map方法快速映射成UIColor | 用于某些情况下使用Double类型作输入参数
+    convenience init(red: Double, green: Double, blue: Double) {
+        self.init(red: red, green: green, blue: blue, alpha: 1.0)
+    }
+    
     /// 添加透明色
     static func +(lhs: UIColor, rhs: CGFloat) -> UIColor {
         lhs.withAlphaComponent(rhs)
