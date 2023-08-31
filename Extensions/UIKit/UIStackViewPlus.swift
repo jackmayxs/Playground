@@ -15,10 +15,20 @@ extension UIStackView {
 		distribution: UIStackView.Distribution = .fill,
 		alignment: UIStackView.Alignment = .leading,
 		spacing: CGFloat = 0.0,
-		@ArrayBuilder<UIView> content: () -> [UIView] = { [] }
+		@ArrayBuilder<UIView> arrangedSubviews: () -> [UIView] = { [] }
 	) {
-        self.init(axis: axis, distribution: distribution, alignment: alignment, spacing: spacing, arrangedSubviews: content())
+        self.init(axis: axis, distribution: distribution, alignment: alignment, spacing: spacing, arrangedSubviews: arrangedSubviews())
 	}
+    
+    convenience init(
+        axis: NSLayoutConstraint.Axis = .vertical,
+        distribution: UIStackView.Distribution = .fill,
+        alignment: UIStackView.Alignment = .leading,
+        spacing: CGFloat = 0.0,
+        arrangedSubviews: UIView...
+    ) {
+        self.init(axis: axis, distribution: distribution, alignment: alignment, spacing: spacing, arrangedSubviews: arrangedSubviews)
+    }
     
     convenience init(
         axis: NSLayoutConstraint.Axis = .vertical,
