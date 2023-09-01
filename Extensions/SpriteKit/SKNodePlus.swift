@@ -83,25 +83,23 @@ extension SKNode {
     
     /// 重新布局
     /// - Parameter origin: UIKit坐标系下的原点位置
-    func reposition(to origin: CGPoint) {
-        guard let parent else { return }
+    func reposition(to origin: CGPoint, other: Int? = nil) {
         let x = origin.x + width.half
-        let y = parent.frame.height - origin.y - height.half
+        let y = -origin.y - height.half
         position = CGPoint(x: x, y: y)
     }
     
     /// 重新布局y坐标
     /// - Parameter y: UIKit坐标系下的y坐标
-    func repositionY(_ y: CGFloat) {
-        guard let parent else { return }
-        position.y = parentAnchorPoint.y * parentHeight
+    private func repositionY(_ y: CGFloat) {
+        position.y = -y - height.half
     }
     
     /// 重新布局x坐标
     /// - Parameter x: UIKit坐标系下的x坐标
-    func repositionX(_ x: CGFloat) {
+    private func repositionX(_ x: CGFloat) {
         guard parent.isValid else { return }
-        position.x = x + (parentAnchorPoint.x - 1.0) * parentWidth
+        position.x = x + width.half
     }
     
     /// 是否接近重合
@@ -159,15 +157,14 @@ extension SKNode {
     }
     
     /// 父节点的AnchorPoint
-    var parentAnchorPoint: CGPoint {
-        parent.or(SKNode.defaultAnchorPoint) { parent in
-            if let scene = parent as? SKScene {
-                return scene.anchorPoint
-            } else if let sprite = parent as? SKSpriteNode {
-                return sprite.anchorPoint
-            } else {
-                return SKNode.defaultAnchorPoint
-            }
+    var parentAnchorPoint: CGPoint? {
+        guard let parent else { return nil }
+        if let scene = parent as? SKScene {
+            return scene.anchorPoint
+        } else if let sprite = parent as? SKSpriteNode {
+            return sprite.anchorPoint
+        } else {
+            return SKNode.defaultAnchorPoint
         }
     }
 }
