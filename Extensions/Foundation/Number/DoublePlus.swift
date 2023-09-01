@@ -60,6 +60,10 @@ extension Double {
     var decimal: Decimal {
         Decimal(self)
     }
+    
+    var half: Double {
+        self / 2.0
+    }
 }
 
 // MARK: - __________ Date __________

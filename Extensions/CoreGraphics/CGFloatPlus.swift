@@ -18,4 +18,8 @@ extension CGFloat {
 	var double: Double {
 		Double(self)
 	}
+    
+    var half: CGFloat {
+        self / 2.0
+    }
 }

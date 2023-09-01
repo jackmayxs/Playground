@@ -8,6 +8,10 @@ import UIKit
 import SpriteKit
 
 extension SKNode {
+    static let defaultAnchorPoint = CGPoint(x: 0.5, y: 0.5)
+}
+
+extension SKNode {
     
     /// 开启 | 关闭手势
     /// - Parameter enabled: 是否启用顶层SKView的手势
@@ -81,8 +85,8 @@ extension SKNode {
     /// - Parameter origin: UIKit坐标系下的原点位置
     func reposition(to origin: CGPoint) {
         guard let parent else { return }
-        let x = origin.x + halfWidth
-        let y = parent.frame.height - origin.y - halfHeight
+        let x = origin.x + width.half
+        let y = parent.frame.height - origin.y - height.half
         position = CGPoint(x: x, y: y)
     }
     
@@ -90,13 +94,14 @@ extension SKNode {
     /// - Parameter y: UIKit坐标系下的y坐标
     func repositionY(_ y: CGFloat) {
         guard let parent else { return }
-        position.y = parent.frame.height - y - halfHeight
+        position.y = parentAnchorPoint.y * parentHeight
     }
     
     /// 重新布局x坐标
     /// - Parameter x: UIKit坐标系下的x坐标
     func repositionX(_ x: CGFloat) {
-        position.x = x + halfWidth
+        guard parent.isValid else { return }
+        position.x = x + (parentAnchorPoint.x - 1.0) * parentWidth
     }
     
     /// 是否接近重合
@@ -119,30 +124,50 @@ extension SKNode {
     }
     /// 定位锚点
     var topLeft: CGPoint {
-        CGPoint(x: x - halfWidth, y: y + halfHeight)
+        CGPoint(x: x - width.half, y: y + height.half)
     }
     /// 定位锚点
     var topRight: CGPoint {
-        CGPoint(x: x + halfWidth, y: y + halfHeight)
+        CGPoint(x: x + width.half, y: y + height.half)
     }
     /// 定位锚点
     var bottomLeft: CGPoint {
-        CGPoint(x: x - halfWidth, y: y - halfHeight)
+        CGPoint(x: x - width.half, y: y - height.half)
     }
     /// 定位锚点
     var bottomRight: CGPoint {
-        CGPoint(x: x + halfWidth, y: y - halfHeight)
+        CGPoint(x: x + width.half, y: y - height.half)
     }
     /// position.x
     var x: CGFloat { position.x }
     /// position.y
     var y: CGFloat { position.y }
     
-    var halfHeight: CGFloat { height / 2.0 }
-    
-    var halfWidth: CGFloat { width / 2.0 }
-    
     var height: CGFloat { frame.height }
     
     var width: CGFloat { frame.width }
+    
+    var parentWidth: CGFloat { parentSize.width }
+    
+    var parentHeight: CGFloat { parentSize.height }
+    
+    var parentSize: CGSize { parentFrame.size }
+    
+    /// 父节点的Frame
+    var parentFrame: CGRect {
+        parent.or(.zero, else: \.frame)
+    }
+    
+    /// 父节点的AnchorPoint
+    var parentAnchorPoint: CGPoint {
+        parent.or(SKNode.defaultAnchorPoint) { parent in
+            if let scene = parent as? SKScene {
+                return scene.anchorPoint
+            } else if let sprite = parent as? SKSpriteNode {
+                return sprite.anchorPoint
+            } else {
+                return SKNode.defaultAnchorPoint
+            }
+        }
+    }
 }

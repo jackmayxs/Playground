@@ -69,6 +69,10 @@ extension Int {
     var nsNumber: NSNumber {
         NSNumber(value: self)
     }
+    
+    var half: Int {
+        self / 2
+    }
 }
 
 // MARK: - Int + Calendar
