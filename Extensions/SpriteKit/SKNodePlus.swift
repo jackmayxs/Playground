@@ -106,6 +106,13 @@ extension SKNode {
         frame.intersection(node.frame).area > node.frame.area / 4.0
     }
     
+    var scale: CGFloat {
+        get { xScale }
+        set {
+            setScale(newValue)
+        }
+    }
+    
     /// 五个定位锚点 | 用于计算贴合最近的格子
     var anchorPoints: [CGPoint] {
         [position, topLeft, bottomLeft, bottomRight, topRight]
