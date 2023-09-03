@@ -167,4 +167,15 @@ extension SKNode {
             return SKNode.defaultAnchorPoint
         }
     }
+    
+    /// 根据计算得出的anchorPoint
+    var calculatedAnchorPoint: CGPoint {
+        if let scene = self as? SKScene {
+            return scene.anchorPoint
+        } else if let sprite = self as? SKSpriteNode {
+            return sprite.anchorPoint
+        } else {
+            return SKNode.defaultAnchorPoint
+        }
+    }
 }

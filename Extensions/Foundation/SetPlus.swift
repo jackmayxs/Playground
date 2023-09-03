@@ -9,8 +9,14 @@ import Foundation
 infix operator +- : MultiplicationPrecedence
 
 extension Set {
+    
     var array: Array<Element> {
         Array(self)
+    }
+    
+    public mutating func insert(@ArrayBuilder<Element> _ builder: () -> [Element]) {
+        let elements = builder()
+        formUnion(elements)
     }
 }
 
