@@ -331,7 +331,12 @@ extension ObservableConvertibleType where Element: Collection {
         }
     }
     
-    /// Emit nil if the collection is empty
+    /// Emit filled elements only.
+    var filled: Observable<Element> {
+        asObservable().compactMap(\.filledOrNil)
+    }
+    
+    /// Emit nil if the collection is empty.
     var filledOrNil: Observable<Element?> {
         asObservable().map(\.filledOrNil)
     }
