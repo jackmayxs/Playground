@@ -6,6 +6,20 @@
 
 import Foundation
 
+extension Dictionary {
+    
+    /// 替换键
+    /// - Parameters:
+    ///   - oldKey: 旧键
+    ///   - newKey: 新键
+    mutating func replace(oldKey: Key, with newKey: Key) {
+        /// 无对应的旧值则直接返回
+        guard let value = removeValue(forKey: oldKey) else { return }
+        /// 使用新键保存旧值
+        updateValue(value, forKey: newKey)
+    }
+}
+
 // MARK: - Optional Value Dictionary
 extension Dictionary where Value: OptionalType {
     var unwrapped: Dictionary<Key, Value.Wrapped> {
