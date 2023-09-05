@@ -13,6 +13,14 @@ extension SKNode {
 
 extension SKNode {
     
+    /// 位置变动时更新位置
+    /// - Parameter newPosition: 新位置
+    func rePositionIfNeeded(_ newPosition: CGPoint) {
+        if position != newPosition {
+            position = newPosition
+        }
+    }
+    
     /// 开启 | 关闭手势
     /// - Parameter enabled: 是否启用顶层SKView的手势
     func setGesturesEnabled(_ enabled: Bool) {
