@@ -53,7 +53,7 @@ extension Array where Element: UIButton {
         let values = switchSelectedButton(startButton: firstSelected).optionalElement
         let observer = AnyObserver<Element?> { event in
             switch event {
-            case .next(let button) where button.isNotValid:
+            case .next(let button) where button.isVoid:
                 first(where: \.isSelected)?.isSelected = false
             default:
                 break

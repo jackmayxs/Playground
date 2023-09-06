@@ -25,7 +25,7 @@ final class UIReusePool<T: UIView> {
     }
     
     var fetched: T {
-        let availableItem = pool.first(where: \.superview.isNotValid)
+        let availableItem = pool.first(where: \.superview.isVoid)
         if let availableItem {
             return availableItem
         } else {

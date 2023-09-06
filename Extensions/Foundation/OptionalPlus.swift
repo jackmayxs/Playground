@@ -8,7 +8,7 @@ import Foundation
 
 extension Optional {
     
-    var isNotValid: Bool {
+    var isVoid: Bool {
         !isValid
     }
     

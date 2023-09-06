@@ -17,6 +17,14 @@ extension Numeric {
 // MARK: - __________ Common __________
 extension Double {
     
+    var isNegative: Bool {
+        self < 0
+    }
+    
+    var isPositive: Bool {
+        self > 0
+    }
+    
     var percentage: String {
         percentString(fractions: 0) ?? ""
     }

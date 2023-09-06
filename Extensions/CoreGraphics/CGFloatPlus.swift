@@ -22,4 +22,12 @@ extension CGFloat {
     var half: CGFloat {
         self / 2.0
     }
+    
+    var isNegative: Bool {
+        self < 0
+    }
+    
+    var isPositive: Bool {
+        self > 0
+    }
 }

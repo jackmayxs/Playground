@@ -110,11 +110,13 @@ extension SKNode {
         position.x = x + width.half
     }
     
-    /// 是否接近重合
+    /// 是否接近重合 | 适用于两个节点宽高相同的情况
     /// - Parameter another: 另一个节点
-    /// - Returns: 是否接近重合
-    func almostOverlap(_ node: SKNode) -> Bool {
-        frame.intersection(node.frame).area > node.frame.area / 4.0
+    /// - Returns: 重合部分的面积
+    func almostOverlap(_ node: SKNode) -> CGFloat? {
+        let intersectionArea = frame.intersection(node.frame).area
+        guard intersectionArea >= node.frame.area / 4.0 else { return nil }
+        return intersectionArea
     }
     
     var scale: CGFloat {
