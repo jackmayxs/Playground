@@ -45,7 +45,7 @@ extension SKNode {
         run(action, withKey: actionKey)
     }
     
-    func reposition(to corner: UIRectCorner, xInset: CGFloat, yInset: CGFloat) {
+    private func reposition(to corner: UIRectCorner, xInset: CGFloat, yInset: CGFloat) {
         guard let parent else { return }
         lazy var parentFrame = parent.frame
         lazy var parentWidth = parentFrame.width
@@ -70,7 +70,7 @@ extension SKNode {
         reposition(to: origin)
     }
     
-    func reposition(to edge: UIRectEdge, inset: CGFloat) {
+    private func reposition(to edge: UIRectEdge, inset: CGFloat) {
         guard let parent else { return }
         lazy var parentFrame = parent.frame
         lazy var parentWidth = parentFrame.width
@@ -91,7 +91,7 @@ extension SKNode {
     
     /// 重新布局
     /// - Parameter origin: UIKit坐标系下的原点位置
-    func reposition(to origin: CGPoint, other: Int? = nil) {
+    private func reposition(to origin: CGPoint, other: Int? = nil) {
         let x = origin.x + width.half
         let y = -origin.y - height.half
         position = CGPoint(x: x, y: y)
@@ -126,23 +126,64 @@ extension SKNode {
     
     /// 五个定位锚点 | 用于计算贴合最近的格子
     var anchorPoints: [CGPoint] {
-        [position, topLeft, bottomLeft, bottomRight, topRight]
+        [center, topLeft, bottomLeft, bottomRight, topRight]
     }
-    /// 定位锚点
-    var topLeft: CGPoint {
-        CGPoint(x: x - width.half, y: y + height.half)
+    
+    /// 根据position计算出的相对于父节点的中心点
+    private var center: CGPoint {
+        let dx = anchorBottomLeftOffsetX - width.half
+        let dy = anchorBottomLeftOffsetY - height.half
+        let x = position.x - (dx >= 0 ? dx : -dx)
+        let y = position.y - (dy >= 0 ? dy : -dy)
+        return CGPoint(x: x, y: y)
     }
-    /// 定位锚点
-    var topRight: CGPoint {
-        CGPoint(x: x + width.half, y: y + height.half)
+    
+    /// 定位锚点 | 左上角(在父节点中的位置)
+    private var topLeft: CGPoint {
+        let x = position.x - anchorBottomLeftOffsetX
+        let y = position.y + anchorTopRightOffsetY
+        return CGPoint(x: x, y: y)
     }
-    /// 定位锚点
-    var bottomLeft: CGPoint {
-        CGPoint(x: x - width.half, y: y - height.half)
+    
+    /// 定位锚点 | 右上角(在父节点中的位置)
+    private var topRight: CGPoint {
+        let x = position.x + anchorTopRightOffsetX
+        let y = position.y + anchorTopRightOffsetY
+        return CGPoint(x: x, y: y)
     }
-    /// 定位锚点
-    var bottomRight: CGPoint {
-        CGPoint(x: x + width.half, y: y - height.half)
+    
+    /// 定位锚点 | 左下角(在父节点中的位置)
+    private var bottomLeft: CGPoint {
+        let x = position.x - anchorBottomLeftOffsetX
+        let y = position.y - anchorBottomLeftOffsetY
+        return CGPoint(x: x, y: y)
+    }
+    
+    /// 定位锚点 | 右下角(在父节点中的位置)
+    private var bottomRight: CGPoint {
+        let x = position.x + anchorTopRightOffsetX
+        let y = position.y - anchorBottomLeftOffsetY
+        return CGPoint(x: x, y: y)
+    }
+    
+    /// anchorPoint 距离右上角为原点的两条坐标轴的距离Y
+    private var anchorTopRightOffsetY: CGFloat {
+        height - anchorBottomLeftOffsetY
+    }
+    
+    /// anchorPoint 距离左下角为原点的两条坐标轴的距离Y
+    private var anchorBottomLeftOffsetY: CGFloat {
+        height * calculatedAnchorPoint.y
+    }
+    
+    /// anchorPoint 距离右上角为原点的两条坐标轴的距离X
+    private var anchorTopRightOffsetX: CGFloat {
+        width - anchorBottomLeftOffsetX
+    }
+    
+    /// anchorPoint 距离左下角为原点的两条坐标轴的距离X
+    private var anchorBottomLeftOffsetX: CGFloat {
+        width * calculatedAnchorPoint.x
     }
     /// position.x
     var x: CGFloat { position.x }
@@ -179,11 +220,21 @@ extension SKNode {
     /// 根据计算得出的anchorPoint
     var calculatedAnchorPoint: CGPoint {
         if let scene = self as? SKScene {
-            return scene.anchorPoint
+            return scene.anchorPoint.checked
         } else if let sprite = self as? SKSpriteNode {
-            return sprite.anchorPoint
+            return sprite.anchorPoint.checked
         } else {
             return SKNode.defaultAnchorPoint
         }
+    }
+}
+
+extension CGPoint {
+    
+    fileprivate var checked: CGPoint {
+        let range = 0...1.0
+        let x = range.constrainedValue(x)
+        let y = range.constrainedValue(y)
+        return CGPoint(x: x, y: y)
     }
 }

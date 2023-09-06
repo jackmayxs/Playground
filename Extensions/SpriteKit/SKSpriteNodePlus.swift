@@ -17,11 +17,4 @@ extension SKSpriteNode {
             size = newSize
         }
     }
-    
-    func reposition(to origin: CGPoint, changedSize: CGSize? = nil, test: Int? = nil) {
-        if let changedSize {
-            size = changedSize
-        }
-        reposition(to: origin, other: test)
-    }
 }
