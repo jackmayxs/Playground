@@ -196,6 +196,16 @@ extension SKNode {
     
     var width: CGFloat { frame.width }
     
+    /// 返回以左上角为origin的Rect再按照X轴线翻转的Rect
+    var flippedUIFrame: CGRect {
+        uiFrame.flipped
+    }
+    
+    /// 以左上角为origin的Rect | 原本的frame属性的origin是左下角
+    var uiFrame: CGRect {
+        CGRect(x: frame.minX, y: frame.maxY, width: frame.width, height: frame.height)
+    }
+    
     var parentWidth: CGFloat { parentSize.width }
     
     var parentHeight: CGFloat { parentSize.height }

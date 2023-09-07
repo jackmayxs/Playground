@@ -38,6 +38,11 @@ extension CGRect {
         CGRect(origin: origin, size: size)
     }
     
+    /// 按照X轴线向上翻转之后的Rect | 用于SPriteKit中的坐标运算
+    var flipped: CGRect {
+        CGRect(x: origin.x, y: -origin.y, width: width, height: height)
+    }
+    
     var area: CGFloat {
         size.area
     }
