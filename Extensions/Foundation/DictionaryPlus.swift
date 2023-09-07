@@ -8,6 +8,10 @@ import Foundation
 
 extension Dictionary {
     
+    static var empty: Dictionary<Key, Value> {
+        [:]
+    }
+    
     /// 替换键
     /// - Parameters:
     ///   - oldKey: 旧键

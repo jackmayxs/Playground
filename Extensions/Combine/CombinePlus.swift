@@ -9,15 +9,6 @@
 import Foundation
 import Combine
 
-@available(iOS 13.0, *)
-extension Set where Element: Cancellable {
-	mutating func insert(@ArrayBuilder<Element> _ builder: () -> [Element]) {
-		let cancellables = builder()
-		let newSet = Set(cancellables)
-		formUnion(newSet)
-	}
-}
-
 extension Publisher where Output: OptionalType {
     var unwrapped: AnyPublisher<Output.Wrapped, Failure> {
         compactMap(\.optionalValue)
