@@ -18,6 +18,23 @@ extension Set {
         let elements = builder()
         formUnion(elements)
     }
+    
+    /// 添加新元素 | 慎用(使用不当可能导致未能更新元素其他属性的问题)
+    /// - Parameters:
+    ///   - other: 新元素序列
+    ///   - keyPath: 指定要对比的KeyPath
+    public mutating func formUnion<S>(_ other: S, identifiedBy keyPath: KeyPath<Element, some Equatable>) where Element == S.Element, S: Sequence {
+        for element in other {
+            let exist = contains { elementInSet in
+                elementInSet[keyPath: keyPath] == element[keyPath: keyPath]
+            }
+            if exist {
+                continue
+            } else {
+                self.insert(element)
+            }
+        }
+    }
 }
 
 
