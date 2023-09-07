@@ -45,26 +45,18 @@ final class ClamppedVariable<T>: Variable<T> where T: Comparable {
     
     init(wrappedValue: T, range: ClosedRange<T>) {
         self.range = range
-        super.init(wrappedValue: wrappedValue)
+        let initialValue = range.constrainedValue(wrappedValue)
+        super.init(wrappedValue: initialValue)
     }
     
+    /// 这里重写此属性是必须的,否则无法使用$property语法
     override var projectedValue: BehaviorRelay<T> {
         super.projectedValue
     }
     
     override var wrappedValue: T {
         get { super.wrappedValue }
-        set {
-            guard range ~= newValue else {
-                if newValue > range.upperBound {
-                    super.wrappedValue = range.upperBound
-                } else if newValue < range.lowerBound {
-                    super.wrappedValue = range.lowerBound
-                }
-                return
-            }
-            super.wrappedValue = newValue
-        }
+        set { super.wrappedValue = range.constrainedValue(newValue) }
     }
     
     var upperBound: T {
