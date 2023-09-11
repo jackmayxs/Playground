@@ -15,6 +15,10 @@ extension CGFloat {
 		CGFloat.random(in: 0.0...1.0)
 	}
 	
+    var int: Int {
+        Int(self)
+    }
+    
 	var double: Double {
 		Double(self)
 	}

@@ -67,6 +67,25 @@ extension UIColor {
         return (h, s, b, a)
     }
     
+    /// 计算色温
+    var kelvin: Kelvin? {
+        guard let aRGB else { return nil }
+        let red = aRGB.r
+        let green = aRGB.g
+        let blue = aRGB.b
+        let temp = (0.23881 * red + 0.25499 * green - 0.58291 * blue) / (0.11109 * red - 0.85406 * green + 0.52289 * blue)
+        let colorTemperature = 449 * pow(temp, 3) + 3525 * pow(temp, 2) + 6823.3 * temp + 5520.33
+        return colorTemperature
+    }
+    
+    var aRGB: (a: CGFloat, r: CGFloat, g: CGFloat, b: CGFloat)? {
+        var a: CGFloat = 0.0
+        var r: CGFloat = 0.0
+        var g: CGFloat = 0.0
+        var b: CGFloat = 0.0
+        guard getRed(&r, green: &g, blue: &b, alpha: &a) else { return nil }
+        return (a, r, g, b)
+    }
     
     /// 和UIColor相互转换不一致,需要校准
     var xy: (x: Double, y: Double) {
