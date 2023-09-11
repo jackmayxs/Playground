@@ -32,7 +32,7 @@ extension Decimal: ExpressibleByStringLiteral {
     
     public init(stringLiteral value: StringLiteralType) {
         if value.containsCharacter(in: .decimals.inverted) {
-            self.init()
+            self.init(0)
         } else {
             self.init(string: value)!
         }
