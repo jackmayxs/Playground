@@ -132,37 +132,37 @@ extension SKNode {
     }
     
     /// 根据position计算出的相对于父节点的中心点
-    private var center: CGPoint {
+    var center: CGPoint {
         let dx = anchorBottomLeftOffsetX - width.half
         let dy = anchorBottomLeftOffsetY - height.half
-        let x = position.x - (dx >= 0 ? dx : -dx)
-        let y = position.y - (dy >= 0 ? dy : -dy)
+        let x = position.x - dx
+        let y = position.y - dy
         return CGPoint(x: x, y: y)
     }
     
     /// 定位锚点 | 左上角(在父节点中的位置)
-    private var topLeft: CGPoint {
+    var topLeft: CGPoint {
         let x = position.x - anchorBottomLeftOffsetX
         let y = position.y + anchorTopRightOffsetY
         return CGPoint(x: x, y: y)
     }
     
     /// 定位锚点 | 右上角(在父节点中的位置)
-    private var topRight: CGPoint {
+    var topRight: CGPoint {
         let x = position.x + anchorTopRightOffsetX
         let y = position.y + anchorTopRightOffsetY
         return CGPoint(x: x, y: y)
     }
     
     /// 定位锚点 | 左下角(在父节点中的位置)
-    private var bottomLeft: CGPoint {
+    var bottomLeft: CGPoint {
         let x = position.x - anchorBottomLeftOffsetX
         let y = position.y - anchorBottomLeftOffsetY
         return CGPoint(x: x, y: y)
     }
     
     /// 定位锚点 | 右下角(在父节点中的位置)
-    private var bottomRight: CGPoint {
+    var bottomRight: CGPoint {
         let x = position.x + anchorTopRightOffsetX
         let y = position.y - anchorBottomLeftOffsetY
         return CGPoint(x: x, y: y)
