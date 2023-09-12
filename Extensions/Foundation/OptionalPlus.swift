@@ -32,9 +32,14 @@ extension Optional {
     
     /// 如果不为空则以解包后的值作为入参执行闭包
     /// - Parameter execute: 回调闭包
+    /// - Parameter failed: 失败回调
     @discardableResult
-    func unwrap(execute: (Wrapped) throws -> Void) rethrows -> Wrapped? {
-        guard let self else { return nil }
+    func unwrap(execute: (Wrapped) throws -> Void, failed: SimpleCallback? = nil) rethrows -> Wrapped? {
+        guard let self else {
+            guard let failed else { return nil }
+            failed()
+            return nil
+        }
         try execute(self)
         return self
     }
