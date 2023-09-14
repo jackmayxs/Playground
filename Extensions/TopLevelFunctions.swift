@@ -61,6 +61,23 @@ func synchronized<T>(lock: AnyObject, _ closure: () throws -> T) rethrows -> T {
     return try closure()
 }
 
+/// 如果左边为空则返回右边
+func <--<T>(_ lhs: T?, rhs: T?) -> T? {
+    lhs ?? rhs
+}
+/// 返回左边 | 常见于Dictionary.merge方法
+func <--<T>(_ lhs: T, rhs: T) -> T {
+    lhs
+}
+/// 如果右边为空则返回左边
+func --><T>(_ lhs: T?, rhs: T?) -> T? {
+    rhs ?? lhs
+}
+/// 返回右边 | 常见于Dictionary.merge方法
+func --><T>(_ lhs: T, rhs: T) -> T {
+    rhs
+}
+
 /// 方法转换
 /// - Parameters:
 ///   - value: 被引用的对象
