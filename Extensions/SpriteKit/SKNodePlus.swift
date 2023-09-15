@@ -16,9 +16,8 @@ extension SKNode {
     /// 位置变动时更新位置
     /// - Parameter newPosition: 新位置
     func rePositionIfNeeded(_ newPosition: CGPoint) {
-        if position != newPosition {
-            position = newPosition
-        }
+        guard newPosition != position else { return }
+        position = newPosition
     }
     
     /// 开启 | 关闭手势

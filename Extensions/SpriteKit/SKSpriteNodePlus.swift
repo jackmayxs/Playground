@@ -13,8 +13,7 @@ extension SKSpriteNode {
     /// 尺寸变动时更新尺寸
     /// - Parameter newSize: 新尺寸
     func reSizeIfNeeded(_ newSize: CGSize) {
-        if size != newSize {
-            size = newSize
-        }
+        guard newSize != size else { return }
+        size = newSize
     }
 }
