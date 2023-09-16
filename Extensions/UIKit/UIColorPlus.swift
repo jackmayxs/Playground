@@ -36,9 +36,13 @@ extension UIColor {
     
     func int(alphaIgnored: Bool = true) -> Int? {
         guard let components = cgColor.components, components.count >= 3 else { return nil }
-        lazy var red = Int(components[0] * 255.0)
-        lazy var green = Int(components[1] * 255.0)
-        lazy var blue = Int(components[2] * 255.0)
+        let redComponent = components[0]
+        let greenComponent = components[1]
+        let blueComponent = components[2]
+        guard redComponent.isNormal, greenComponent.isNormal, blueComponent.isNormal else { return nil }
+        lazy var red = Int(redComponent * 255.0)
+        lazy var green = Int(greenComponent * 255.0)
+        lazy var blue = Int(blueComponent * 255.0)
         lazy var rgb = (red << 16) ^ (green << 8) ^ blue
         switch components.count {
         case 3:
