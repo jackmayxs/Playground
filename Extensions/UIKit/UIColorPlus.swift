@@ -39,7 +39,8 @@ extension UIColor {
         let redComponent = components[0]
         let greenComponent = components[1]
         let blueComponent = components[2]
-        guard redComponent.isNormal, greenComponent.isNormal, blueComponent.isNormal else { return nil }
+        /// 确保三原色都为有效数字
+        if redComponent.isNaN || greenComponent.isNaN || blueComponent.isNaN { return nil }
         lazy var red = Int(redComponent * 255.0)
         lazy var green = Int(greenComponent * 255.0)
         lazy var blue = Int(blueComponent * 255.0)
