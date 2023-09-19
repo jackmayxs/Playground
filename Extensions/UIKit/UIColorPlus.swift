@@ -93,10 +93,9 @@ extension UIColor {
     }
     
     /// 和UIColor相互转换不一致,需要校准
-    var xy: (x: Double, y: Double) {
-        lazy var zero = (0.0, 0.0)
+    var xy: XY {
         let cgColor = cgColor
-        guard let components = cgColor.components else { return zero }
+        guard let components = cgColor.components else { return .zero }
         var red = 1.0
         var green = 1.0
         var blue = 1.0
@@ -111,26 +110,27 @@ extension UIColor {
             green = components[0]
             blue = components[0]
         }
-        // Apply gamma correction
-        let r = (red   > 0.04045) ? pow((red   + 0.055) / (1.0 + 0.055), 2.4) : (red   / 12.92)
-        let g = (green > 0.04045) ? pow((green + 0.055) / (1.0 + 0.055), 2.4) : (green / 12.92)
-        let b = (blue  > 0.04045) ? pow((blue  + 0.055) / (1.0 + 0.055), 2.4) : (blue  / 12.92)
         
-        // Wide gamut conversion D65
-        let X = r * 0.649926 + g * 0.103455 + b * 0.197109
-        //let Y = r * 0.234327 + g * 0.743075 + b * 0.022598
-        let Y = 1.0
-        let Z = r * 0.0000000 + g * 0.053077 + b * 1.035763
+        let linearRGB = [red, green, blue].map {
+            pow($0, 2.2)
+        }
         
-        var cx = X / (X + Y + Z)
-        var cy = Y / (X + Y + Z)
-        if cx.isNaN {
-            cx = 0.0
+        /// sRGB色域
+        let M = Array<[Double]> {
+            [0.5767309, 0.1855540, 0.1881852]
+            [0.2973769, 0.6273491, 0.0752741]
+            [0.0270343, 0.0706872, 0.9911085]
         }
-        if cy.isNaN {
-            cy = 0.0
+        
+        let xyz = linearRGB * M
+        let xyzSum = xyz.reduce(0.0, +)
+        let resultXYZ = xyz.map {
+            $0 / xyzSum
         }
-        return (cx, cy)
+        guard resultXYZ.count >= 2 else { return .zero }
+        let x = resultXYZ[0]
+        let y = resultXYZ[1]
+        return XY(x: x, y: y)
     }
     
     /// 从色温创建颜色

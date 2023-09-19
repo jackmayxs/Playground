@@ -122,6 +122,39 @@ extension Array where Element : Hashable {
     }
 }
 
+extension Array where Element: Numeric {
+    
+    /// 向量 * 矩阵
+    static func * (vector: [Element], matrix: [[Element]]) -> [Element] {
+        /// 确保向量数组和矩阵个数匹配
+        guard vector.count == matrix.count else { return .empty }
+        /// 内部的一维数组个数也必须匹配
+        let innerArrayCountMatch = matrix.allSatisfy { array in
+            array.count == vector.count
+        }
+        guard innerArrayCountMatch else { return .empty }
+        var result: [Element] = []
+        for row in 0..<vector.count {
+            var resultElement: Element?
+            for col in 0..<matrix.count {
+                /// 乘积
+                let product = matrix[col][row] * vector[col]
+                /// 累加
+                if let temResult = resultElement {
+                    resultElement = temResult + product
+                } else {
+                    /// 赋初值
+                    resultElement = product
+                }
+            }
+            if let resultElement {
+                result.append(resultElement)
+            }
+        }
+        return result
+    }
+}
+
 // MARK: - ArraySlice
 extension ArraySlice {
     
