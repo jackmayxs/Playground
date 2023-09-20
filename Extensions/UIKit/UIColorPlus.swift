@@ -10,6 +10,83 @@ import UIKit
 
 typealias Kelvin = CGFloat
 
+enum ColorGamut: CaseIterable {
+    case sRGB
+    case appleRGB
+    case bestRGB
+    case adobeRGB1998
+    case wideGamutRGB
+    
+    var gamma: Double {
+        switch self {
+        case .sRGB:
+            return 2.2
+        case .appleRGB:
+            return 1.8
+        case .bestRGB:
+            return 2.2
+        case .adobeRGB1998:
+            return 2.2
+        case .wideGamutRGB:
+            return 2.2
+        }
+    }
+    
+    var M: [[Double]] {
+        Array<[Double]> {
+            switch self {
+            case .sRGB:
+                [0.4124564, 0.3575761, 0.1804375]
+                [0.2126729, 0.7151522, 0.0721750]
+                [0.0193339, 0.1191920, 0.9503041]
+            case .appleRGB:
+                [0.4497288, 0.3162486, 0.1844926]
+                [0.2446525, 0.6720283, 0.0833192]
+                [0.0251848, 0.1411824, 0.9224628]
+            case .bestRGB:
+                [0.6326696, 0.2045558, 0.1269946]
+                [0.2284569, 0.7373523, 0.0341908]
+                [0.0000000, 0.0095142, 0.8156958]
+            case .adobeRGB1998:
+                [0.5767309, 0.1855540, 0.1881852]
+                [0.2973769, 0.6273491, 0.0752741]
+                [0.0270343, 0.0706872, 0.9911085]
+            case .wideGamutRGB:
+                [0.7161046, 0.1009296, 0.1471858]
+                [0.2581874, 0.7249378, 0.0168748]
+                [0.0000000, 0.0517813, 0.7734287]
+            }
+        }
+    }
+    
+    var MReverse: [[Double]] {
+        Array<[Double]> {
+            switch self {
+            case .sRGB:
+                [ 3.2404542, -1.5371385, -0.4985314]
+                [-0.9692660,  1.8760108,  0.0415560]
+                [ 0.0556434, -0.2040259,  1.0572252]
+            case .appleRGB:
+                [ 2.9515373, -1.2894116, -0.4738445]
+                [-1.0851093,  1.9908566,  0.0372026]
+                [ 0.0854934, -0.2694964,  1.0912975]
+            case .bestRGB:
+                [ 1.7552599, -0.4836786, -0.2530000]
+                [-0.5441336,  1.5068789,  0.0215528]
+                [ 0.0063467, -0.0175761,  1.2256959]
+            case .adobeRGB1998:
+                [ 2.0413690, -0.5649464, -0.3446944]
+                [-0.9692660,  1.8760108,  0.0415560]
+                [ 0.0134474, -0.1183897,  1.0154096]
+            case .wideGamutRGB:
+                [ 1.4628067, -0.1840623, -0.2743606]
+                [-0.5217933,  1.4472381,  0.0677227]
+                [ 0.0349342, -0.0968930,  1.2884099]
+            }
+        }
+    }
+}
+
 extension UIColor {
     static let OxCCCCCC = 0xCCCCCC.uiColor
     static let OxEEEEEE = 0xEEEEEE.uiColor
@@ -92,61 +169,13 @@ extension UIColor {
         return (a, r, g, b)
     }
     
-    /// 和UIColor相互转换不一致,需要校准
-    var xy: XY {
-        let cgColor = cgColor
-        guard let components = cgColor.components else { return .zero }
-        var red = 1.0
-        var green = 1.0
-        var blue = 1.0
-        if cgColor.numberOfComponents == 4 {
-            /// Full color
-            red = components[0]
-            green = components[1]
-            blue = components[2]
-        } else if cgColor.numberOfComponents == 2 {
-            // Greyscale color
-            red = components[0]
-            green = components[0]
-            blue = components[0]
+    func xy(colorGamut: ColorGamut) -> XY {
+        lazy var M = colorGamut.M
+        lazy var gamma = colorGamut.gamma
+        guard let (_, r, g, b) = aRGB else { return .zero }
+        let linearRGB = [r, g, b].map {
+            pow($0, gamma)
         }
-        
-        let linearRGB = [red, green, blue].map {
-            pow($0, 2.2)
-        }
-        
-        lazy var appleRGB = Array<[Double]> {
-            [0.4497288, 0.3162486, 0.1844926]
-            [0.2446525, 0.6720283, 0.0833192]
-            [0.0251848, 0.1411824, 0.9224628]
-        }
-        
-        lazy var sRGB = Array<[Double]> {
-            [0.4124564, 0.3575761, 0.1804375]
-            [0.2126729, 0.7151522, 0.0721750]
-            [0.0193339, 0.1191920, 0.9503041]
-        }
-        
-        lazy var bestRGB = Array<[Double]> {
-            [0.6326696, 0.2045558, 0.1269946]
-            [0.2284569, 0.7373523, 0.0341908]
-            [0.0000000, 0.0095142, 0.8156958]
-        }
-        
-        lazy var adobeRGB1998 = Array<[Double]> {
-            [0.5767309, 0.1855540, 0.1881852]
-            [0.2973769, 0.6273491, 0.0752741]
-            [0.0270343, 0.0706872, 0.9911085]
-        }
-        
-        lazy var wideGamutRGB = Array<[Double]> {
-            [0.7161046, 0.1009296, 0.1471858]
-            [0.2581874, 0.7249378, 0.0168748]
-            [0.0000000, 0.0517813, 0.7734287]
-        }
-        
-        let M = bestRGB
-        
         let xyz = linearRGB * M
         let xyzSum = xyz.reduce(0.0, +)
         let resultXYZ = xyz.map {
@@ -188,22 +217,37 @@ extension UIColor {
         self.init(red: components.red, green: components.green, blue: components.blue, alpha: 1.0)
     }
     
+//    convenience init(x: Double, y: Double, colorGamut: ColorGamut) {
+//        let XYZ = [x / y, 1.0, (1.0 - x - y) / y]
+//        let MReverse = colorGamut.MReverse
+//        let range = 0...1.0
+//        let rgb = (XYZ * MReverse).map {
+//            let constrainedValue = range.constrainedValue($0)
+//            return pow(constrainedValue, 1.0 / colorGamut.gamma)
+//        }
+//        guard rgb.count >= 3 else {
+//            self.init(white: 0, alpha: 0)
+//            return
+//        }
+//        let r = rgb[0]
+//        let g = rgb[1]
+//        let b = rgb[2]
+//        self.init(red: r, green: g, blue: b, alpha: 1.0)
+//    }
+    
     /// XY坐标创建颜色
-    /// - Parameters:
-    ///   - x: 0...0.8
-    ///   - y: 0...0.9
     convenience init(x: Double, y: Double) {
         let z = 1.0 - x - y
-        
+
         let Y = 1.0
         let X = (Y / y) * x
         let Z = (Y / y) * z
-        
+
         /// sRGB D65 CONVERSION
         var r = X  * 3.2406 - Y * 1.5372 - Z * 0.4986
         var g = -X * 0.9689 + Y * 1.8758 + Z * 0.0415
         var b = X  * 0.0557 - Y * 0.2040 + Z * 1.0570
-        
+
         if r > b && r > g && r > 1.0 {
             // red is too big
             g = g / r
