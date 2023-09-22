@@ -11,24 +11,24 @@ import UIKit
 typealias Kelvin = CGFloat
 
 enum ColorGamut: CaseIterable, CustomStringConvertible {
-    case sRGB
-    case cieRGB
+    case adobeRGB1998
     case appleRGB
     case bestRGB
-    case adobeRGB1998
+    case cieRGB
+    case sRGB
     case wideGamutRGB
     
     var gamma: Double {
         switch self {
-        case .sRGB:
-            return 2.2
-        case .cieRGB:
+        case .adobeRGB1998:
             return 2.2
         case .appleRGB:
             return 1.8
         case .bestRGB:
             return 2.2
-        case .adobeRGB1998:
+        case .cieRGB:
+            return 2.2
+        case .sRGB:
             return 2.2
         case .wideGamutRGB:
             return 2.2
@@ -38,14 +38,10 @@ enum ColorGamut: CaseIterable, CustomStringConvertible {
     var M: [[Double]] {
         Array<[Double]> {
             switch self {
-            case .sRGB:
-                [0.4124564, 0.3575761, 0.1804375]
-                [0.2126729, 0.7151522, 0.0721750]
-                [0.0193339, 0.1191920, 0.9503041]
-            case .cieRGB:
-                [0.4887180, 0.3106803, 0.2006017]
-                [0.1762044, 0.8129847, 0.0108109]
-                [0.0000000, 0.0102048, 0.9897952]
+            case .adobeRGB1998:
+                [0.5767309, 0.1855540, 0.1881852]
+                [0.2973769, 0.6273491, 0.0752741]
+                [0.0270343, 0.0706872, 0.9911085]
             case .appleRGB:
                 [0.4497288, 0.3162486, 0.1844926]
                 [0.2446525, 0.6720283, 0.0833192]
@@ -54,10 +50,14 @@ enum ColorGamut: CaseIterable, CustomStringConvertible {
                 [0.6326696, 0.2045558, 0.1269946]
                 [0.2284569, 0.7373523, 0.0341908]
                 [0.0000000, 0.0095142, 0.8156958]
-            case .adobeRGB1998:
-                [0.5767309, 0.1855540, 0.1881852]
-                [0.2973769, 0.6273491, 0.0752741]
-                [0.0270343, 0.0706872, 0.9911085]
+            case .cieRGB:
+                [0.4887180, 0.3106803, 0.2006017]
+                [0.1762044, 0.8129847, 0.0108109]
+                [0.0000000, 0.0102048, 0.9897952]
+            case .sRGB:
+                [0.4124564, 0.3575761, 0.1804375]
+                [0.2126729, 0.7151522, 0.0721750]
+                [0.0193339, 0.1191920, 0.9503041]
             case .wideGamutRGB:
                 [0.7161046, 0.1009296, 0.1471858]
                 [0.2581874, 0.7249378, 0.0168748]
@@ -69,14 +69,10 @@ enum ColorGamut: CaseIterable, CustomStringConvertible {
     var MReverse: [[Double]] {
         Array<[Double]> {
             switch self {
-            case .sRGB:
-                [ 3.2404542, -1.5371385, -0.4985314]
+            case .adobeRGB1998:
+                [ 2.0413690, -0.5649464, -0.3446944]
                 [-0.9692660,  1.8760108,  0.0415560]
-                [ 0.0556434, -0.2040259,  1.0572252]
-            case .cieRGB:
-                [ 2.3706743, -0.9000405, -0.4706338]
-                [-0.5138850,  1.4253036,  0.0885814]
-                [ 0.0052982, -0.0146949,  1.0093968]
+                [ 0.0134474, -0.1183897,  1.0154096]
             case .appleRGB:
                 [ 2.9515373, -1.2894116, -0.4738445]
                 [-1.0851093,  1.9908566,  0.0372026]
@@ -85,10 +81,14 @@ enum ColorGamut: CaseIterable, CustomStringConvertible {
                 [ 1.7552599, -0.4836786, -0.2530000]
                 [-0.5441336,  1.5068789,  0.0215528]
                 [ 0.0063467, -0.0175761,  1.2256959]
-            case .adobeRGB1998:
-                [ 2.0413690, -0.5649464, -0.3446944]
+            case .cieRGB:
+                [ 2.3706743, -0.9000405, -0.4706338]
+                [-0.5138850,  1.4253036,  0.0885814]
+                [ 0.0052982, -0.0146949,  1.0093968]
+            case .sRGB:
+                [ 3.2404542, -1.5371385, -0.4985314]
                 [-0.9692660,  1.8760108,  0.0415560]
-                [ 0.0134474, -0.1183897,  1.0154096]
+                [ 0.0556434, -0.2040259,  1.0572252]
             case .wideGamutRGB:
                 [ 1.4628067, -0.1840623, -0.2743606]
                 [-0.5217933,  1.4472381,  0.0677227]
@@ -99,16 +99,16 @@ enum ColorGamut: CaseIterable, CustomStringConvertible {
     
     var description: String {
         switch self {
-        case .sRGB:
-            return "sRGB"
-        case .cieRGB:
-            return "cieRGB"
+        case .adobeRGB1998:
+            return "adobeRGB1998"
         case .appleRGB:
             return "appleRGB"
         case .bestRGB:
             return "bestRGB"
-        case .adobeRGB1998:
-            return "adobeRGB1998"
+        case .cieRGB:
+            return "cieRGB"
+        case .sRGB:
+            return "sRGB"
         case .wideGamutRGB:
             return "wideGamutRGB"
         }
