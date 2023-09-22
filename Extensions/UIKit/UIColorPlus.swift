@@ -10,8 +10,9 @@ import UIKit
 
 typealias Kelvin = CGFloat
 
-enum ColorGamut: CaseIterable {
+enum ColorGamut: CaseIterable, CustomStringConvertible {
     case sRGB
+    case cieRGB
     case appleRGB
     case bestRGB
     case adobeRGB1998
@@ -20,6 +21,8 @@ enum ColorGamut: CaseIterable {
     var gamma: Double {
         switch self {
         case .sRGB:
+            return 2.2
+        case .cieRGB:
             return 2.2
         case .appleRGB:
             return 1.8
@@ -39,6 +42,10 @@ enum ColorGamut: CaseIterable {
                 [0.4124564, 0.3575761, 0.1804375]
                 [0.2126729, 0.7151522, 0.0721750]
                 [0.0193339, 0.1191920, 0.9503041]
+            case .cieRGB:
+                [0.4887180, 0.3106803, 0.2006017]
+                [0.1762044, 0.8129847, 0.0108109]
+                [0.0000000, 0.0102048, 0.9897952]
             case .appleRGB:
                 [0.4497288, 0.3162486, 0.1844926]
                 [0.2446525, 0.6720283, 0.0833192]
@@ -66,6 +73,10 @@ enum ColorGamut: CaseIterable {
                 [ 3.2404542, -1.5371385, -0.4985314]
                 [-0.9692660,  1.8760108,  0.0415560]
                 [ 0.0556434, -0.2040259,  1.0572252]
+            case .cieRGB:
+                [ 2.3706743, -0.9000405, -0.4706338]
+                [-0.5138850,  1.4253036,  0.0885814]
+                [ 0.0052982, -0.0146949,  1.0093968]
             case .appleRGB:
                 [ 2.9515373, -1.2894116, -0.4738445]
                 [-1.0851093,  1.9908566,  0.0372026]
@@ -83,6 +94,23 @@ enum ColorGamut: CaseIterable {
                 [-0.5217933,  1.4472381,  0.0677227]
                 [ 0.0349342, -0.0968930,  1.2884099]
             }
+        }
+    }
+    
+    var description: String {
+        switch self {
+        case .sRGB:
+            return "sRGB"
+        case .cieRGB:
+            return "cieRGB"
+        case .appleRGB:
+            return "appleRGB"
+        case .bestRGB:
+            return "bestRGB"
+        case .adobeRGB1998:
+            return "adobeRGB1998"
+        case .wideGamutRGB:
+            return "wideGamutRGB"
         }
     }
 }
