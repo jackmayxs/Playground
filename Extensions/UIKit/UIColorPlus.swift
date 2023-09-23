@@ -18,6 +18,10 @@ enum ColorGamut: CaseIterable, CustomStringConvertible {
     case sRGB
     case wideGamutRGB
     
+    case rec709
+    case dciP3
+    case bt2020
+    
     var gamma: Double {
         switch self {
         case .adobeRGB1998:
@@ -32,6 +36,12 @@ enum ColorGamut: CaseIterable, CustomStringConvertible {
             return 2.2
         case .wideGamutRGB:
             return 2.2
+        case .rec709:
+            return 0 /// 未知,使用0填充
+        case .dciP3:
+            return 0 /// 未知,使用0填充
+        case .bt2020:
+            return 0 /// 未知,使用0填充
         }
     }
     
@@ -62,6 +72,18 @@ enum ColorGamut: CaseIterable, CustomStringConvertible {
                 [0.7161046, 0.1009296, 0.1471858]
                 [0.2581874, 0.7249378, 0.0168748]
                 [0.0000000, 0.0517813, 0.7734287]
+            case .rec709:
+                [0.4124, 0.2126, 0.0190]
+                [0.3575, 0.7151, 0.1191]
+                [0.1804, 0.0721, 0.9503]
+            case .dciP3:
+                [0.4864, 0.2289 , 0.000]
+                [0.2656, 0.6917 , 0.045]
+                [0.1972, 0.07929, 1.043]
+            case .bt2020:
+                [0.6370, 0.2627, 0.0000]
+                [0.1446, 0.6780, 0.0281]
+                [0.1689, 0.0593, 1.0610]
             }
         }
     }
@@ -93,6 +115,18 @@ enum ColorGamut: CaseIterable, CustomStringConvertible {
                 [ 1.4628067, -0.1840623, -0.2743606]
                 [-0.5217933,  1.4472381,  0.0677227]
                 [ 0.0349342, -0.0968930,  1.2884099]
+            case .rec709:
+                [ 3.2400, -0.9690,  0.0550]
+                [-1.5370,  1.8760, -0.2040]
+                [-0.4985,  0.0415,  1.0572]
+            case .dciP3:
+                [ 2.494, -0.830,  0.036]
+                [-0.932,  1.763, -0.076]
+                [-0.401,  0.023,  0.958]
+            case .bt2020:
+                [ 1.7167, -0.6667,  0.0176]
+                [-0.3557,  1.6165, -0.0428]
+                [-0.2534,  0.0158,  0.9421]
             }
         }
     }
@@ -111,6 +145,12 @@ enum ColorGamut: CaseIterable, CustomStringConvertible {
             return "sRGB"
         case .wideGamutRGB:
             return "wideGamutRGB"
+        case .rec709:
+            return "rec709"
+        case .dciP3:
+            return "dciP3"
+        case .bt2020:
+            return "bt2020"
         }
     }
 }
@@ -199,11 +239,8 @@ extension UIColor {
     
     func xy(colorGamut: ColorGamut) -> XY {
         lazy var M = colorGamut.M
-        lazy var gamma = colorGamut.gamma
         guard let (_, r, g, b) = aRGB else { return .zero }
-        let linearRGB = [r, g, b].map {
-            pow($0, gamma)
-        }
+        let linearRGB: [Double] = [r, g, b]
         let xyz = linearRGB * M
         let xyzSum = xyz.reduce(0.0, +)
         let resultXYZ = xyz.map {
