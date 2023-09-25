@@ -19,6 +19,10 @@ extension CGFloat {
         Int(self)
     }
     
+    var float: Float {
+        Float(self)
+    }
+    
 	var double: Double {
 		Double(self)
 	}
