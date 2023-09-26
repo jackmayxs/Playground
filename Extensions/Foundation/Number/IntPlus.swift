@@ -54,12 +54,12 @@ extension Int {
     
     /// 索引转换成序号
     var number: Int {
-        self + 1
+        Swift.min(self + 1, .max)
     }
     
     /// 转换成索引值
     var index: Int {
-        Swift.max(0, self - 1)
+        Swift.max(self - 1, 0)
     }
 	
     var bool: Bool {
