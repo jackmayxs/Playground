@@ -184,17 +184,20 @@ extension UIColor {
     /// - Returns: 表示颜色的整型数值
     func int(alphaIgnored: Bool = true) -> Int? {
         guard let components = cgColor.components, components.count >= 3 else { return nil }
-        let redComponent = components[0]
-        let greenComponent = components[1]
-        let blueComponent = components[2]
-        /// 确保三原色都为有效数字
-        if redComponent.isNaN || greenComponent.isNaN || blueComponent.isNaN {
-            return alphaIgnored ? 0x000000 : 0xFF000000
-        }
+        var redComponent = components[0]
+        var greenComponent = components[1]
+        var blueComponent = components[2]
+        /// 检查数值
+        if redComponent.isNaN { redComponent = 0 }
+        if greenComponent.isNaN { greenComponent = 0 }
+        if blueComponent.isNaN { blueComponent = 0 }
+        /// 转换成0...255的整数
         lazy var red = Int(redComponent * 255.0)
         lazy var green = Int(greenComponent * 255.0)
         lazy var blue = Int(blueComponent * 255.0)
+        /// 合成RGB整数
         lazy var rgb = (red << 16) ^ (green << 8) ^ blue
+        
         switch components.count {
         case 3:
             return rgb
@@ -363,9 +366,12 @@ extension UIColor {
         }
         /// 限制在0...1范围内避免出现负值导致错误
         let range = (0.0...1.0)
-        let cr = range.constrainedValue(r)
-        let cg = range.constrainedValue(g)
-        let cb = range.constrainedValue(b)
+        var cr = range.constrainedValue(r)
+        var cg = range.constrainedValue(g)
+        var cb = range.constrainedValue(b)
+        if cr.isNaN { cr = 0 }
+        if cg.isNaN { cg = 0 }
+        if cb.isNaN { cb = 0 }
         self.init(red: cr, green: cg, blue: cb, alpha: 1.0)
     }
     
