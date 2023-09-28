@@ -248,6 +248,7 @@ extension UIColor {
         let linearRGB: [Double] = [r, g, b]
         let xyz = linearRGB * M
         let xyzSum = xyz.reduce(0.0, +)
+        guard xyzSum.isNormal else { return .zero }
         let resultXYZ = xyz.map {
             $0 / xyzSum
         }
