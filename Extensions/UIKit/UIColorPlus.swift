@@ -179,13 +179,18 @@ extension UIColor {
         int(alphaIgnored: true)
     }
     
+    /// 返回ARGB的数值
+    /// - Parameter alphaIgnored: 是否忽略透明度
+    /// - Returns: 表示颜色的整型数值
     func int(alphaIgnored: Bool = true) -> Int? {
         guard let components = cgColor.components, components.count >= 3 else { return nil }
         let redComponent = components[0]
         let greenComponent = components[1]
         let blueComponent = components[2]
         /// 确保三原色都为有效数字
-        if redComponent.isNaN || greenComponent.isNaN || blueComponent.isNaN { return nil }
+        if redComponent.isNaN || greenComponent.isNaN || blueComponent.isNaN {
+            return alphaIgnored ? 0x000000 : 0xFF000000
+        }
         lazy var red = Int(redComponent * 255.0)
         lazy var green = Int(greenComponent * 255.0)
         lazy var blue = Int(blueComponent * 255.0)
