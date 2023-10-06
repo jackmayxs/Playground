@@ -73,10 +73,25 @@ extension ClosedRange {
             return value
         }
     }
+    
+    func constrainedValueResult(_ value: Bound) -> Result<Bound, RangeValueError> {
+        if value < lowerBound {
+            return .failure(.tooLow)
+        } else if value > upperBound {
+            return .failure(.tooHigh)
+        } else {
+            return .success(value)
+        }
+    }
 }
 
 extension ClosedRange: Comparable where Bound: Comparable {
     public static func < (lhs: ClosedRange<Bound>, rhs: ClosedRange<Bound>) -> Bool {
         lhs.upperBound < rhs.lowerBound
     }
+}
+
+enum RangeValueError: Error {
+    case tooLow
+    case tooHigh
 }
