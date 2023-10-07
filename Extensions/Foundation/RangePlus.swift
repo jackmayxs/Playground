@@ -74,6 +74,9 @@ extension ClosedRange {
         }
     }
     
+    /// 将传入值限制在范围内
+    /// - Parameter value: 需要限制的值
+    /// - Returns: Result包含有效值或错误
     func constrainedValueResult(_ value: Bound) -> Result<Bound, RangeValueError> {
         if value < lowerBound {
             return .failure(.tooLow)
