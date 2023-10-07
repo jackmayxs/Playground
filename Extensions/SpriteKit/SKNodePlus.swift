@@ -253,8 +253,8 @@ extension CGPoint {
     
     fileprivate var checked: CGPoint {
         let range = 0...1.0
-        let x = range.constrainedValue(x)
-        let y = range.constrainedValue(y)
+        let x = range << x
+        let y = range << y
         return CGPoint(x: x, y: y)
     }
 }

@@ -15,8 +15,8 @@ extension CGRect {
     /// - Parameter point: 传入的点
     /// - Returns: 限制后的点
     func constrainedPoint(_ point: CGPoint) -> CGPoint {
-        let x = (minX...maxX).constrainedValue(point.x)
-        let y = (minY...maxY).constrainedValue(point.y)
+        let x = (minX...maxX) << point.x
+        let y = (minY...maxY) << point.y
         return CGPoint(x: x, y: y)
     }
     

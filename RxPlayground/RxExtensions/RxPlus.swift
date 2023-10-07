@@ -45,7 +45,7 @@ final class ClamppedVariable<T>: Variable<T> where T: Comparable {
     
     init(wrappedValue: T, range: ClosedRange<T>) {
         self.range = range
-        let initialValue = range.constrainedValue(wrappedValue)
+        let initialValue = range << wrappedValue
         super.init(wrappedValue: initialValue)
     }
     
@@ -56,7 +56,7 @@ final class ClamppedVariable<T>: Variable<T> where T: Comparable {
     
     override var wrappedValue: T {
         get { super.wrappedValue }
-        set { super.wrappedValue = range.constrainedValue(newValue) }
+        set { super.wrappedValue = range << newValue }
     }
     
     var upperBound: T {

@@ -296,7 +296,7 @@ extension UIColor {
 //        let MReverse = colorGamut.MReverse
 //        let range = 0...1.0
 //        let rgb = (XYZ * MReverse).map {
-//            let constrainedValue = range.constrainedValue($0)
+//            let constrainedValue = range << $0
 //            return pow(constrainedValue, 1.0 / colorGamut.gamma)
 //        }
 //        guard rgb.count >= 3 else {
@@ -366,9 +366,9 @@ extension UIColor {
         }
         /// 限制在0...1范围内避免出现负值导致错误
         let range = (0.0...1.0)
-        var cr = range.constrainedValue(r)
-        var cg = range.constrainedValue(g)
-        var cb = range.constrainedValue(b)
+        var cr = range << r
+        var cg = range << g
+        var cb = range << b
         if cr.isNaN { cr = 0 }
         if cg.isNaN { cg = 0 }
         if cb.isNaN { cb = 0 }

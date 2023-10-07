@@ -61,6 +61,15 @@ extension ClosedRange {
         rhs.clamped(to: lhs) == rhs
     }
     
+    /// 返回限制后的值
+    /// - Parameters:
+    ///   - lhs: ClosedRange
+    ///   - rhs: 值
+    /// - Returns: 限制在范围内的值
+    static func <<(lhs: Self, rhs: Bound) -> Bound {
+        lhs.constrainedValue(rhs)
+    }
+    
     /// 将传入的值限制在范围内部 | 过大或过小则取相应的极值
     /// - Parameter value: 需要限制的传入值
     /// - Returns: 限制过后的值
