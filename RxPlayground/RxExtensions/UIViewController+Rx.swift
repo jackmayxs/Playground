@@ -10,6 +10,15 @@ import RxCocoa
 
 public extension Reactive where Base: UIViewController {
 	
+    var viewWillTransitionTo: ControlEvent<(CGSize, UIViewControllerTransitionCoordinator)> {
+        let events = methodInvoked(#selector(Base.viewWillTransition(to:with:))).compactMap {
+            parameters -> (CGSize, UIViewControllerTransitionCoordinator)? in
+            guard let targetSize = parameters.itemAt(0) as? CGSize else { return nil }
+            guard let coordinator = parameters.itemAt(1) as? UIViewControllerTransitionCoordinator else { return nil }
+            return (targetSize, coordinator)
+        }
+        return ControlEvent(events: events)
+    }
 	var viewDidLoad: ControlEvent<Void> {
 		let source = methodInvoked(#selector(Base.viewDidLoad)).map { _ in }
 		return ControlEvent(events: source)

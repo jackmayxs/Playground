@@ -93,6 +93,10 @@ extension CGSize {
         return sqrt(quadraticSum)
     }
     
+    /// 旋转 | 交换宽高
+    var rotated: CGSize {
+        CGSize(width: height, height: width)
+    }
     
     /// height / width
     var ratio: CGFloat {
