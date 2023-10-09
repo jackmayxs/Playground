@@ -47,7 +47,12 @@ class BaseCollectionViewController: BaseViewController, UICollectionViewDelegate
     
     override func prepareTargets() {
         super.prepareTargets()
-        UIDevice.rx.isLandscape.bind(to: rx.isLandscape).disposed(by: rx.disposeBag)
+        /// 使用viewDidAppear + flatMapLatest监听屏幕方向改变
+        /// 是因为view不在视图层级中时,布局更新会失败
+        rx.viewDidAppear
+            .flatMapLatest(UIDevice.rx.isLandscape)
+            .bind(to: rx.isLandscape)
+            .disposed(by: rx.disposeBag)
     }
     
     /// 添加Collection View

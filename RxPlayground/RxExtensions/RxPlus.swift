@@ -233,7 +233,12 @@ extension ObservableConvertibleType {
             .asCompletable()
     }
     
-    func flatMapLatest<Source: InfallibleType>(_ source: Source) -> Observable<Source.Element> {
+    func flatMap<Source: ObservableConvertibleType>(_ source: Source) -> Observable<Source.Element> {
+        asObservable()
+            .flatMap { _ in source }
+    }
+    
+    func flatMapLatest<Source: ObservableConvertibleType>(_ source: Source) -> Observable<Source.Element> {
         asObservable()
             .flatMapLatest { _ in source }
     }
