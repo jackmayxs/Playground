@@ -49,8 +49,10 @@ class BaseCollectionViewController: BaseViewController, UICollectionViewDelegate
         super.prepareTargets()
         /// 使用viewDidAppear + flatMapLatest监听屏幕方向改变
         /// 是因为view不在视图层级中时,布局更新会失败
+        /// 以当前屏幕的朝向作为初始值是为了规避viewDidAppear调用的延迟
         rx.viewDidAppear
             .flatMapLatest(UIDevice.rx.isLandscape)
+            .startWith(UIDevice.current.orientation.isScreenLandscape)
             .bind(to: rx.isLandscape)
             .disposed(by: rx.disposeBag)
     }
