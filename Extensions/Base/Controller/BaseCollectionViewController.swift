@@ -47,7 +47,7 @@ class BaseCollectionViewController: BaseViewController, UICollectionViewDelegate
     
     override func prepareTargets() {
         super.prepareTargets()
-        view.rx.isLandscape.bind(to: rx.isLandscape).disposed(by: rx.disposeBag)
+        UIDevice.rx.isLandscape.bind(to: rx.isLandscape).disposed(by: rx.disposeBag)
     }
     
     /// 添加Collection View

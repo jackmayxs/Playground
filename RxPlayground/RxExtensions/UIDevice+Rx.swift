@@ -11,32 +11,25 @@ import RxCocoa
 
 extension Reactive where Base == UIDevice {
     
+    /// 设备是否横屏 | 屏幕朝上/朝下的情况, 通过判断屏幕尺寸的宽高决定设备是否横屏
+    /// 结合Size.screenSize方法, 可以映射出当前朝向的屏幕尺寸. e.g. isLandscape.map(Size.screenSize)
     static var isLandscape: Observable<Bool> {
-        NotificationCenter.default.rx.notification(UIDevice.orientationDidChangeNotification)
-            .map { _ in
-                UIDevice.current.orientation
-            }
-            .startWith(UIDevice.current.orientation)
-            .compactMap { orientation -> Bool? in
-                switch orientation {
-                case .unknown:
-                    return nil
-                case .portrait:
-                    return false
-                case .portraitUpsideDown:
-                    return false
-                case .landscapeLeft:
-                    return true
-                case .landscapeRight:
-                    return true
-                case .faceUp:
-                    return nil
-                case .faceDown:
-                    return nil
-                @unknown default:
-                    return nil
-                }
-            }
+        didChangeOrientation
+            .map(\.isScreenLandscape)
             .distinctUntilChanged()
+    }
+    
+    static var didChangeOrientation: Observable<UIDeviceOrientation> {
+        NotificationCenter.default.rx.notification(UIDevice.orientationDidChangeNotification)
+            .map(UIDevice.currentOrientation)
+            .startWith(UIDevice.current.orientation)
+            .do(onSubscribe: UIDevice.current.beginGeneratingDeviceOrientationNotifications)
+            .do(onDispose: UIDevice.current.endGeneratingDeviceOrientationNotifications)
+    }
+}
+
+extension UIDevice {
+    fileprivate static func currentOrientation(_ notification: Notification) -> UIDeviceOrientation {
+        current.orientation
     }
 }

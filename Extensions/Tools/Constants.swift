@@ -10,25 +10,20 @@ import UIKit
 
 enum Size {
 	
+    /// 屏幕尺寸
+    /// - Parameter isLandscape: 是否横屏
+    /// - Returns: 横屏/竖屏的屏幕尺寸
+    static func screenSize(isLandscape: Bool) -> CGSize {
+        isLandscape ? screenSize.landscape : screenSize.portrait
+    }
+    
 	static let commonSafeAreaInsets = UIWindow.keyWindow?.safeAreaInsets ?? .zero
 	
 	static let screenScale = UIScreen.main.scale
 	
-	static let screenHeight = UIScreen.main.bounds.height
+    static var screenHeight: CGFloat { screenSize.height }
 	
-	static let screenWidth = UIScreen.main.bounds.width
+    static var screenWidth: CGFloat { screenSize.width }
 	
-	static let screenSize = UIScreen.main.bounds.size
-    
-    static var landscapeSize: CGSize {
-        let width = max(screenSize.width, screenSize.height)
-        let height = min(screenSize.width, screenSize.height)
-        return CGSize(width: width, height: height)
-    }
-    
-    static var portraitSize: CGSize {
-        let width = min(screenSize.width, screenSize.height)
-        let height = max(screenSize.width, screenSize.height)
-        return CGSize(width: width, height: height)
-    }
+    static var screenSize: CGSize { UIScreen.main.bounds.size }
 }

@@ -70,11 +70,11 @@ final class ClamppedVariable<T>: Variable<T> where T: Comparable {
 
 extension ObservableType {
     
-    /// 映射成固定的值
+    /// 映射成固定的值 | 一旦传入值就不会再变了
     /// - Parameter value: 固定值
     /// - Returns: Observable<固定值类型>
-    public func mapExact<T>(_ value: T) -> Observable<T> {
-        map { _ in value }
+    public func mapConstant<T>(_ constant: T) -> Observable<T> {
+        map { _ in constant }
     }
     
     /// 获取非空的上一个元素 和 当前元素

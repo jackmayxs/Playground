@@ -67,7 +67,7 @@ Footer: UICollectionReusableView>: BaseCollectionViewController, UICollectionVie
     
     override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         /// 列数
-        var columnCount = numberOfColumns.cgFloat
+        var columnCount = max(numberOfColumns.cgFloat, 1.0)
         /// Item高度
         var cellHeight = cellHeight
         /// 如果设定了优先的尺寸, 则根据设置的尺寸设定列数和Item高度

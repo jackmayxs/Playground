@@ -15,12 +15,30 @@ extension CGSize {
         width * height
     }
     
+    /// 竖屏尺寸(宽小于高)
+    var portrait: CGSize {
+        guard width != height else { return self }
+        let newWidth = min(width, height)
+        let newHeight = max(width, height)
+        return CGSize(width: newWidth, height: newHeight)
+    }
+    
+    /// 横屏尺寸(宽大于高)
+    var landscape: CGSize {
+        guard width != height else { return self }
+        let newWidth = max(width, height)
+        let newHeight = min(width, height)
+        return CGSize(width: newWidth, height: newHeight)
+    }
+    
     var isPortrait: Bool {
-        !isLandscape
+        guard width != height else { return true }
+        return width < height
     }
     
     var isLandscape: Bool {
-        width > height
+        guard width != height else { return true }
+        return width > height
     }
     
 	init(_ edges: CGFloat...) {

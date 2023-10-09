@@ -18,21 +18,7 @@ extension Reactive where Base: UIView {
         didLayoutSubviews.map(\.intrinsicContentSize)
     }
     
-    /// 是否横屏
-    var isLandscape: Observable<Bool> {
-        window.unwrapped.once.flatMap { window in
-            NotificationCenter.default.rx.notification(UIDevice.orientationDidChangeNotification)
-                .map { _ in
-                    UIDevice.current.orientation
-                }
-                .filter(\.isValidInterfaceOrientation)
-                .map(\.isLandscape)
-                .distinctUntilChanged()
-                .startWith(window.isLandscape)
-        }
-    }
-    
-    var window: Observable<UIWindow?> {
+    var windowSequence: Observable<UIWindow?> {
         didMoveToWindow.startWith(base.window)
     }
     
