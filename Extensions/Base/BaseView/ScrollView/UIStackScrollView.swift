@@ -8,12 +8,16 @@ import UIKit
 
 class UIStackScrollView: UIBaseScrollView {
     
-    lazy var stackView = UIStackView(axis: defaultAxis, distribution: .fill, alignment: .fill, spacing: 0.0)
+    class var defaultAxis: NSLayoutConstraint.Axis {
+        .vertical
+    }
+    
+    lazy var stackView = UIStackView(axis: Self.defaultAxis, distribution: .fill, alignment: .fill, spacing: 0.0)
     
     override var defaultContentView: UIView {
         stackView
     }
-    
+        
     override func prepare() {
         super.prepare()
         showsVerticalScrollIndicator = false
@@ -33,10 +37,6 @@ class UIStackScrollView: UIBaseScrollView {
             }
         }
     }
-    
-    var defaultAxis: NSLayoutConstraint.Axis {
-        .vertical
-    }
 }
 
 extension UIStackScrollView {
@@ -45,6 +45,15 @@ extension UIStackScrollView {
         let arrangedSubviews = subviewsBuilder()
         self.init(axis: axis, spacing: spacing, arrangedSubviews: arrangedSubviews)
     }
+    
+    convenience init(
+        distribution: UIStackView.Distribution = .fill,
+        alignment: UIStackView.Alignment = .fill,
+        spacing: CGFloat = 0,
+        @ArrayBuilder<UIView> subviewsBuilder: () -> [UIView] = { [] }) {
+            let arrangedSubviews = subviewsBuilder()
+            self.init(axis: Self.defaultAxis, distribution: distribution, alignment: alignment, spacing: spacing, arrangedSubviews: arrangedSubviews)
+        }
     
     convenience init(
         axis: NSLayoutConstraint.Axis,
@@ -102,4 +111,12 @@ extension UIStackScrollView {
     func addArrangedSubview(_ subview: UIView) {
         stackView.addArrangedSubview(subview)
     }
+}
+
+// MARK: - 子类
+class UIHStackScrollView: UIStackScrollView {
+    final override class var defaultAxis: NSLayoutConstraint.Axis { .horizontal }
+}
+class UIVStackScrollView: UIStackScrollView {
+    final override class var defaultAxis: NSLayoutConstraint.Axis { .vertical }
 }
