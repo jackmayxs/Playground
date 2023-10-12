@@ -17,6 +17,11 @@ extension Numeric {
 // MARK: - __________ Common __________
 extension Double {
     
+    /// 返回毫秒数
+    var milliseconds: Int {
+        Int(self * 1000)
+    }
+    
     var isNegative: Bool {
         self < 0
     }
