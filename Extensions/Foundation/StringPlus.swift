@@ -148,21 +148,43 @@ extension String {
 }
 extension String {
     
-    static var deviceIdentifier: String? {
+    fileprivate static var _deviceIdentifier: String?
+    
+    static func removeDeviceIdentifier() {
         let item = KeychainItem<String>(
             service: KeychainService.deviceInfo.rawValue,
             account: KeychainService.DeviceInfo.deviceIdentifier.rawValue)
         do {
-            return try item.read()
+            try item.deleteItem()
+            dprint("设备ID删除成功")
+        } catch {
+            dprint(error)
+        }
+    }
+    
+    static var deviceIdentifier: String? {
+        if let _deviceIdentifier {
+            return _deviceIdentifier
+        }
+        let item = KeychainItem<String>(
+            service: KeychainService.deviceInfo.rawValue,
+            account: KeychainService.DeviceInfo.deviceIdentifier.rawValue)
+        do {
+            let identifier = try item.read()
+            _deviceIdentifier = identifier
+            return identifier
         } catch KeychainError.noPassword {
             do {
                 let newIdentifier = String.random
+                _deviceIdentifier = newIdentifier
                 try item.save(newIdentifier)
                 return newIdentifier
             } catch {
+                dprint("保存设备ID失败, Error: \(error)")
                 return nil
             }
         } catch {
+            dprint("读取设备ID失败, Error: \(error)")
             return nil
         }
     }
