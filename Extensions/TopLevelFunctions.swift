@@ -10,15 +10,14 @@ import UIKit
 
 func dprint(_ items: Any..., file: String = #fileID, function: String = #function, line: Int = #line) {
 	#if DEBUG
-	var fileName = (file as NSString).lastPathComponent
-	if fileName.hasSuffix(".swift") {
-		let startIndex = fileName.index(fileName.startIndex, offsetBy: fileName.count - 6)
-		let rang = startIndex..<fileName.endIndex
-		fileName.removeSubrange(rang)
-	}
-	let time = Date().debugTimeString
+    let now = Date()
+    var fileName = (file as NSString).lastPathComponent
+    let swiftExtension = ".swift"
+    if fileName.hasSuffix(swiftExtension) {
+        fileName.removeLast(swiftExtension.count)
+    }
 	let threadWarning = Thread.isMainThread ? "" : " | Warning: NOT-MAIN-THREAD"
-	print("🌿 @Time \(time) \(fileName).\(function) @Line:\(line)\(threadWarning)")
+	print("🌿 @Time \(now.debugTimeString) \(fileName).\(function) @Line:\(line)\(threadWarning)")
 	for (idx, item) in items.enumerated() {
 		print("\(idx) ➜ \(item)")
 	}
