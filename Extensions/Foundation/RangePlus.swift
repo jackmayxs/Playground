@@ -33,6 +33,16 @@ extension ClosedRange where Bound == Int {
     var numberRange: ClosedRange<Int> {
         lowerBound.number...upperBound.number
     }
+    
+    /// 转换成Double范围
+    var doubleRange: ClosedRange<Double> {
+        lowerBound.double...upperBound.double
+    }
+    
+    /// 转换成CGFloat范围
+    var cgFloatRange: ClosedRange<CGFloat> {
+        lowerBound.cgFloat...upperBound.cgFloat
+    }
 }
 
 extension ClosedRange where Bound: FixedWidthInteger {

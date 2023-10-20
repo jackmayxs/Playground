@@ -10,6 +10,7 @@ import UIKit
 
 typealias Kelvin = CGFloat
 
+/// 色域
 enum ColorGamut: CaseIterable, CustomStringConvertible {
     case adobeRGB1998
     case appleRGB
@@ -155,7 +156,14 @@ enum ColorGamut: CaseIterable, CustomStringConvertible {
     }
 }
 
+/// 颜色混合时传入的元素
+struct ColorBlendComponent {
+    let color: UIColor
+    let weight: CGFloat
+}
+
 extension UIColor {
+    /// 常用颜色
     static let OxCCCCCC = 0xCCCCCC.uiColor
     static let OxEEEEEE = 0xEEEEEE.uiColor
     static let Ox999999 = 0x999999.uiColor
@@ -164,6 +172,10 @@ extension UIColor {
     static let Ox444444 = 0x444444.uiColor
     static let Ox333333 = 0x333333.uiColor
     static let Ox222222 = 0x222222.uiColor
+    /// 冷白
+    static let coldWhite = UIColor(temperature: 2_000.0)
+    /// 暖白
+    static let warmWhite = UIColor(temperature: 10_000.0)
 }
 
 extension UIColor {
@@ -212,11 +224,10 @@ extension UIColor {
     }
     
     var hue: CGFloat {
-        guard let hsba else { return 0.0 }
-        return hsba.0
+        hsba.or(0, else: \.hue)
     }
     
-    var hsba: (CGFloat, CGFloat, CGFloat, CGFloat)? {
+    var hsba: (hue: CGFloat, saturation: CGFloat, brightness: CGFloat, alpha: CGFloat)? {
         var h: CGFloat = 0.0
         var s: CGFloat = 0.0
         var b: CGFloat = 0.0
@@ -269,25 +280,11 @@ extension UIColor {
     }
     
     /// 从色温创建颜色
-    /// - Parameter temperature: 色温 | 取值范围: (1000K to 40000K)
+    /// - Parameter temperature: 色温
     /// https://github.com/davidf2281/ColorTempToRGB
+    /// https://tannerhelland.com/2012/09/18/convert-temperature-rgb-algorithm-code.html
     convenience init(temperature: Kelvin) {
-        
-        func clamp(_ value: CGFloat) -> CGFloat {
-            value > 255 ? 255 : (value < 0 ? 0 : value);
-        }
-        
-        func componentsForColorTemperature(temperature: Kelvin) -> (red: CGFloat, green: CGFloat, blue: CGFloat) {
-            let percentKelvin = temperature / 100;
-            let red, green, blue: CGFloat
-            red = clamp(percentKelvin <= 66 ? 255 : (329.698727446 * pow(percentKelvin - 60, -0.1332047592)));
-            green = clamp(percentKelvin <= 66 ? (99.4708025861 * log(percentKelvin) - 161.1195681661) : 288.1221695283 * pow(percentKelvin - 60, -0.0755148492));
-            blue = clamp(percentKelvin >= 66 ? 255 : (percentKelvin <= 19 ? 0 : 138.5177312231 * log(percentKelvin - 10) - 305.0447927307));
-            return (red: red / 255, green: green / 255, blue: blue / 255)
-        }
-        
-        let components = componentsForColorTemperature(temperature: temperature)
-        
+        let components = UIColor.componentsForColorTemperature(temperature)
         self.init(red: components.red, green: components.green, blue: components.blue, alpha: 1.0)
     }
     
@@ -375,6 +372,9 @@ extension UIColor {
         self.init(red: cr, green: cg, blue: cb, alpha: 1.0)
     }
     
+    static func hue(_ hue: Double) -> UIColor {
+        UIColor(hue: hue)
+    }
     convenience init(hue: Double) {
         self.init(hue: hue, saturation: 1.0, brightness: 1.0, alpha: 1.0)
     }
@@ -410,7 +410,115 @@ extension UIColor {
         hexValue.uiColor
     }
     
+    /// 混合颜色
+    /// - Parameters:
+    ///   - components: 颜色元素
+    ///   - brightness: 指定亮度 | 如果不指定,可能出现颜色混合后亮度太暗的问题
+    /// - Returns: 混合的颜色
+    static func blendColors(_ components: [ColorBlendComponent], brightness: CGFloat? = nil) -> UIColor {
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        var alpha: CGFloat = 0
+        components.forEach { component in
+            if let aRGB = component.color.aRGB {
+                red += aRGB.r * component.weight
+                green += aRGB.g * component.weight
+                blue += aRGB.b * component.weight
+                alpha += aRGB.a * component.weight
+            }
+        }
+        if let brightness, let hsba = UIColor(red: red, green: green, blue: blue, alpha: alpha).hsba {
+            return UIColor(hue: hsba.hue, saturation: hsba.saturation, brightness: brightness, alpha: 1.0)
+        } else {
+            return UIColor(red: red, green: green, blue: blue, alpha: alpha)
+        }
+    }
+    
+    /// 色温转颜色的另外一种实现 | 暂不启用
+    /// - Parameter kelvin: 色温
+    /// - Returns: 色温表示的颜色
+    private static func colorWithKelvin(_ kelvin: CGFloat) -> UIColor {
+        let kelvinRange = 1000.0...40_000.0
+        let k = kelvinRange << kelvin
+        
+        func interpolate(_ value: CGFloat, a: CGFloat, b:CGFloat, c:CGFloat) -> CGFloat {
+            a + b * value + c * log(value)
+        }
+        var red, green, blue: CGFloat
+        if k < 6600 {
+            red = 255
+            green = interpolate(k/100-2, a: -155.25485562709179, b: -0.44596950469579133, c: 104.49216199393888)
+            if k < 2000 {
+                blue = 0
+            } else {
+                blue = interpolate(k/100-10, a: -254.76935184120902, b: 0.8274096064007395, c: 115.67994401066147)
+            }
+        } else {
+            red = interpolate(k/100-55, a: 351.97690566805693, b: 0.114206453784165, c: -40.25366309332127)
+            green = interpolate(k/100-50, a: 325.4494125711974, b: 0.07943456536662342, c: -28.0852963507957)
+            blue = 255
+        }
+        return UIColor(red: red / 255, green: green / 255, blue: blue / 255, alpha: 1.0)
+    }
+    
+    static func componentsForColorTemperature(_ temperature: Kelvin) -> (red: CGFloat, green: CGFloat, blue: CGFloat) {
+        let percentKelvin = temperature / 100.0
+        let red, green, blue: CGFloat
+        let range = UInt8.range.cgFloatRange
+        red = range << percentKelvin <= 66 ? 255.0 : (329.698727446 * pow(percentKelvin - 60, -0.1332047592))
+        green = range << percentKelvin <= 66 ? (99.4708025861 * log(percentKelvin) - 161.1195681661) : 288.1221695283 * pow(percentKelvin - 60, -0.0755148492)
+        blue = range << percentKelvin >= 66 ? 255.0 : (percentKelvin <= 19 ? 0 : 138.5177312231 * log(percentKelvin - 10) - 305.0447927307)
+        
+        return (red: red / 255.0, green: green / 255.0, blue: blue / 255.0)
+    }
+    
     // MARK: - __________ Instance __________
+    
+    
+    /// 调整白平衡
+    /// - Parameters:
+    ///   - temperature: 色温
+    ///   - gm: 红绿补偿 | 范围 -100...100 -> 偏红...偏绿
+    /// - Returns: 调整后生成新颜色
+    func whiteBalance(_ temperature: Kelvin? = nil, gm: CGFloat? = nil) -> UIColor {
+        guard let aRGB else { return self }
+        /// 创建色温滤镜
+        guard let filter = CIFilter(name: "CITemperatureAndTint") else {
+            dprint("过滤器创建失败")
+            return self
+        }
+        let ciColor = CIColor(red: aRGB.r, green: aRGB.g, blue: aRGB.b)
+        let inputCIImage = CIImage(color: ciColor)
+        /// 色温
+        let x = temperature.or(6500.0)
+        /// 红绿补偿 | KNOWLED项目里滑块逻辑和这里是相反的,所以这里要取相反数
+        let y = gm.or(0) { -1.0 * $0 }
+        /// 设置相关参数
+        filter.setValue(inputCIImage, forKey: kCIInputImageKey)
+        filter.setValue(CIVector(x: x, y: y), forKey: "inputNeutral")
+        filter.setValue(CIVector(x: 6500, y: 0), forKey: "inputTargetNeutral")
+        guard let outputImage = filter.outputImage else {
+            dprint("输出失败")
+            return self
+        }
+        /// 准备相关参数
+        /// 指定一小块范围用以创建图像 | 直接用outputImage.extent属性就太大了
+        let rect = CGRect(x: 0, y: 0, width: 10, height: 10)
+        let format = CIFormat.RGBA8
+        let colorSpace = CGColorSpace(name: CGColorSpace.sRGB)
+        var options: [CIContextOption: Any] = [:]
+        options[.outputColorSpace] = colorSpace
+        let context = CIContext(options: options)
+        
+        guard let cgImage = context.createCGImage(outputImage, from: rect, format: format, colorSpace: colorSpace) else {
+            dprint("cgImage 创建失败")
+            return self
+        }
+        let uiImage = UIImage(cgImage: cgImage)
+        return UIColor(patternImage: uiImage)
+    }
+    
     func uiImage(size: CGSize = CGSize(width: 1, height: 1)) -> UIImage? {
         let rect = CGRect(origin: .zero, size: size)
         UIGraphicsBeginImageContextWithOptions(size, false, UIScreen.main.scale)
