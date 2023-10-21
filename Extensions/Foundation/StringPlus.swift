@@ -377,6 +377,10 @@ extension String {
 		false
 	}
 	
+    var cfString: CFString {
+        self as CFString
+    }
+    
 	var trimmed: String {
 		trimmingCharacters(in: .whitespacesAndNewlines)
 	}
