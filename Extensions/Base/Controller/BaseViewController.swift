@@ -51,6 +51,9 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
     
     var targetImageSize: CGSize?
     
+    /// 是否始终在导航栏右侧显示关闭按钮 | 点击后关闭导航控制器或自身
+    var alwaysShowRightCloseButton = false
+    
     var defaultMainView: UIView? { nil }
     
     /// The image should defined as a global computed property in each project.
@@ -66,6 +69,12 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
         style: .plain,
         target: self,
         action: #selector(leftBarButtonItemTriggered))
+    
+    private(set) lazy var dismissBarButtonItem = UIBarButtonItem(
+        image: closeBarButtonImage,
+        style: .plain,
+        target: self,
+        action: #selector(dismissNavigationControllerOrSelf))
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -162,8 +171,15 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
         if let navigationController = navigationController {
             if navigationController.viewControllers.count > 1 {
                 navigationItem.leftBarButtonItem = backBarButtonItem
+                if alwaysShowRightCloseButton {
+                    navigationItem.rightBarButtonItem = dismissBarButtonItem
+                }
             } else if navigationController.viewControllers.count == 1 && presentingViewController != nil {
-                navigationItem.leftBarButtonItem = closeBarButtonItem
+                if alwaysShowRightCloseButton {
+                    navigationItem.rightBarButtonItem = dismissBarButtonItem
+                } else {
+                    navigationItem.leftBarButtonItem = closeBarButtonItem
+                }
             }
         }
     }
@@ -338,6 +354,10 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
         } else {
             dismiss(animated: animated)
         }
+    }
+    
+    @objc func dismissNavigationControllerOrSelf() {
+        close(animated: true, completion: nil)
     }
     
     @objc func close(animated: Bool = true, completion: SimpleCallback? = nil) {
