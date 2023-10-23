@@ -51,8 +51,8 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
     
     var targetImageSize: CGSize?
     
-    /// 是否始终在导航栏右侧显示关闭按钮 | 点击后关闭导航控制器或自身
-    var alwaysShowRightCloseButton = false
+    /// 是否始终在导航栏右侧显示关闭按钮 | 点击后dismiss导航控制器或自身
+    var alwaysShowDismissButton = false
     
     var defaultMainView: UIView? { nil }
     
@@ -70,6 +70,7 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
         target: self,
         action: #selector(leftBarButtonItemTriggered))
     
+    /// The image should defined as a global computed property in each project.
     private(set) lazy var dismissBarButtonItem = UIBarButtonItem(
         image: closeBarButtonImage,
         style: .plain,
@@ -171,11 +172,11 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
         if let navigationController = navigationController {
             if navigationController.viewControllers.count > 1 {
                 navigationItem.leftBarButtonItem = backBarButtonItem
-                if alwaysShowRightCloseButton {
+                if alwaysShowDismissButton {
                     navigationItem.rightBarButtonItem = dismissBarButtonItem
                 }
             } else if navigationController.viewControllers.count == 1 && presentingViewController != nil {
-                if alwaysShowRightCloseButton {
+                if alwaysShowDismissButton {
                     navigationItem.rightBarButtonItem = dismissBarButtonItem
                 } else {
                     navigationItem.leftBarButtonItem = closeBarButtonItem
