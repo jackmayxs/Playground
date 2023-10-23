@@ -15,19 +15,21 @@ extension NWPath: ReactiveCompatible {}
 
 extension Reactive where Base == NWPath {
     
-    /// 如果为nil, 则为有线连接
-    var maybeSSID: Observable<String?> {
+    /// 返回Wi-Fi的SSID或局域网连接类型
+    /// 需要用户开启定位权限才能获取到SSID
+    var lanConnectionName: Observable<String?> {
         LocationManager.rx.authorizationStatus.map { status -> String? in
             guard let interface = base.availableInterfaces.first else { return nil }
             guard let networkInfo = CNCopyCurrentNetworkInfo(interface.name.cfString) else {
                 if let supportedInterfaces = CNCopySupportedInterfaces() {
                     if let en0 = (supportedInterfaces as NSArray).firstObject as? String {
                         if interface.name == en0 {
+                            /// 无定位权限的情况
                             return "WLAN"
                         }
                     }
                 }
-                return nil
+                return "LAN"
             }
             let SSID = (networkInfo as NSDictionary)[kCNNetworkInfoKeySSID as String] as? String
             return SSID
