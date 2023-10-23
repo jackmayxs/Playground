@@ -16,7 +16,7 @@ final class LocationManager: NSObject {
     /// 定位管理器核心对象
     let core = CLLocationManager()
     /// 定位权限
-    @Variable var authorizationStatus: CLAuthorizationStatus?
+    fileprivate lazy var authorizationStatusRelay = BehaviorRelay(value: core.compatibleAuthorizationStatus)
     
     private override init() {
         super.init()
@@ -27,15 +27,22 @@ final class LocationManager: NSObject {
 
 extension LocationManager {
     
+    var authorizationStatus: CLAuthorizationStatus {
+        get { authorizationStatusRelay.value }
+        set {
+            authorizationStatusRelay.accept(newValue)
+        }
+    }
+    
     /// 请求位置权限
     static func requestAuthorizationIfNeeded() {
         guard let infoDictionary = Bundle.main.infoDictionary else { return }
         lazy var infoKeys = infoDictionary.keys
         let core = LocationManager.shared.core
         if core.compatibleAuthorizationStatus.isNotDetermined {
-            if infoKeys.contains(.whenInUseUsageDescription) {
+            if infoKeys.contains(.whenInUseUsageDescriptionKey) {
                 core.requestWhenInUseAuthorization()
-            } else if infoKeys.contains(.alwaysAndWhenInUseUsageDescription) || infoKeys.contains(.alwaysUsageDescription) {
+            } else if infoKeys.contains(.alwaysAndWhenInUseUsageDescriptionKey) || infoKeys.contains(.alwaysUsageDescriptionKey) {
                 core.requestAlwaysAuthorization()
             }
         }
@@ -59,17 +66,28 @@ extension LocationManager: CLLocationManagerDelegate {
 
 extension Reactive where Base == LocationManager {
     
+    /// 位置权限序列
     static var authorizationStatus: Observable<CLAuthorizationStatus> {
-        LocationManager.shared.$authorizationStatus
-            .unwrapped
-            .do(onSubscribe: LocationManager.requestAuthorizationIfNeeded)
+        authorizationStatus(requestOnSubscribe: true)
+    }
+    
+    /// 位置权限序列
+    /// - Parameter requestOnSubscribe: 订阅时是否立刻请求位置权限
+    /// - Returns: 位置权限序列
+    static func authorizationStatus(requestOnSubscribe: Bool) -> Observable<CLAuthorizationStatus> {
+        let unwrappedStatus = LocationManager.shared.authorizationStatusRelay
+        if requestOnSubscribe {
+            return unwrappedStatus.do(onSubscribe: LocationManager.requestAuthorizationIfNeeded)
+        } else {
+            return unwrappedStatus.asObservable()
+        }
     }
 }
 
 fileprivate extension String {
-    static let alwaysAndWhenInUseUsageDescription = "NSLocationAlwaysAndWhenInUseUsageDescription"
-    static let alwaysUsageDescription = "NSLocationAlwaysUsageDescription"
-    static let whenInUseUsageDescription = "NSLocationWhenInUseUsageDescription"
-    static let usageDescription = "NSLocationUsageDescription"
-    static let temporaryUsageDescriptionDictionary = "NSLocationTemporaryUsageDescriptionDictionary"
+    static let alwaysAndWhenInUseUsageDescriptionKey = "NSLocationAlwaysAndWhenInUseUsageDescription"
+    static let alwaysUsageDescriptionKey = "NSLocationAlwaysUsageDescription"
+    static let whenInUseUsageDescriptionKey = "NSLocationWhenInUseUsageDescription"
+    static let usageDescriptionKey = "NSLocationUsageDescription"
+    static let temporaryUsageDescriptionDictionaryKey = "NSLocationTemporaryUsageDescriptionDictionary"
 }
