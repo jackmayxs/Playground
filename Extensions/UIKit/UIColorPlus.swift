@@ -410,6 +410,10 @@ extension UIColor {
         hexValue.uiColor
     }
     
+    static func blendColors(brightness: CGFloat? = nil, @ArrayBuilder<ColorBlendComponent> _ components: () -> [ColorBlendComponent]) -> UIColor {
+        blendColors(components(), brightness: brightness)
+    }
+    
     /// 混合颜色
     /// - Parameters:
     ///   - components: 颜色元素
