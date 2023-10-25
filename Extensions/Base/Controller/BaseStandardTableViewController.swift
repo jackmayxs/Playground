@@ -9,8 +9,8 @@ import UIKit
 
 class BaseStandardTableViewController<Cell: UITableViewCell>: BaseTableViewController {
 
-    override func configureTableView() {
-        super.configureTableView()
+    override func configureTableView(_ tableView: UITableView) {
+        super.configureTableView(tableView)
         Cell.registerFor(tableView)
     }
     

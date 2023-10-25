@@ -21,7 +21,7 @@ class BaseTableViewController: BaseViewController, UITableViewDataSource, UITabl
     override func viewDidLoad() {
         super.viewDidLoad()
         /// 配置TableView
-        configureTableView()
+        configureTableView(tableView)
         /// 添加TableView
         addTableView()
     }
@@ -34,7 +34,7 @@ class BaseTableViewController: BaseViewController, UITableViewDataSource, UITabl
     }
     
     /// 调用时机:viewDidLoad()
-    func configureTableView() {
+    func configureTableView(_ tableView: UITableView) {
         if #available(iOS 15, *) {
             /// 取消组头顶部间距
             tableView.sectionHeaderTopPadding = 0

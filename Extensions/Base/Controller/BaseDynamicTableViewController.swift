@@ -28,8 +28,8 @@ class BaseDynamicTableViewController
         viewModel.fetchMoreData()
     }
     
-    override func configureTableView() {
-        super.configureTableView()
+    override func configureTableView(_ tableView: UITableView) {
+        super.configureTableView(tableView)
         PrimaryCell.registerFor(tableView)
     }
     
