@@ -176,6 +176,10 @@ extension UIColor {
     static let coldWhite = UIColor(temperature: 2_000.0)
     /// 暖白
     static let warmWhite = UIColor(temperature: 10_000.0)
+    /// 琥珀色
+    static let amber = 0xFFBF00.uiColor
+    /// 清柠色
+    static let lightLime = 0xBFFF00.uiColor
 }
 
 extension UIColor {
