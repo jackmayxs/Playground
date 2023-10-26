@@ -99,6 +99,10 @@ class UIBaseStaticTable: UITableView, StandardLayoutLifeCycle, UITableViewDelega
         }
     }
     
+    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        indexPath
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         /// 执行Cell回调
         sections[indexPath.section][indexPath.row].doSelect()
