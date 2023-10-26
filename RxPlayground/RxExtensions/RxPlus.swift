@@ -460,6 +460,28 @@ extension ObservableConvertibleType {
 				self.asObservable()
 			}
 	}
+    
+    /// 利用旁路特性为观察者赋值
+    /// - Parameter observers: 观察者类型
+    /// - Returns: Observable<Element>
+    public func assign<Observer: ObserverType>(to observers: Observer...) -> Observable<Element> where Observer.Element == Element {
+        observable.do { element in
+            observers.forEach { observer in
+                observer.onNext(element)
+            }
+        }
+    }
+    
+    /// 利用旁路特性为观察者赋值
+    /// - Parameter observers: 观察者类型
+    /// - Returns: Observable<Element?>
+    public func assign<Observer: ObserverType>(to observers: Observer...) -> Observable<Element> where Observer.Element == Element? {
+        observable.do { element in
+            observers.forEach { observer in
+                observer.onNext(element)
+            }
+        }
+    }
 }
 
 infix operator <-> : DefaultPrecedence
