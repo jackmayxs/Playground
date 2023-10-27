@@ -31,4 +31,15 @@ extension SKLabelNode {
         ]
         attributedText = NSAttributedString(string: text, attributes: attributes)
     }
+    
+    /// 更新字体颜色
+    /// - Parameter textColor: 新的字体颜色
+    func updateAttributedTextColor(_ textColor: UIColor?) {
+        guard let textColor else { return }
+        guard let oldAttributedText = attributedText else { return }
+        var updatedAttributes = oldAttributedText.attributes(at: 0, effectiveRange: nil)
+        guard updatedAttributes.isNotEmpty else { return }
+        updatedAttributes[.foregroundColor] = textColor
+        attributedText = NSAttributedString(string: oldAttributedText.string, attributes: updatedAttributes)
+    }
 }
