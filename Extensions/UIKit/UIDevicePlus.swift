@@ -46,31 +46,39 @@ extension UIDevice {
 
 extension UIDeviceOrientation {
     
-    /// 判断屏幕是否是竖屏 | 设备朝上,朝下的情况特殊处理
+    /// 判断屏幕是否是竖屏
     var isScreenPortrait: Bool {
         !isScreenLandscape
     }
     
-    /// 判断屏幕是否横屏 | 设备朝上,朝下的情况特殊处理
+    /// 判断屏幕是否横屏 | 因为上游传入的状态不可靠, 所以不使用UIDeviceOrientation.isLandscape属性判断是否横屏
     var isScreenLandscape: Bool {
-        switch self {
-        case .portrait, .portraitUpsideDown, .landscapeLeft, .landscapeRight:
-            return isLandscape
-        default:
-            lazy var isLandscape = UIScreen.main.bounds.size.isLandscape
-            if #available(iOS 13.0, *) {
-                if let window = UIApplication.shared.windows.first {
-                    if let windowScene = window.windowScene {
-                        return windowScene.interfaceOrientation.isLandscape
-                    } else {
-                        return isLandscape
-                    }
+        lazy var isLandscape = UIScreen.main.bounds.size.isLandscape
+        if #available(iOS 13.0, *) {
+            if let window = UIApplication.shared.windows.first {
+                if let windowScene = window.windowScene {
+                    return windowScene.interfaceOrientation.isScreenLandscape
                 } else {
                     return isLandscape
                 }
             } else {
-                return UIApplication.shared.statusBarOrientation.isLandscape
+                return isLandscape
             }
+        } else {
+            return UIApplication.shared.statusBarOrientation.isScreenLandscape
+        }
+    }
+}
+
+extension UIInterfaceOrientation {
+    
+    /// 判断屏幕是否横屏 | unknown情况下使用屏幕尺寸判断是否横屏
+    var isScreenLandscape: Bool {
+        switch self {
+        case .unknown:
+            return UIScreen.main.bounds.size.isLandscape
+        default:
+            return isLandscape
         }
     }
 }

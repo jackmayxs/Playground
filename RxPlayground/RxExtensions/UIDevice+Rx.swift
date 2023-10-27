@@ -30,6 +30,7 @@ extension Reactive where Base == UIDevice {
 
 extension UIDevice {
     fileprivate static func currentOrientation(_ notification: Notification) -> UIDeviceOrientation {
-        current.orientation
+        guard let device = notification.object as? UIDevice else { return current.orientation }
+        return device.orientation
     }
 }
