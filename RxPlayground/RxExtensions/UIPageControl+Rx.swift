@@ -9,6 +9,10 @@ import RxCocoa
 
 extension Reactive where Base: UIPageControl {
     
+    var isFirstPage: Observable<Bool> {
+        currentPage.map(\.isZero)
+    }
+    
     var isLastPage: Observable<Bool> {
         currentPage.withUnretained(base).map { pageControl, page in
             page == pageControl.numberOfPages - 1
