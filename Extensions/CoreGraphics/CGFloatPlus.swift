@@ -42,4 +42,8 @@ extension CGFloat {
     var isPositive: Bool {
         self > 0
     }
+    
+    func constrained(in range: ClosedRange<CGFloat>) -> CGFloat {
+        range << self
+    }
 }

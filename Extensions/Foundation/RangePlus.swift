@@ -15,6 +15,14 @@ extension ClosedRange where Bound: Strideable, Bound.Stride: SignedInteger {
     }
 }
 
+extension ClosedRange where Bound == CGFloat {
+    static let percentRange = CGFloat.percentRange
+}
+
+extension ClosedRange where Bound == Double {
+    static let percentRange = Double.percentRange
+}
+
 extension ClosedRange where Bound == Int {
     
     /// 求出指定值在本范围内的进度

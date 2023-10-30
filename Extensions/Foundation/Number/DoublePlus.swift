@@ -39,6 +39,10 @@ extension Double {
         percentString(fractions: 0) ?? ""
     }
     
+    func constrained(in range: ClosedRange<Double>) -> Double {
+        range << self
+    }
+    
     func percentString(fractions: Int = 0) -> String? {
         NumberFormatter.shared.configure { formatter in
             formatter.numberStyle = .percent
