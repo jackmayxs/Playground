@@ -15,6 +15,11 @@ extension Numeric {
 }
 
 // MARK: - __________ Common __________
+
+extension Double {
+    static let percentRange: ClosedRange<Double> = 0...1.0
+}
+
 extension Double {
     
     /// 返回毫秒数

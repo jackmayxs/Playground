@@ -9,10 +9,14 @@
 import CoreGraphics
 
 extension CGFloat {
+    static let percentRange: ClosedRange<CGFloat> = 0...1.0
+}
+
+extension CGFloat {
 	
     /// 返回 0...1.0 之间的随机数
 	static var randomPercent: CGFloat {
-		CGFloat.random(in: 0.0...1.0)
+		CGFloat.random(in: percentRange)
 	}
 	
     var int: Int {
