@@ -18,3 +18,7 @@ extension Bool: SelfReflectable {
 extension Optional: SelfReflectable {
     var itself: Optional<Wrapped> { self }
 }
+
+extension Array: SelfReflectable {
+    var itself: Array<Element> { self }
+}
