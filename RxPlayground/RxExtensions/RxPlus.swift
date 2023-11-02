@@ -393,6 +393,32 @@ extension ObservableType {
             throw "类型转换失败"
         }
     }
+    
+    public func bindTo<Observer: ObserverType>(@ArrayBuilder<Observer> observersBuilder: () -> Array<Observer>) -> Disposable where Observer.Element == Element {
+        let observers = observersBuilder()
+        return bind(to: observers)
+    }
+    
+    public func bindTo<Observer: ObserverType>(@ArrayBuilder<Observer> observersBuilder: () -> Array<Observer>) -> Disposable where Observer.Element == Element? {
+        let observers = observersBuilder()
+        return bind(to: observers)
+    }
+    
+    public func bind<Observer: ObserverType>(to observers: Array<Observer>) -> Disposable where Observer.Element == Element {
+        subscribe { event in
+            observers.forEach { observer in
+                observer.on(event)
+            }
+        }
+    }
+    
+    public func bind<Observer: ObserverType>(to observers: Array<Observer>) -> Disposable where Observer.Element == Element? {
+        optionalElement.subscribe { event in
+            observers.forEach { observer in
+                observer.on(event)
+            }
+        }
+    }
 }
 
 extension ObservableType where Element == Bool {
@@ -465,6 +491,20 @@ extension ObservableConvertibleType {
     /// - Parameter observers: 观察者类型
     /// - Returns: Observable<Element>
     public func assign<Observer: ObserverType>(to observers: Observer...) -> Observable<Element> where Observer.Element == Element {
+        assign(to: observers)
+    }
+    
+    /// 利用旁路特性为观察者赋值
+    /// - Parameter observers: 观察者类型
+    /// - Returns: Observable<Element?>
+    public func assign<Observer: ObserverType>(to observers: Observer...) -> Observable<Element> where Observer.Element == Element? {
+        assign(to: observers)
+    }
+    
+    /// 利用旁路特性为观察者赋值
+    /// - Parameter observers: 观察者类型
+    /// - Returns: Observable<Element>
+    public func assign<Observer: ObserverType>(to observers: Array<Observer>) -> Observable<Element> where Observer.Element == Element {
         observable.do { element in
             observers.forEach { observer in
                 observer.onNext(element)
@@ -475,13 +515,14 @@ extension ObservableConvertibleType {
     /// 利用旁路特性为观察者赋值
     /// - Parameter observers: 观察者类型
     /// - Returns: Observable<Element?>
-    public func assign<Observer: ObserverType>(to observers: Observer...) -> Observable<Element> where Observer.Element == Element? {
+    public func assign<Observer: ObserverType>(to observers: Array<Observer>) -> Observable<Element> where Observer.Element == Element? {
         observable.do { element in
             observers.forEach { observer in
                 observer.onNext(element)
             }
         }
     }
+    
 }
 
 infix operator <-> : DefaultPrecedence
