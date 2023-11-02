@@ -56,6 +56,11 @@ extension CGRect {
 	var center: CGPoint {
 		CGPoint(x: midX, y: midY)
 	}
+    
+    /// SpriteKit节点Frame的中心点
+    var skNodeCenter: CGPoint {
+        CGPoint(x: midX, y: origin.y - size.height / 2.0)
+    }
 	
 	/// 对Rect进行缩放
 	/// - Parameter ratio: 缩放比率
