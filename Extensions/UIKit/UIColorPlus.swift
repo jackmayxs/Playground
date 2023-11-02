@@ -173,9 +173,9 @@ extension UIColor {
     static let Ox333333 = 0x333333.uiColor
     static let Ox222222 = 0x222222.uiColor
     /// 冷白
-    static let coldWhite = UIColor(temperature: 2_000.0)
+    static let coldWhite = UIColor(temperature: 10_000.0)
     /// 暖白
-    static let warmWhite = UIColor(temperature: 10_000.0)
+    static let warmWhite = UIColor(temperature: 2_000.0)
     /// 琥珀色
     static let amber = 0xFFBF00.uiColor
     /// 清柠色
