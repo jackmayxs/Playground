@@ -60,7 +60,7 @@ func synchronized<T>(lock: AnyObject, _ closure: () throws -> T) rethrows -> T {
     return try closure()
 }
 
-/// 如果左边为空则返回右边
+/// 左侧优先
 func <--<T>(_ lhs: T?, rhs: T?) -> T? {
     lhs ?? rhs
 }
@@ -68,7 +68,7 @@ func <--<T>(_ lhs: T?, rhs: T?) -> T? {
 func <--<T>(_ lhs: T, rhs: T) -> T {
     lhs
 }
-/// 如果右边为空则返回左边
+/// 右侧优先
 func --><T>(_ lhs: T?, rhs: T?) -> T? {
     rhs ?? lhs
 }
