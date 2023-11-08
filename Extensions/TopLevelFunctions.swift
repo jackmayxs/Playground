@@ -16,8 +16,9 @@ func dprint(_ items: Any..., file: String = #fileID, function: String = #functio
     if fileName.hasSuffix(swiftExtension) {
         fileName.removeLast(swiftExtension.count)
     }
-	let threadWarning = Thread.isMainThread ? "" : " | Warning: NOT-MAIN-THREAD"
-	print("🌿 @Time \(now.debugTimeString) \(fileName).\(function) @Line:\(line)\(threadWarning)")
+	let threadWarning = Thread.isMainThread ? "" : " | NOT-MAIN-THREAD"
+    let queueWarning = isMainQueue ? "" : " | NOT-MAIN-QUEUE"
+	print("🌿 @Time \(now.debugTimeString) \(fileName).\(function) @Line:\(line)\(threadWarning)\(queueWarning)")
 	for (idx, item) in items.enumerated() {
 		print("\(idx) ➜ \(item)")
 	}
