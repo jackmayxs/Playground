@@ -101,7 +101,7 @@ extension Data {
 extension Data {
     
     var rawBytes: String {
-        map(\.string).joined(separator: ",")
+        map(\.string).joined(separator: "|")
     }
     
     func jsonString(_ options: JSONSerialization.WritingOptions = []) -> String? {
