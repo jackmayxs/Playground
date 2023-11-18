@@ -197,7 +197,11 @@ extension UIColor {
 extension UIColor {
     
     var hexString: String? {
-        int.map { int in
+        hexString(alphaIgnored: true)
+    }
+    
+    func hexString(alphaIgnored: Bool = true) -> String? {
+        int(alphaIgnored: alphaIgnored).map { int in
             "#" + int.hexString
         }
     }
