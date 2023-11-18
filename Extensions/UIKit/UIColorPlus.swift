@@ -160,6 +160,18 @@ enum ColorGamut: CaseIterable, CustomStringConvertible {
 struct ColorBlendComponent {
     let color: UIColor
     let weight: CGFloat
+    
+    init?(color: UIColor?, weight: CGFloat?) {
+        guard let color, let weight else { return nil }
+        self.color = color
+        self.weight = weight
+    }
+    
+    init?(color: UIColor?, weight: Double?) {
+        guard let color, let weight else { return nil }
+        self.color = color
+        self.weight = weight
+    }
 }
 
 extension UIColor {
