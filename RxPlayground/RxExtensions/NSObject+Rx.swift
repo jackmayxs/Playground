@@ -32,6 +32,13 @@ public extension Reactive where Base: AnyObject {
             }
         }
     }
+    
+    /// disposeBag置空 | 清空之前所有的订阅
+    func clearDisposeBag() {
+        synchronized(lock: base) {
+            setAssociatedObject(base, &disposeBagContext, nil, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
 }
 
 // MARK: - Trackers Protocol
