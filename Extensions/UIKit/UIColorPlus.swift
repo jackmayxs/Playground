@@ -235,7 +235,8 @@ extension UIColor {
             return rgb
         case 4:
             /// 透明度
-            lazy var alpha = Int(components[3] * 255.0)
+            lazy var alphaPercent = CGFloat.percentRange << components[3]
+            lazy var alpha = Int(alphaPercent * 255.0)
             /// 是否忽略透明通道
             return alphaIgnored ? rgb : (alpha << 24) ^ rgb
         default:
