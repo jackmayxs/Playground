@@ -216,9 +216,9 @@ extension UIColor {
     /// - Returns: 表示颜色的整型数值
     func int(alphaIgnored: Bool = true) -> Int? {
         guard let components = cgColor.components, components.count >= 3 else { return nil }
-        var redComponent = components[0]
-        var greenComponent = components[1]
-        var blueComponent = components[2]
+        var redComponent = CGFloat.percentRange << components[0]
+        var greenComponent = CGFloat.percentRange << components[1]
+        var blueComponent = CGFloat.percentRange << components[2]
         /// 检查数值
         if redComponent.isNaN { redComponent = 0 }
         if greenComponent.isNaN { greenComponent = 0 }
