@@ -30,9 +30,25 @@ extension Array {
         append(contentsOf: elements)
     }
     
+    /// 下标方式获取指定位置的元素
+    subscript (itemAt index: Index) -> Element? {
+        itemAt(index)
+    }
+    
+    /// 获取指定位置的元素
+    /// - Parameter index: 元素位置
+    /// - Returns: 如果下标合规则返回相应元素
     public func itemAt(_ index: Index) -> Element? {
-        guard (startIndex..<count) ~= index else { return nil }
+        guard (startIndex..<endIndex) ~= index else { return nil }
         return self[index]
+    }
+    
+    /// 安全移除指定位置的元素
+    /// - Parameter index: 元素位置
+    /// - Returns: 如果存在,则返回被移除的元素
+    public mutating func safeRemove(at index: Int) -> Element? {
+        guard itemAt(index).isValid else { return nil }
+        return remove(at: index)
     }
     
     public init(generating elementGenerator: (Int) -> Element, count: Int) {
