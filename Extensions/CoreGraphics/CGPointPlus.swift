@@ -13,6 +13,14 @@ extension CGPoint {
     var isZero: Bool {
         self == .zero
     }
+    
+    func point(newX: CGFloat) -> CGPoint {
+        CGPoint(x: newX, y: y)
+    }
+    
+    func point(newY: CGFloat) -> CGPoint {
+        CGPoint(x: x, y: newY)
+    }
 }
 
 extension CGPoint {
