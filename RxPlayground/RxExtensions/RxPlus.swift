@@ -250,8 +250,7 @@ extension ObservableConvertibleType {
     }
     
     var once: Observable<Element> {
-        asObservable()
-            .take(1)
+        observable.take(1)
     }
     
     /// 用于重新订阅事件 | 如: .retry(when: button.rx.tap.triggered)
