@@ -363,7 +363,7 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
     
     @objc func close(animated: Bool = true, completion: SimpleCallback? = nil) {
         if let navigationController = navigationController {
-            navigationController.dismiss(animated: animated)
+            navigationController.dismiss(animated: animated, completion: completion)
         } else {
             dismiss(animated: animated, completion: completion)
         }
