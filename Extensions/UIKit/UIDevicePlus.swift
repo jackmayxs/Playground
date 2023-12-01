@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 extension UIDevice {
     
@@ -46,6 +47,54 @@ extension UIDevice {
 
 extension UIDeviceOrientation {
     
+    /// 是否属于正常的四种朝向
+    var isRegularOrientation: Bool {
+        switch self {
+        case .portrait, .portraitUpsideDown, .landscapeLeft, .landscapeRight:
+            true
+        default:
+            false
+        }
+    }
+    
+    /// 修正为:正常的四种朝向
+    var regularOrientation: UIDeviceOrientation {
+        /// 默认朝向 | 前置摄像头朝左,Home按钮朝右
+        lazy var defaultRegularOrientation = UIDeviceOrientation.landscapeLeft
+        if isRegularOrientation {
+            return self
+        } else {
+            if #available(iOS 13.0, *) {
+                if let window = UIApplication.shared.windows.first {
+                    if let windowScene = window.windowScene {
+                        return windowScene.interfaceOrientation.regularDeviceOrientation
+                    } else {
+                        return defaultRegularOrientation
+                    }
+                } else {
+                    return defaultRegularOrientation
+                }
+            } else {
+                return UIApplication.shared.statusBarOrientation.regularDeviceOrientation
+            }
+        }
+    }
+    
+    var captureVideoOrientation: AVCaptureVideoOrientation {
+        switch regularOrientation {
+        case .portrait:
+            return .portrait
+        case .portraitUpsideDown:
+            return .portraitUpsideDown
+        case .landscapeLeft:
+            return .landscapeRight
+        case .landscapeRight:
+            return .landscapeLeft
+        default:
+            fatalError("Should not happen.")
+        }
+    }
+    
     /// 判断屏幕是否是竖屏
     var isScreenPortrait: Bool {
         !isScreenLandscape
@@ -79,6 +128,29 @@ extension UIInterfaceOrientation {
             return UIScreen.main.bounds.size.isLandscape
         default:
             return isLandscape
+        }
+    }
+    
+    /// 转换成常见的四种设备朝向之一
+    /// 只包含: .portrait, .portraitUpsideDown, .landscapeLeft, .landscapeRight 四种可能
+    var regularDeviceOrientation: UIDeviceOrientation {
+        /// 默认朝向 | 前置摄像头朝左,Home按钮朝右
+        lazy var defaultRegularOrientation = UIDeviceOrientation.landscapeLeft
+        switch self {
+        case .unknown:
+            dprint("未知朝向")
+            return defaultRegularOrientation
+        case .portrait:
+            return .portrait
+        case .portraitUpsideDown:
+            return .portraitUpsideDown
+        case .landscapeLeft: /// Home按钮在左
+            return .landscapeRight /// 前置摄像头在右
+        case .landscapeRight: /// Home按钮在右
+            return .landscapeLeft /// 前置摄像头在左
+        @unknown default:
+            assertionFailure("Unhandled condition")
+            return defaultRegularOrientation
         }
     }
 }
