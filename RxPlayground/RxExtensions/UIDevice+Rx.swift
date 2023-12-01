@@ -20,11 +20,11 @@ extension Reactive where Base == UIDevice {
     }
     
     static var didChangeOrientation: Observable<UIDeviceOrientation> {
+        /// 注: 不要再.do(onDispose: UIDevice.current.endGeneratingDeviceOrientationNotifications)
         NotificationCenter.default.rx.notification(UIDevice.orientationDidChangeNotification)
             .map(UIDevice.currentOrientation)
             .startWith(UIDevice.current.orientation)
             .do(onSubscribe: UIDevice.current.beginGeneratingDeviceOrientationNotifications)
-            .do(onDispose: UIDevice.current.endGeneratingDeviceOrientationNotifications)
     }
 }
 
