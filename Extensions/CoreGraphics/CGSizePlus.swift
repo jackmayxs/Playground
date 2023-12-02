@@ -10,6 +10,11 @@ import UIKit
 
 extension CGSize {
     
+    var pixelSize: CGSize {
+        let scale = UIScreen.main.scale
+        return CGSize(width: width * scale, height: height * scale)
+    }
+    
     /// 面积
     var area: CGFloat {
         width * height

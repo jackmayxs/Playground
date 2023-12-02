@@ -38,6 +38,12 @@ extension CGRect {
         CGRect(origin: origin, size: size)
     }
     
+    /// 以像素为单位的Rect
+    var pixelRect: CGRect {
+        let scale = UIScreen.main.scale
+        return CGRect(x: origin.x * scale, y: origin.y * scale, width: size.width * scale, height: size.height * scale)
+    }
+    
     /// 按照X轴线向上翻转之后的Rect | 用于SPriteKit中的坐标运算
     var flipped: CGRect {
         CGRect(x: origin.x, y: -origin.y, width: width, height: height)
@@ -88,6 +94,32 @@ extension CGRect {
 }
 
 extension CGRect {
+    
+    
+    /// 将右侧的Rect限制在左侧的Rect内
+    static func <<(lhs: CGRect, rhs: CGRect) -> CGRect {
+        /// 确保两个Rect都非空
+        if lhs.isEmpty || rhs.isEmpty { return .zero }
+        /// 左侧的Rect看做容器Rect
+        let containerMinX = lhs.minX
+        let containerMinY = lhs.minY
+        let containerWidth = lhs.width
+        let containerHeight = lhs.height
+        /// 右侧的Rect看做被约束的Rect
+        let x = rhs.minX
+        let y = rhs.minY
+        let width = rhs.width
+        let height = rhs.height
+        /// 计算最大x/y值
+        let maxX = containerWidth - min(width, containerWidth)
+        let maxY = containerHeight - min(height, containerHeight)
+        /// 确定x/y范围
+        guard maxX >= containerMinX, maxY >= containerMinY else { return .zero }
+        let xRange = containerMinX...maxX
+        let yRange = containerMinY...maxY
+        /// 返回约束后的Rect
+        return CGRect(x: xRange << x, y: yRange << y, width: width, height: height)
+    }
     
     static func +(lhs: CGRect, rhs: UIEdgeInsets) -> CGRect {
         lhs.inset(by: rhs)
