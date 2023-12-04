@@ -177,6 +177,7 @@ struct ColorBlendComponent {
 extension UIColor {
     /// 常用颜色
     static let OxCCCCCC = 0xCCCCCC.uiColor
+    static let OxDDDDDD = 0xDDDDDD.uiColor
     static let OxEEEEEE = 0xEEEEEE.uiColor
     static let Ox999999 = 0x999999.uiColor
     static let Ox666666 = 0x666666.uiColor
