@@ -18,7 +18,7 @@ extension Numeric {
 
 extension Double {
     /// 这里储存一份静态属性,避免重复创建Range
-    static let percentRange = Double.percentRange
+    static let percentRange = Double.hotPercentRange
     /// 返回毫秒数
     var milliseconds: Int {
         Int(self * 1000)

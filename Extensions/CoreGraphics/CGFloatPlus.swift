@@ -10,5 +10,5 @@ import CoreGraphics
 
 extension CGFloat {
     /// 这里储存一份静态属性,避免重复创建Range
-    static let percentRange = CGFloat.percentRange
+    static let percentRange = CGFloat.hotPercentRange
 }

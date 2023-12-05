@@ -9,7 +9,8 @@ import Foundation
 
 extension BinaryFloatingPoint {
     
-    static var percentRange: ClosedRange<Self> { 0...1.0 }
+    /// 实时创建的百分比范围, 尽量避免直接使用. 在常用的类型扩展里储存一份静态常量
+    static var hotPercentRange: ClosedRange<Self> { 0...1.0 }
     
     var int: Int {
         Int(self)
