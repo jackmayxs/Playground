@@ -17,22 +17,10 @@ extension Numeric {
 // MARK: - __________ Common __________
 
 extension Double {
-    static let percentRange: ClosedRange<Double> = 0...1.0
-}
-
-extension Double {
     
     /// 返回毫秒数
     var milliseconds: Int {
         Int(self * 1000)
-    }
-    
-    var isNegative: Bool {
-        self < 0
-    }
-    
-    var isPositive: Bool {
-        self > 0
     }
     
     var percentage: String {
@@ -71,20 +59,8 @@ extension Double {
         NSNumber(value: self)
     }
     
-    var int: Int {
-        Int(self)
-    }
-    
-    var cgFloat: CGFloat {
-        CGFloat(self)
-    }
-    
     var decimal: Decimal {
         Decimal(self)
-    }
-    
-    var half: Double {
-        self / 2.0
     }
 }
 
@@ -181,6 +157,16 @@ extension Double {
     
     var f4: String {
         f(4)
+    }
+    
+    func signedF(_ minimumFractionDigits: Int, zeroSymbol: String? = nil) -> String {
+        signedDecimalFormatter.configure { make in
+            make.minimumFractionDigits = minimumFractionDigits
+            make.maximumFractionDigits = minimumFractionDigits
+            make.zeroSymbol = ""
+        }.transform { fmt -> String in
+            fmt.string(from: nsNumber) ?? ""
+        }
     }
     
     func f(_ minimumFractionDigits: Int) -> String {

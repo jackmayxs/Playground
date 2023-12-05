@@ -115,6 +115,28 @@ extension ClosedRange {
     }
 }
 
+extension ClosedRange where Bound: BinaryFloatingPoint {
+    
+    /// 计算范围和百分比相乘之后得出范围内的值
+    /// - Parameters:
+    ///   - lhs: 闭合范围
+    ///   - rhs: 百分比: 0...1.0
+    /// - Returns: 范围内的值
+    public static func * (lhs: ClosedRange<Bound>, rhs: Bound) -> Bound {
+        let percent: Bound
+        switch rhs {
+        case ...0.0:
+            percent = 0
+        case 0...1.0:
+            percent = rhs
+        default:
+            percent = 1.0
+        }
+        let distance = lhs.upperBound - lhs.lowerBound
+        return lhs.lowerBound + distance * percent
+    }
+}
+
 extension ClosedRange: Comparable where Bound: Comparable {
     public static func < (lhs: ClosedRange<Bound>, rhs: ClosedRange<Bound>) -> Bool {
         lhs.upperBound < rhs.lowerBound
