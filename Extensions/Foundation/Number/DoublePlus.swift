@@ -17,7 +17,8 @@ extension Numeric {
 // MARK: - __________ Common __________
 
 extension Double {
-    
+    /// 这里储存一份静态属性,避免重复创建Range
+    static let percentRange = Double.percentRange
     /// 返回毫秒数
     var milliseconds: Int {
         Int(self * 1000)
@@ -25,10 +26,6 @@ extension Double {
     
     var percentage: String {
         percentString(fractions: 0) ?? ""
-    }
-    
-    func constrained(in range: ClosedRange<Double>) -> Double {
-        range << self
     }
     
     func percentString(fractions: Int = 0) -> String? {

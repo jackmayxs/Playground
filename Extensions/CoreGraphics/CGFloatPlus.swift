@@ -9,13 +9,6 @@
 import CoreGraphics
 
 extension CGFloat {
-	
-    /// 返回 0...1.0 之间的随机数
-	static var randomPercent: CGFloat {
-		CGFloat.random(in: percentRange)
-	}
-    
-    func constrained(in range: ClosedRange<CGFloat>) -> CGFloat {
-        range << self
-    }
+    /// 这里储存一份静态属性,避免重复创建Range
+    static let percentRange = CGFloat.percentRange
 }

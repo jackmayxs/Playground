@@ -39,6 +39,13 @@ extension BinaryFloatingPoint {
         Double(self)
     }
     
+    /// 将自己约束在指定范围内
+    /// - Parameter range: 指定范围
+    /// - Returns: 约束后的值
+    func constrained(in range: ClosedRange<Self>) -> Self {
+        range << self
+    }
+    
     /// 计算在指定范围内的百分比
     /// - Parameter range: 指定范围
     /// - Returns: 百分比
