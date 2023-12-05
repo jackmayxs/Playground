@@ -13,12 +13,18 @@ class GradientView: UIView {
     
     override class var layerClass: AnyClass { GradientLayer.self }
     
-    private(set) var gradientColors: GradientColors = []
+    var gradientColors: GradientColors = [] {
+        willSet {
+            gradientLayer.setColors(newValue)
+        }
+    }
     
     init(direction: CGVector = .right, gradientColors: GradientColors = []) {
         super.init(frame: .zero)
         /// 设置渐变色
-        setGradientColors(gradientColors)
+        self.gradientColors = gradientColors
+        /// 上面属性的observer方法不会执行,这里手动执行一次
+        self.gradientLayer.setColors(gradientColors)
         /// 设置方向
         setDirection(direction)
     }
@@ -28,13 +34,7 @@ class GradientView: UIView {
     }
     
     func refill(@ArrayBuilder<ColorStop> _ gradientBuilder: GradientColorsBuilder) {
-        let colors = gradientBuilder()
-        setGradientColors(colors)
-    }
-    
-    func setGradientColors(_ gradientColors: GradientColors) {
-        self.gradientColors = gradientColors
-        gradientLayer.setColors(gradientColors)
+        gradientColors = gradientBuilder()
     }
 
     func setDirection(_ vector: CGVector) {
