@@ -51,9 +51,9 @@ extension BinaryFloatingPoint {
     /// - Parameter range: 指定范围
     /// - Returns: 百分比
     func percentIn(range: ClosedRange<Self>) -> Self {
-        let clampedValue = range << self
+        let clampedBound = range << self
         let divisor = range.upperBound - range.lowerBound
         guard divisor != 0 else { return 0 }
-        return (clampedValue - range.lowerBound) / divisor
+        return (clampedBound - range.lowerBound) / divisor
     }
 }

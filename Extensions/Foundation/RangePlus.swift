@@ -93,12 +93,14 @@ extension ClosedRange {
     /// - Returns: 限制过后的值
     func constrainedValue(_ value: Bound) -> Bound {
         if value < lowerBound {
-            return lowerBound
+            lowerBound
         } else if value > upperBound {
-            return upperBound
+            upperBound
         } else {
-            return value
+            value
         }
+        /// 实现方法2 | 可读性较差
+        /// Swift.min(Swift.max(value, lowerBound), upperBound)
     }
     
     /// 将传入值限制在范围内
@@ -122,18 +124,10 @@ extension ClosedRange where Bound: BinaryFloatingPoint {
     ///   - lhs: 闭合范围
     ///   - rhs: 百分比: 0...1.0
     /// - Returns: 范围内的值
-    public static func * (lhs: ClosedRange<Bound>, rhs: Bound) -> Bound {
-        let percent: Bound
-        switch rhs {
-        case ...0.0:
-            percent = 0
-        case 0...1.0:
-            percent = rhs
-        default:
-            percent = 1.0
-        }
+    public static func * (lhs: ClosedRange<Bound>, percentage: Bound) -> Bound {
+        let clampedPercentage = Bound.hotPercentRange << percentage
         let distance = lhs.upperBound - lhs.lowerBound
-        return lhs.lowerBound + distance * percent
+        return lhs.lowerBound + distance * clampedPercentage
     }
 }
 
