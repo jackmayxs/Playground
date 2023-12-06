@@ -78,7 +78,7 @@ extension ObservableType {
     }
     
     /// 获取非空的上一个元素 和 当前元素
-    var validPreviousAndCurrentElement: Observable<(previous: Element, current: Element)> {
+    var validPreviousAndCurrentElement: Observable<(Element, Element)> {
         previousAndCurrentElement.compactMap { previous, current in
             guard let previous else { return nil }
             return (previous, current)
@@ -86,7 +86,7 @@ extension ObservableType {
     }
     
     /// 获取上一个元素 和 当前元素
-    var previousAndCurrentElement: Observable<(previous: Element?, current: Element)> {
+    var previousAndCurrentElement: Observable<(Element?, Element)> {
         scan(Array<Element>.empty) { array, next in
             var tempArray = array
             tempArray.append(next)
