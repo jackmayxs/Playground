@@ -37,6 +37,10 @@ class UIStackScrollView: UIBaseScrollView {
             }
         }
     }
+    
+    override var intrinsicContentSize: CGSize {
+        stackView.intrinsicContentSize
+    }
 }
 
 extension UIStackScrollView {
