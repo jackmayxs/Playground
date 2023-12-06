@@ -425,20 +425,21 @@ extension UIView {
         return self
     }
     
-    @discardableResult
-    /// 限制宽高范围
-    /// - Returns: 自己
-    func limit(minWidth: CGFloat? = nil, maxWidth: CGFloat? = nil, minHeight: CGFloat? = nil, maxHeight: CGFloat? = nil) -> Self {
+    @discardableResult func limit(widthRange: ClosedRange<CGFloat>? = nil, heightRange: ClosedRange<CGFloat>? = nil) -> Self {
+        limit(minWidth: widthRange?.lowerBound,
+              maxWidth: widthRange?.upperBound,
+              minHeight: heightRange?.lowerBound,
+              maxHeight: heightRange?.upperBound)
+    }
+    
+    @discardableResult func limit(minWidth: CGFloat? = nil, maxWidth: CGFloat? = nil, minHeight: CGFloat? = nil, maxHeight: CGFloat? = nil) -> Self {
         limit(minWidth: minWidth?.constraint,
               maxWidth: maxWidth?.constraint,
               minHeight: minHeight?.constraint,
               maxHeight: maxHeight?.constraint)
     }
     
-    @discardableResult
-    /// 限制宽高范围
-    /// - Returns: 自己
-    func limit(minWidth: UILayoutConstraint? = nil, maxWidth: UILayoutConstraint? = nil, minHeight: UILayoutConstraint? = nil, maxHeight: UILayoutConstraint? = nil) -> Self {
+    @discardableResult func limit(minWidth: UILayoutConstraint? = nil, maxWidth: UILayoutConstraint? = nil, minHeight: UILayoutConstraint? = nil, maxHeight: UILayoutConstraint? = nil) -> Self {
         translatesAutoresizingMaskIntoConstraints = false
         if let minWidth {
             let existedConstraints = constraints.filter { constraint in
