@@ -38,6 +38,14 @@ extension CGRect {
         CGRect(origin: origin, size: size)
     }
     
+    /// 传入新的中心点 | 计算出新的frame
+    /// - Parameter center: 新的中心点
+    /// - Returns: 新的frame
+    func withNew(center: CGPoint) -> CGRect {
+        let newOrigin = CGPoint(x: center.x - width.half, y: center.y - height.half)
+        return CGRect(origin: newOrigin, size: size)
+    }
+    
     /// 以像素为单位的Rect
     var pixelRect: CGRect {
         let scale = UIScreen.main.scale
