@@ -16,7 +16,7 @@ extension Reactive where Base == UIDevice {
     static var isLandscape: Observable<Bool> {
         didChangeOrientation
             .map(\.isScreenLandscape)
-            .distinctUntilChanged()
+            .removeDuplicates
     }
     
     static var didChangeOrientation: Observable<UIDeviceOrientation> {

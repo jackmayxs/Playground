@@ -49,7 +49,7 @@ extension Reactive where Base: UITableView {
         selectedIndexPaths
             .map(base.checkAllRowsSelected)
             .startWith(false)
-            .distinctUntilChanged()
+            .removeDuplicates
             .asDriver(onErrorJustReturn: false)
     }
     

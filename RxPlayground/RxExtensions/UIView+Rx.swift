@@ -55,7 +55,7 @@ extension Reactive where Base: UIView {
             .withUnretained(base)
             .map(\.0.superview)
             .startWith(base.superview)
-            .distinctUntilChanged()
+            .removeDuplicates
     }
     
     var isVisible: Infallible<Bool> {

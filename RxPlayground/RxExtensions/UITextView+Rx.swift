@@ -15,6 +15,6 @@ extension Reactive where Base: UITextView {
             .withUnretained(base)
             .map(\.0.unmarkedText)
             .orEmpty
-            .distinctUntilChanged()
+            .removeDuplicates
     }
 }

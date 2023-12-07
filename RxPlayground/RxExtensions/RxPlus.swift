@@ -378,6 +378,14 @@ extension ObservableConvertibleType where Element == Int {
     }
 }
 
+extension ObservableConvertibleType where Element: Equatable {
+    /// 忽略重复的元素
+    var removeDuplicates: Observable<Element> {
+        asObservable()
+            .distinctUntilChanged()
+    }
+}
+
 extension ObservableType {
     
     func asOptional<T>(_ type: T.Type) -> Observable<T?> {
@@ -474,7 +482,7 @@ extension ObservableConvertibleType {
 				}
 			}
 			.startWith(true)
-			.distinctUntilChanged()
+			.removeDuplicates
 			.asDriver(onErrorJustReturn: false)
 	}
 	

@@ -15,7 +15,7 @@ extension Reactive where Base: UIControl {
             .withUnretained(base)
             .map(\.0.state)
             .startWith(base.state)
-            .distinctUntilChanged()
+            .removeDuplicates
     }
     
     public var isHighlighted: ControlProperty<Bool> {
