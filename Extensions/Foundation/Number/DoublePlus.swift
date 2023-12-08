@@ -83,11 +83,12 @@ extension Double {
     
     // 默认设置
     fileprivate var decimalFormatter: NumberFormatter {
-        NumberFormatter.shared
-            .configure { make in
-                make.numberStyle = .decimal
-                make.maximumFractionDigits = 2
-            }
+        NumberFormatter.shared.configure { make in
+            /// 数字格式: 小数
+            make.numberStyle = .decimal
+            /// 最大小数位: 2
+            make.maximumFractionDigits = 2
+        }
     }
     
     /// 四舍五入的Formatter
@@ -156,11 +157,10 @@ extension Double {
         f(4)
     }
     
-    func signedF(_ minimumFractionDigits: Int, zeroSymbol: String? = nil) -> String {
+    func signedF(_ minimumFractionDigits: Int) -> String {
         signedDecimalFormatter.configure { make in
             make.minimumFractionDigits = minimumFractionDigits
             make.maximumFractionDigits = minimumFractionDigits
-            make.zeroSymbol = ""
         }.transform { fmt -> String in
             fmt.string(from: nsNumber) ?? ""
         }
