@@ -22,6 +22,20 @@ class UIStackScrollView: UIBaseScrollView {
         super.prepare()
         showsVerticalScrollIndicator = false
         showsHorizontalScrollIndicator = false
+        let stretchAxis = Self.defaultAxis
+        rx.disposeBag.insert {
+            stackView.rx.intrinsicContentSize(stretchAxis: stretchAxis).bind {
+                [unowned self] intrinsicSize in
+                switch stretchAxis {
+                case .horizontal:
+                    fix(width: intrinsicSize.width.constraint(priority: .defaultHigh))
+                case .vertical:
+                    fix(height: intrinsicSize.height.constraint(priority: .defaultHigh))
+                @unknown default:
+                    fatalError("Unhandled condition")
+                }
+            }
+        }
     }
     
     override func prepareConstraints() {

@@ -21,13 +21,64 @@ extension DisposeBag {
     }
 }
 
-@propertyWrapper
-class Variable<Wrapped> {
+@propertyWrapper class CycledCase<Case: Equatable> {
+    
+    private let relay: BehaviorRelay<Case>
+    
+    var projectedValue: BehaviorRelay<Case> {
+        relay
+    }
+    
+    var wrappedValue: Case {
+        get { relay.value }
+        set { 
+            relay.accept(newValue)
+        }
+    }
+    
+    /// 元素数组
+    let cases: [Case]
+    /// 元素在数组中的Index
+    private var caseIndex: [Case].Index {
+        didSet {
+            wrappedValue = cases[caseIndex]
+        }
+    }
+    /// 初始化方法
+    init(wrappedValue: Case, cases: [Case]) {
+        if cases.isEmpty {
+            fatalError("没有元素还循环个啥.")
+        }
+        self.cases = cases
+        if let caseIndex = cases.firstIndex(of: wrappedValue) {
+            self.caseIndex = caseIndex
+            self.relay = BehaviorRelay(value: wrappedValue)
+        } else {
+            fatalError("元素不在数组内")
+        }
+    }
+    /// 下一个元素
+    func nextCase() {
+        if let nextIndex = cases.indices << (caseIndex + 1) {
+            caseIndex = nextIndex
+        }
+    }
+    /// 上一个元素
+    func lastCase() {
+        if let lastIndex = cases.indices << (caseIndex - 1) {
+            caseIndex = lastIndex
+        }
+    }
+}
+
+@propertyWrapper class Variable<Wrapped> {
     
     private let projectedValue_: BehaviorRelay<Wrapped>
+    
     var projectedValue: BehaviorRelay<Wrapped> {
         projectedValue_
     }
+    
     init(wrappedValue: Wrapped) {
         projectedValue_ = BehaviorRelay(value: wrappedValue)
     }
@@ -38,8 +89,7 @@ class Variable<Wrapped> {
     }
 }
 
-@propertyWrapper
-final class ClamppedVariable<T>: Variable<T> where T: Comparable {
+@propertyWrapper final class ClamppedVariable<T>: Variable<T> where T: Comparable {
     
     let range: ClosedRange<T>
     

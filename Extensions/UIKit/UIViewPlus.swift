@@ -141,19 +141,19 @@ extension UIView {
     /// 计算自动布局下的尺寸
     /// - Parameters:
     ///   - maxSize: 限制最大尺寸
-    ///   - priorAxis: 优先考虑的轴向(优先考虑的轴向上尺寸不变,另一轴向上拉伸)
+    ///   - stretchAxis: 拉伸的轴向
     /// - Returns: 需要的最小尺寸
-    public func preferredSize(maxSize: CGSize? = nil, priorAxis: NSLayoutConstraint.Axis = .horizontal) -> CGSize {
+    public func preferredSize(maxSize: CGSize? = nil, stretchAxis: NSLayoutConstraint.Axis = .vertical) -> CGSize {
         var systemLayoutSize = systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
         if let maxSize {
-            switch priorAxis {
+            switch stretchAxis {
             case .horizontal:
-                if systemLayoutSize.width > maxSize.width {
-                    systemLayoutSize = systemLayoutSizeFitting(maxSize, withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel)
-                }
-            case .vertical:
                 if systemLayoutSize.height > maxSize.height {
                     systemLayoutSize = systemLayoutSizeFitting(maxSize, withHorizontalFittingPriority: .fittingSizeLevel, verticalFittingPriority: .required)
+                }
+            case .vertical:
+                if systemLayoutSize.width > maxSize.width {
+                    systemLayoutSize = systemLayoutSizeFitting(maxSize, withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel)
                 }
             @unknown default:
                 break
@@ -369,10 +369,9 @@ extension Array where Element: UIView {
 }
 extension UIView {
     
-    @discardableResult
     /// 设置宽高比例
     /// - Returns: 自己
-    func fix(proportion: CGSize) -> Self {
+    @discardableResult func fix(proportion: CGSize) -> Self {
         translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate {
             let multiplier = proportion.width / proportion.height
@@ -388,39 +387,54 @@ extension UIView {
         return self
     }
     
-    @discardableResult
     /// 固定尺寸
     /// - Returns: 自己
-    func fix(size: CGSize) -> Self {
+    @discardableResult func fix(size: CGSize) -> Self {
         fix(width: size.width, height: size.height)
     }
     
-    @discardableResult
     /// 固定宽高
     /// - Returns: 自己
-    func fix(width: CGFloat? = nil, height: CGFloat? = nil) -> Self {
+    @discardableResult func fix(width: CGFloat? = nil, height: CGFloat? = nil) -> Self {
+        fix(width: width?.constraint, height: height?.constraint)
+    }
+    
+    @discardableResult func fix(width: UILayoutConstraint? = nil, height: UILayoutConstraint? = nil) -> Self {
+        /// 其中一个必须有值
+        guard width.isValid || height.isValid else { return self }
+        /// 开始自动布局
         translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate {
-            if let width = width {
-                let existedConstraints = constraints.filter { constraint in
-                    guard constraint.relation == .equal else { return false }
-                    guard constraint.firstAttribute == .width else { return false }
-                    guard constraint.secondAttribute == .notAnAttribute else { return false }
-                    return true
-                }
-                removeConstraints(existedConstraints)
-                widthAnchor.constraint(equalToConstant: width)
+        /// 约束宽度
+        if let width {
+            /// 查找已经存在的宽度约束
+            let existedConstraints = constraints.filter { constraint in
+                guard constraint.relation == .equal else { return false }
+                guard constraint.firstAttribute == .width else { return false }
+                guard constraint.secondAttribute == .notAnAttribute else { return false }
+                return true
             }
-            if let height = height {
-                let existedConstraints = constraints.filter { constraint in
-                    guard constraint.relation == .equal else { return false }
-                    guard constraint.firstAttribute == .height else { return false }
-                    guard constraint.secondAttribute == .notAnAttribute else { return false }
-                    return true
-                }
-                removeConstraints(existedConstraints)
-                heightAnchor.constraint(equalToConstant: height)
+            /// 移除已经存在的宽度约束
+            removeConstraints(existedConstraints)
+            /// 约束宽度
+            let constraint = widthAnchor.constraint(equalToConstant: width.constant)
+            constraint.priority = width.priority
+            constraint.isActive = true
+        }
+        /// 约束高度
+        if let height {
+            /// 查找已经存在的高度约束
+            let existedConstraints = constraints.filter { constraint in
+                guard constraint.relation == .equal else { return false }
+                guard constraint.firstAttribute == .height else { return false }
+                guard constraint.secondAttribute == .notAnAttribute else { return false }
+                return true
             }
+            /// 移除已经存在的高度约束
+            removeConstraints(existedConstraints)
+            /// 约束高度
+            let constraint = heightAnchor.constraint(equalToConstant: height.constant)
+            constraint.priority = height.priority
+            constraint.isActive = true
         }
         return self
     }
@@ -440,7 +454,11 @@ extension UIView {
     }
     
     @discardableResult func limit(minWidth: UILayoutConstraint? = nil, maxWidth: UILayoutConstraint? = nil, minHeight: UILayoutConstraint? = nil, maxHeight: UILayoutConstraint? = nil) -> Self {
+        /// 确保至少有一个约束
+        guard minWidth.isValid || maxWidth.isValid || minHeight.isValid || maxHeight.isValid else { return self }
+        /// 开始约束
         translatesAutoresizingMaskIntoConstraints = false
+        /// 最小宽度
         if let minWidth {
             let existedConstraints = constraints.filter { constraint in
                 guard constraint.relation == .greaterThanOrEqual else { return false }
@@ -453,6 +471,7 @@ extension UIView {
             constraint.isActive = true
             constraint.priority = minWidth.priority
         }
+        /// 最大宽度
         if let maxWidth {
             let existedConstraints = constraints.filter { constraint in
                 guard constraint.relation == .lessThanOrEqual else { return false }
@@ -465,6 +484,7 @@ extension UIView {
             constraint.isActive = true
             constraint.priority = maxWidth.priority
         }
+        /// 最小高度
         if let minHeight {
             let existedConstraints = constraints.filter { constraint in
                 guard constraint.relation == .greaterThanOrEqual else { return false }
@@ -477,6 +497,7 @@ extension UIView {
             constraint.isActive = true
             constraint.priority = minHeight.priority
         }
+        /// 最大高度
         if let maxHeight {
             let existedConstraints = constraints.filter { constraint in
                 guard constraint.relation == .lessThanOrEqual else { return false }

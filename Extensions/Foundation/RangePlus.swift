@@ -70,6 +70,29 @@ extension Range {
     }
 }
 
+extension Range where Bound == Int {
+    
+    /// 循环Index
+    /// - Parameters:
+    ///   - lhs: Index范围
+    ///   - rhs: 要限制的Index
+    /// - Returns: 有效的Index
+    static func <<(lhs: Self, rhs: Bound) -> Bound? {
+        /// 序列为空的情况返回nil | 如: 0..<0
+        if lhs.lowerBound == lhs.upperBound { return nil }
+        /// 大于等于上限 | 返回最小Index
+        if rhs >= lhs.upperBound {
+            return lhs.lowerBound
+        }
+        /// 小于下限 | 返回最大Index
+        else if rhs < lhs.lowerBound {
+            return lhs.index(before: lhs.endIndex)
+        } else {
+            return rhs
+        }
+    }
+}
+
 extension ClosedRange {
     
     /// 判断左面的范围是否包含右面

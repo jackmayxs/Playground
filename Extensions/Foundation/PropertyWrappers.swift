@@ -9,8 +9,7 @@
 import Foundation
 import UIKit
 
-@propertyWrapper
-final class UIReusePool<T: UIView> {
+@propertyWrapper final class UIReusePool<T: UIView> {
     
     let wrappedValue: () -> T
     
@@ -36,8 +35,7 @@ final class UIReusePool<T: UIView> {
     }
 }
 
-@propertyWrapper
-struct Clampped<T: Comparable> {
+@propertyWrapper struct Clampped<T: Comparable> {
     
     var wrappedValue: T {
         get { _wrappedValue }
@@ -63,8 +61,7 @@ struct Clampped<T: Comparable> {
 /// 源源不断的将新赋的有效值储存在内部的数组内, 自身返回最新值.
 /// 用$语法取projectedValue使用
 /// 配合Configurator的keyPath dynamicMemberLookup赋值效果更加
-@propertyWrapper
-struct ValueStorage<T> {
+@propertyWrapper struct ValueStorage<T> {
     
     var projectedValue: [T] = []
     
@@ -84,8 +81,7 @@ struct ValueStorage<T> {
 }
 
 /// ValueStorage的Optional版本
-@propertyWrapper
-struct OptionalValueStorage<T> {
+@propertyWrapper struct OptionalValueStorage<T> {
     
     var projectedValue: [T] = []
     
@@ -105,8 +101,7 @@ struct OptionalValueStorage<T> {
 }
 
 /// 让值在某个范围内循环
-@propertyWrapper
-struct CycledValue<T: Comparable> {
+@propertyWrapper struct CycledValue<T: Comparable> {
     
     var wrappedValue: T {
         get { innerValue }
@@ -136,8 +131,7 @@ struct CycledValue<T: Comparable> {
     }
 }
 
-@propertyWrapper
-struct Cached<T: Codable> {
+@propertyWrapper struct Cached<T: Codable> {
     
     private lazy var jsonEncoder = JSONEncoder()
     private lazy var jsonDecoder = JSONDecoder()
@@ -168,8 +162,7 @@ struct Cached<T: Codable> {
     }
 }
 
-@propertyWrapper
-final class EditDetectable<E> where E: Equatable {
+@propertyWrapper final class EditDetectable<E> where E: Equatable {
 	
 	var projectedValue: EditDetectable<E> {
 		self
@@ -240,8 +233,8 @@ struct ValueRequirement: OptionSet {
 }
 
 
-@propertyWrapper // 忽略Optional.none
-class ValidValueOnly<T> where T: Equatable {
+/// 忽略Optional.none
+@propertyWrapper class ValidValueOnly<T> where T: Equatable {
 	private var value: T?
 	init(wrappedValue: T?) {
 		self.value = wrappedValue
@@ -257,18 +250,17 @@ class ValidValueOnly<T> where T: Equatable {
 	}
 }
 
-@propertyWrapper // 忽略空字符串
-final class IgnoreEmptyString: ValidValueOnly<String> {
+/// 忽略空字符串
+@propertyWrapper final class IgnoreEmptyString: ValidValueOnly<String> {
 	override var wrappedValue: String? {
 		get { super.wrappedValue }
 		set { super.wrappedValue = newValue.validStringOrNone }
 	}
 }
 
-@propertyWrapper
 /// 转瞬即逝的变量 | 用于开销较大的变量, 如:NumberFormatter,DateFormatter等
 /// 经过指定的时间后自动销毁
-final class Transient<T> {
+@propertyWrapper final class Transient<T> {
     typealias ValueBuilder = () -> T
     
     /// 存储对象
