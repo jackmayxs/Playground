@@ -69,10 +69,14 @@ extension UIStackView {
     
     /// Remove all of the arranged subviews
     func purgeArrangedSubviews() {
-        arrangedSubviews.forEach { subview in
-            removeArrangedSubview(subview)
-            subview.removeFromSuperview()
-        }
+        arrangedSubviews.forEach(purgeArrangedSubview)
+    }
+    
+    /// 清除指定的arrangedSubview
+    /// - Parameter view: 指定的arrangedSubview
+    func purgeArrangedSubview(_ view: UIView) {
+        removeArrangedSubview(view)
+        view.removeFromSuperview()
     }
 	
     var reArrangedSubviews: [UIView] {
