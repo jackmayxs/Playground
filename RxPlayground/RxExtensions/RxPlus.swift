@@ -55,7 +55,7 @@ extension DisposeBag {
     }
     
     /// 下一个元素
-    func nextCase() {
+    private func nextCase() {
         guard let currentIndex else { return }
         let nextIndex = currentIndex + 1
         if let nextCase = cases[cycledElement: nextIndex] {
@@ -64,12 +64,20 @@ extension DisposeBag {
     }
     
     /// 上一个元素
-    func lastCase() {
+    private func lastCase() {
         guard let currentIndex else { return }
         let nextIndex = currentIndex - 1
         if let nextCase = cases[cycledElement: nextIndex] {
             wrappedValue = nextCase
         }
+    }
+    
+    static postfix func ++(cycledCase: CycledCase) {
+        cycledCase.nextCase()
+    }
+    
+    static postfix func --(cycledCase: CycledCase) {
+        cycledCase.lastCase()
     }
     
     private var currentIndex: [Case].Index? {
