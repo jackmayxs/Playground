@@ -157,18 +157,19 @@ extension Double {
         f(4)
     }
     
-    func signedF(_ minimumFractionDigits: Int) -> String {
+    func signedF(_ fractionDigits: Int) -> String {
         signedDecimalFormatter.configure { make in
-            make.minimumFractionDigits = minimumFractionDigits
-            make.maximumFractionDigits = minimumFractionDigits
+            make.minimumFractionDigits = fractionDigits
+            make.maximumFractionDigits = fractionDigits
         }.transform { fmt -> String in
             fmt.string(from: nsNumber) ?? ""
         }
     }
     
-    func f(_ minimumFractionDigits: Int) -> String {
+    func f(_ fractionDigits: Int) -> String {
         decimalFormatter.configure { make in
-            make.minimumFractionDigits = minimumFractionDigits
+            make.minimumFractionDigits = fractionDigits
+            make.maximumFractionDigits = fractionDigits
         }.transform { fmt -> String in
             fmt.string(from: nsNumber) ?? ""
         }
