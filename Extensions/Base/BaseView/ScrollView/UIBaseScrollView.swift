@@ -22,7 +22,7 @@ class UIBaseScrollView: UIScrollView, StandardLayoutLifeCycle {
         }
     }
     
-    lazy var scrollableAxis = Self.scrollableAxis
+    private(set) lazy var scrollableAxis = Self.scrollableAxis
     
     lazy var contentView = makeContentView()
     
