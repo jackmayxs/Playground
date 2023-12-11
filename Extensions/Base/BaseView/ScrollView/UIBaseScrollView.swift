@@ -8,6 +8,10 @@ import UIKit
 
 class UIBaseScrollView: UIScrollView, StandardLayoutLifeCycle {
     
+    class var scrollableAxis: NSLayoutConstraint.Axis {
+        .vertical
+    }
+    
     /// 是否开启: 触摸到UIControl子类的时候阻断滚动视图的滚动
     var doBlockScrollWhenHitUIControls = true
     
@@ -18,7 +22,9 @@ class UIBaseScrollView: UIScrollView, StandardLayoutLifeCycle {
         }
     }
     
-    lazy var contentView = defaultContentView
+    lazy var scrollableAxis = Self.scrollableAxis
+    
+    lazy var contentView = makeContentView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -67,12 +73,28 @@ class UIBaseScrollView: UIScrollView, StandardLayoutLifeCycle {
     }
     
     func prepareConstraints() {
-        contentView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+        contentView.snp.makeConstraints { content in
+            content.edges.equalTo(contentLayoutGuide)
+            switch scrollableAxis {
+            case .horizontal:
+                content.height.equalTo(frameLayoutGuide)
+                content.right.equalTo(frameLayoutGuide).priority(.high)
+            case .vertical:
+                content.width.equalTo(frameLayoutGuide)
+                content.bottom.equalTo(frameLayoutGuide).priority(.high)
+            @unknown default:
+                fatalError("Unhandled condition")
+            }
         }
     }
     
-    var defaultContentView: UIView {
+    func makeContentView() -> UIView {
         UIView(color: defaultBackgroundColor)
     }
+}
+
+typealias UIBaseVerticalScrollView = UIBaseScrollView
+
+class UIBaseHorizontalScrollView: UIBaseScrollView {
+    override class var scrollableAxis: NSLayoutConstraint.Axis { .horizontal }
 }

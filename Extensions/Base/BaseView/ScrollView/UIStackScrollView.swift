@@ -8,29 +8,21 @@ import UIKit
 
 class UIStackScrollView: UIBaseScrollView {
     
-    class var defaultAxis: NSLayoutConstraint.Axis {
-        .vertical
-    }
+    lazy var stackView = UIStackView(axis: Self.scrollableAxis, distribution: .fill, alignment: .fill, spacing: 0.0)
     
-    lazy var stackView = UIStackView(axis: Self.defaultAxis, distribution: .fill, alignment: .fill, spacing: 0.0)
-    
-    override var defaultContentView: UIView {
-        stackView
-    }
-        
     override func prepare() {
         super.prepare()
         showsVerticalScrollIndicator = false
         showsHorizontalScrollIndicator = false
-        let stretchAxis = Self.defaultAxis
+        let stretchAxis = Self.scrollableAxis
         rx.disposeBag.insert {
-            stackView.rx.intrinsicContentSize(stretchAxis: stretchAxis).bind {
-                [unowned self] intrinsicSize in
+            stackView.rx.naturalSize.bind {
+                [unowned self] naturalSize in
                 switch stretchAxis {
                 case .horizontal:
-                    fix(width: intrinsicSize.width.constraint(priority: .defaultHigh))
+                    fix(width: naturalSize.width.constraint(priority: .defaultHigh))
                 case .vertical:
-                    fix(height: intrinsicSize.height.constraint(priority: .defaultHigh))
+                    fix(height: naturalSize.height.constraint(priority: .defaultHigh))
                 @unknown default:
                     fatalError("Unhandled condition")
                 }
@@ -38,22 +30,8 @@ class UIStackScrollView: UIBaseScrollView {
         }
     }
     
-    override func prepareConstraints() {
-        super.prepareConstraints()
-        stackView.snp.makeConstraints { make in
-            switch axis {
-            case .horizontal:
-                make.height.equalToSuperview()
-            case .vertical:
-                make.width.equalToSuperview()
-            @unknown default:
-                break
-            }
-        }
-    }
-    
-    override var intrinsicContentSize: CGSize {
-        stackView.intrinsicContentSize
+    override func makeContentView() -> UIView {
+        stackView
     }
 }
 
@@ -70,7 +48,7 @@ extension UIStackScrollView {
         spacing: CGFloat = 0,
         @ArrayBuilder<UIView> subviewsBuilder: () -> [UIView] = { [] }) {
             let arrangedSubviews = subviewsBuilder()
-            self.init(axis: Self.defaultAxis, distribution: distribution, alignment: alignment, spacing: spacing, arrangedSubviews: arrangedSubviews)
+            self.init(axis: Self.scrollableAxis, distribution: distribution, alignment: alignment, spacing: spacing, arrangedSubviews: arrangedSubviews)
         }
     
     convenience init(
@@ -131,10 +109,8 @@ extension UIStackScrollView {
     }
 }
 
-// MARK: - 子类
+typealias UIVStackScrollView = UIStackScrollView
+
 class UIHStackScrollView: UIStackScrollView {
-    final override class var defaultAxis: NSLayoutConstraint.Axis { .horizontal }
-}
-class UIVStackScrollView: UIStackScrollView {
-    final override class var defaultAxis: NSLayoutConstraint.Axis { .vertical }
+    final override class var scrollableAxis: NSLayoutConstraint.Axis { .horizontal }
 }

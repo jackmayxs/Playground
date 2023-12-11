@@ -95,6 +95,10 @@ extension UIView {
         static var mournFilterViewKey = UUID()
     }
     
+    var naturalSize: CGSize {
+        systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+    }
+    
     var isPortrait: Bool {
         frame.size.isPortrait
     }
