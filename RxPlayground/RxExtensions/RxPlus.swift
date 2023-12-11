@@ -31,43 +31,49 @@ extension DisposeBag {
     
     var wrappedValue: Case {
         get { relay.value }
-        set { 
+        set {
             relay.accept(newValue)
         }
     }
     
     /// 元素数组
     let cases: [Case]
-    /// 元素在数组中的Index
-    private var caseIndex: [Case].Index {
-        didSet {
-            wrappedValue = cases[caseIndex]
-        }
-    }
     /// 初始化方法
     init(wrappedValue: Case, cases: [Case]) {
+        /// 数组必须非空
         if cases.isEmpty {
             fatalError("没有元素还循环个啥.")
         }
-        self.cases = cases
-        if let caseIndex = cases.firstIndex(of: wrappedValue) {
-            self.caseIndex = caseIndex
-            self.relay = BehaviorRelay(value: wrappedValue)
-        } else {
+        /// 初始元素必须包含在数组内
+        if cases.firstIndex(of: wrappedValue).isVoid {
             fatalError("元素不在数组内")
         }
+        /// 初始化数组
+        self.cases = cases
+        /// 初始化Relay
+        self.relay = BehaviorRelay(value: wrappedValue)
     }
+    
     /// 下一个元素
     func nextCase() {
-        if let nextIndex = cases.indices << (caseIndex + 1) {
-            caseIndex = nextIndex
+        guard let currentIndex else { return }
+        let nextIndex = currentIndex + 1
+        if let nextCase = cases[cycledElement: nextIndex] {
+            wrappedValue = nextCase
         }
     }
+    
     /// 上一个元素
     func lastCase() {
-        if let lastIndex = cases.indices << (caseIndex - 1) {
-            caseIndex = lastIndex
+        guard let currentIndex else { return }
+        let nextIndex = currentIndex - 1
+        if let nextCase = cases[cycledElement: nextIndex] {
+            wrappedValue = nextCase
         }
+    }
+    
+    private var currentIndex: [Case].Index? {
+        cases.firstIndex(of: wrappedValue)
     }
 }
 

@@ -72,23 +72,19 @@ extension Range {
 
 extension Range where Bound == Int {
     
-    /// 循环Index
-    /// - Parameters:
-    ///   - lhs: Index范围
-    ///   - rhs: 要限制的Index
-    /// - Returns: 有效的Index
-    static func <<(lhs: Self, rhs: Bound) -> Bound? {
+    /// 循环Index | 如: 利用下标循环访问数组的元素
+    subscript (cycledIndex nextIndex: Bound) -> Bound? {
         /// 序列为空的情况返回nil | 如: 0..<0
-        if lhs.lowerBound == lhs.upperBound { return nil }
+        if lowerBound == upperBound { return nil }
         /// 大于等于上限 | 返回最小Index
-        if rhs >= lhs.upperBound {
-            return lhs.lowerBound
+        if nextIndex >= upperBound {
+            return lowerBound
         }
         /// 小于下限 | 返回最大Index
-        else if rhs < lhs.lowerBound {
-            return lhs.index(before: lhs.endIndex)
+        else if nextIndex < lowerBound {
+            return index(before: endIndex)
         } else {
-            return rhs
+            return nextIndex
         }
     }
 }

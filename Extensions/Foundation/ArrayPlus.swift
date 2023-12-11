@@ -35,6 +35,12 @@ extension Array {
         itemAt(index)
     }
     
+    /// 循环访问数组元素 | 如: 利用下标循环访问数组的元素
+    subscript (cycledElement nextIndex: Self.Index) -> Element? {
+        guard let index = indices[cycledIndex: nextIndex] else { return nil }
+        return self[index]
+    }
+    
     /// 获取指定位置的元素
     /// - Parameter index: 元素位置
     /// - Returns: 如果下标合规则返回相应元素
