@@ -103,7 +103,7 @@ extension Double {
         decimalFormatter.configure { make in
             make.positivePrefix = "+"
             make.negativePrefix = "-"
-            make.zeroSymbol = "0"
+            make.zeroSymbol = "0" /// 格式化成带有正负号的数字时,0不带符号
         }
     }
     
