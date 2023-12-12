@@ -103,6 +103,7 @@ extension Double {
         decimalFormatter.configure { make in
             make.positivePrefix = "+"
             make.negativePrefix = "-"
+            make.zeroSymbol = "0"
         }
     }
     
