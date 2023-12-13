@@ -12,6 +12,10 @@ extension Bool {
         !self
     }
     
+    var isTrue: Bool {
+        self == true
+    }
+    
     var isFalse: Bool {
         self == false
     }

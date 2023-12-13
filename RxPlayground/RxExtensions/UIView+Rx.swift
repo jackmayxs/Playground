@@ -11,7 +11,7 @@ extension Reactive where Base: UIView {
     
     /// UIScrollView及其子类不可使用此属性, 否则会发生运行时错误
     var frame: Observable<CGRect> {
-        observe(\.frame, options: [.initial, .new])
+        observe(\.frame, options: .live)
     }
     
     var intrinsicContentSize: Observable<CGSize> {

@@ -92,29 +92,28 @@ extension Array where Element: UIButton {
     /// - Parameter selectedButton: 选中按钮的事件序列
     /// - Returns: Disposable
     private func handleSelectedButton(_ selectedButton: Observable<Element>, toggleSelectedButton: Bool = false) -> Disposable {
-        selectedButton
-            .scan([]) { lastResult, button -> [Element] in
-                
-                /// 处理最新点击的按钮
-                if toggleSelectedButton {
-                    button.isSelected.toggle()
-                } else {
-                    button.isSelected = true
-                }
-                
-                var buttons = lastResult
-                /// 按钮数组不包含按钮的时候,将点击的按钮添加到数组
-                if buttons.contains(button).isFalse {
-                    buttons.append(button)
-                }
-                if buttons.count == 2 {
-                    /// 移除上一个按钮并取消选中
-                    let lastSelected = buttons.removeFirst()
-                    lastSelected.isSelected = false
-                }
-                return buttons
+        selectedButton.scan([]) { lastResult, button -> [Element] in
+            
+            /// 处理最新点击的按钮
+            if toggleSelectedButton {
+                button.isSelected.toggle()
+            } else {
+                button.isSelected = true
             }
-            .subscribe()
+            
+            var buttons = lastResult
+            /// 按钮数组不包含按钮的时候,将点击的按钮添加到数组
+            if buttons.contains(button).isFalse {
+                buttons.append(button)
+            }
+            if buttons.count == 2 {
+                /// 移除上一个按钮并取消选中
+                let lastSelected = buttons.removeFirst()
+                lastSelected.isSelected = false
+            }
+            return buttons
+        }
+        .subscribe()
     }
     
     var tappedButton: Observable<Element> {

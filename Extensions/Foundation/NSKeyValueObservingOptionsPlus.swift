@@ -8,6 +8,5 @@
 import Foundation
 
 extension NSKeyValueObservingOptions {
-    /// 合并[.initial, .new]
     static let live: NSKeyValueObservingOptions = [.initial, .new]
 }

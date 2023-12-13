@@ -39,7 +39,7 @@ extension Reactive where Base: UIScrollView {
     /// estimatedHeightForFooter
     /// 都设置成比固定高度大的值,才能避免出现返回的尺寸跳变的问题
     var observedContentSize: Observable<CGSize> {
-        observe(\.contentSize, options: [.initial, .new]).removeDuplicates
+        observe(\.contentSize, options: .live).removeDuplicates
     }
     
     /// 实时的ContentOffset

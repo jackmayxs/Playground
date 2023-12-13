@@ -26,14 +26,14 @@ class BaseWebViewController: BaseViewController, WKUIDelegate, WKNavigationDeleg
         view.addSubviews(webview, progressView)
         
         /// 观察网页标题
-        titleObservation = webview.observe(\.title, options: [.initial, .new]) {
+        titleObservation = webview.observe(\.title, options: .live) {
             [unowned self] web, change in
             guard let webTitle = change.newValue else { return }
             title = webTitle.validStringOrNone ?? fixedTitle
         }
         
         /// 观察网页加载进度
-        progressObservation = webview.observe(\.estimatedProgress, options: [.initial, .new]) {
+        progressObservation = webview.observe(\.estimatedProgress, options: .live) {
             [unowned self] web, change in
             guard let progress = change.newValue else {
                 progressView.isHidden = true

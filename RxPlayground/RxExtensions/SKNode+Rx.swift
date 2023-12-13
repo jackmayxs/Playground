@@ -13,6 +13,6 @@ import RxCocoa
 extension Reactive where Base: SKNode {
     
     var position: Observable<CGPoint> {
-        observe(\.position, options: [.initial, .new])
+        observe(\.position, options: .live)
     }
 }
