@@ -68,7 +68,7 @@ class BaseCollectionViewController: BaseViewController, UICollectionViewDelegate
     func configureCollectionView(_ collectionView: UICollectionView) {
         collectionView.backgroundView = emptyView
         collectionView.delaysContentTouches = false
-        collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        collectionView.autoresizingMask = .autoResize
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.backgroundColor = baseViewBackgroundColor

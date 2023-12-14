@@ -250,7 +250,7 @@ extension UIView {
     ///   - frame: 背景图位置
     func add(backgroundView: UIView, frame: CGRect) {
         backgroundView.frame = frame
-        backgroundView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        backgroundView.autoresizingMask = .autoResize
         insertSubview(backgroundView, at: 0)
         kk.backgroundView = backgroundView
     }
@@ -756,3 +756,12 @@ extension UIView {
 	}
 }
 #endif
+
+// MARK: - 其他
+extension UIView.AutoresizingMask {
+    
+    /// 自动根据初始的frame调整尺寸
+    static var autoResize: UIView.AutoresizingMask {
+        [.flexibleWidth, .flexibleHeight]
+    }
+}

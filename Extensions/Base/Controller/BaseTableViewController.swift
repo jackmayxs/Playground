@@ -56,7 +56,7 @@ class BaseTableViewController: BaseViewController, UITableViewDataSource, UITabl
     /// 调用时机:懒加载
     func makeTableView() -> UITableView {
         let table = UITableView(frame: .zero, style: tableViewStyle)
-        table.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        table.autoresizingMask = .autoResize
         table.delegate = self
         table.dataSource = self
         table.backgroundColor = baseViewBackgroundColor
