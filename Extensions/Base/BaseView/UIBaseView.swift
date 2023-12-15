@@ -34,7 +34,7 @@ extension ViewModelConfigurable {
     func setupViewModel(_ viewModel: ViewModel) {}
 }
 
-typealias ControllerBaseView = ViewModelConfigurable & StandardLayoutLifeCycle
+typealias ViewModelConfigurableView = ViewModelConfigurable & StandardLayoutLifeCycle
 
 class BaseViewModel: NSObject, ViewModelType {
     /// 使用NSObject子类实现ViewModel
