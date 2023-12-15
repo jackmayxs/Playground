@@ -20,6 +20,11 @@ protocol PagableViewModelType<Model>: ViewModelType {
     init(delegate: PagableViewModelDelegate)
 }
 
+protocol ViewControllerView {
+    associatedtype ViewController: UIViewController
+    var viewController: ViewController { get set }
+}
+
 protocol ViewModelConfigurable<ViewModel> {
     associatedtype ViewModel: ViewModelType
     func setupViewModel(_ viewModel: ViewModel)
@@ -124,6 +129,34 @@ class UIBaseView: UIView {
     func prepareSubviews() {}
     
     func prepareConstraints() {}
+}
+
+class UIBaseControllerView<ViewController: UIViewController>: UIBaseView, ViewControllerView {
+    
+    private weak var innerController: ViewController?
+    private lazy var neverController = ViewController(nibName: nil, bundle: nil)
+    
+    override func didMoveToWindow() {
+        super.didMoveToWindow()
+        if innerController.isVoid, let retreiveController = qmui_viewController as? ViewController {
+            innerController = retreiveController
+        }
+    }
+    
+    var viewController: ViewController {
+        get { innerController ?? neverController }
+        set { innerController = newValue }
+    }
+    
+    @discardableResult func attach(controller: ViewController) -> Self {
+        innerController = controller
+        return self
+    }
+    
+    convenience init(controller: ViewController) {
+        self.init(frame: .zero)
+        attach(controller: controller)
+    }
 }
 
 extension UIView: ErrorTracker {
