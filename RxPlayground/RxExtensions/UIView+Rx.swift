@@ -9,9 +9,19 @@ import RxCocoa
 
 extension Reactive where Base: UIView {
     
-    /// UIScrollView及其子类不可使用此属性, 否则会发生运行时错误
+    /// 实时观察Frame变化
     var frame: Observable<CGRect> {
-        observe(\.frame, options: .live)
+        let observables = Array {
+            observe(\.frame)
+            base.layer.rx.observe(\.frame).withUnretained(base).map(\.0.frame)
+            base.layer.rx.observe(\.bounds).withUnretained(base).map(\.0.frame)
+            base.layer.rx.observe(\.transform).withUnretained(base).map(\.0.frame)
+            base.layer.rx.observe(\.position).withUnretained(base).map(\.0.frame)
+            base.layer.rx.observe(\.zPosition).withUnretained(base).map(\.0.frame)
+            base.layer.rx.observe(\.anchorPoint).withUnretained(base).map(\.0.frame)
+            base.layer.rx.observe(\.anchorPointZ).withUnretained(base).map(\.0.frame)
+        }
+        return observables.merged
     }
     
     var intrinsicContentSize: Observable<CGSize> {
