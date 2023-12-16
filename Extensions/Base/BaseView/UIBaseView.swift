@@ -10,8 +10,10 @@ import RxCocoa
 import QMUIKit
 import Moya
 
+// MARK: - 相关协议
 protocol ViewModelType: SimpleInitializer {}
-protocol PagableViewModelType<Model>: ViewModelType {
+
+protocol PagableViewModelType: ViewModelType {
     associatedtype Model
     var delegate: PagableViewModelDelegate? { get set }
     var numberOfItems: Int { get }
@@ -25,7 +27,7 @@ protocol ViewControllerView {
     var viewController: ViewController { get set }
 }
 
-protocol ViewModelConfigurable<ViewModel> {
+protocol ViewModelConfigurable {
     associatedtype ViewModel: ViewModelType
     func setupViewModel(_ viewModel: ViewModel)
 }
@@ -34,14 +36,20 @@ extension ViewModelConfigurable {
     func setupViewModel(_ viewModel: ViewModel) {}
 }
 
+protocol PagableViewModelDelegate: AnyObject {
+    func itemsUpdated()
+}
+
 typealias ViewModelConfigurableView = ViewModelConfigurable & StandardLayoutLifeCycle
 
+// MARK: - 基类
+/// 使用NSObject子类实现ViewModel
+/// 是为了某些情况下监听rx.deallocating通知, 以做一些逻辑处理
+/// 而纯Swift的Class只能监听到rx.deallocated事件, 无法监听到rx.deallocating事件
+/// 后来证明在VM里监听rx.deallocating没什么意义, 因为这时自身已经快销毁了, 很多属性都无效了
+/// 但还是暂时用NSObjct的子类来实现吧, 以防万一
+/// 而且有些协议只能由NSObject类实现
 class BaseViewModel: NSObject, ViewModelType {
-    /// 使用NSObject子类实现ViewModel
-    /// 是为了某些情况下监听rx.deallocating通知, 以做一些逻辑处理
-    /// 而纯Swift的Class只能监听到rx.deallocated事件, 无法监听到rx.deallocating事件
-    /// 后来证明在VM里监听rx.deallocating没什么意义, 因为这时自身已经快销毁了, 很多属性都无效了
-    /// 但还是暂时用NSObjct的子类来实现吧, 以防万一
     
     override init() {
         super.init()
@@ -49,10 +57,6 @@ class BaseViewModel: NSObject, ViewModelType {
     }
     
     func didInitialize() {}
-}
-
-protocol PagableViewModelDelegate: AnyObject {
-    func itemsUpdated()
 }
 
 class BasePagableViewModel<Model>: BaseViewModel, PagableViewModelType {
@@ -134,7 +138,21 @@ class UIBaseView: UIView {
 class UIBaseControllerView<ViewController: UIViewController>: UIBaseView, ViewControllerView {
     
     private weak var innerController: ViewController?
-    private lazy var neverController = ViewController(nibName: nil, bundle: nil)
+    
+    var viewController: ViewController {
+        get { innerController ?? neverController }
+        set { innerController = newValue }
+    }
+    
+    convenience init(controller: ViewController) {
+        self.init(frame: .zero)
+        attach(controller: controller)
+    }
+    
+    @discardableResult func attach(controller: ViewController) -> Self {
+        viewController = controller
+        return self
+    }
     
     override func didMoveToWindow() {
         super.didMoveToWindow()
@@ -143,22 +161,12 @@ class UIBaseControllerView<ViewController: UIViewController>: UIBaseView, ViewCo
         }
     }
     
-    var viewController: ViewController {
-        get { innerController ?? neverController }
-        set { innerController = newValue }
-    }
-    
-    @discardableResult func attach(controller: ViewController) -> Self {
-        innerController = controller
-        return self
-    }
-    
-    convenience init(controller: ViewController) {
-        self.init(frame: .zero)
-        attach(controller: controller)
+    private var neverController: ViewController {
+        fatalError("Should not happen! Check your logic.")
     }
 }
 
+// MARK: - UIView协议实现
 extension UIView: ErrorTracker {
     
     func trackError(_ error: Error?, isFatal: Bool = true) {
