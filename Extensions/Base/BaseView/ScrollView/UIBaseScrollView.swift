@@ -78,10 +78,10 @@ class UIBaseScrollView: UIScrollView, StandardLayoutLifeCycle {
             switch scrollableAxis {
             case .horizontal:
                 content.height.equalTo(frameLayoutGuide)
-                content.right.equalTo(frameLayoutGuide).priority(.high)
+                content.right.lessThanOrEqualTo(frameLayoutGuide).priority(.high)
             case .vertical:
                 content.width.equalTo(frameLayoutGuide)
-                content.bottom.equalTo(frameLayoutGuide).priority(.high)
+                content.bottom.lessThanOrEqualTo(frameLayoutGuide).priority(.high)
             @unknown default:
                 fatalError("Unhandled condition")
             }

@@ -373,20 +373,28 @@ extension Array where Element: UIView {
 }
 extension UIView {
     
-    /// 设置宽高比例
+    /// 设置宽高比例 | 如果传入的比例为空则移除之前的约束
     /// - Returns: 自己
-    @discardableResult func fix(proportion: CGSize) -> Self {
-        translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate {
+    @discardableResult func fix(proportion: CGSize?, priority: UILayoutPriority = .required) -> Self {
+        
+        /// 移除已经存在的约束
+        let existedConstraints = constraints.filter { constraint in
+            guard constraint.relation == .equal else { return false }
+            guard constraint.firstAttribute == .width else { return false }
+            guard constraint.secondAttribute == .height else { return false }
+            return true
+        }
+        NSLayoutConstraint.deactivate(existedConstraints)
+        
+        if let proportion {
+            /// 开启约束
+            translatesAutoresizingMaskIntoConstraints = false
+            /// 宽高比例
             let multiplier = proportion.width / proportion.height
-            let existedConstraints = constraints.filter { constraint in
-                guard constraint.relation == .equal else { return false }
-                guard constraint.firstAttribute == .width else { return false }
-                guard constraint.secondAttribute == .height else { return false }
-                return true
-            }
-            removeConstraints(existedConstraints)
-            widthAnchor.constraint(equalTo: heightAnchor, multiplier: multiplier)
+            /// 激活约束
+            let constraint = widthAnchor.constraint(equalTo: heightAnchor, multiplier: multiplier)
+            constraint.priority = priority
+            constraint.isActive = true
         }
         return self
     }
@@ -400,44 +408,58 @@ extension UIView {
     /// 固定宽高
     /// - Returns: 自己
     @discardableResult func fix(width: CGFloat? = nil, height: CGFloat? = nil) -> Self {
-        fix(width: width?.constraint, height: height?.constraint)
+        fix(widthConstraint: width?.constraint, heightConstraint: height?.constraint)
     }
     
-    @discardableResult func fix(width: UILayoutConstraint? = nil, height: UILayoutConstraint? = nil) -> Self {
-        /// 其中一个必须有值
-        guard width.isValid || height.isValid else { return self }
-        /// 开始自动布局
-        translatesAutoresizingMaskIntoConstraints = false
-        /// 约束宽度
-        if let width {
-            /// 查找已经存在的宽度约束
+    @discardableResult func fix(widthConstraint: UILayoutConstraint? = nil, heightConstraint: UILayoutConstraint? = nil) -> Self {
+        
+        func deactivateWidthConstraintsIfNeeded() {
             let existedConstraints = constraints.filter { constraint in
                 guard constraint.relation == .equal else { return false }
                 guard constraint.firstAttribute == .width else { return false }
                 guard constraint.secondAttribute == .notAnAttribute else { return false }
                 return true
             }
-            /// 移除已经存在的宽度约束
-            removeConstraints(existedConstraints)
-            /// 约束宽度
-            let constraint = widthAnchor.constraint(equalToConstant: width.constant)
-            constraint.priority = width.priority
-            constraint.isActive = true
+            if existedConstraints.isEmpty { return }
+            NSLayoutConstraint.deactivate(existedConstraints)
         }
-        /// 约束高度
-        if let height {
-            /// 查找已经存在的高度约束
+        
+        func deactivateHeightConstraintsIfNeeded() {
             let existedConstraints = constraints.filter { constraint in
                 guard constraint.relation == .equal else { return false }
                 guard constraint.firstAttribute == .height else { return false }
                 guard constraint.secondAttribute == .notAnAttribute else { return false }
                 return true
             }
-            /// 移除已经存在的高度约束
-            removeConstraints(existedConstraints)
-            /// 约束高度
-            let constraint = heightAnchor.constraint(equalToConstant: height.constant)
-            constraint.priority = height.priority
+            if existedConstraints.isEmpty { return }
+            NSLayoutConstraint.deactivate(existedConstraints)
+        }
+        
+        /// 其中一个必须有值
+        guard widthConstraint.isValid || heightConstraint.isValid else {
+            /// 如果两个参数都无效, 则移除已经存在的约束
+            deactivateWidthConstraintsIfNeeded()
+            deactivateHeightConstraintsIfNeeded()
+            return self
+        }
+        /// 开始自动布局
+        translatesAutoresizingMaskIntoConstraints = false
+        /// 约束宽度
+        if let widthConstraint {
+            /// 移除存在的约束
+            deactivateWidthConstraintsIfNeeded()
+            /// 激活新的约束
+            let constraint = widthAnchor.constraint(equalToConstant: widthConstraint.constant)
+            constraint.priority = widthConstraint.priority
+            constraint.isActive = true
+        }
+        /// 约束高度
+        if let heightConstraint {
+            /// 移除存在的高度约束
+            deactivateHeightConstraintsIfNeeded()
+            /// 激活新的约束
+            let constraint = heightAnchor.constraint(equalToConstant: heightConstraint.constant)
+            constraint.priority = heightConstraint.priority
             constraint.isActive = true
         }
         return self
@@ -458,61 +480,97 @@ extension UIView {
     }
     
     @discardableResult func limit(minWidth: UILayoutConstraint? = nil, maxWidth: UILayoutConstraint? = nil, minHeight: UILayoutConstraint? = nil, maxHeight: UILayoutConstraint? = nil) -> Self {
+        
+        func deactivateMinWidthConstraintIfNeeded() {
+            let existedConstraints = constraints.filter { constraint in
+                guard constraint.relation == .greaterThanOrEqual else { return false }
+                guard constraint.firstAttribute == .width else { return false }
+                guard constraint.secondAttribute == .notAnAttribute else { return false }
+                return true
+            }
+            if existedConstraints.isEmpty { return }
+            NSLayoutConstraint.deactivate(existedConstraints)
+        }
+        
+        func deactivateMaxWidthConstraintIfNeeded() {
+            let existedConstraints = constraints.filter { constraint in
+                guard constraint.relation == .lessThanOrEqual else { return false }
+                guard constraint.firstAttribute == .width else { return false }
+                guard constraint.secondAttribute == .notAnAttribute else { return false }
+                return true
+            }
+            if existedConstraints.isEmpty { return }
+            NSLayoutConstraint.deactivate(existedConstraints)
+        }
+        
+        func deactivateMinHeightConstraintIfNeeded() {
+            let existedConstraints = constraints.filter { constraint in
+                guard constraint.relation == .greaterThanOrEqual else { return false }
+                guard constraint.firstAttribute == .height else { return false }
+                guard constraint.secondAttribute == .notAnAttribute else { return false }
+                return true
+            }
+            if existedConstraints.isEmpty { return }
+            NSLayoutConstraint.deactivate(existedConstraints)
+        }
+        
+        func deactivateMaxHeightConstraintIfNeeded() {
+            let existedConstraints = constraints.filter { constraint in
+                guard constraint.relation == .lessThanOrEqual else { return false }
+                guard constraint.firstAttribute == .height else { return false }
+                guard constraint.secondAttribute == .notAnAttribute else { return false }
+                return true
+            }
+            if existedConstraints.isEmpty { return }
+            NSLayoutConstraint.deactivate(existedConstraints)
+        }
+        
         /// 确保至少有一个约束
-        guard minWidth.isValid || maxWidth.isValid || minHeight.isValid || maxHeight.isValid else { return self }
+        guard minWidth.isValid || maxWidth.isValid || minHeight.isValid || maxHeight.isValid else {
+            /// 如果参数都无效, 则移除已经存在的约束
+            deactivateMinWidthConstraintIfNeeded()
+            deactivateMaxWidthConstraintIfNeeded()
+            deactivateMinHeightConstraintIfNeeded()
+            deactivateMaxHeightConstraintIfNeeded()
+            return self
+        }
         /// 开始约束
         translatesAutoresizingMaskIntoConstraints = false
         /// 最小宽度
         if let minWidth {
-            let existedConstraints = constraints.filter { constraint in
-                guard constraint.relation == .greaterThanOrEqual else { return false }
-                guard constraint.firstAttribute == .width else { return false }
-                guard constraint.secondAttribute == .notAnAttribute else { return false }
-                return true
-            }
-            removeConstraints(existedConstraints)
+            /// 移除可能存在的约束
+            deactivateMinWidthConstraintIfNeeded()
+            /// 激活新的约束
             let constraint = widthAnchor.constraint(greaterThanOrEqualToConstant: minWidth.constant)
-            constraint.isActive = true
             constraint.priority = minWidth.priority
+            constraint.isActive = true
         }
         /// 最大宽度
         if let maxWidth {
-            let existedConstraints = constraints.filter { constraint in
-                guard constraint.relation == .lessThanOrEqual else { return false }
-                guard constraint.firstAttribute == .width else { return false }
-                guard constraint.secondAttribute == .notAnAttribute else { return false }
-                return true
-            }
-            removeConstraints(existedConstraints)
+            /// 移除可能存在的约束
+            deactivateMaxWidthConstraintIfNeeded()
+            /// 激活新的约束
             let constraint = widthAnchor.constraint(lessThanOrEqualToConstant: maxWidth.constant)
-            constraint.isActive = true
             constraint.priority = maxWidth.priority
+            constraint.isActive = true
         }
         /// 最小高度
         if let minHeight {
-            let existedConstraints = constraints.filter { constraint in
-                guard constraint.relation == .greaterThanOrEqual else { return false }
-                guard constraint.firstAttribute == .height else { return false }
-                guard constraint.secondAttribute == .notAnAttribute else { return false }
-                return true
-            }
-            removeConstraints(existedConstraints)
+            /// 移除可能存在的约束
+            deactivateMinHeightConstraintIfNeeded()
+            /// 激活新的约束
             let constraint = heightAnchor.constraint(greaterThanOrEqualToConstant: minHeight.constant)
-            constraint.isActive = true
             constraint.priority = minHeight.priority
+            constraint.isActive = true
         }
         /// 最大高度
         if let maxHeight {
-            let existedConstraints = constraints.filter { constraint in
-                guard constraint.relation == .lessThanOrEqual else { return false }
-                guard constraint.firstAttribute == .height else { return false }
-                guard constraint.secondAttribute == .notAnAttribute else { return false }
-                return true
-            }
-            removeConstraints(existedConstraints)
+            /// 移除可能存在的约束
+            deactivateMaxHeightConstraintIfNeeded()
+            /// 激活新的约束
             let constraint = heightAnchor.constraint(lessThanOrEqualToConstant: maxHeight.constant)
-            constraint.isActive = true
             constraint.priority = maxHeight.priority
+            constraint.isActive = true
         }
         return self
     }

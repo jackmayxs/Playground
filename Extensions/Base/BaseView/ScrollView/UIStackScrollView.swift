@@ -5,29 +5,18 @@
 //
 
 import UIKit
+import RxSwift
 
 class UIStackScrollView: UIBaseScrollView {
     
     lazy var stackView = UIStackView(axis: Self.scrollableAxis, distribution: .fill, alignment: .fill, spacing: 0.0)
     
+    private var observingStackViewNaturalSize: DisposeBag?
+    
     override func prepare() {
         super.prepare()
         showsVerticalScrollIndicator = false
         showsHorizontalScrollIndicator = false
-        let stretchAxis = Self.scrollableAxis
-        rx.disposeBag.insert {
-            stackView.rx.naturalSize.bind {
-                [unowned self] naturalSize in
-                switch stretchAxis {
-                case .horizontal:
-                    fix(width: naturalSize.width.constraint(priority: .defaultHigh))
-                case .vertical:
-                    fix(height: naturalSize.height.constraint(priority: .defaultHigh))
-                @unknown default:
-                    fatalError("Unhandled condition")
-                }
-            }
-        }
     }
     
     override func makeContentView() -> UIView {
@@ -106,6 +95,35 @@ extension UIStackScrollView {
     
     func addArrangedSubview(_ subview: UIView) {
         stackView.addArrangedSubview(subview)
+    }
+    
+    func setAutoResize(_ autoResize: Bool) {
+        let stretchAxis = Self.scrollableAxis
+        if autoResize {
+            observingStackViewNaturalSize = DisposeBag {
+                stackView.rx.naturalSize.bind {
+                    [unowned self] naturalSize in
+                    switch stretchAxis {
+                    case .horizontal:
+                        fix(widthConstraint: naturalSize.width.constraint(priority: .defaultHigh))
+                    case .vertical:
+                        fix(heightConstraint: naturalSize.height.constraint(priority: .defaultHigh))
+                    @unknown default:
+                        fatalError("Unhandled condition")
+                    }
+                }
+            }
+        } else {
+            observingStackViewNaturalSize = nil
+            switch stretchAxis {
+            case .horizontal:
+                fix(width: nil)
+            case .vertical:
+                fix(height: nil)
+            @unknown default:
+                fatalError("Unhandled condition")
+            }
+        }
     }
 }
 
