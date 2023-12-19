@@ -513,12 +513,13 @@ extension UIColor {
     }
     
     static func componentsForColorTemperature(_ temperature: Kelvin) -> (red: CGFloat, green: CGFloat, blue: CGFloat) {
-        let percentKelvin = temperature / 100.0
-        let red, green, blue: CGFloat
         let range = UInt8.range.cgFloatRange
-        red = range << percentKelvin <= 66 ? 255.0 : (329.698727446 * pow(percentKelvin - 60, -0.1332047592))
-        green = range << percentKelvin <= 66 ? (99.4708025861 * log(percentKelvin) - 161.1195681661) : 288.1221695283 * pow(percentKelvin - 60, -0.0755148492)
-        blue = range << percentKelvin >= 66 ? 255.0 : (percentKelvin <= 19 ? 0 : 138.5177312231 * log(percentKelvin - 10) - 305.0447927307)
+        let percentKelvin = temperature / 100
+        let red, green, blue: CGFloat
+        
+        red = range << (percentKelvin <= 66 ? 255 : (329.698727446 * pow(percentKelvin - 60, -0.1332047592)))
+        green = range << (percentKelvin <= 66 ? (99.4708025861 * log(percentKelvin) - 161.1195681661) : 288.1221695283 * pow(percentKelvin - 60, -0.0755148492))
+        blue = range << (percentKelvin >= 66 ? 255 : (percentKelvin <= 19 ? 0 : 138.5177312231 * log(percentKelvin - 10) - 305.0447927307))
         
         return (red: red / 255.0, green: green / 255.0, blue: blue / 255.0)
     }
