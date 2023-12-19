@@ -9,6 +9,17 @@ import Foundation
 
 extension BinaryInteger {
     
+    /// 带正负号的字符串
+    var signedString: String {
+        NumberFormatter.shared.configure { make in
+            make.positivePrefix = "+"
+            make.negativePrefix = "-"
+            make.zeroSymbol = "0"
+        }.transform { formatter in
+            formatter.string(from: int.nsNumber).orEmpty
+        }
+    }
+    
     var string: String {
         String(self)
     }

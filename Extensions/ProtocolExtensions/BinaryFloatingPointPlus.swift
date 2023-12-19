@@ -30,11 +30,7 @@ struct PercentClip<T: BinaryFloatingPoint> {
     
     /// 分割百分比(带符号): 左侧百分比为负数
     var signedLower: T? {
-        lower.flatMap { left in
-            var tmp = left
-            tmp.negate()
-            return tmp
-        }
+        lower.map(\.negation)
     }
 }
 
@@ -57,6 +53,13 @@ extension BinaryFloatingPoint {
         } else {
             return PercentClip(lower: nil, upper: (percentage - 0.5) / 0.5)
         }
+    }
+    
+    /// 正数变负数, 负数变正数
+    var negation: Self {
+        var tmp = self
+        tmp.negate()
+        return tmp
     }
     
     var int: Int {
