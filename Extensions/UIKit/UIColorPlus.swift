@@ -207,6 +207,27 @@ extension UIColor {
         }
     }
     
+    /// 颜色 -> 色温
+    var temperature: Kelvin {
+        guard let aRGB else { return 0 }
+        let r = aRGB.r
+        let g = aRGB.g
+        let b = aRGB.b
+        
+        /// RGB -> XYZ color space
+        let x = r * 0.4124 + g * 0.3576 + b * 0.1805
+        let y = r * 0.2126 + g * 0.7152 + b * 0.0722
+        let z = r * 0.0193 + g * 0.1192 + b * 0.9505
+        
+        /// Calculate chromaticty coordinates
+        let xc = x / (x + y + z)
+        let yc = y / (x + y + z)
+        
+        /// Use Planck's law to calculate color temperature
+        let n = (xc - 0.3320) / (0.1858 - yc)
+        return 449 * n * n * n + 3525 * n * n + 6823.3 * n + 5520.33
+    }
+    
     /// 返回argb颜色
     var int: Int? {
         int(alphaIgnored: true)
