@@ -7,10 +7,57 @@
 
 import Foundation
 
+struct PercentClip<T: BinaryFloatingPoint> {
+    let left: T?
+    let right: T?
+    
+    init(left: T?, right: T?) {
+        self.left = left.flatMap { left in
+            T.hotPercentRange << left
+        }
+        self.right = right.flatMap { right in
+            T.hotPercentRange << right
+        }
+    }
+    
+    /// 翻转左侧百分比
+    /// 0.6 -> 0.4 | 0.3 -> 0.7
+    var reverseLeft: T? {
+        left.flatMap { left in
+            1.0 - left
+        }
+    }
+    
+    /// 分割百分比(带符号): 左侧百分比为负数
+    var signedLeft: T? {
+        left.flatMap { left in
+            var tmp = left
+            tmp.negate()
+            return tmp
+        }
+    }
+}
+
 extension BinaryFloatingPoint {
     
     /// 实时创建的百分比范围, 尽量避免直接使用. 在常用的类型扩展里储存一份静态常量
     static var hotPercentRange: ClosedRange<Self> { 0...1.0 }
+    
+    /// 分割百分比: self必须在0...1.0之间, 返回左右两个百分比
+    /// 通常用于滑块百分比分割
+    /// 往左, 左侧百分比增大, 右侧百分比为空
+    /// 往右, 右侧百分比增大, 左侧百分比为空
+    /// 居中时(0.5), 两侧百分比都为空
+    var percentClip: PercentClip<Self> {
+        let percentage = Self.hotPercentRange << self
+        if self < 0.5 {
+            return PercentClip(left: 1.0 - percentage / 0.5, right: nil)
+        } else if self == 0.5 {
+            return PercentClip(left: nil, right: nil)
+        } else {
+            return PercentClip(left: nil, right: (percentage - 0.5) / 0.5)
+        }
+    }
     
     var int: Int {
         Int(self)
