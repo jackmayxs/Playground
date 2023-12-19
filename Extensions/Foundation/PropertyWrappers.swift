@@ -101,32 +101,80 @@ import UIKit
 }
 
 /// 让值在某个范围内循环
-@propertyWrapper struct CycledValue<T: Comparable> {
+@propertyWrapper class CycledValue<T: Comparable> {
+
+    fileprivate var innerValue: T
+    fileprivate let range: ClosedRange<T>
+    init(wrappedValue: T, range: ClosedRange<T>) {
+        self.range = range
+        self.innerValue = range << wrappedValue
+    }
     
     var wrappedValue: T {
         get { innerValue }
         set {
             switch newValue {
             case ..<range.lowerBound:
+                /// 小于最小值则设置成最大值
                 innerValue = range.upperBound
             case range:
+                /// 正常赋值
                 innerValue = newValue
             default:
+                /// 大于最大值则设置成最小值
                 innerValue = range.lowerBound
             }
         }
     }
-    private var innerValue: T
-    private let range: ClosedRange<T>
-    init(wrappedValue: T, range: ClosedRange<T>) {
-        self.range = range
-        switch wrappedValue {
-        case ..<range.lowerBound:
-            innerValue = range.lowerBound
-        case range:
-            innerValue = wrappedValue
-        default:
-            innerValue = range.upperBound
+    
+    fileprivate var upperBound: T {
+        range.upperBound
+    }
+    
+    fileprivate var lowerBound: T {
+        range.lowerBound
+    }
+}
+
+@propertyWrapper final class CycledNumber<T: FloatingPoint>: CycledValue<T> {
+    
+    /// 超出范围时是否带上溢出值. 例如: 3.0...5.0
+    /// 设置成6.0的时候, 最终值为4.0(溢出1.0, 最小值加1.0)
+    /// 设置成2.0的时候, 最终值为4.0(溢出1.0, 最高值减1.0)
+    let overflow: Bool
+    
+    /// 初始化方法
+    /// - Parameters:
+    ///   - wrappedValue: 初始值
+    ///   - range: 范围
+    ///   - overflow: 是否处理溢出值
+    ///   注: 初始化时使用父类方法(即: 不处理溢出值, 只限制在范围内)
+    init(wrappedValue: T, range: ClosedRange<T>, overflow: Bool = false) {
+        self.overflow = overflow
+        super.init(wrappedValue: wrappedValue, range: range)
+    }
+    
+    override var wrappedValue: T {
+        get { super.wrappedValue }
+        set {
+            if overflow {
+                let distance = upperBound - lowerBound
+                do {
+                    super.wrappedValue = try range.constrainedResult(newValue).get()
+                } catch RangeValueError.tooLow {
+                    let overflow = lowerBound - newValue
+                    let remainder = overflow.truncatingRemainder(dividingBy: distance)
+                    super.wrappedValue = upperBound - remainder
+                } catch RangeValueError.tooHigh {
+                    let overflow = newValue - upperBound
+                    let remainder = overflow.truncatingRemainder(dividingBy: distance)
+                    super.wrappedValue = lowerBound + remainder
+                } catch {
+                    assertionFailure("Unhandled error.")
+                }
+            } else {
+                super.wrappedValue = newValue
+            }
         }
     }
 }

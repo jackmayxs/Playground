@@ -8,29 +8,29 @@
 import Foundation
 
 struct PercentClip<T: BinaryFloatingPoint> {
-    let left: T?
-    let right: T?
+    let lower: T?
+    let upper: T?
     
-    init(left: T?, right: T?) {
-        self.left = left.flatMap { left in
-            T.hotPercentRange << left
+    init(lower: T?, upper: T?) {
+        self.lower = lower.flatMap { lower in
+            T.hotPercentRange << lower
         }
-        self.right = right.flatMap { right in
-            T.hotPercentRange << right
+        self.upper = upper.flatMap { upper in
+            T.hotPercentRange << upper
         }
     }
     
     /// 翻转左侧百分比
     /// 0.6 -> 0.4 | 0.3 -> 0.7
-    var reverseLeft: T? {
-        left.flatMap { left in
+    var reverseLower: T? {
+        lower.flatMap { left in
             1.0 - left
         }
     }
     
     /// 分割百分比(带符号): 左侧百分比为负数
-    var signedLeft: T? {
-        left.flatMap { left in
+    var signedLower: T? {
+        lower.flatMap { left in
             var tmp = left
             tmp.negate()
             return tmp
@@ -51,11 +51,11 @@ extension BinaryFloatingPoint {
     var percentClip: PercentClip<Self> {
         let percentage = Self.hotPercentRange << self
         if self < 0.5 {
-            return PercentClip(left: 1.0 - percentage / 0.5, right: nil)
+            return PercentClip(lower: 1.0 - percentage / 0.5, upper: nil)
         } else if self == 0.5 {
-            return PercentClip(left: nil, right: nil)
+            return PercentClip(lower: nil, upper: nil)
         } else {
-            return PercentClip(left: nil, right: (percentage - 0.5) / 0.5)
+            return PercentClip(lower: nil, upper: (percentage - 0.5) / 0.5)
         }
     }
     
