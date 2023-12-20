@@ -55,13 +55,6 @@ extension BinaryFloatingPoint {
         }
     }
     
-    /// 正数变负数, 负数变正数
-    var negation: Self {
-        var tmp = self
-        tmp.negate()
-        return tmp
-    }
-    
     var int: Int {
         Int(self)
     }
