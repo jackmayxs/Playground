@@ -11,6 +11,7 @@ import ObjectiveC
 
 fileprivate var disposeBagContext: UInt8 = 0
 fileprivate var preparedRelayContext: UInt8 = 0
+fileprivate var anyUpdateSubjectContext: UInt8 = 0
 
 public extension Reactive where Base: AnyObject {
     
@@ -36,6 +37,22 @@ public extension Reactive where Base: AnyObject {
             let relay = BehaviorRelay(value: false)
             setAssociatedObject(base, &preparedRelayContext, relay, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             return relay
+        }
+    }
+    
+    var anyUpdate: Observable<Any> {
+        anyUpdateSubject.asObservable()
+    }
+    
+    /// 通用的任意类型数据更新的Subject
+    var anyUpdateSubject: PublishSubject<Any> {
+        synchronized(lock: base) {
+            if let subject = getAssociatedObject(base, &anyUpdateSubjectContext) as? PublishSubject<Any> {
+                return subject
+            }
+            let subject = PublishSubject<Any>()
+            setAssociatedObject(base, &anyUpdateSubjectContext, subject, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            return subject
         }
     }
     

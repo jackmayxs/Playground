@@ -47,8 +47,6 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
 	
     lazy var presentor = ControllerPresentor(presentingController: self)
     
-    lazy var updateNotifier = PublishSubject<Any>()
-    
     var targetImageSize: CGSize?
     
     /// 是否始终在导航栏右侧显示关闭按钮 | 点击后dismiss导航控制器或自身
@@ -433,16 +431,6 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
 }
 
 extension BaseViewController {
-    
-    /// 持续通知更新, 根据具体情况在使用时加上.once订阅一次通知
-    func update<T>(_ type: T.Type) -> Observable<T> {
-        update.as(type)
-    }
-    
-    /// 持续通知更新, 根据具体情况在使用时加上.once订阅一次通知
-    var update: Observable<Any> {
-        updateNotifier.asObservable()
-    }
     
     var latestMessage: String? {
         get { nil }
