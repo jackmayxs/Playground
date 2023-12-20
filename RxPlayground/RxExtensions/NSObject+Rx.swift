@@ -10,49 +10,54 @@ import RxCocoa
 import ObjectiveC
 
 fileprivate var disposeBagContext: UInt8 = 0
-fileprivate var preparedRelayContext: UInt8 = 0
 fileprivate var anyUpdateSubjectContext: UInt8 = 0
 
 public extension Reactive where Base: AnyObject {
     
     /// 标记是否准备好
     var isPrepared: Bool {
-        get { preparedRelay.value }
+        get {
+            do {
+                let value = try anyUpdateSubject.value()
+                return (value as? Bool).or(false)
+            } catch {
+                return false
+            }
+        }
         nonmutating set {
-            preparedRelay.accept(newValue)
+            anyUpdateSubject.onNext(newValue)
         }
     }
     
     /// 常用于事件绑定之前的约束, 如利用.skip(until: rx.prepared)操作符
     /// 数据填充之后设置isPrepared为true以接收事件
+    /// 内部使用了.take(until: deallocated)
     var prepared: Observable<Bool> {
-        preparedRelay.filter(\.isTrue).take(1)
+        anyUpdate.compactMap(Bool.self)
+            .filter(\.isTrue)
+            .take(1)
     }
     
-    private var preparedRelay: BehaviorRelay<Bool> {
-        synchronized(lock: base) {
-            if let relay = getAssociatedObject(base, &preparedRelayContext) as? BehaviorRelay<Bool> {
-                return relay
-            }
-            let relay = BehaviorRelay(value: false)
-            setAssociatedObject(base, &preparedRelayContext, relay, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-            return relay
-        }
+    /// 更新数据流(跳过初始值) | 内部使用了.take(until: deallocated)
+    var anyNewUpdate: Observable<Any> {
+        anyUpdate.skip(1)
     }
     
+    /// 更新数据流(包括初始值) | 内部使用了.take(until: deallocated)
     var anyUpdate: Observable<Any> {
-        anyUpdateSubject.asObservable()
+        anyUpdateSubject.observable.take(until: deallocated)
     }
     
-    /// 通用的任意类型数据更新的Subject
-    var anyUpdateSubject: PublishSubject<Any> {
+    /// 通用的任意类型数据更新的Subject | 包含初始值
+    var anyUpdateSubject: BehaviorSubject<Any> {
         synchronized(lock: base) {
-            if let subject = getAssociatedObject(base, &anyUpdateSubjectContext) as? PublishSubject<Any> {
-                return subject
+            guard let existedSubject = getAssociatedObject(base, &anyUpdateSubjectContext) as? BehaviorSubject<Any> else {
+                /// 创建Subject | 起始值为Void
+                let newSubject = BehaviorSubject<Any>(value: ())
+                setAssociatedObject(base, &anyUpdateSubjectContext, newSubject, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                return newSubject
             }
-            let subject = PublishSubject<Any>()
-            setAssociatedObject(base, &anyUpdateSubjectContext, subject, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-            return subject
+            return existedSubject
         }
     }
     
@@ -60,27 +65,25 @@ public extension Reactive where Base: AnyObject {
     var disposeBag: DisposeBag {
         get {
             synchronized(lock: base) {
-                if let disposeObject = getAssociatedObject(base, &disposeBagContext) as? DisposeBag {
-                    return disposeObject
+                guard let existedBag = getAssociatedObject(base, &disposeBagContext) as? DisposeBag else {
+                    let newBag = DisposeBag()
+                    setAssociatedObject(base, &disposeBagContext, newBag, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                    return newBag
                 }
-                let disposeObject = DisposeBag()
-                setAssociatedObject(base, &disposeBagContext, disposeObject, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-                return disposeObject
+                return existedBag
             }
         }
         
-        nonmutating set {
+        nonmutating set(newBag) {
             synchronized(lock: base) {
-                setAssociatedObject(base, &disposeBagContext, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                setAssociatedObject(base, &disposeBagContext, newBag, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             }
         }
     }
     
     /// disposeBag置空 | 清空之前所有的订阅
     func clearDisposeBag() {
-        synchronized(lock: base) {
-            setAssociatedObject(base, &disposeBagContext, nil, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        }
+        disposeBag = DisposeBag()
     }
 }
 

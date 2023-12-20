@@ -91,10 +91,7 @@ extension Optional {
     /// - Parameter defaultValue: 自动闭包
     /// - Returns: Wrapped Value
     func or(_ defaultValue: @autoclosure () -> Wrapped) -> Wrapped {
-        guard let self else {
-            return defaultValue()
-        }
-        return self
+        self ?? defaultValue()
     }
     
     /// Optional Error

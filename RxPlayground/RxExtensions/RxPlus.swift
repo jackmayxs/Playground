@@ -452,6 +452,12 @@ extension ObservableConvertibleType where Element: Equatable {
 
 extension ObservableType {
     
+    func compactMap<T>(_ type: T.Type) -> Observable<T> {
+        compactMap { element in
+            element as? T
+        }
+    }
+    
     func asOptional<T>(_ type: T.Type) -> Observable<T?> {
         map { element in element as? T }
     }
