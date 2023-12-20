@@ -5,7 +5,8 @@
 //  Created by Choi on 2022/4/20.
 //
 
-import RxRelay
+import RxSwift
+import RxCocoa
 
 extension BehaviorRelay {
 
@@ -49,5 +50,17 @@ extension BehaviorRelay where Element: RangeReplaceableCollection {
         var newValue = value
         newValue.removeAll()
         accept(newValue)
+    }
+}
+
+extension BehaviorRelay: ObserverType {
+    
+    public func on(_ event: Event<Element>) {
+        switch event {
+        case .next(let element):
+            accept(element)
+        default:
+            break
+        }
     }
 }

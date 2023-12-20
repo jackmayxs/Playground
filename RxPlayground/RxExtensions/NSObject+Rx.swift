@@ -10,8 +10,34 @@ import RxCocoa
 import ObjectiveC
 
 fileprivate var disposeBagContext: UInt8 = 0
+fileprivate var preparedRelayContext: UInt8 = 0
 
 public extension Reactive where Base: AnyObject {
+    
+    /// 标记是否准备好
+    var isPrepared: Bool {
+        get { preparedRelay.value }
+        nonmutating set {
+            preparedRelay.accept(newValue)
+        }
+    }
+    
+    /// 常用于事件绑定之前的约束, 如利用.skip(until: rx.prepared)操作符
+    /// 数据填充之后设置isPrepared为true以接收事件
+    var prepared: Observable<Bool> {
+        preparedRelay.filter(\.isTrue).take(1)
+    }
+    
+    private var preparedRelay: BehaviorRelay<Bool> {
+        synchronized(lock: base) {
+            if let relay = getAssociatedObject(base, &preparedRelayContext) as? BehaviorRelay<Bool> {
+                return relay
+            }
+            let relay = BehaviorRelay(value: false)
+            setAssociatedObject(base, &preparedRelayContext, relay, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            return relay
+        }
+    }
     
     /// a unique DisposeBag that is related to the Reactive.Base instance only for Reference type
     var disposeBag: DisposeBag {
