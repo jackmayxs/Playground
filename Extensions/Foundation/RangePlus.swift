@@ -25,6 +25,19 @@ extension ClosedRange where Bound == Double {
 
 extension ClosedRange where Bound == Int {
     
+    /// 返回保留前几个数的Range. 例如: 1...5 保留前三个数 -> 1...3 | 如果截取失败则返回原值
+    func keep(first: Int) -> Self {
+        let limit = index(before: endIndex)
+        guard let upperBound = index(startIndex, offsetBy: first - 1, limitedBy: limit) else { return self }
+        return lowerBound...self[upperBound]
+    }
+    
+    /// 返回保留后几个数的Range. 例如: 1...5 保留后三个数 -> 3...5 | 如果截取失败则返回原值
+    func keep(last: Int) -> Self {
+        guard let lowerBound = index(endIndex, offsetBy: -last, limitedBy: startIndex) else { return self }
+        return self[lowerBound]...upperBound
+    }
+    
     /// 求出指定值在本范围内的进度
     /// - Parameter value: 要计算进度的值
     /// - Returns: 进度
