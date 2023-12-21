@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// 将0...1.0的百分比从中间0.5切分成左右两半百分比
 struct PercentClip<T: BinaryFloatingPoint> {
     let lower: T?
     let upper: T?
@@ -31,5 +32,20 @@ struct PercentClip<T: BinaryFloatingPoint> {
     /// 分割百分比(带符号): 左侧百分比为负数
     var signedLower: T? {
         lower.map(\.negation)
+    }
+    
+    /// 解包并回调相应的半边百分比
+    /// - Parameters:
+    ///   - lower: 较低的一半百分比
+    ///   - middle: 0.5
+    ///   - upper: 较高的一半百分比
+    func unwrap(lower: (_ lower: T) -> Void, middle: SimpleCallback = {},  upper: (_ upper: T) -> Void) {
+        if let unwrapLower = self.lower {
+            lower(unwrapLower)
+        } else if let unwrapUpper = self.upper {
+            upper(unwrapUpper)
+        } else {
+           middle()
+        }
     }
 }

@@ -225,7 +225,8 @@ extension UIColor {
         
         /// Use Planck's law to calculate color temperature
         let n = (xc - 0.3320) / (0.1858 - yc)
-        return 449 * n * n * n + 3525 * n * n + 6823.3 * n + 5520.33
+        guard n.isNormal else { return 0 }
+        return 449 * pow(n, 3) + 3525 * pow(n, 2) + 6823.3 * n + 5520.33
     }
     
     /// 返回argb颜色
