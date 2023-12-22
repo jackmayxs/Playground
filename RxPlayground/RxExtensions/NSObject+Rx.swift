@@ -10,22 +10,18 @@ import RxCocoa
 import ObjectiveC
 
 fileprivate var disposeBagContext: UInt8 = 0
-fileprivate var anyUpdateSubjectContext: UInt8 = 0
+fileprivate var anyUpdateRelayContext: UInt8 = 0
 
 public extension Reactive where Base: AnyObject {
     
     /// 标记是否准备好
     var isPrepared: Bool {
         get {
-            do {
-                let value = try anyUpdateSubject.value()
-                return (value as? Bool).or(false)
-            } catch {
-                return false
-            }
+            let maybePrepared = anyUpdateRelay.value as? Bool
+            return maybePrepared ?? false
         }
         nonmutating set {
-            anyUpdateSubject.onNext(newValue)
+            anyUpdateRelay.accept(newValue)
         }
     }
     
@@ -45,19 +41,19 @@ public extension Reactive where Base: AnyObject {
     
     /// 更新数据流(包括初始值) | 内部使用了.take(until: deallocated)
     var anyUpdate: Observable<Any> {
-        anyUpdateSubject.observable.take(until: deallocated)
+        anyUpdateRelay.observable.take(until: deallocated)
     }
     
-    /// 通用的任意类型数据更新的Subject | 包含初始值
-    var anyUpdateSubject: BehaviorSubject<Any> {
+    /// 通用的任意类型数据更新的BehaviorRelay | 包含初始值
+    var anyUpdateRelay: BehaviorRelay<Any> {
         synchronized(lock: base) {
-            guard let existedSubject = getAssociatedObject(base, &anyUpdateSubjectContext) as? BehaviorSubject<Any> else {
-                /// 创建Subject | 起始值为Void
-                let newSubject = BehaviorSubject<Any>(value: ())
-                setAssociatedObject(base, &anyUpdateSubjectContext, newSubject, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-                return newSubject
+            guard let existedRelay = getAssociatedObject(base, &anyUpdateRelayContext) as? BehaviorRelay<Any> else {
+                /// 创建Relay | 起始值为Void
+                let newRelay = BehaviorRelay<Any>(value: ())
+                setAssociatedObject(base, &anyUpdateRelayContext, newRelay, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                return newRelay
             }
-            return existedSubject
+            return existedRelay
         }
     }
     
