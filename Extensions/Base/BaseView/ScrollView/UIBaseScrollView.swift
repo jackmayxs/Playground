@@ -74,14 +74,12 @@ class UIBaseScrollView: UIScrollView, StandardLayoutLifeCycle {
     
     func prepareConstraints() {
         contentView.snp.makeConstraints { content in
-            content.edges.equalTo(contentLayoutGuide)
+            content.edges.equalToSuperview()
             switch scrollableAxis {
             case .horizontal:
-                content.height.equalTo(frameLayoutGuide)
-                content.right.lessThanOrEqualTo(frameLayoutGuide).priority(.high)
+                content.height.equalToSuperview()
             case .vertical:
-                content.width.equalTo(frameLayoutGuide)
-                content.bottom.lessThanOrEqualTo(frameLayoutGuide).priority(.high)
+                content.width.equalToSuperview()
             @unknown default:
                 fatalError("Unhandled condition")
             }
