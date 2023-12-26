@@ -452,16 +452,36 @@ extension ObservableConvertibleType where Element: Equatable {
 
 extension ObservableType {
     
+    /// 转换成指定的类型 | 转换失败则不发送事件
+    /// - Parameter type: 转换的类型
+    /// - Returns: Observable
     func compactMap<T>(_ type: T.Type) -> Observable<T> {
         compactMap { element in
             element as? T
         }
     }
     
+    /// 转换成指定的类型 | 转换失败后返回默认值
+    /// - Parameters:
+    ///   - type: 转换的类型
+    ///   - defaultValue: 转换失败返回的默认值
+    /// - Returns: Observable
+    public func `as`<T>(_ type: T.Type, or defaultValue: T) -> Observable<T> {
+        asOptional(type).map { maybeT in
+            maybeT.or(defaultValue)
+        }
+    }
+    
+    /// 转换成Optional<T>
+    /// - Parameter type: 转换的类型
+    /// - Returns: Observable
     func asOptional<T>(_ type: T.Type) -> Observable<T?> {
         map { element in element as? T }
     }
     
+    /// 转换成指定类型 | 如果转换失败则序列抛出错误
+    /// - Parameter type: 转换的类型
+    /// - Returns: Observable
     func `as`<T>(_ type: T.Type) -> Observable<T> {
         map { element in
             if let valid = element as? T {
@@ -500,8 +520,12 @@ extension ObservableType {
 
 extension ObservableType where Element == Bool {
 	
+    var isTrue: Observable<Element> {
+        filter(\.isTrue)
+    }
+    
 	var isFalse: Observable<Element> {
-		filter { $0 == false }
+        filter(\.isFalse)
 	}
 }
 
