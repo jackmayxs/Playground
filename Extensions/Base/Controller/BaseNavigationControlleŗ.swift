@@ -5,10 +5,17 @@
 //
 
 import UIKit
+import QMUIKit
 
 class BaseNavigationController: UINavigationController, PresentedControllerType {
     
     var animator: JellyAnimator?
+    
+    var allowedInterfaceOrientations = UIInterfaceOrientationMask.all {
+        didSet {
+            qmui_setNeedsUpdateOfSupportedInterfaceOrientations()
+        }
+    }
     
     override init(navigationBarClass: AnyClass?, toolbarClass: AnyClass?) {
         super.init(navigationBarClass: navigationBarClass, toolbarClass: toolbarClass)
@@ -36,5 +43,9 @@ class BaseNavigationController: UINavigationController, PresentedControllerType 
     /// 让最顶部的控制器决定状态栏的样式
     override var childForStatusBarStyle: UIViewController? {
         topViewController?.childForStatusBarStyle ?? topViewController
+    }
+    
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        allowedInterfaceOrientations
     }
 }
