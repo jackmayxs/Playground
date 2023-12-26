@@ -9,6 +9,10 @@ import Foundation
 
 extension Sequence {
     
+    var array: Array<Element> {
+        Array(self)
+    }
+    
     /// 根据KeyPath过滤掉重复的元素
     /// - Parameter keyPath: 元素的KeyPath
     /// - Returns: 无重复元素的数组
