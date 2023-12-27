@@ -300,6 +300,9 @@ extension UIColor {
         return (a, r, g, b)
     }
     
+    /// 转换成xy色域坐标 | 注意: 转换时要把亮度先提到最亮
+    /// - Parameter colorGamut: 色域
+    /// - Returns: xy坐标
     func xy(colorGamut: ColorGamut) -> XY {
         lazy var M = colorGamut.M
         guard let (_, r, g, b) = aRGB else { return .zero }
