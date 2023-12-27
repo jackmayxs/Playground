@@ -38,14 +38,6 @@ extension ClosedRange where Bound == Int {
         return self[lowerBound]...upperBound
     }
     
-    /// 求出指定值在本范围内的进度
-    /// - Parameter value: 要计算进度的值
-    /// - Returns: 进度
-    func percentageAt(_ value: Bound) -> Double {
-        guard contains(value) else { return 0.0 }
-        return Double(value - lowerBound) / count.double
-    }
-    
     /// 将范围映射成索引
     var indexRange: ClosedRange<Int> {
         lowerBound.index...upperBound.index
@@ -55,14 +47,17 @@ extension ClosedRange where Bound == Int {
         lowerBound.number...upperBound.number
     }
     
-    /// 转换成Double范围
-    var doubleRange: ClosedRange<Double> {
-        lowerBound.double...upperBound.double
-    }
-    
     /// 转换成CGFloat范围
     var cgFloatRange: ClosedRange<CGFloat> {
         lowerBound.cgFloat...upperBound.cgFloat
+    }
+}
+
+extension ClosedRange where Bound: BinaryInteger {
+    
+    /// 转换成Double范围
+    var doubleRange: ClosedRange<Double> {
+        lowerBound.double...upperBound.double
     }
 }
 
@@ -103,6 +98,33 @@ extension Range where Bound == Int {
 }
 
 extension ClosedRange {
+    
+    /// 根据传入值计算进度
+    /// - Parameter value: 传入值
+    /// - Returns: 进度百分比<0~1.0>
+    public func progress(for value: Bound) -> Double where Bound: BinaryInteger {
+        doubleRange.progress(for: value.double)
+    }
+    
+    /// 根据传入值计算进度
+    /// - Parameter value: 传入值
+    /// - Returns: 进度百分比<0~1.0>
+    public func progress(for value: Bound) -> Bound where Bound: BinaryFloatingPoint {
+        do {
+            /// 检查范围
+            let constrainedValue = try constrainedResult(value).get()
+            /// 总进度
+            let rangeWidth = upperBound - lowerBound
+            /// 确保除数不为0
+            guard rangeWidth != 0 else { return 1.0 }
+            /// 计算进度
+            return (constrainedValue - lowerBound) / rangeWidth
+        } catch RangeValueError.tooHigh {
+            return 1.0
+        } catch {
+            return 0.0
+        }
+    }
     
     /// 判断左面的范围是否包含右面
     /// - Returns: 包含则返回true, 否则返回false
