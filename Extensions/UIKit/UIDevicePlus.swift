@@ -47,20 +47,36 @@ extension UIDevice {
 
 extension UIDeviceOrientation {
     
-    /// 是否属于正常的四种朝向
-    var isRegularOrientation: Bool {
-        switch self {
-        case .portrait, .portraitUpsideDown, .landscapeLeft, .landscapeRight:
-            true
+    /// 屏幕是否是竖屏状态
+    var isScreenPortrait: Bool {
+        isScreenLandscape.isFalse
+    }
+    
+    /// 屏幕是否是横屏状态
+    var isScreenLandscape: Bool {
+        regularOrientation.isLandscape
+    }
+    
+    /// 转换为视频采集的朝向
+    var captureVideoOrientation: AVCaptureVideoOrientation {
+        switch regularOrientation {
+        case .portrait:
+            return .portrait
+        case .portraitUpsideDown:
+            return .portraitUpsideDown
+        case .landscapeLeft:
+            return .landscapeRight
+        case .landscapeRight:
+            return .landscapeLeft
         default:
-            false
+            fatalError("Should not happen.")
         }
     }
     
-    /// 修正为:正常的四种朝向
+    /// 修正为: 正常的四种朝向
     var regularOrientation: UIDeviceOrientation {
-        /// 默认朝向 | 前置摄像头朝左,Home按钮朝右
-        lazy var defaultRegularOrientation = UIDeviceOrientation.landscapeLeft
+        /// 默认朝向 | 横向: 前置摄像头朝左,Home按钮朝右; 或竖向: 前置摄像头朝上
+        lazy var defaultRegularOrientation: UIDeviceOrientation = UIScreen.main.bounds.size.isLandscape ? .landscapeLeft : .portrait
         if isRegularOrientation {
             return self
         } else {
@@ -80,45 +96,19 @@ extension UIDeviceOrientation {
         }
     }
     
-    var captureVideoOrientation: AVCaptureVideoOrientation {
-        switch regularOrientation {
-        case .portrait:
-            return .portrait
-        case .portraitUpsideDown:
-            return .portraitUpsideDown
-        case .landscapeLeft:
-            return .landscapeRight
-        case .landscapeRight:
-            return .landscapeLeft
+    /// 是否属于正常的四种朝向
+    var isRegularOrientation: Bool {
+        switch self {
+        case .portrait, .portraitUpsideDown, .landscapeLeft, .landscapeRight:
+            true
         default:
-            fatalError("Should not happen.")
-        }
-    }
-    
-    /// 判断屏幕是否是竖屏
-    var isScreenPortrait: Bool {
-        !isScreenLandscape
-    }
-    
-    /// 判断屏幕是否横屏 | 因为上游传入的状态不可靠, 所以不使用UIDeviceOrientation.isLandscape属性判断是否横屏
-    var isScreenLandscape: Bool {
-        lazy var isLandscape = UIScreen.main.bounds.size.isLandscape
-        if #available(iOS 13.0, *) {
-            if let window = UIApplication.shared.windows.first {
-                if let windowScene = window.windowScene {
-                    return windowScene.interfaceOrientation.isScreenLandscape
-                } else {
-                    return isLandscape
-                }
-            } else {
-                return isLandscape
-            }
-        } else {
-            return UIApplication.shared.statusBarOrientation.isScreenLandscape
+            false
         }
     }
 }
 
+
+// MARK: - UIInterfaceOrientation Extension
 extension UIInterfaceOrientation {
     
     /// 判断屏幕是否横屏 | unknown情况下使用屏幕尺寸判断是否横屏
