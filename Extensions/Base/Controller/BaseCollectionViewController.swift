@@ -5,6 +5,7 @@
 //
 
 import UIKit
+import RxSwift
 
 class BaseCollectionViewController: BaseViewController, UICollectionViewDelegate, UICollectionViewDataSource {
 
@@ -47,12 +48,16 @@ class BaseCollectionViewController: BaseViewController, UICollectionViewDelegate
     
     override func prepareTargets() {
         super.prepareTargets()
-        /// 使用viewDidAppear + flatMapLatest监听屏幕方向改变
+        
+        let isLandscape = { isVisible in
+            isVisible ? UIDevice.rx.isLandscape : .empty()
+        }
+        /// 使用isVisible + flatMapLatest监听屏幕方向改变
         /// 是因为view不在视图层级中时,布局更新会失败
-        /// 以当前屏幕的朝向作为初始值是为了规避viewDidAppear调用的延迟
-        rx.viewDidAppear
-            .flatMapLatest(UIDevice.rx.isLandscape)
+        rx.isVisible.flatMapLatest(isLandscape)
+            .delay(.milliseconds(50), scheduler: MainScheduler.instance)
             .startWith(UIDevice.current.orientation.isScreenLandscape)
+            .removeDuplicates
             .bind(to: rx.isLandscape)
             .disposed(by: rx.disposeBag)
     }
