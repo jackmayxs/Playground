@@ -17,6 +17,17 @@ extension ClosedRange where Bound == Double {
 
 extension ClosedRange where Bound == Int {
     
+    /// 计算一个Range在另一个Range中的索引范围
+    /// - Parameter another: 要计算的Range
+    /// - Returns: 索引范围
+    func indexRange(of another: ClosedRange<Bound>) -> Range<Int>? {
+        guard self ~= another else { return nil }
+        let startIndex = lowerBound.distance(to: another.lowerBound)
+        let endIndex = lowerBound.distance(to: another.upperBound) + 1
+        guard startIndex < endIndex else { return nil }
+        return startIndex..<endIndex
+    }
+    
     /// 返回保留前几个数的Range. 例如: 1...5 保留前三个数 -> 1...3 | 如果截取失败则返回原值
     func keep(first: Int) -> Self {
         let limit = index(before: endIndex)
