@@ -29,7 +29,7 @@ public extension Reactive where Base: AnyObject {
     /// 数据填充之后设置isPrepared为true以接收事件
     /// 内部使用了.take(until: deallocated)
     var prepared: Observable<Bool> {
-        anyUpdate.as(Bool.self, or: false)
+        anyNewUpdate.asOptional(Bool.self).unwrapped
     }
     
     /// 更新数据流(跳过初始值) | 内部使用了.take(until: deallocated)
@@ -38,7 +38,7 @@ public extension Reactive where Base: AnyObject {
     }
     
     /// 更新数据流(包括初始值) | 内部使用了.take(until: deallocated)
-    var anyUpdate: Observable<Any> {
+    private var anyUpdate: Observable<Any> {
         anyUpdateRelay.take(until: deallocated)
     }
     
