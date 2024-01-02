@@ -100,12 +100,14 @@ extension ClosedRange {
     /// - Parameter value: 需要限制的传入值
     /// - Returns: 限制过后的值
     func constrainedValue(_ value: Bound) -> Bound {
-        if value < lowerBound {
-            lowerBound
-        } else if value > upperBound {
-            upperBound
-        } else {
-            value
+        do {
+            return try constrainedResult(value).get()
+        } catch RangeValueError.tooLow {
+            return lowerBound
+        } catch RangeValueError.tooHigh {
+            return upperBound
+        } catch {
+            fatalError("Unhandled error: \(error)")
         }
         /// 实现方法2 | 可读性较差
         /// Swift.min(Swift.max(value, lowerBound), upperBound)
@@ -129,10 +131,6 @@ extension ClosedRange where Bound: BinaryInteger {
     
     public static func * (lhs: Self, percentage: Double) -> Bound {
         Bound(lhs.doubleRange * percentage)
-    }
-    
-    var isSingleRange: Bool {
-        upperBound - lowerBound == 0
     }
     
     /// 转换成CGFloat范围
