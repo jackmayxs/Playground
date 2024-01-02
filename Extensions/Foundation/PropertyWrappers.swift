@@ -161,11 +161,11 @@ import UIKit
                 let distance = upperBound - lowerBound
                 do {
                     super.wrappedValue = try range.constrainedResult(newValue).get()
-                } catch RangeValueError.tooLow {
+                } catch RangeBoundError.tooLow {
                     let overflow = lowerBound - newValue
                     let remainder = overflow.truncatingRemainder(dividingBy: distance)
                     super.wrappedValue = upperBound - remainder
-                } catch RangeValueError.tooHigh {
+                } catch RangeBoundError.tooHigh {
                     let overflow = newValue - upperBound
                     let remainder = overflow.truncatingRemainder(dividingBy: distance)
                     super.wrappedValue = lowerBound + remainder

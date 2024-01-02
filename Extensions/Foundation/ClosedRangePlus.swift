@@ -73,7 +73,7 @@ extension ClosedRange {
             guard rangeWidth != 0 else { return 1.0 }
             /// 计算进度
             return (constrainedValue - lowerBound) / rangeWidth
-        } catch RangeValueError.tooHigh {
+        } catch RangeBoundError.tooHigh {
             return 1.0
         } catch {
             return 0.0
@@ -102,9 +102,9 @@ extension ClosedRange {
     func constrainedValue(_ value: Bound) -> Bound {
         do {
             return try constrainedResult(value).get()
-        } catch RangeValueError.tooLow {
+        } catch RangeBoundError.tooLow {
             return lowerBound
-        } catch RangeValueError.tooHigh {
+        } catch RangeBoundError.tooHigh {
             return upperBound
         } catch {
             fatalError("Unhandled error: \(error)")
@@ -116,7 +116,7 @@ extension ClosedRange {
     /// 将传入值限制在范围内
     /// - Parameter value: 需要限制的值
     /// - Returns: Result包含有效值或错误
-    func constrainedResult(_ value: Bound) -> Result<Bound, RangeValueError> {
+    func constrainedResult(_ value: Bound) -> Result<Bound, RangeBoundError> {
         if value < lowerBound {
             return .failure(.tooLow)
         } else if value > upperBound {
@@ -171,7 +171,7 @@ extension ClosedRange: Comparable where Bound: Comparable {
 }
 
 // MARK: - 其他
-enum RangeValueError: Error {
+enum RangeBoundError: Error {
     case tooLow
     case tooHigh
 }
