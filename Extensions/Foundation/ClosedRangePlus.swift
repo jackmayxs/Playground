@@ -65,18 +65,23 @@ extension ClosedRange {
     /// - Returns: 进度百分比<0~1.0>
     public func progress(for value: Bound) -> Bound where Bound: BinaryFloatingPoint {
         do {
+            /// Range宽度
+            let rangeWidth = width
+            /// 除数不能为零
+            guard rangeWidth != 0 else {
+                /// 上下边界相等 | 大于等于上限则返回1.0
+                return value >= upperBound ? 1.0 : 0.0
+            }
             /// 检查范围
             let constrainedValue = try constrainedResult(value).get()
-            /// 总进度
-            let rangeWidth = upperBound - lowerBound
-            /// 确保除数不为0
-            guard rangeWidth != 0 else { return 1.0 }
             /// 计算进度
             return (constrainedValue - lowerBound) / rangeWidth
+        } catch RangeBoundError.tooLow {
+            return 0.0
         } catch RangeBoundError.tooHigh {
             return 1.0
         } catch {
-            return 0.0
+            fatalError("Never happens")
         }
     }
     
@@ -107,9 +112,9 @@ extension ClosedRange {
         } catch RangeBoundError.tooHigh {
             return upperBound
         } catch {
-            fatalError("Unhandled error: \(error)")
+            fatalError("Never happens")
         }
-        /// 实现方法2 | 可读性较差
+        /// 另一种实现方法 | 可读性较差
         /// Swift.min(Swift.max(value, lowerBound), upperBound)
     }
     
@@ -156,6 +161,14 @@ extension ClosedRange where Bound: BinaryFloatingPoint {
     }
 }
 
+extension ClosedRange where Bound: Equatable {
+    
+    /// 例如像1...1这样的闭合范围
+    var isNarrow: Bool {
+        upperBound == lowerBound
+    }
+}
+
 extension ClosedRange where Bound: AdditiveArithmetic {
     
     /// 返回ClosedRange的宽度(上限-下限)
@@ -171,7 +184,7 @@ extension ClosedRange: Comparable where Bound: Comparable {
 }
 
 // MARK: - 其他
-enum RangeBoundError: Error {
+@frozen enum RangeBoundError: Error {
     case tooLow
     case tooHigh
 }
