@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// ObjectReference弱引用对象指针, 通常用于解除引用循环
 struct ObjectReference<T> where T: AnyObject {
     weak var object: T?
 }
