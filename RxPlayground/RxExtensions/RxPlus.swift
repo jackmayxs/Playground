@@ -101,6 +101,12 @@ extension DisposeBag {
         get { projectedValue_.value }
         set { projectedValue_.accept(newValue) }
     }
+    
+    /// 跳过初始值后续的事件序列 | 常和.take(until: _someProperty.changed)配合使用
+    /// 实现值变化后取消订阅的效果
+    var changed: Observable<Wrapped> {
+        projectedValue.skip(1)
+    }
 }
 
 @propertyWrapper final class ClamppedVariable<T>: Variable<T> where T: Comparable {
