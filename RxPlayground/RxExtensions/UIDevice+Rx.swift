@@ -11,7 +11,7 @@ import RxCocoa
 
 extension Reactive where Base == UIDevice {
     
-    /// 设备是否横屏 | 屏幕朝上/朝下的情况, 通过判断屏幕尺寸的宽高决定设备是否横屏
+    /// 设备是否横屏
     /// 结合Size.screenSize方法, 可以映射出当前朝向的屏幕尺寸. e.g. isLandscape.map(Size.screenSize)
     static var isLandscape: Observable<Bool> {
         orientation

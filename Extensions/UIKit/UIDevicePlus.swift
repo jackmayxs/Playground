@@ -81,13 +81,13 @@ extension UIDeviceOrientation {
             return self
         } else {
             if #available(iOS 13.0, *) {
-                if let window = UIApplication.shared.windows.first {
-                    if let windowScene = window.windowScene {
-                        return windowScene.interfaceOrientation.regularDeviceOrientation
-                    } else {
-                        return defaultRegularOrientation
-                    }
+                guard let window = UIApplication.shared.windows.first else {
+                    fatalError("Unlikely to happen.")
+                }
+                if let windowScene = window.windowScene {
+                    return windowScene.interfaceOrientation.regularDeviceOrientation
                 } else {
+                    assertionFailure("!Not suppose to happen, chek your windowScene")
                     return defaultRegularOrientation
                 }
             } else {
@@ -125,11 +125,8 @@ extension UIInterfaceOrientation {
     /// 只包含: .portrait, .portraitUpsideDown, .landscapeLeft, .landscapeRight 四种可能
     var regularDeviceOrientation: UIDeviceOrientation {
         /// 默认朝向 | 前置摄像头朝左,Home按钮朝右
-        lazy var defaultRegularOrientation = UIDeviceOrientation.landscapeLeft
+        lazy var defaultOrientation = UIDeviceOrientation.landscapeLeft
         switch self {
-        case .unknown:
-            dprint("未知朝向")
-            return defaultRegularOrientation
         case .portrait:
             return .portrait
         case .portraitUpsideDown:
@@ -138,9 +135,12 @@ extension UIInterfaceOrientation {
             return .landscapeRight /// 前置摄像头在右
         case .landscapeRight: /// Home按钮在右
             return .landscapeLeft /// 前置摄像头在左
+        case .unknown:
+            assertionFailure("Unhandled condition")
+            return defaultOrientation
         @unknown default:
             assertionFailure("Unhandled condition")
-            return defaultRegularOrientation
+            return defaultOrientation
         }
     }
 }
