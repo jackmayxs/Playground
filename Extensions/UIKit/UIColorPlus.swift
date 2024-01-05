@@ -210,9 +210,9 @@ extension UIColor {
     /// 颜色 -> 色温
     var temperature: Kelvin {
         guard let aRGB else { return 0 }
-        let r = aRGB.r
-        let g = aRGB.g
-        let b = aRGB.b
+        let r = aRGB.red
+        let g = aRGB.green
+        let b = aRGB.blue
         
         /// RGB -> XYZ color space
         let x = r * 0.4124 + g * 0.3576 + b * 0.1805
@@ -283,21 +283,21 @@ extension UIColor {
     /// 计算色温
     var kelvin: Kelvin? {
         guard let aRGB else { return nil }
-        let red = aRGB.r
-        let green = aRGB.g
-        let blue = aRGB.b
+        let red = aRGB.red
+        let green = aRGB.green
+        let blue = aRGB.blue
         let temp = (0.23881 * red + 0.25499 * green - 0.58291 * blue) / (0.11109 * red - 0.85406 * green + 0.52289 * blue)
         let colorTemperature = 449 * pow(temp, 3) + 3525 * pow(temp, 2) + 6823.3 * temp + 5520.33
         return colorTemperature
     }
     
-    var aRGB: (a: CGFloat, r: CGFloat, g: CGFloat, b: CGFloat)? {
+    var aRGB: ARGB? {
         var a: CGFloat = 0.0
         var r: CGFloat = 0.0
         var g: CGFloat = 0.0
         var b: CGFloat = 0.0
         guard getRed(&r, green: &g, blue: &b, alpha: &a) else { return nil }
-        return (a, r, g, b)
+        return ARGB(alpha: a, red: r, green: g, blue: b)
     }
     
     /// 转换成xy色域坐标 | 注意: 转换时要把亮度先提到最亮
@@ -305,8 +305,8 @@ extension UIColor {
     /// - Returns: xy坐标
     func xy(colorGamut: ColorGamut) -> XY {
         lazy var M = colorGamut.M
-        guard let (_, r, g, b) = aRGB else { return .zero }
-        let linearRGB: [Double] = [r, g, b]
+        guard let aRGB else { return .zero }
+        let linearRGB: [Double] = [aRGB.red, aRGB.green, aRGB.blue]
         let xyz = linearRGB * M
         let xyzSum = xyz.reduce(0.0, +)
         guard xyzSum.isNormal else { return .zero }
@@ -476,10 +476,10 @@ extension UIColor {
         var alpha: CGFloat = 0
         components.forEach { component in
             if let aRGB = component.color.aRGB {
-                red += aRGB.r * component.weight
-                green += aRGB.g * component.weight
-                blue += aRGB.b * component.weight
-                alpha += aRGB.a * component.weight
+                red += aRGB.red * component.weight
+                green += aRGB.green * component.weight
+                blue += aRGB.blue * component.weight
+                alpha += aRGB.alpha * component.weight
             }
         }
         if let brightness, let hsba = UIColor(red: red, green: green, blue: blue, alpha: alpha).hsba {
@@ -543,7 +543,7 @@ extension UIColor {
             dprint("过滤器创建失败")
             return self
         }
-        let ciColor = CIColor(red: aRGB.r, green: aRGB.g, blue: aRGB.b)
+        let ciColor = CIColor(red: aRGB.red, green: aRGB.green, blue: aRGB.blue)
         let inputCIImage = CIImage(color: ciColor)
         /// 色温
         let x = temperature.or(6500.0)
@@ -610,16 +610,16 @@ extension Int {
     @available(iOS 13.0, *)
     var cgColor: CGColor {
 		guard let aRGB else { return UIColor.clear.cgColor }
-		return CGColor(red: aRGB.r, green: aRGB.g, blue: aRGB.b, alpha: aRGB.a)
+		return CGColor(red: aRGB.red, green: aRGB.green, blue: aRGB.blue, alpha: aRGB.alpha)
 	}
 	
 	var uiColor: UIColor {
 		guard let aRGB else { return .clear }
-		return UIColor(red: aRGB.r, green: aRGB.g, blue: aRGB.b, alpha: aRGB.a)
+		return UIColor(red: aRGB.red, green: aRGB.green, blue: aRGB.blue, alpha: aRGB.alpha)
 	}
     
     /// 整型 -> ARGB
-	var aRGB: (a: CGFloat, r: CGFloat, g: CGFloat, b: CGFloat)? {
+	var aRGB: ARGB? {
         let maxRGB = 0xFF_FF_FF
         let maxARGB = 0xFF_FF_FF_FF
         switch self {
@@ -628,14 +628,14 @@ extension Int {
             let red     = CGFloat((self & 0xFF_00_00) >> 16) / 0xFF
             let green   = CGFloat((self & 0x00_FF_00) >>  8) / 0xFF
             let blue    = CGFloat( self & 0x00_00_FF       ) / 0xFF
-            return (1.0, red, green, blue)
+            return ARGB(red: red, green: green, blue: blue)
         case maxRGB.number...maxARGB:
             /// 带透明度的情况
             let alpha   = CGFloat((self & 0xFF_00_00_00) >> 24) / 0xFF
             let red     = CGFloat((self & 0x00_FF_00_00) >> 16) / 0xFF
             let green   = CGFloat((self & 0x00_00_FF_00) >>  8) / 0xFF
             let blue    = CGFloat( self & 0x00_00_00_FF       ) / 0xFF
-            return (alpha, red, green, blue)
+            return ARGB(alpha: alpha, red: red, green: green, blue: blue)
         default:
             /// 其他情况
             return nil
