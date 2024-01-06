@@ -300,23 +300,26 @@ extension UIColor {
         return ARGB(alpha: a, red: r, green: g, blue: b)
     }
     
-    /// 转换成xy色域坐标 | 注意: 转换时要把亮度先提到最亮
+    /// 转换成xy色域坐标
     /// - Parameter colorGamut: 色域
     /// - Returns: xy坐标
     func xy(colorGamut: ColorGamut) -> XY {
-        lazy var M = colorGamut.M
+        /// 取出颜色元素
         guard let aRGB else { return .zero }
-        let linearRGB: [Double] = [aRGB.red, aRGB.green, aRGB.blue]
-        let xyz = linearRGB * M
-        let xyzSum = xyz.reduce(0.0, +)
-        guard xyzSum.isNormal else { return .zero }
-        let resultXYZ = xyz.map {
-            $0 / xyzSum
+        /// 求出XYZ = 向量 * 矩阵
+        let XYZ = aRGB.rgbArray * colorGamut.M
+        /// XYZ求和
+        let XYZSum = XYZ.reduce(0.0, +)
+        /// 确保值正常否则返回0
+        guard XYZSum.isNormal else { return .zero }
+        /// 分别求出xyz
+        let resultXYZ = XYZ.lazy.map {
+            $0 / XYZSum
         }
         guard resultXYZ.count >= 2 else { return .zero }
         let x = resultXYZ[0]
         let y = resultXYZ[1]
-        return XY(x: x, y: y)
+        return XY(uncheckedX: x, uncheckedY: y).or(.zero)
     }
     
     /// 从色温创建颜色
