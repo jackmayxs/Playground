@@ -201,7 +201,7 @@ extension UIColor {
         hexString(alphaIgnored: true)
     }
     
-    func hexString(alphaIgnored: Bool = true) -> String? {
+    func hexString(alphaIgnored: Bool) -> String? {
         int(alphaIgnored: alphaIgnored).map { int in
             "#" + int.hexString
         }
