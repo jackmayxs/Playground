@@ -38,11 +38,11 @@ enum ColorGamut: CaseIterable, CustomStringConvertible {
         case .wideGamutRGB:
             return 2.2
         case .rec709:
-            return 0 /// 未知,使用0填充
+            return 1.0 /// 未知,使用1.0填充
         case .dciP3:
-            return 0 /// 未知,使用0填充
+            return 1.0 /// 未知,使用1.0填充
         case .bt2020:
-            return 0 /// 未知,使用0填充
+            return 1.0 /// 未知,使用1.0填充
         }
     }
     
