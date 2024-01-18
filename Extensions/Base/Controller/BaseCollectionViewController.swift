@@ -85,9 +85,9 @@ class BaseCollectionViewController: BaseViewController, UICollectionViewDelegate
         /// 占位图默认隐藏
         emptyView.isHidden = true
 
-        UICollectionViewCell.registerFor(collectionView)
-        UICollectionReusableView.registerFor(collectionView, kind: .header)
-        UICollectionReusableView.registerFor(collectionView, kind: .footer)
+        UICollectionViewCell.registerTo(collectionView)
+        UICollectionReusableView.registerTo(collectionView, kind: .header)
+        UICollectionReusableView.registerTo(collectionView, kind: .footer)
     }
     
     /// 调用时机:懒加载

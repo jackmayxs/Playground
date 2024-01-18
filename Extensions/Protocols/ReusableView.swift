@@ -17,7 +17,7 @@ extension ReusableView {
         String(describing: self)
     }
     
-    public static func registerFor(layout: UICollectionViewLayout) {
+    public static func registerTo(layout: UICollectionViewLayout) {
         layout.register(self, forDecorationViewOfKind: reuseId)
     }
 }

@@ -30,7 +30,7 @@ extension UICollectionReusableView {
             }
         }
 	}
-	static func registerFor(_ collectionView: UICollectionView, kind: SupplementaryViewKind) {
+	static func registerTo(_ collectionView: UICollectionView, kind: SupplementaryViewKind) {
 		collectionView.register(self, forSupplementaryViewOfKind: kind.raw, withReuseIdentifier: Self.reuseId)
 	}
 	static func dequeReusableSupplementaryView(from collectionView: UICollectionView, kind: SupplementaryViewKind, indexPath: IndexPath) -> Self {
@@ -39,7 +39,7 @@ extension UICollectionReusableView {
 }
 
 extension UICollectionViewCell {
-	static func registerFor(_ collectionView: UICollectionView) {
+	static func registerTo(_ collectionView: UICollectionView) {
 		collectionView.register(self, forCellWithReuseIdentifier: reuseId)
 	}
 	static func dequeueReusableCell(from collectionView: UICollectionView, indexPath: IndexPath) -> Self {

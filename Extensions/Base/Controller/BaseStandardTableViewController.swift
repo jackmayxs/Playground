@@ -11,7 +11,7 @@ class BaseStandardTableViewController<Cell: UITableViewCell>: BaseTableViewContr
 
     override func configureTableView(_ tableView: UITableView) {
         super.configureTableView(tableView)
-        Cell.registerFor(tableView)
+        Cell.registerTo(tableView)
     }
     
     func configureCell(_ cell: Cell) {}

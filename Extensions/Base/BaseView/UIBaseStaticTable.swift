@@ -35,7 +35,7 @@ class UIBaseStaticTable: UITableView, StandardLayoutLifeCycle, UITableViewDelega
     }
     
     func prepare() {
-        UITableViewHeaderFooterView.registerFor(self)
+        UITableViewHeaderFooterView.registerTo(self)
         delegate = self
         dataSource = self
         separatorColor = 0xEDEDED.uiColor

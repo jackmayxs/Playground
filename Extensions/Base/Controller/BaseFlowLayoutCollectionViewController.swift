@@ -32,9 +32,9 @@ Footer: UICollectionReusableView>: BaseCollectionViewController, UICollectionVie
     
     override func configureCollectionView(_ collectionView: UICollectionView) {
         super.configureCollectionView(collectionView)
-        Cell.registerFor(collectionView)
-        Header.registerFor(collectionView, kind: .header)
-        Footer.registerFor(collectionView, kind: .footer)
+        Cell.registerTo(collectionView)
+        Header.registerTo(collectionView, kind: .header)
+        Footer.registerTo(collectionView, kind: .footer)
     }
     
     func configureFlowLayout(_ flowLayout: FlowLayout) {}

@@ -49,8 +49,8 @@ class BaseTableViewController: BaseViewController, UITableViewDataSource, UITabl
         /// 占位图默认隐藏
         emptyView.isHidden = true
         
-        UITableViewCell.registerFor(tableView)
-        UITableViewHeaderFooterView.registerFor(tableView)
+        UITableViewCell.registerTo(tableView)
+        UITableViewHeaderFooterView.registerTo(tableView)
     }
     
     /// 调用时机:懒加载

@@ -30,7 +30,7 @@ class BaseDynamicTableViewController
     
     override func configureTableView(_ tableView: UITableView) {
         super.configureTableView(tableView)
-        PrimaryCell.registerFor(tableView)
+        PrimaryCell.registerTo(tableView)
     }
     
     func configureCell(_ cell: PrimaryCell, at indexPath: IndexPath) {
