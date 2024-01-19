@@ -10,7 +10,27 @@ import UIKit
 import Photos
 
 extension UIImage {
-	
+    
+    /// SwifterSwift: Create UIImage from color and size.
+    /// 
+    /// - Parameters:
+    ///   - color: image fill color.
+    ///   - size: image size.
+    ///   - scale: 默认为屏幕的scale. 即最终图片的像素尺寸为size的宽高 × scale
+    ///   - 注: 在SwifterSwift的实现基础上做了点改造
+    convenience init(color: UIColor, size: CGSize, scale: CGFloat = UIScreen.main.scale) {
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = scale
+        guard let image = UIGraphicsImageRenderer(size: size, format: format).image(actions: { context in
+            color.setFill()
+            context.fill(context.format.bounds)
+        }).cgImage else {
+            self.init()
+            return
+        }
+        self.init(cgImage: image)
+    }
+    
     /// SwifterSwift: Average color for this image.
     var averageColor: UIColor? {
         // https://stackoverflow.com/questions/26330924
