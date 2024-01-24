@@ -11,9 +11,7 @@ final class RunLoopObserver {
     
     private(set) var tasks: [SimpleCallback] = .empty
     
-    init() {
-        addRunLoopObServer()
-    }
+    fileprivate init() {}
     
     func removeAllTask() {
         tasks.removeAll()
@@ -23,7 +21,7 @@ final class RunLoopObserver {
         tasks.append(task)
     }
     
-    fileprivate func addRunLoopObServer() {
+    fileprivate func addRunLoopObServer(for runLoop: CFRunLoop) {
         do {
             let block: (CFRunLoopObserver?, CFRunLoopActivity) -> Void = {
                 [unowned self] ob, ac in
@@ -50,7 +48,7 @@ final class RunLoopObserver {
             /// - Parameter rl: 要监听的 Runloop
             /// - Parameter observer: Runloop 观察者
             /// - Parameter mode: 要监听的 mode
-            CFRunLoopAddObserver(CFRunLoopGetCurrent(), ob, .defaultMode)
+            CFRunLoopAddObserver(runLoop, ob, .defaultMode)
         } catch {
             dprint("无法创建")
         }
@@ -86,5 +84,16 @@ final class RunLoopObserver {
             throw "无法创建"
         }
         return observer
+    }
+}
+
+extension RunLoopObserver {
+    
+    static let main = RunLoopObserver(runLoop: CFRunLoopGetMain())
+    
+    convenience init(runLoop: CFRunLoop?) {
+        self.init()
+        let targetRunLoop = runLoop ?? CFRunLoopGetCurrent()
+        self.addRunLoopObServer(for: targetRunLoop.unsafelyUnwrapped)
     }
 }
