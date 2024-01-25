@@ -16,12 +16,20 @@ extension Range {
     }
 }
 
-extension Range where Bound == Int {
+extension Range where Bound: BinaryInteger {
+    
+    /// 用于数组indices属性,返回最后一个index || 数组非空时有值
+    var lastIndex: Bound? {
+        isEmpty ? nil : upperBound - 1
+    }
+}
+
+extension Range where Bound: Strideable, Bound.Stride: SignedInteger {
     
     /// 循环Index | 如: 利用下标循环访问数组的元素
     subscript (cycledIndex nextIndex: Bound) -> Bound? {
-        /// 序列为空的情况返回nil | 如: 0..<0
-        if lowerBound == upperBound { return nil }
+        /// 序列为空的情况返回nil | 如: 10..<10
+        if isEmpty { return nil }
         /// 大于等于上限 | 返回最小Index
         if nextIndex >= upperBound {
             return lowerBound
