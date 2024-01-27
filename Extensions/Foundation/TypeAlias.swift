@@ -8,6 +8,8 @@
 
 import Foundation
 
+public typealias IntRange = ClosedRange<Int>
+public typealias IntRanges = Array<IntRange>
 public typealias IndexPathSet = Set<IndexPath>
 public typealias SimpleCallback = () -> Void
 public typealias CompletedCallback = (Swift.Error?) -> Void
