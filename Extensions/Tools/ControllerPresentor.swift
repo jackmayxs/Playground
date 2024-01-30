@@ -46,7 +46,7 @@ struct ControllerPresentor {
         let fade = FadePresentation(
             size: controller.preferredContentSize.presentationSize,
             ui: PresentationUIConfiguration(
-                cornerRadius: 6,
+                cornerRadius: 10.0,
                 backgroundStyle: .dimmed(alpha: 0.7),
                 isTapBackgroundToDismissEnabled: tapBackgroundToDismissEnabled,
                 corners: .allCorners
@@ -71,7 +71,7 @@ struct ControllerPresentor {
                 dismissCurve: .easeInOut
             ),
             ui: PresentationUIConfiguration(
-                cornerRadius: 6,
+                cornerRadius: 10,
                 backgroundStyle: .dimmed(alpha: 0.7),
                 isTapBackgroundToDismissEnabled: tapBackgroundToDismissEnabled,
                 corners: .allCorners
