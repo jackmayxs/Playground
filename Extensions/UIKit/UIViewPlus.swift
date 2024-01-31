@@ -126,6 +126,11 @@ extension UIView {
         }
     }
     
+    /// 清空所有的约束
+    public func removeAllConstraints() {
+        removeConstraints(constraints)
+    }
+    
     /// Quick configuration to give the view shadows.
     public func addShadow(offset: CGSize = .zero, opacity: Float = 0.65, radius: CGFloat = 20, color: UIColor = .black) {
         layer.shadowOffset = offset
@@ -525,21 +530,15 @@ extension UIView {
             NSLayoutConstraint.deactivate(existedConstraints)
         }
         
-        /// 确保至少有一个约束
-        guard minWidth.isValid || maxWidth.isValid || minHeight.isValid || maxHeight.isValid else {
-            /// 如果参数都无效, 则移除已经存在的约束
-            deactivateMinWidthConstraintIfNeeded()
-            deactivateMaxWidthConstraintIfNeeded()
-            deactivateMinHeightConstraintIfNeeded()
-            deactivateMaxHeightConstraintIfNeeded()
-            return self
-        }
+        /// 先移除已经存在的约束
+        deactivateMinWidthConstraintIfNeeded()
+        deactivateMaxWidthConstraintIfNeeded()
+        deactivateMinHeightConstraintIfNeeded()
+        deactivateMaxHeightConstraintIfNeeded()
         /// 开始约束
         translatesAutoresizingMaskIntoConstraints = false
         /// 最小宽度
         if let minWidth {
-            /// 移除可能存在的约束
-            deactivateMinWidthConstraintIfNeeded()
             /// 激活新的约束
             let constraint = widthAnchor.constraint(greaterThanOrEqualToConstant: minWidth.constant)
             constraint.priority = minWidth.priority
@@ -547,8 +546,6 @@ extension UIView {
         }
         /// 最大宽度
         if let maxWidth {
-            /// 移除可能存在的约束
-            deactivateMaxWidthConstraintIfNeeded()
             /// 激活新的约束
             let constraint = widthAnchor.constraint(lessThanOrEqualToConstant: maxWidth.constant)
             constraint.priority = maxWidth.priority
@@ -556,8 +553,6 @@ extension UIView {
         }
         /// 最小高度
         if let minHeight {
-            /// 移除可能存在的约束
-            deactivateMinHeightConstraintIfNeeded()
             /// 激活新的约束
             let constraint = heightAnchor.constraint(greaterThanOrEqualToConstant: minHeight.constant)
             constraint.priority = minHeight.priority
@@ -565,8 +560,6 @@ extension UIView {
         }
         /// 最大高度
         if let maxHeight {
-            /// 移除可能存在的约束
-            deactivateMaxHeightConstraintIfNeeded()
             /// 激活新的约束
             let constraint = heightAnchor.constraint(lessThanOrEqualToConstant: maxHeight.constant)
             constraint.priority = maxHeight.priority
