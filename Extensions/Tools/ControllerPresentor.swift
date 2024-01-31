@@ -19,20 +19,22 @@ struct ControllerPresentor {
         _ controller: PresentedControllerType,
         presentationSize: CGSize? = nil,
         alignment: PresentationAlignment = .centerAlignment,
+        uiConfiguration: PresentationUIConfiguration? = nil,
         tapToDismiss: Bool = true) {
             let screenSize = Size.screenSize
             let defaultWidth = min(screenSize.width * 0.676, 730.0)
             let defaultHight = min(screenSize.height * 0.869, 704.0)
             let defaultSize = CGSize(width: defaultWidth, height: defaultHight)
             let size = presentationSize.or(defaultSize).presentationSize
+            let targetUiConfiguration = uiConfiguration ?? PresentationUIConfiguration(
+                cornerRadius: 10,
+                backgroundStyle: .dimmed(alpha: 0.7),
+                isTapBackgroundToDismissEnabled: tapToDismiss
+            )
             let presentation = CoverPresentation(
                 directionShow: .bottom,
                 directionDismiss: .bottom,
-                uiConfiguration: PresentationUIConfiguration(
-                    cornerRadius: 10,
-                    backgroundStyle: .dimmed(alpha: 0.7),
-                    isTapBackgroundToDismissEnabled: tapToDismiss
-                ),
+                uiConfiguration: targetUiConfiguration,
                 size: size,
                 alignment: alignment,
                 timing: PresentationTiming(duration: .custom(duration: 0.4), presentationCurve: .easeInOut, dismissCurve: .easeOut)
