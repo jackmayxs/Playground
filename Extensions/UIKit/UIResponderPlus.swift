@@ -17,13 +17,19 @@ extension UIResponder {
 }
 
 extension UIResponder {
-	
     
     var associatedParentController: UIViewController? {
-        if let controller = getAssociatedObject(self, &Associated.parentController) as? UIViewController {
+        associatedParentController(UIViewController.self)
+    }
+    
+    /// 返回关联的控制器并储存起来
+    /// - Parameter controllerType: 控制器类型
+    /// - Returns: 关联的控制器
+    func associatedParentController<Controller: UIViewController>(_ controllerType: Controller.Type) -> Controller? {
+        if let controller = getAssociatedObject(self, &Associated.parentController) as? Controller {
             return controller
         }
-        let fetchedController = parentController(UIViewController.self)
+        let fetchedController = parentController(controllerType)
         setAssociatedObject(self, &Associated.parentController, fetchedController, .OBJC_ASSOCIATION_ASSIGN)
         return fetchedController
     }
