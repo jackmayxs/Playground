@@ -39,7 +39,7 @@ class UIGetVerificationCodeButton: QMLoadingButton {
         setTitleColor(tintColor, for: .normal)
         
         rx.disposeBag.insert {
-            Observable.combineLatest($resignActiveDate.unwrapped, $activeDate.unwrapped)
+            Observable.combineLatest($resignActiveDate.relay.unwrapped, $activeDate.relay.unwrapped)
                 .map { resign, active -> Int in
                     guard active >= resign else { return 0 }
                     return active.timeIntervalSince(resign).int

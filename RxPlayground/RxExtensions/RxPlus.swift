@@ -21,20 +21,94 @@ extension DisposeBag {
     }
 }
 
-@propertyWrapper class CycledCase<Case: Equatable> {
+@propertyWrapper class Variable<Wrapped> {
     
-    private let relay: BehaviorRelay<Case>
+    /// 核心Relay对象
+    let relay: BehaviorRelay<Wrapped>
     
-    var projectedValue: BehaviorRelay<Case> {
-        relay
+    /// 设置为true,则订阅的conditionalValue事件序列不发送事件
+    private var blockEvents = false
+    
+    /// 有条件的事件序列 | blockEvents为true时不发送事件
+    /// 常用于控件之间的双向绑定
+    var conditionalValue: Observable<Wrapped> {
+        relay.withUnretained(self).filter(\.0.passCondition).map(\.1)
     }
     
-    var wrappedValue: Case {
-        get { relay.value }
-        set {
-            relay.accept(newValue)
+    /// 可发送事件的条件
+    var passCondition: Bool {
+        blockEvents.isFalse
+    }
+    
+    /// 更新值,且阻断conditionalValue事件序列 | 外部需要订阅conditionalValue
+    func silentUpdate(_ newValue: Wrapped) {
+        silentExecute {
+            wrappedValue = newValue
         }
     }
+    
+    /// 执行可能影响自身值的回调, 执行过程中conditionalValue序列事件会被阻断
+    /// - Parameter execution: 执行的回调方法
+    func silentExecute(execution: SimpleCallback) {
+        blockEvents = true
+        execution()
+        blockEvents = false
+    }
+    
+    var projectedValue: Variable<Wrapped> {
+        self
+    }
+    
+    init(wrappedValue: Wrapped) {
+        relay = BehaviorRelay(value: wrappedValue)
+    }
+    
+    var wrappedValue: Wrapped {
+        get { relay.value }
+        set { relay.accept(newValue) }
+    }
+    
+    /// 跳过初始值后续的事件序列 | 常和.take(until: _someProperty.changed)配合使用
+    /// 实现值变化后取消订阅的效果
+    var changed: Observable<Wrapped> {
+        relay.skip(1)
+    }
+    
+    var observable: Observable<Wrapped> {
+        relay.observable
+    }
+}
+
+@propertyWrapper final class ClamppedVariable<T>: Variable<T> where T: Comparable {
+    
+    let range: ClosedRange<T>
+    
+    init(wrappedValue: T, range: ClosedRange<T>) {
+        self.range = range
+        let initialValue = range << wrappedValue
+        super.init(wrappedValue: initialValue)
+    }
+    
+    /// 这里重写此属性是必须的,否则无法使用$property语法.relay
+    override var projectedValue: ClamppedVariable<T> {
+        self
+    }
+    
+    override var wrappedValue: T {
+        get { super.wrappedValue }
+        set { super.wrappedValue = range << newValue }
+    }
+    
+    var upperBound: T {
+        range.upperBound
+    }
+    
+    var lowerBound: T {
+        range.lowerBound
+    }
+}
+
+@propertyWrapper final class CycledCase<Case: Equatable>: Variable<Case> {
     
     /// 元素数组
     let cases: [Case]
@@ -50,9 +124,16 @@ extension DisposeBag {
         }
         /// 初始化数组
         self.cases = cases
-        /// 初始化Relay
-        self.relay = BehaviorRelay(value: wrappedValue)
+        /// 调用父类初始化方法
+        super.init(wrappedValue: wrappedValue)
     }
+    
+    override var wrappedValue: Case {
+        get { super.wrappedValue }
+        set { super.wrappedValue = newValue }
+    }
+    
+    override var projectedValue: CycledCase<Case> { self }
     
     /// 下一个元素
     private func nextCase() {
@@ -82,59 +163,6 @@ extension DisposeBag {
     
     private var currentIndex: [Case].Index? {
         cases.firstIndex(of: wrappedValue)
-    }
-}
-
-@propertyWrapper class Variable<Wrapped> {
-    
-    private let projectedValue_: BehaviorRelay<Wrapped>
-    
-    var projectedValue: BehaviorRelay<Wrapped> {
-        projectedValue_
-    }
-    
-    init(wrappedValue: Wrapped) {
-        projectedValue_ = BehaviorRelay(value: wrappedValue)
-    }
-    
-    var wrappedValue: Wrapped {
-        get { projectedValue_.value }
-        set { projectedValue_.accept(newValue) }
-    }
-    
-    /// 跳过初始值后续的事件序列 | 常和.take(until: _someProperty.changed)配合使用
-    /// 实现值变化后取消订阅的效果
-    var changed: Observable<Wrapped> {
-        projectedValue.skip(1)
-    }
-}
-
-@propertyWrapper final class ClamppedVariable<T>: Variable<T> where T: Comparable {
-    
-    let range: ClosedRange<T>
-    
-    init(wrappedValue: T, range: ClosedRange<T>) {
-        self.range = range
-        let initialValue = range << wrappedValue
-        super.init(wrappedValue: initialValue)
-    }
-    
-    /// 这里重写此属性是必须的,否则无法使用$property语法
-    override var projectedValue: BehaviorRelay<T> {
-        super.projectedValue
-    }
-    
-    override var wrappedValue: T {
-        get { super.wrappedValue }
-        set { super.wrappedValue = range << newValue }
-    }
-    
-    var upperBound: T {
-        range.upperBound
-    }
-    
-    var lowerBound: T {
-        range.lowerBound
     }
 }
 
@@ -172,7 +200,7 @@ extension ObservableType {
 //            let previousValues = Observable.merge(subjectValues.take(1), subjectValues)
 //            /// 合并数据: 当前元素 + 上一个元素
 //            return Observable.combineLatest(subjectValues, previousValues) {
-//                ($0, $1)
+//                ($0.relay, $1.relay)
 //            }
 //        }
     }
