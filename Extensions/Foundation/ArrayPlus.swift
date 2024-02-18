@@ -36,9 +36,9 @@ extension Array {
     }
     
     /// 循环访问数组元素 | 如: 利用下标循环访问数组的元素
-    subscript (cycledElement nextIndex: Self.Index) -> Element? {
-        guard let index = indices[cycledIndex: nextIndex] else { return nil }
-        return self[index]
+    subscript (cycledElement inputIndex: Self.Index) -> Element? {
+        guard let safeIndex = indices[safeIndex: inputIndex] else { return nil }
+        return self[safeIndex]
     }
     
     /// 获取指定位置的元素

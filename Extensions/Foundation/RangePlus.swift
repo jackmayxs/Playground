@@ -27,18 +27,18 @@ extension Range where Bound: BinaryInteger {
 extension Range where Bound: Strideable, Bound.Stride: SignedInteger {
     
     /// 循环Index | 如: 利用下标循环访问数组的元素
-    subscript (cycledIndex nextIndex: Bound) -> Bound? {
+    subscript (safeIndex inputIndex: Bound) -> Bound? {
         /// 序列为空的情况返回nil | 如: 10..<10
         if isEmpty { return nil }
         /// 大于等于上限 | 返回最小Index
-        if nextIndex >= upperBound {
+        if inputIndex >= upperBound {
             return lowerBound
         }
         /// 小于下限 | 返回最大Index
-        else if nextIndex < lowerBound {
+        else if inputIndex < lowerBound {
             return index(before: endIndex)
         } else {
-            return nextIndex
+            return inputIndex
         }
     }
 }
