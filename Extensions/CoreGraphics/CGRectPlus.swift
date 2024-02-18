@@ -30,6 +30,14 @@ extension CGRect {
         return CGRect(origin: origin, size: fixSize)
     }
     
+    func withNew(x: CGFloat) -> CGRect {
+        CGRect(x: x, y: minY, width: width, height: height)
+    }
+    
+    func withNew(y: CGFloat) -> CGRect {
+        CGRect(x: minX, y: y, width: width, height: height)
+    }
+    
     func withNew(size: CGSize) -> CGRect {
         CGRect(origin: origin, size: size)
     }
