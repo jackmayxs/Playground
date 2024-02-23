@@ -12,7 +12,7 @@ class UIBaseTableViewHeaderFooterView: UITableViewHeaderFooterView, StandardLayo
     var contentInsets: UIEdgeInsets { .zero }
     
     /// 背景色
-    var defaultBackgroundColor: UIColor {
+    var defaultBackgroundColor: UIColor? {
         baseViewBackgroundColor
     }
     
