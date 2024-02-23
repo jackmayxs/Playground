@@ -9,10 +9,6 @@
 import RxSwift
 import QuartzCore
 
-extension CADisplayLink {
-    public static let maximumFps = 120
-}
-
 public extension Reactive where Base: CADisplayLink {
     /**
      Link to the Display.
@@ -21,7 +17,7 @@ public extension Reactive where Base: CADisplayLink {
      - Parameter fps: Frames per second. Default and max are 60.
      - Returns: Observable of CADisplayLink.
      */
-    static func link(to runloop: RunLoop = .main, forMode mode: RunLoop.Mode = .common, fps: Int = Base.maximumFps) -> Observable<CADisplayLink> {
+    static func link(to runloop: RunLoop = .main, forMode mode: RunLoop.Mode = .common, fps: Int = UIScreen.main.maximumFramesPerSecond) -> Observable<CADisplayLink> {
         return RxDisplayLink(to: runloop, forMode: mode, fps: fps).asObservable()
     }
 }
@@ -51,7 +47,7 @@ public final class RxDisplayLink: ObservableType {
         if #available(iOS 10.0, tvOS 10.0, *) {
             displayLink?.preferredFramesPerSecond = fps
         } else {
-            displayLink?.frameInterval = max(Element.maximumFps / fps, 1)
+            displayLink?.frameInterval = max(UIScreen.main.maximumFramesPerSecond / fps, 1)
         }
         
         self.observer = AnyObserver<Element>(observer)
