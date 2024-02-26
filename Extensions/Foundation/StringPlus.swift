@@ -508,6 +508,14 @@ extension String {
 // MARK: - 转换
 extension String {
     
+    /// 中文->拼音. "中国"->"zhong guo"
+    var pinyin: String {
+        let pointer = NSMutableString(string: self)
+        CFStringTransform(pointer, nil, kCFStringTransformToLatin, false)
+        CFStringTransform(pointer, nil, kCFStringTransformStripDiacritics, false)
+        return String(pointer)
+    }
+    
     var stringFromBase64: String? {
         guard let data = Data(base64Encoded: self) else { return nil }
         return String(data: data, encoding: .utf8)
