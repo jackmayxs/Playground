@@ -463,6 +463,28 @@ extension UIColor {
         hexValue.uiColor
     }
     
+    /// 传入gm的百分比,转换成要混合的gm颜色和比例
+    /// - Parameter gm: gm百分比
+    static func gmColorWeight(_ gm: Double) -> (color: UIColor?, weight: Double?) {
+        let maxMagentaWeight = 0.3
+        let maxGreenWeight = 0.15
+        var gmColor: UIColor?
+        var gmWeight: Double?
+        switch gm {
+        case ..<0.5:
+            let magentaPercent = 1.0 - gm / 0.5
+            gmColor = .magenta
+            gmWeight = magentaPercent * maxMagentaWeight
+        case 0.5:
+            break
+        default:
+            let greenPercent = (gm - 0.5) / 0.5
+            gmColor = .green
+            gmWeight = greenPercent * maxGreenWeight
+        }
+        return (gmColor, gmWeight)
+    }
+    
     static func blendColors(brightness: CGFloat? = nil, @ArrayBuilder<ColorBlendComponent> _ components: () -> [ColorBlendComponent]) -> UIColor {
         blendColors(components(), brightness: brightness)
     }
