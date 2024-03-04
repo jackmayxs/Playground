@@ -340,15 +340,16 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
         return isBackAvailable
     }
     
+    /// 有导航控制器的时候返回 | 没有导航控制的时候执行dismiss
     @objc func escape(animated: Bool = true) {
         guard checkIsBackAvailable() else {
             return
         }
         if let navigationController {
             if navigationController.viewControllers.count > 1 {
-                goBack(animated: animated)
-            } else {
-                close(animated: animated)
+                navigationController.popViewController(animated: animated)
+            } else if navigationController.presentingViewController != .none {
+                navigationController.dismiss(animated: animated)
             }
         } else {
             dismiss(animated: animated)
