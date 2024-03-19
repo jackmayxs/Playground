@@ -8,7 +8,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class BaseStandardViewController<MainView: ViewModelConfigurableView>: BaseViewController {
+class BaseStandardViewController<MainView: ViewModelConfigurableView>: BaseViewController, ViewModelAccessible {
     
     lazy var mainView = MainView()
     

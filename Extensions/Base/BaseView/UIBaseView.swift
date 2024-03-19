@@ -27,6 +27,11 @@ protocol ViewControllerView {
     var viewController: ViewController { get set }
 }
 
+protocol ViewModelAccessible {
+    associatedtype ViewModel
+    var viewModel: ViewModel { get set }
+}
+
 protocol ViewModelConfigurable {
     associatedtype ViewModel: ViewModelType
     func setupViewModel(_ viewModel: ViewModel)
@@ -135,9 +140,16 @@ class UIBaseView: UIView {
     func prepareConstraints() {}
 }
 
-class UIBaseControllerView<ViewController: UIViewController>: UIBaseView, ViewControllerView {
+typealias ViewModelAccessibleViewController = UIViewController & ViewModelAccessible
+/// 控制器主视图基类 | 可获取到ViewController对象、ViewController.ViewModel对象
+class UIControllerView<ViewController: ViewModelAccessibleViewController>: UIBaseView, ViewControllerView {
     
     private weak var innerController: ViewController?
+    
+    var viewModel: ViewController.ViewModel {
+        get { viewController.viewModel }
+        set { viewController.viewModel = newValue }
+    }
     
     var viewController: ViewController {
         get { innerController ?? neverController }
