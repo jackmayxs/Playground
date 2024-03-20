@@ -16,6 +16,7 @@ protocol ViewModelType: SimpleInitializer {}
 protocol PagableViewModelType: ViewModelType {
     associatedtype Model
     var delegate: PagableViewModelDelegate? { get set }
+    var numberOfSections: Int { get }
     var numberOfItems: Int { get }
     var items: [Model] { get set }
     func fetchMoreData()
@@ -42,7 +43,20 @@ extension ViewModelConfigurable {
 }
 
 protocol PagableViewModelDelegate: AnyObject {
-    func itemsUpdated()
+    
+    /// 刷新Sections
+    /// - Parameter indexSet: 如果为空则刷新全部
+    func sectionsUpdated(_ indexSet: IndexSet?)
+    
+    /// 刷新项目
+    /// - Parameter indexPaths: 如果为空则刷新全部
+    func itemsUpdated(_ indexPaths: [IndexPath]?)
+}
+
+extension PagableViewModelDelegate {
+    func reloadData() {
+        sectionsUpdated(nil)
+    }
 }
 
 typealias ViewModelConfigurableView = ViewModelConfigurable & StandardLayoutLifeCycle
@@ -71,13 +85,13 @@ class BasePagableViewModel<Model>: BaseViewModel, PagableViewModelType {
     weak var delegate: PagableViewModelDelegate? {
         didSet {
             /// 设置完代理之后主动调用一次更新方法
-            delegate?.itemsUpdated()
+            delegate?.sectionsUpdated(nil)
         }
     }
     
     @Variable var items: [Model] = [] {
         didSet {
-            delegate?.itemsUpdated()
+            delegate?.sectionsUpdated(nil)
         }
     }
     
@@ -90,6 +104,8 @@ class BasePagableViewModel<Model>: BaseViewModel, PagableViewModelType {
     func fetchMoreData() {}
     
     var numberOfItems: Int { items.count }
+    
+    var numberOfSections: Int { 1 }
     
     subscript (indexPath: IndexPath) -> Model {
         items[indexPath.row]

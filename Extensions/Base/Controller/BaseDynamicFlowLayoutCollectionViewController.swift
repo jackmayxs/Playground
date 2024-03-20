@@ -35,12 +35,21 @@ Footer>, PagableViewModelDelegate {
         viewModel.fetchMoreData()
     }
     
+    override func numberOfSections(in collectionView: UICollectionView) -> Int {
+        viewModel.numberOfSections
+    }
+    
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         viewModel.numberOfItems
     }
     
     // MARK: - PagableViewModelDelegate
-    func itemsUpdated() {
+    /// 注: PagableViewModelType需要继续优化,加入分组数量适配,item考虑使用[[Model]]形式
+    func sectionsUpdated(_ indexSet: IndexSet?) {
+        collectionView.reloadData()
+        emptyView.isHidden = viewModel.numberOfItems > 0
+    }
+    func itemsUpdated(_ indexPaths: [IndexPath]?) {
         collectionView.reloadData()
         emptyView.isHidden = viewModel.numberOfItems > 0
     }

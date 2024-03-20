@@ -48,7 +48,11 @@ class BaseDynamicTableViewController
     }
     
     // MARK: - PagableViewModelDelegate
-    func itemsUpdated() {
+    func sectionsUpdated(_ indexSet: IndexSet?) {
+        tableView.reloadData()
+        tableView.backgroundView?.isHidden = viewModel.numberOfItems > 0
+    }
+    func itemsUpdated(_ indexPaths: [IndexPath]?) {
         tableView.reloadData()
         tableView.backgroundView?.isHidden = viewModel.numberOfItems > 0
     }
