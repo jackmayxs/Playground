@@ -622,6 +622,34 @@ extension ObservableConvertibleType {
 			}
 	}
     
+    /// 先执行映射,再将映射的值赋给Observers
+    /// 返回原序列
+    public func assign<Transformed, Observer: ObserverType>(_ transform: @escaping (Element) throws -> Transformed, to observers: Observer...) -> Observable<Element> where Observer.Element == Transformed {
+        assign(transform, to: observers)
+    }
+    
+    public func assign<Transformed, Observer: ObserverType>(_ transform: @escaping (Element) throws -> Transformed, to observers: Observer...) -> Observable<Element> where Observer.Element == Transformed? {
+        assign(transform, to: observers)
+    }
+    
+    public func assign<Transformed, Observer: ObserverType>(_ transform: @escaping (Element) throws -> Transformed, to observers: Array<Observer>) -> Observable<Element> where Observer.Element == Transformed {
+        observable.do { element in
+            let transformed = try transform(element)
+            observers.forEach { observer in
+                observer.onNext(transformed)
+            }
+        }
+    }
+    
+    public func assign<Transformed, Observer: ObserverType>(_ transform: @escaping (Element) throws -> Transformed, to observers: Array<Observer>) -> Observable<Element> where Observer.Element == Transformed? {
+        observable.do { element in
+            let transformed = try transform(element)
+            observers.forEach { observer in
+                observer.onNext(transformed)
+            }
+        }
+    }
+    
     /// 利用旁路特性为观察者赋值
     /// - Parameter observers: 观察者类型
     /// - Returns: Observable<Element>
