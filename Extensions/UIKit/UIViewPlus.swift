@@ -126,6 +126,20 @@ extension UIView {
         }
     }
     
+    /// 根据中心点计算目标Frame
+    /// - Parameters:
+    ///   - targetCenter: 目标中心点
+    ///   - size: 目标Size | 如果为空则使用frame.size
+    /// - Returns: 目标Frame
+    public func targetFrame(targetCenter: CGPoint, size: CGSize? = nil) -> CGRect {
+        let targetSize = size ?? frame.size
+        let targetWidth = targetSize.width
+        let targetHeight = targetSize.height
+        let x = targetCenter.x - targetWidth.half
+        let y = targetCenter.y - targetHeight.half
+        return CGRect(x: x, y: y, width: targetWidth, height: targetHeight)
+    }
+    
     /// 清空所有的约束
     public func removeAllConstraints() {
         removeConstraints(constraints)
