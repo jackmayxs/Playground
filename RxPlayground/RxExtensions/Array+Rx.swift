@@ -80,7 +80,7 @@ extension Array where Element: UIButton {
     /// - Parameter firstSelected: 第一个选中的按钮
     /// - Returns: 选中按钮的事件序列
     func switchSelectedButton(startButton firstSelected: Element? = nil, toggleSelectedButton: Bool = false) -> Observable<Element> {
-        let selectedButton = tappedButton
+        let selectedButton = tapButton
             .optionalElement
             .startWith(firstSelected)
             .unwrapped
@@ -116,10 +116,9 @@ extension Array where Element: UIButton {
         .subscribe()
     }
     
-    var tappedButton: Observable<Element> {
-        let buttonObservables = map { button in
-            button.rx.tap.map { button }
-        }
+    /// 合并所有按钮的点击事件 | 按钮点击之后发送按钮对象自己
+    public var tapButton: Observable<Element> {
+        let buttonObservables = map { $0.rx.tapButton }
         return Observable.from(buttonObservables).merge()
     }
 }
