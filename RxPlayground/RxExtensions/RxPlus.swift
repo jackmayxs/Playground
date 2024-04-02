@@ -168,11 +168,11 @@ extension DisposeBag {
 
 extension ObservableType {
     
-    /// 映射成固定的值 | 一旦传入值就不会再变了
-    /// - Parameter value: 固定值
-    /// - Returns: Observable<固定值类型>
-    public func mapConstant<T>(_ constant: T) -> Observable<T> {
-        map { _ in constant }
+    /// 映射成指定的值
+    /// - Parameter designated: 生成元素的自动闭包
+    /// - Returns: Observable<T>
+    public func mapDesignated<T>(_ designated: @escaping @autoclosure () -> T) -> Observable<T> {
+        map { _ in designated() }
     }
     
     /// 获取非空的上一个元素 和 当前元素
