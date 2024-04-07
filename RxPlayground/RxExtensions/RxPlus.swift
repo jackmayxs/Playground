@@ -564,8 +564,13 @@ extension ObservableType where Element == Bool {
 }
 
 extension Observable {
-    static func merge<T>(@ArrayBuilder<T> sequences: () -> [T]) -> Observable<T.Element> where T: ObservableConvertibleType {
-        sequences().merged
+    
+    /// 合并指定的序列数组
+    /// - Parameter observablesBuilder: 序列数组构建Closure
+    /// - Returns: 所有序列元素合并之后的总序列
+    static func merge<T>(@ArrayBuilder<T> observablesBuilder: () -> [T]) -> Observable<T.Element> where T: ObservableConvertibleType {
+        let observables = observablesBuilder()
+        return observables.merged
     }
 }
 
