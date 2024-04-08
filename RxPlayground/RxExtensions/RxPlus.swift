@@ -553,11 +553,13 @@ extension ObservableType {
 }
 
 extension ObservableType where Element == Bool {
-	
+    
+    /// 条件成立时发送元素
     var isTrue: Observable<Element> {
         filter(\.isTrue)
     }
     
+    /// 条件不成立时发送元素
 	var isFalse: Observable<Element> {
         filter(\.isFalse)
 	}
