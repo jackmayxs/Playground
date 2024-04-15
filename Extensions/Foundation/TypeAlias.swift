@@ -8,6 +8,7 @@
 
 import Foundation
 
+public typealias UUIDSet = Set<UUID>
 public typealias IntRange = ClosedRange<Int>
 public typealias IntRanges = Array<IntRange>
 public typealias IndexPathSet = Set<IndexPath>

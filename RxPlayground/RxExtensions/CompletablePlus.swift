@@ -27,3 +27,10 @@ extension Completable {
         }
     }
 }
+
+extension Completable {
+    /// 串联Completable
+    static func +(lhs: Completable, rhs: Completable) -> Completable {
+        lhs.andThen(rhs)
+    }
+}
