@@ -606,6 +606,13 @@ extension ObservableConvertibleType where Element: Equatable {
 }
 
 extension ObservableConvertibleType {
+    /// 串联Observables
+    static func +(lhs: any ObservableConvertibleType, rhs: any ObservableConvertibleType) -> Completable {
+        lhs.completed + rhs.completed
+    }
+}
+
+extension ObservableConvertibleType {
 	
 	/// 用于蓝牙搜索等长时间操作
 	var isProcessing: Driver<Bool> {

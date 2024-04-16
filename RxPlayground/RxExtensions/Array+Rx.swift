@@ -25,8 +25,8 @@ extension Array where Element == ControlProperty<Bool> {
 
 extension Array where Element: ObservableConvertibleType {
     var chained: Completable {
-        reduce(Completable.empty) { lastCompletable, nextObservable in
-            lastCompletable.andThen(nextObservable.completed)
+        reduce(Completable.empty) { completable, next in
+            completable + next.completed
         }
     }
 }
