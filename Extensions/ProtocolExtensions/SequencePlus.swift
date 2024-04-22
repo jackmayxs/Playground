@@ -90,3 +90,11 @@ extension Sequence where Self: ExpressibleByArrayLiteral {
         []
     }
 }
+
+extension Sequence where Self: ExpressibleByDictionaryLiteral {
+    
+    /// 空字典
+    static var empty: Self {
+        [:]
+    }
+}
