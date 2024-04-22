@@ -574,6 +574,14 @@ extension Observable {
         let observables = observablesBuilder()
         return observables.merged
     }
+    
+    /// 返回amb事件序列: 谁先发送事件就持续监听序列的事件
+    /// - Parameter observablesBuilder: 监听序列构建
+    /// - Returns: 最终订阅的事件序列
+    static func amb<T>(@ArrayBuilder<T> observablesBuilder: () -> [T]) -> Observable<T.Element> where T: ObservableConvertibleType {
+        let observables = observablesBuilder().map(\.observable)
+        return Observable<T.Element>.amb(observables)
+    }
 }
 
 extension Observable where Element == Error {
