@@ -45,16 +45,37 @@ extension Array {
     /// - Parameter index: 元素位置
     /// - Returns: 如果下标合规则返回相应元素
     public func itemAt(_ index: Index) -> Element? {
-        guard (startIndex..<endIndex) ~= index else { return nil }
+        guard isValidIndex(index) else { return nil }
         return self[index]
+    }
+    
+    /// 替换指定位置的元素
+    /// - Parameters:
+    ///   - index: 元素Index
+    ///   - element: 新元素
+    public mutating func replace(elementAt index: Index, with element: Element) {
+        guard isValidIndex(index) else { return }
+        self.index(index, offsetBy: 1, limitedBy: endIndex).unwrap { subrangeEnd in
+            let subrange = index..<subrangeEnd
+            let elements = [element]
+            replaceSubrange(subrange, with: elements)
+        }
     }
     
     /// 安全移除指定位置的元素
     /// - Parameter index: 元素位置
     /// - Returns: 如果存在,则返回被移除的元素
     public mutating func safeRemove(at index: Int) -> Element? {
-        guard itemAt(index).isValid else { return nil }
+        guard isValidIndex(index) else { return nil }
         return remove(at: index)
+    }
+    
+    private func isValidIndex(_ index: Index) -> Bool {
+        indexRange ~= index
+    }
+    
+    public var indexRange: Range<Index> {
+        startIndex..<endIndex
     }
     
     public init(generating elementGenerator: (Int) -> Element, count: Int) {
