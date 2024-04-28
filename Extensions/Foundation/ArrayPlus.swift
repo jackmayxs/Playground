@@ -35,10 +35,16 @@ extension Array {
         itemAt(index)
     }
     
+    /// 对Index求余,得出有效Index之后获取元素
+    subscript (modElement inputIndex: Self.Index) -> Element? {
+        guard let modIndex = indices[modIndex: inputIndex] else { return nil }
+        return self[modIndex]
+    }
+    
     /// 循环访问数组元素 | 如: 利用下标循环访问数组的元素
     subscript (cycledElement inputIndex: Self.Index) -> Element? {
-        guard let safeIndex = indices[safeIndex: inputIndex] else { return nil }
-        return self[safeIndex]
+        guard let cycledIndex = indices[cycledIndex: inputIndex] else { return nil }
+        return self[cycledIndex]
     }
     
     /// 获取指定位置的元素
