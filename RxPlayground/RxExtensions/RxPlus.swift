@@ -109,23 +109,27 @@ extension DisposeBag {
 }
 
 @propertyWrapper final class CycledCase<Case: Equatable>: Variable<Case> {
-    
+    typealias CaseArray = [Case]
     /// 元素数组
-    let cases: [Case]
+    let cases: CaseArray
+    /// 当前索引
+    private var currentIndex: CaseArray.Index
     /// 初始化方法
-    init(wrappedValue: Case, cases: [Case]) {
-        /// 数组必须非空
-        if cases.isEmpty {
-            fatalError("没有元素还循环个啥.")
-        }
-        /// 初始元素必须包含在数组内
-        if cases.firstIndex(of: wrappedValue).isVoid {
-            fatalError("元素不在数组内")
+    init(wrappedValue: Case, cases: CaseArray) {
+        /// 初始元素必须包含在数组内 | 同时保证数组为空的情况初始化失败
+        guard let currentIndex = cases.firstIndex(of: wrappedValue) else {
+            fatalError("元素不在数组内或循环数组为空")
         }
         /// 初始化数组
         self.cases = cases
+        /// 储存当前索引
+        self.currentIndex = currentIndex
         /// 调用父类初始化方法
         super.init(wrappedValue: wrappedValue)
+    }
+    
+    override var projectedValue: CycledCase<Case> {
+        self
     }
     
     override var wrappedValue: Case {
@@ -133,24 +137,20 @@ extension DisposeBag {
         set { super.wrappedValue = newValue }
     }
     
-    override var projectedValue: CycledCase<Case> { self }
-    
     /// 下一个元素
     private func nextCase() {
-        guard let currentIndex else { return }
         let nextIndex = currentIndex + 1
-        if let nextCase = cases[cycledElement: nextIndex] {
-            wrappedValue = nextCase
-        }
+        guard let cycledIndex = cases.indices[cycledIndex: nextIndex] else { return }
+        wrappedValue = cases[cycledIndex]
+        currentIndex = cycledIndex
     }
     
     /// 上一个元素
     private func lastCase() {
-        guard let currentIndex else { return }
         let nextIndex = currentIndex - 1
-        if let nextCase = cases[cycledElement: nextIndex] {
-            wrappedValue = nextCase
-        }
+        guard let cycledIndex = cases.indices[cycledIndex: nextIndex] else { return }
+        wrappedValue = cases[cycledIndex]
+        currentIndex = cycledIndex
     }
     
     static postfix func ++(cycledCase: CycledCase) {
@@ -159,10 +159,6 @@ extension DisposeBag {
     
     static postfix func --(cycledCase: CycledCase) {
         cycledCase.lastCase()
-    }
-    
-    private var currentIndex: [Case].Index? {
-        cases.firstIndex(of: wrappedValue)
     }
 }
 
