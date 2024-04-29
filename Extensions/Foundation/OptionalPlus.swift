@@ -30,11 +30,27 @@ extension Optional {
         return unwrapped
     }
     
+    /// 解包->执行Closure->更新自身的值 | 如果监听了自身的变化会触发通知
+    /// 普通的unwrap方法不会触发通知
+    /// - Parameters:
+    ///   - execute: 执行的闭包
+    ///   - failed: 失败回调
+    /// - Returns: 解包后的值
+    @discardableResult mutating func mutating(execute: (inout Wrapped) throws -> Void, failed: SimpleCallback? = nil) rethrows -> Wrapped? {
+        guard var wrapped = self else {
+            guard let failed else { return nil }
+            failed()
+            return nil
+        }
+        try execute(&wrapped)
+        self = wrapped
+        return wrapped
+    }
+    
     /// 如果不为空则以解包后的值作为入参执行闭包
     /// - Parameter execute: 回调闭包
     /// - Parameter failed: 失败回调
-    @discardableResult
-    func unwrap(execute: (Wrapped) throws -> Void, failed: SimpleCallback? = nil) rethrows -> Wrapped? {
+    @discardableResult func unwrap(execute: (Wrapped) throws -> Void, failed: SimpleCallback? = nil) rethrows -> Wrapped? {
         guard let self else {
             guard let failed else { return nil }
             failed()
