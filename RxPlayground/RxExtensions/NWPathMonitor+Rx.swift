@@ -22,8 +22,13 @@ extension Reactive where Base == NWPathMonitor {
         base.cancel()
     }
     
+    /// .satisfied NWPath
+    /// - Returns: 蜂窝网络返回空
     private func satisfiedPath(_ path: NWPath) -> NWPath? {
-        path.status == .satisfied ? path : nil
+        (path.status == .satisfied ? path : nil).flatMap { path in
+            guard path.usesInterfaceType(.wifi) || path.usesInterfaceType(.wiredEthernet) else { return nil }
+            return path
+        }
     }
     
     var satisfiedPath: Observable<NWPath?> {
