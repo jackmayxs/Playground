@@ -26,11 +26,11 @@ func dprint(_ items: Any..., file: String = #fileID, function: String = #functio
 }
 
 var isDebugging: Bool {
-    #if DEBUG
+#if DEBUG
     true
-    #else
+#else
     false
-    #endif
+#endif
 }
 
 /// 判断是否是主队列
