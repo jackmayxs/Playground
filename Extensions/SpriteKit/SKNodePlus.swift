@@ -212,7 +212,7 @@ extension SKNode {
     
     /// 父节点的Frame
     var parentFrame: CGRect {
-        parent.or(.zero, else: \.frame)
+        parent.or(.zero, map: \.frame)
     }
     
     /// 父节点的AnchorPoint

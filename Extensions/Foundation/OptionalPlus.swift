@@ -96,7 +96,7 @@ extension Optional {
     /// num.or("") { num in
     ///     num.string
     /// }
-    func or<T>(_ defaultValue: @autoclosure () -> T, else transform: (Wrapped) -> T) -> T {
+    func or<T>(_ defaultValue: @autoclosure () -> T, map transform: (Wrapped) -> T) -> T {
         guard let self else {
             return defaultValue()
         }

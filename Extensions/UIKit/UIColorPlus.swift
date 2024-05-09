@@ -268,7 +268,7 @@ extension UIColor {
     }
     
     var hue: CGFloat {
-        hsba.or(0, else: \.hue)
+        hsba.or(0, map: \.hue)
     }
     
     var hsba: (hue: CGFloat, saturation: CGFloat, brightness: CGFloat, alpha: CGFloat)? {
