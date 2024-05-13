@@ -95,6 +95,11 @@ extension UIView {
         static var mournFilterViewKey = UUID()
     }
     
+    /// 返回在Window中的frame
+    var frameInWindow: CGRect {
+        convert(bounds, to: nil)
+    }
+    
     var naturalSize: CGSize {
         systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
     }

@@ -44,8 +44,9 @@ struct ControllerPresentor {
             presentingController.present(controller, animated: true)
         }
     
-    func fadeIn(_ controller: PresentedControllerType, tapBackgroundToDismissEnabled: Bool = true) {
+    func fadeIn(_ controller: PresentedControllerType, tapBackgroundToDismissEnabled: Bool = true, alignment: PresentationAlignmentProtocol? = nil) {
         let fade = FadePresentation(
+            alignment: alignment ?? PresentationAlignment.centerAlignment,
             size: controller.preferredContentSize.presentationSize,
             ui: PresentationUIConfiguration(
                 cornerRadius: 10.0,
