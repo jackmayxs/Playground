@@ -44,11 +44,11 @@ struct ControllerPresentor {
             presentingController.present(controller, animated: true)
         }
     
-    func fadeIn(_ controller: PresentedControllerType, tapBackgroundToDismissEnabled: Bool = true, alignment: PresentationAlignmentProtocol? = nil) {
+    func fadeIn(_ controller: PresentedControllerType, tapBackgroundToDismissEnabled: Bool = true, alignment: PresentationAlignmentProtocol? = nil, ui: PresentationUIConfigurationProtocol? = nil) {
         let fade = FadePresentation(
             alignment: alignment ?? PresentationAlignment.centerAlignment,
             size: controller.preferredContentSize.presentationSize,
-            ui: PresentationUIConfiguration(
+            ui: ui ?? PresentationUIConfiguration(
                 cornerRadius: 10.0,
                 backgroundStyle: .dimmed(alpha: 0.7),
                 isTapBackgroundToDismissEnabled: tapBackgroundToDismissEnabled,

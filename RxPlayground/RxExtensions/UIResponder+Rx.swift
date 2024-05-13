@@ -9,10 +9,35 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+typealias ResponderTouchesWithEvent = (Set<UITouch>, UIEvent?)
+
 extension Reactive where Base: UIResponder {
     
-    /// 监听touchesEnded方法调用
-    var touchesEnded: Observable<[Any]> {
-        methodInvoked(#selector(base.touchesEnded(_:with:)))
+    var touchesBegan: Observable<ResponderTouchesWithEvent> {
+        methodInvoked(#selector(base.touchesBegan(_:with:))).compactMap { parameters in
+            guard let touches = parameters.first as? Set<UITouch> else { return nil }
+            return (touches, parameters.last as? UIEvent)
+        }
+    }
+    
+    var touchesMoved: Observable<ResponderTouchesWithEvent> {
+        methodInvoked(#selector(base.touchesMoved(_:with:))).compactMap { parameters in
+            guard let touches = parameters.first as? Set<UITouch> else { return nil }
+            return (touches, parameters.last as? UIEvent)
+        }
+    }
+    
+    var touchesEnded: Observable<ResponderTouchesWithEvent> {
+        methodInvoked(#selector(base.touchesEnded(_:with:))).compactMap { parameters in
+            guard let touches = parameters.first as? Set<UITouch> else { return nil }
+            return (touches, parameters.last as? UIEvent)
+        }
+    }
+    
+    var touchesCancelled: Observable<ResponderTouchesWithEvent> {
+        methodInvoked(#selector(base.touchesCancelled(_:with:))).compactMap { parameters in
+            guard let touches = parameters.first as? Set<UITouch> else { return nil }
+            return (touches, parameters.last as? UIEvent)
+        }
     }
 }
