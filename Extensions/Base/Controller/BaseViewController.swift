@@ -166,14 +166,27 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate, UINavig
     
     /// 配置导航条目 | 调用时机: viewWillAppear
     func configureNavigationItem(_ navigationItem: UINavigationItem) {
+        /// 大标题模式
         navigationItem.largeTitleDisplayMode = preferLargeTitles ? .automatic : .never
+        /// 在导航控制器中
         if let navigationController = navigationController {
-            if navigationController.viewControllers.count > 1 {
+            /// 被present出来的
+            lazy var isPresented = presentingViewController != nil
+            /// 是子控制器(被父控制器添加为子控制器)
+            lazy var isChildController = parent != nil
+            /// 至少2个视图控制器
+            lazy var moreThanOneViewController = navigationController.viewControllers.count > 1
+            /// 单个视图控制器
+            lazy var singleViewController = navigationController.viewControllers.count == 1
+            /// 根据条件判断按钮显示/隐藏
+            if moreThanOneViewController {
                 navigationItem.leftBarButtonItem = backBarButtonItem
                 if alwaysShowDismissButton {
                     navigationItem.rightBarButtonItem = dismissBarButtonItem
                 }
-            } else if navigationController.viewControllers.count == 1 && presentingViewController != nil {
+            }
+            /// 导航栏(单个控制器) 且自己是被present出来的或父控制器非空(父控制器添加子控制器)
+            else if singleViewController && (isPresented || isChildController) {
                 if alwaysShowDismissButton {
                     navigationItem.rightBarButtonItem = dismissBarButtonItem
                 } else {
