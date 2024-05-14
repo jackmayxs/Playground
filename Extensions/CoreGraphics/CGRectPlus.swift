@@ -11,6 +11,26 @@ import UIKit
 
 extension CGRect {
     
+    /// 左上角点
+    var topLeft: CGPoint {
+        CGPoint(x: minX, y: minY)
+    }
+    
+    /// 右上角点
+    var topRight: CGPoint {
+        CGPoint(x: maxX, y: minY)
+    }
+    
+    /// 左下角点
+    var bottomLeft: CGPoint {
+        CGPoint(x: minX, y: maxY)
+    }
+    
+    /// 右下角点
+    var bottomRight: CGPoint {
+        CGPoint(x: maxX, y: maxY)
+    }
+    
     /// 将传入的点限制在自身区域中
     /// - Parameter point: 传入的点
     /// - Returns: 限制后的点
