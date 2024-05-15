@@ -162,6 +162,44 @@ extension DisposeBag {
     }
 }
 
+@propertyWrapper final class CycledVariable<T>: Variable<T> where T: Comparable {
+    /// 范围
+    let range: ClosedRange<T>
+    /// 用于发送范围错误事件
+    private let rangeBoundErrorSubject = PublishSubject<RangeBoundError>()
+    /// 初始化方法
+    init(wrappedValue: T, range: ClosedRange<T>) {
+        self.range = range
+        let initialValue = range << wrappedValue
+        super.init(wrappedValue: initialValue)
+    }
+    
+    override var projectedValue: CycledVariable<T> {
+        self
+    }
+    
+    override var wrappedValue: T {
+        get { super.wrappedValue }
+        set {
+            do {
+                super.wrappedValue = try range.constrainedResult(newValue).get()
+            } catch RangeBoundError.tooLow {
+                self.rangeBoundErrorSubject.onNext(.tooLow)
+                super.wrappedValue = range.upperBound
+            } catch RangeBoundError.tooHigh {
+                self.rangeBoundErrorSubject.onNext(.tooHigh)
+                super.wrappedValue = range.lowerBound
+            } catch {
+                fatalError("Never happens")
+            }
+        }
+    }
+    
+    var rangeBoundError: Observable<RangeBoundError> {
+        rangeBoundErrorSubject.observable
+    }
+}
+
 extension ObservableType {
     
     /// 映射成指定的值
