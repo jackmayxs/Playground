@@ -22,6 +22,10 @@ extension Optional {
         self as Any
     }
     
+    func `as`<T>(_ type: T.Type) -> T? {
+        self as? T
+    }
+    
     /// 过滤指定条件
     /// - Parameter predicate: 过滤条件
     /// - Returns: 满足指定条件的结果
