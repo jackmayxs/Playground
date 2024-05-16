@@ -12,6 +12,13 @@ import RxCocoa
 
 extension Reactive where Base: SKNode {
     
+    /// 从父节点移除事件序列 | 元素: 节点本身
+    var removeFromParent: Observable<Base> {
+        methodInvoked(#selector(base.removeFromParent))
+            .withUnretained(base)
+            .map(\.0)
+    }
+    
     var position: Observable<CGPoint> {
         observe(\.position, options: .live)
     }
