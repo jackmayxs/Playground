@@ -53,15 +53,17 @@ extension Optional {
     
     /// 如果不为空则以解包后的值作为入参执行闭包
     /// - Parameter execute: 回调闭包
-    /// - Parameter failed: 失败回调
-    @discardableResult func unwrap(execute: (Wrapped) throws -> Void, failed: SimpleCallback? = nil) rethrows -> Wrapped? {
-        guard let self else {
-            guard let failed else { return nil }
+    /// - Parameter failed: 失败回调 | 因为Optional类型的closure会被推断为@escaping closure, 所以这里不能使用SimpleCallback?类型作为失败的回调
+    /// - Returns: Optional<Wrapped>
+    @discardableResult func unwrap(execute: (Wrapped) throws -> Void, failed: SimpleCallback = {}) rethrows -> Wrapped? {
+        switch self {
+        case .none:
             failed()
             return nil
+        case .some(let wrapped):
+            try execute(wrapped)
+            return wrapped
         }
-        try execute(self)
-        return self
     }
     
     /// 解包Optional
