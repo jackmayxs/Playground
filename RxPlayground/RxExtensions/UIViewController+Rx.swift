@@ -94,13 +94,4 @@ public extension Reactive where Base: UIViewController {
 			.map { $0.first as? Bool ?? false }
 		return ControlEvent(events: source)
 	}
-    
-    var preparedToPresent: Completable {
-        guard let presentedViewController = base.presentedViewController else {
-            return .empty()
-        }
-        return presentedViewController.rx.deallocated
-            .ignoreElements()
-            .asCompletable()
-    }
 }
