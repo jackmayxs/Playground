@@ -13,8 +13,12 @@ extension Optional {
     }
     
     var isValid: Bool {
-        guard let _ = self else { return false }
-        return true
+        switch self {
+        case .none:
+            false
+        case .some:
+            true
+        }
     }
     
     /// 转换为Any类型
@@ -34,15 +38,33 @@ extension Optional {
         return unwrapped
     }
     
-    /// 解包->执行Closure->更新自身的值 | 如果监听了自身的变化会触发通知
+    /// 映射,失败后返回默认值
+    public func map<U>(_ transform: (Wrapped) throws -> U, fallback: @autoclosure () -> U) rethrows -> U {
+        try self.map(transform) ?? fallback()
+    }
+    
+    public func map<U>(_ transform: (Wrapped) throws -> U, fallback: () -> U) rethrows -> U {
+        try self.map(transform) ?? fallback()
+    }
+    
+    /// 映射,失败后返回默认值
+    public func flatMap<U>(_ transform: (Wrapped) throws -> U?, fallback: @autoclosure () -> U) rethrows -> U {
+        try self.flatMap(transform) ?? fallback()
+    }
+    
+    public func flatMap<U>(_ transform: (Wrapped) throws -> U?, fallback: () -> U) rethrows -> U {
+        try self.flatMap(transform) ?? fallback()
+    }
+    
+    /// 解包->执行Closure->更新自身的值
     /// 普通的unwrap方法不会触发通知
     /// - Parameters:
     ///   - execute: 执行的闭包
     ///   - failed: 失败回调
     /// - Returns: 解包后的值
-    @discardableResult mutating func mutating(execute: (inout Wrapped) throws -> Void, failed: SimpleCallback? = nil) rethrows -> Wrapped? {
+    @discardableResult
+    mutating func mutating(execute: (inout Wrapped) throws -> Void, failed: SimpleCallback = {}) rethrows -> Wrapped? {
         guard var wrapped = self else {
-            guard let failed else { return nil }
             failed()
             return nil
         }
@@ -55,7 +77,8 @@ extension Optional {
     /// - Parameter execute: 回调闭包
     /// - Parameter failed: 失败回调 | 因为Optional类型的closure会被推断为@escaping closure, 所以这里不能使用SimpleCallback?类型作为失败的回调
     /// - Returns: Optional<Wrapped>
-    @discardableResult func unwrap(execute: (Wrapped) throws -> Void, failed: SimpleCallback = {}) rethrows -> Wrapped? {
+    @discardableResult 
+    func unwrap(execute: (Wrapped) throws -> Void, failed: SimpleCallback = {}) rethrows -> Wrapped? {
         switch self {
         case .none:
             failed()
@@ -66,16 +89,12 @@ extension Optional {
         }
     }
     
-    /// 解包Optional
-    /// - Parameter error: 抛出的错误
-    /// - Returns: Wrapped Value
-    func unwrap(onError error: Error? = nil) throws -> Wrapped {
+    /// 解包Optional类型
+    /// - Parameter error: 解包失败时抛出的错误
+    /// - Returns: 解包成功后返回Wrapped
+    func unwrap(failed error: Error) throws -> Wrapped {
         guard let self else {
-            if let error = error {
-                throw error
-            } else {
-                throw OptionalError.badValue
-            }
+            throw error
         }
         return self
     }
@@ -85,9 +104,9 @@ extension Optional {
     ///   - transform: 转换解包后的值
     ///   - defaultValue: 默认值
     /// - Returns: 转换后的值
-    func unwrap<T>(_ transform: (Wrapped) -> T, or defaultValue: @autoclosure () -> T) -> T {
+    func unwrap<T>(_ transform: (Wrapped) -> T, or fallback: @autoclosure () -> T) -> T {
         guard let self else {
-            return defaultValue()
+            return fallback()
         }
         return transform(self)
     }
@@ -102,9 +121,9 @@ extension Optional {
     /// num.or("") { num in
     ///     num.string
     /// }
-    func or<T>(_ defaultValue: @autoclosure () -> T, map transform: (Wrapped) -> T) -> T {
+    func or<T>(_ fallback: @autoclosure () -> T, map transform: (Wrapped) -> T) -> T {
         guard let self else {
-            return defaultValue()
+            return fallback()
         }
         return transform(self)
     }
@@ -112,17 +131,8 @@ extension Optional {
     /// 解包Optional
     /// - Parameter defaultValue: 自动闭包
     /// - Returns: Wrapped Value
-    func or(_ defaultValue: @autoclosure () -> Wrapped) -> Wrapped {
-        self ?? defaultValue()
-    }
-    
-    /// Optional Error
-    enum OptionalError: LocalizedError {
-        case badValue
-        
-        var errorDescription: String? {
-            "Bad \(Wrapped.self)."
-        }
+    func or(_ fallback: @autoclosure () -> Wrapped) -> Wrapped {
+        self ?? fallback()
     }
 }
 
