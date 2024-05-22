@@ -41,19 +41,34 @@ extension Set {
 extension Set where Element: Hashable {
     
     /// 交集
-    static func ^ (lhs: Set<Element>, rhs: Set<Element>) -> Set<Element> {
+    static func ^ <S>(lhs: Set<Element>, rhs: S) -> Set<Element> where Element == S.Element, S: Sequence {
         lhs.intersection(rhs)
     }
     
+    /// 将左侧的集合设置为左右两个集合的交集
+    static func ^= <S>(lhs: inout Set<Element>, rhs: S) where Element == S.Element, S: Sequence {
+        lhs.formIntersection(rhs)
+    }
+    
     /// 并集
-    static func + (lhs: Set<Element>, rhs: Set<Element>) -> Set<Element> {
+    static func + <S>(lhs: Set<Element>, rhs: S) -> Set<Element> where Element == S.Element, S: Sequence {
         lhs.union(rhs)
+    }
+    
+    /// 将右侧集合中的元素合并到左侧集合中
+    static func += <S>(lhs: inout Set<Element>, rhs: S) where Element == S.Element, S: Sequence {
+        lhs.formUnion(rhs)
     }
     
     /// 相对差集
     /// 在集合A中却不在集合B中的集合，如：「1，2，3」 - 「2，3，4」= 「1」；「2，3，4」 - 「1，2，3」= 「4」
-    static func - (lhs: Set<Element>, rhs: Set<Element>) -> Set<Element> {
+    static func - <S>(lhs: Set<Element>, rhs: S) -> Set<Element> where Element == S.Element, S: Sequence {
         lhs.subtracting(rhs)
+    }
+    
+    /// 对等式左边的元素进行相对差集操作
+    static func -= <S>(lhs: inout Set<Element>, rhs: S) where Element == S.Element, S: Sequence {
+        lhs.subtract(rhs)
     }
     
     /// 相对差
