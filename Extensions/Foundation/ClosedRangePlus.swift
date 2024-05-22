@@ -17,6 +17,17 @@ extension ClosedRange where Bound == Double {
 
 extension ClosedRange where Bound == Int {
     
+    /// 上下边界分别偏移一定的距离
+    /// - Parameter distance: 偏移距离
+    /// - Returns: 新的范围对象
+    public func offseted(by distance: Bound) -> ClosedRange<Bound> {
+        (lowerBound + distance)...(upperBound + distance)
+    }
+    
+    public mutating func offset(by distance: Bound) {
+        self = (lowerBound + distance)...(upperBound + distance)
+    }
+    
     /// 计算一个Range在另一个Range中的索引范围
     /// - Parameter another: 要计算的Range
     /// - Returns: 索引范围
