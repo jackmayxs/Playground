@@ -38,6 +38,12 @@ extension Optional {
         return unwrapped
     }
     
+    /// 只有自身为空时才赋值
+    public mutating func fillVoid(_ wrapped: Wrapped) {
+        guard isVoid else { return }
+        self = wrapped
+    }
+    
     /// 映射,失败后返回默认值
     public func map<U>(_ transform: (Wrapped) throws -> U, fallback: @autoclosure () -> U) rethrows -> U {
         try self.map(transform) ?? fallback()
