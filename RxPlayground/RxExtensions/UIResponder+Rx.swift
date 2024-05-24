@@ -13,6 +13,15 @@ typealias ResponderTouchesWithEvent = (Set<UITouch>, UIEvent?)
 
 extension Reactive where Base: UIResponder {
     
+    var mergedTouchesWithEvent: Observable<ResponderTouchesWithEvent> {
+        Observable<ResponderTouchesWithEvent>.merge {
+            touchesBegan
+            touchesMoved
+            touchesEnded
+            touchesCancelled
+        }
+    }
+    
     var touchesBegan: Observable<ResponderTouchesWithEvent> {
         methodInvoked(#selector(base.touchesBegan(_:with:))).compactMap { parameters in
             guard let touches = parameters.first as? Set<UITouch> else { return nil }

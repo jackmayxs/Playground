@@ -448,6 +448,11 @@ extension ObservableConvertibleType {
         asObservable()
             .map { $0 }
     }
+    
+    var voidElement: Observable<Void> {
+        asObservable()
+            .map { _ in () }
+    }
 }
 
 // MARK: - Observable of Collection

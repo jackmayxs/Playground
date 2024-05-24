@@ -10,6 +10,9 @@ import UIKit
 extension UIGestureRecognizer.State {
     
     /// 用于过滤手指停止事件
+    var isBegan: Bool {
+        self == .began
+    }
     var isEnded: Bool {
         self == .ended
     }
