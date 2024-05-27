@@ -54,14 +54,9 @@ extension UIButton {
     
     /// 根据UIButton.State更新按钮状态
     public func update(state: UIButton.State) {
-        isEnabled = !state.contains(.disabled)
-        if state.contains(.normal) {
-            isSelected = false
-            isHighlighted = false
-        } else {
-            isSelected = state.contains(.selected)
-            isHighlighted = state.contains(.highlighted)
-        }
+        isEnabled = state != .disabled
+        isSelected = state == .selected
+        isHighlighted = state == .highlighted
     }
     
 	open override func setNeedsLayout() {
