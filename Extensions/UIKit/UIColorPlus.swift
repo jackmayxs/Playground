@@ -197,6 +197,11 @@ extension UIColor {
 
 extension UIColor {
     
+    /// 返回颜色是否为透明
+    var isClear: Bool {
+        cgColor.alpha.isZero
+    }
+    
     var hexString: String? {
         hexString(alphaIgnored: true)
     }
