@@ -10,6 +10,11 @@ import UIKit
 
 extension CGSize {
     
+    var pointSize: CGSize {
+        let scale = UIScreen.main.scale
+        return CGSize(width: width / scale, height: height / scale)
+    }
+    
     var pixelSize: CGSize {
         let scale = UIScreen.main.scale
         return CGSize(width: width * scale, height: height * scale)
