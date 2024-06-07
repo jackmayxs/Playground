@@ -39,7 +39,7 @@ extension Optional {
     }
     
     /// 只有自身为空时才赋值
-    public mutating func fillVoid(_ wrapped: Wrapped) {
+    public mutating func fillVoid(_ wrapped: Wrapped?) {
         guard isVoid else { return }
         self = wrapped
     }
