@@ -8,6 +8,7 @@
 
 import UIKit
 import Photos
+import SpriteKit
 
 extension UIImage {
     
@@ -29,6 +30,10 @@ extension UIImage {
             return
         }
         self.init(cgImage: image)
+    }
+    
+    var skTexture: SKTexture {
+        SKTexture(image: self)
     }
     
     /// SwifterSwift: Average color for this image.
