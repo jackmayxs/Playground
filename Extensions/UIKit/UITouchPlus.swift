@@ -20,3 +20,14 @@ extension UITouch {
         return CGPoint(x: offsetX, y: offsetY)
     }
 }
+
+extension UITouch.Phase {
+    
+    var isBegan: Bool {
+        self == .began
+    }
+    
+    var isEnded: Bool {
+        self == .ended
+    }
+}
