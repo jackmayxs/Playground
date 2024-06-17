@@ -361,6 +361,14 @@ extension UIColor {
 //        self.init(red: r, green: g, blue: b, alpha: 1.0)
 //    }
     
+    convenience init(argb: ARGB) {
+        self.init(red: argb.red, green: argb.green, blue: argb.blue, alpha: argb.alpha)
+    }
+    
+    convenience init(xy: XY) {
+        self.init(x: xy.x, y: xy.y)
+    }
+    
     /// XY坐标创建颜色
     convenience init(x: Double, y: Double) {
         let z = 1.0 - x - y
