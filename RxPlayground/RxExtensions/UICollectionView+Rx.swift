@@ -68,10 +68,11 @@ extension Reactive where Base: UICollectionView {
             .map(\.0)
     }
     
+    /// reloadData调用之后, 最新的选中的IndexPath数组
     /// 必须在设置了delegate之后订阅才能订阅到itemSelectionChanged里的
     /// delegateInvokedItemSelected, delegateInvokedItemDeselected事件
     /// 如果要实现大量数据的全选/反选功能,需要单独处理选中的IndexPath并在更新之后刷新CollectionView以保证高性能
-    var selectedIndexPaths: Observable<[IndexPath]> {
+    var liveSelectedIndexPaths: Observable<[IndexPath]> {
         /// 这里使用.startWith(base)操作符是为了保证在任何时间订阅都能产生事件序列
         dataReloaded
             .startWith(base)
@@ -82,6 +83,14 @@ extension Reactive where Base: UICollectionView {
                     .map(\.0.indexPathsForSelectedItems.orEmpty)
                     .startWith(collectionView.indexPathsForSelectedItems.orEmpty)
             }
+    }
+    
+    /// 非实时的
+    var selectedIndexPaths: Observable<[IndexPath]> {
+        itemSelectionChanged
+            .withUnretained(base)
+            .map(\.0.indexPathsForSelectedItems.orEmpty)
+            .startWith(base.indexPathsForSelectedItems.orEmpty)
     }
     
     var itemSelectionChanged: Observable<IndexPath> {
