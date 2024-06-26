@@ -11,13 +11,21 @@ extension BinaryInteger {
     
     /// 带正负号的字符串
     var signedString: String {
-        NumberFormatter.shared.configure { make in
-            make.positivePrefix = "+"
-            make.negativePrefix = "-"
-            make.zeroSymbol = "0"
-        }.transform { formatter in
-            formatter.string(from: int.nsNumber).orEmpty
+        if self > 0 {
+            "+" + string
+        } else if self < 0 {
+            string
+        } else {
+            "0"
         }
+//        /// 注: 不使用下面的方式, 因为遇到播放视频时格式化会偶尔格式化成(14.0000)这样的格式
+//        NumberFormatter.shared.configure { make in
+//            make.positivePrefix = "+"
+//            make.negativePrefix = "-"
+//            make.zeroSymbol = "0"
+//        }.transform { formatter in
+//            formatter.string(for: self).orEmpty
+//        }
     }
     
     var string: String {
