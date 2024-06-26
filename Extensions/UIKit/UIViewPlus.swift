@@ -131,6 +131,35 @@ extension UIView {
         }
     }
     
+    /// 是否变形: 宽高不等于固定尺寸的宽高
+    public func isDeformed(axis: NSLayoutConstraint.Axis) -> Bool {
+        isStretched(axis: axis) || isSqueezed(axis: axis)
+    }
+    
+    /// 是否被挤压: 宽/高是否大于固定尺寸的宽/高
+    public func isStretched(axis: NSLayoutConstraint.Axis) -> Bool {
+        switch axis {
+        case .horizontal:
+            bounds.width > intrinsicContentSize.width
+        case .vertical:
+            bounds.height > intrinsicContentSize.height
+        @unknown default:
+            fatalError("Unhandled condition...")
+        }
+    }
+    
+    /// 是否被挤压: 宽/高是否小于固定尺寸的宽/高
+    public func isSqueezed(axis: NSLayoutConstraint.Axis) -> Bool {
+        switch axis {
+        case .horizontal:
+            bounds.width < intrinsicContentSize.width
+        case .vertical:
+            bounds.height < intrinsicContentSize.height
+        @unknown default:
+            fatalError("Unhandled condition...")
+        }
+    }
+    
     /// 根据中心点计算目标Frame
     /// - Parameters:
     ///   - targetCenter: 目标中心点
