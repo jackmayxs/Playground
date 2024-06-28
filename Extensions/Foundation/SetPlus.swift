@@ -40,6 +40,17 @@ extension Set {
 
 extension Set where Element: Hashable {
     
+    /// 向Set插入元素
+    static func + (lhs: inout Set<Element>, rhs: Element) {
+        lhs.insert(rhs)
+    }
+    
+    static func + (lhs: Set<Element>, rhs: Element) -> Set<Element> {
+        var copy = lhs
+        copy.insert(rhs)
+        return copy
+    }
+    
     /// 交集
     static func ^ <S>(lhs: Set<Element>, rhs: S) -> Set<Element> where Element == S.Element, S: Sequence {
         lhs.intersection(rhs)
