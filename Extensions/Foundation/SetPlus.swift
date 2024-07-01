@@ -10,6 +10,11 @@ infix operator +- : MultiplicationPrecedence
 
 extension Set {
     
+    init(@ArrayBuilder<Element> _ builder: () -> [Element]) {
+        let elements = builder()
+        self.init(elements)
+    }
+    
     var array: Array<Element> {
         Array(self)
     }
@@ -40,15 +45,14 @@ extension Set {
 
 extension Set where Element: Hashable {
     
-    /// 向Set插入元素
-    static func + (lhs: inout Set<Element>, rhs: Element) {
-        lhs.insert(rhs)
-    }
-    
     static func + (lhs: Set<Element>, rhs: Element) -> Set<Element> {
         var copy = lhs
         copy.insert(rhs)
         return copy
+    }
+    
+    static func += (lhs: inout Set<Element>, rhs: Element) {
+        lhs.insert(rhs)
     }
     
     /// 交集
