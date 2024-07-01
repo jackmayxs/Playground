@@ -64,6 +64,16 @@ extension ClosedRange where Bound == Int {
 
 extension ClosedRange {
     
+    /// 求与另一个范围的交集
+    /// - Parameter other: 传入的闭合范围
+    /// - Returns: 两个范围的交集
+    public func intersection(_ other: Self) -> Self? {
+        let newLowerBound = Swift.max(lowerBound, other.lowerBound)
+        let newUpperBound = Swift.min(upperBound, other.upperBound)
+        guard newLowerBound <= newUpperBound else { return nil }
+        return newLowerBound...newUpperBound
+    }
+    
     /// 根据传入值计算进度
     /// - Parameter value: 传入值
     /// - Returns: 进度百分比<0~1.0>
@@ -191,6 +201,14 @@ extension ClosedRange where Bound: AdditiveArithmetic {
 extension ClosedRange: Comparable where Bound: Comparable {
     public static func < (lhs: ClosedRange<Bound>, rhs: ClosedRange<Bound>) -> Bool {
         lhs.upperBound < rhs.lowerBound
+    }
+}
+
+extension ClosedRange {
+    
+    /// 取两个范围的交集
+    static func ^ (lhs: Self, rhs: Self) -> Self? {
+        lhs.intersection(rhs)
     }
 }
 
