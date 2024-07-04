@@ -13,7 +13,14 @@ class UIBaseScrollView: UIScrollView, StandardLayoutLifeCycle {
     }
     
     /// 是否开启: 触摸到UIControl子类的时候阻断滚动视图的滚动
-    var doBlockScrollWhenHitUIControls = true
+    /// 避免如像UISlider类似的控件在滑动时被UIScrollView滑动事件阻断的问题
+    var doBlockScrollWhenHitUIControls = true {
+        didSet {
+            if doBlockScrollWhenHitUIControls == false {
+                isScrollEnabled = true
+            }
+        }
+    }
     
     var defaultBackgroundColor: UIColor? = baseViewBackgroundColor {
         willSet {
