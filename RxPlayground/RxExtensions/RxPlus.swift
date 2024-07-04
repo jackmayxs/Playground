@@ -682,17 +682,39 @@ extension ObservableConvertibleType {
 				self.asObservable()
 			}
 	}
+    // MARK: - 将固定的元素发送给指定的Observers
+    public func assign<T, Observer: ObserverType>(_ designated: @escaping @autoclosure () -> T, to observers: Observer...) -> Observable<Element> where Observer.Element == T {
+        assign(designated(), to: observers)
+    }
+    public func assign<T, Observer: ObserverType>(_ designated: @escaping @autoclosure () -> T, to observers: Observer...) -> Observable<Element> where Observer.Element == T? {
+        assign(designated(), to: observers)
+    }
+    public func assign<T, Observer: ObserverType>(_ designated: @escaping @autoclosure () -> T, to observers: Array<Observer>) -> Observable<Element> where Observer.Element == T {
+        let designated = designated()
+        let onNext: (Element) throws -> Void = { _ in
+            observers.forEach { observer in
+                observer.onNext(designated)
+            }
+        }
+        return observable.do(onNext: onNext)
+    }
+    public func assign<T, Observer: ObserverType>(_ designated: @escaping @autoclosure () -> T, to observers: Array<Observer>) -> Observable<Element> where Observer.Element == T? {
+        let designated = designated()
+        let onNext: (Element) throws -> Void = { _ in
+            observers.forEach { observer in
+                observer.onNext(designated)
+            }
+        }
+        return observable.do(onNext: onNext)
+    }
     
-    /// 先执行映射,再将映射的值赋给Observers
-    /// 返回原序列
+    // MARK: - 将转换后的元素发送给指定的Observers | 返回原序列
     public func assign<Transformed, Observer: ObserverType>(_ transform: @escaping (Element) throws -> Transformed, to observers: Observer...) -> Observable<Element> where Observer.Element == Transformed {
         assign(transform, to: observers)
     }
-    
     public func assign<Transformed, Observer: ObserverType>(_ transform: @escaping (Element) throws -> Transformed, to observers: Observer...) -> Observable<Element> where Observer.Element == Transformed? {
         assign(transform, to: observers)
     }
-    
     public func assign<Transformed, Observer: ObserverType>(_ transform: @escaping (Element) throws -> Transformed, to observers: Array<Observer>) -> Observable<Element> where Observer.Element == Transformed {
         let onNext: (Element) throws -> Void = { element in
             let transformed = try transform(element)
@@ -702,7 +724,6 @@ extension ObservableConvertibleType {
         }
         return observable.do(onNext: onNext)
     }
-    
     public func assign<Transformed, Observer: ObserverType>(_ transform: @escaping (Element) throws -> Transformed, to observers: Array<Observer>) -> Observable<Element> where Observer.Element == Transformed? {
         let onNext: (Element) throws -> Void = { element in
             let transformed = try transform(element)
@@ -713,6 +734,7 @@ extension ObservableConvertibleType {
         return observable.do(onNext: onNext)
     }
     
+    // MARK: - 将元素发送给指定的Observers
     /// 利用旁路特性为观察者赋值
     /// - Parameter observers: 观察者类型
     /// - Returns: Observable<Element>
