@@ -32,6 +32,14 @@ extension UIColor {
 
 typealias GradientColors = [ColorStop]
 typealias GradientColorsBuilder = () -> GradientColors
+extension GradientColors {
+    /// 纯色渐变
+    static func pure(color: UIColor) -> GradientColors {
+        GradientColors {
+            ColorStop(color: color)
+        }
+    }
+}
 
 // MARK: - 渐变图层封装
 extension CAGradientLayer {
