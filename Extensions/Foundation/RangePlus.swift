@@ -26,6 +26,20 @@ extension Range where Bound: Strideable, Bound.Stride: SignedInteger {
 
 extension Range where Bound: Strideable, Bound.Stride: SignedInteger {
     
+    /// 返回一个闭合的范围
+    /// 如: 0..<10 -> 0...9 | 如果.isEmpty, 例如: 0..<0, 则返回nil
+    /// 用于数组索引范围转换成一个有效的闭合范围
+    /// [1,2,3].indexRange -> 0..<3 -> 0...2; 如果数组为空, 则索引范围0..<0 -> nil
+    var closedRange: ClosedRange<Bound>? {
+        if isEmpty {
+            return nil
+        } else {
+            let upperBoundIndex = index(endIndex, offsetBy: -1)
+            let upperBound = self[upperBoundIndex]
+            return lowerBound...upperBound
+        }
+    }
+    
     /// 循环Index | 如: 利用下标循环访问数组的元素
     /// 如: (0..<3)[cycledIndex: 4] == 0
     /// 如: (8..<11)[cycledIndex: -1] == 10
