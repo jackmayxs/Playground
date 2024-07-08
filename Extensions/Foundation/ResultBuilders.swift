@@ -51,6 +51,13 @@ enum ArrayBuilder<E> {
 	}
 }
 
+extension ArrayBuilder where E: Hashable {
+    
+    static func buildExpression(_ expression: Set<E>) -> [E] {
+        expression.array
+    }
+}
+
 @resultBuilder
 enum SingleValueBuilder<E> {
 	static func buildBlock(_ components: E) -> E {
