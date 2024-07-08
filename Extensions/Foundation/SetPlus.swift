@@ -89,7 +89,7 @@ extension Set where Element: Hashable {
     /// 相对差
     /// 只在集合A及B中的其中一个出现，没有在其交集中出现的元素
     /// 即并集减去交集（A∪B)\(A∩B）。如：「1，2，3」 +- 「2，3，4」= 「1，4」
-    static func +- (lhs: Set<Element>, rhs: Set<Element>) -> Set<Element> {
+    static func +- <S>(lhs: Set<Element>, rhs: S) -> Set<Element> where Element == S.Element, S: Sequence {
         lhs.symmetricDifference(rhs)
     }
 }
