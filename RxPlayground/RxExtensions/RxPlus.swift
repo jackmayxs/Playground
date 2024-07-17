@@ -40,18 +40,16 @@ extension DisposeBag {
         blockEvents.isFalse
     }
     
-    /// 更新值,且阻断conditionalValue事件序列 | 外部需要订阅conditionalValue
-    func silentUpdate(_ newValue: Wrapped) {
-        silentExecute {
-            wrappedValue = newValue
-        }
-    }
-    
-    /// 执行可能影响自身值的回调, 执行过程中conditionalValue序列事件会被阻断
-    /// - Parameter execution: 执行的回调方法
-    func silentExecute(execution: SimpleCallback) {
-        blockEvents = true
-        execution()
+    /// 更新值
+    /// - Parameters:
+    ///   - newValue: 新值
+    ///   - sendEvent: 是否发送事件 | 外部需要订阅conditionalValue
+    func setValue(_ newValue: Wrapped, sendEvent: Bool) {
+        /// 设置是否阻断事件发送
+        blockEvents = !sendEvent
+        /// 设置值, 外部如果订阅的话会收到通知
+        wrappedValue = newValue
+        /// 最后始终取消阻断事件
         blockEvents = false
     }
     
