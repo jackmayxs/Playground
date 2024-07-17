@@ -51,7 +51,7 @@ import UIKit
     }
     
     private var _wrappedValue: T!
-    private let range: ClosedRange<T>
+    let range: ClosedRange<T>
     init(wrappedValue: T, range: ClosedRange<T>) {
         self.range = range
         self.wrappedValue = wrappedValue
