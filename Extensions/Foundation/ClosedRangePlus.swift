@@ -204,6 +204,16 @@ extension ClosedRange: Comparable where Bound: Comparable {
     }
 }
 
+extension ClosedRange where Bound: Strideable, Bound.Stride: SignedInteger {
+    
+    /// 获取指定位置的元素
+    public func itemAt(_ offset: Int) -> Bound? {
+        index(startIndex, offsetBy: offset, limitedBy: index(before: endIndex)).map { index in
+            self[index]
+        }
+    }
+}
+
 extension ClosedRange {
     
     /// 取两个范围的交集
