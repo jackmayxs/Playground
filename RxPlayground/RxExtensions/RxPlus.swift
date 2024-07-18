@@ -10,6 +10,10 @@ import RxCocoa
 
 extension DisposeBag {
     
+    static var empty: DisposeBag {
+        DisposeBag()
+    }
+    
     func insert(@ArrayBuilder<Disposable> builder: () -> [Disposable]) {
         let disposables = builder()
         insert(disposables)
