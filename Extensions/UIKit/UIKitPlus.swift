@@ -15,6 +15,23 @@ extension UIRectCorner: CaseIterable {
 }
 
 extension CACornerMask {
+    
+    static var topLeft: CACornerMask {
+        .layerMinXMinYCorner
+    }
+    
+    static var topRight: CACornerMask {
+        .layerMaxXMinYCorner
+    }
+    
+    static var bottomLeft: CACornerMask {
+        .layerMinXMaxYCorner
+    }
+    
+    static var bottomRight: CACornerMask {
+        .layerMaxXMaxYCorner
+    }
+    
 	public static var allCorners: CACornerMask {
 		[
 			.layerMinXMinYCorner,
