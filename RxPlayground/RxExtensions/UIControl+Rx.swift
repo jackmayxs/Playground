@@ -28,10 +28,20 @@ extension Reactive where Base: UIControl {
     }
     
     public var isSelected: ControlProperty<Bool> {
+        /// 属性变化序列
         let observeIsSelected = observe(\.isSelected, options: .live)
+            .withUnretained(base)
+            .filter(\.0.blockIsSelectedEvent.isFalse)
+            .map(\.1)
         let binder = Binder(base, scheduler: MainScheduler.instance) { control, isSelected in
+            /// 确保值不同的时候才执行后续操作
             guard isSelected != control.isSelected else { return }
+            /// 阻断事件发送
+            control.blockIsSelectedEvent = true
+            /// 设置新值
             control.isSelected = isSelected
+            /// 之后恢复事件发送
+            control.blockIsSelectedEvent = false
         }
         return ControlProperty(values: observeIsSelected, valueSink: binder)
     }
@@ -43,5 +53,21 @@ extension Reactive where Base: UIControl {
             control.isEnabled = isEnabled
         }
         return ControlProperty(values: observeIsEnabled, valueSink: binder)
+    }
+}
+
+extension UIControl.Associated {
+    fileprivate static var blockIsSelectedEvent = UUID()
+}
+
+extension UIControl {
+    
+    fileprivate var blockIsSelectedEvent: Bool {
+        get {
+            getAssociatedObject(self, &Associated.blockIsSelectedEvent).as(Bool.self).or(false)
+        }
+        set {
+            setAssociatedObject(self, &Associated.blockIsSelectedEvent, newValue, .OBJC_ASSOCIATION_ASSIGN)
+        }
     }
 }
