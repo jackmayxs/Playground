@@ -26,10 +26,14 @@ extension DisposeBag {
 }
 
 @propertyWrapper class Variable<Wrapped> {
-    
+    /// 旧新值元组
+    typealias ValueTuple = (oldValue: Wrapped, newValue: Wrapped)
     /// 核心Relay对象
     let relay: BehaviorRelay<Wrapped>
-    
+    /// 赋值通知: 发送新值
+    private let willSetValueNotifier = PublishSubject<ValueTuple>()
+    /// 赋值通知: 发送旧值
+    private let didSetValueNotifier = PublishSubject<ValueTuple>()
     /// 设置为true,则订阅的conditionalValue事件序列不发送事件
     private var blockEvents = false
     
@@ -67,7 +71,13 @@ extension DisposeBag {
     
     var wrappedValue: Wrapped {
         get { relay.value }
-        set { relay.accept(newValue) }
+        set {
+            let oldValue = relay.value
+            let values = (oldValue, newValue)
+            willSetValueNotifier.onNext(values)
+            relay.accept(newValue)
+            didSetValueNotifier.onNext(values)
+        }
     }
     
     /// 跳过初始值后续的事件序列 | 常和.take(until: _someProperty.changed)配合使用
@@ -78,6 +88,16 @@ extension DisposeBag {
     
     var observable: Observable<Wrapped> {
         relay.observable
+    }
+    
+    /// 将要设置值时发送通知: 元素为新值
+    var willSetValue: Observable<ValueTuple> {
+        willSetValueNotifier.observable
+    }
+    
+    /// 设置完值时发送通知: 元素为旧值
+    var didSetValue: Observable<ValueTuple> {
+        didSetValueNotifier.observable
     }
 }
 
