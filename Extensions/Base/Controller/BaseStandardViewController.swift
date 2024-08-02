@@ -10,7 +10,7 @@ import RxCocoa
 
 class BaseStandardViewController<MainView: ViewModelConfigurableView>: BaseViewController, ViewModelAccessible {
     
-    lazy var mainView = MainView()
+    lazy var mainView = makeMainView()
     
     lazy var viewModel = MainView.ViewModel()
     
@@ -21,5 +21,12 @@ class BaseStandardViewController<MainView: ViewModelConfigurableView>: BaseViewC
     override func viewDidLoad() {
         super.viewDidLoad()
         mainView.setupViewModel(viewModel)
+    }
+    
+    /// Override point
+    /// 子类可重写此方法使用自己定义的主视图初始化方法创建主视图
+    /// 例如: UIControllerView需要使用init(controller: ViewController)方法创建主视图
+    func makeMainView() -> MainView {
+        MainView()
     }
 }
