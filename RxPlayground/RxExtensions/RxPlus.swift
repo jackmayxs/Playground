@@ -30,9 +30,9 @@ extension DisposeBag {
     typealias ValueTuple = (oldValue: Wrapped, newValue: Wrapped)
     /// 核心Relay对象
     let relay: BehaviorRelay<Wrapped>
-    /// 赋值通知: 发送新值
+    /// 赋值前通知
     private let willSetValueNotifier = PublishSubject<ValueTuple>()
-    /// 赋值通知: 发送旧值
+    /// 赋值后通知
     private let didSetValueNotifier = PublishSubject<ValueTuple>()
     /// 设置为true,则订阅的conditionalValue事件序列不发送事件
     private var blockEvents = false
@@ -90,12 +90,16 @@ extension DisposeBag {
         relay.observable
     }
     
-    /// 将要设置值时发送通知: 元素为新值
+    /// 将要设置值时发送通知
+    /// 注: 只有调用了wrappedValue的setter方法时,此序列才会触发.
+    /// 直接引用relay对象进行双向绑定的情况此序列不调用
     var willSetValue: Observable<ValueTuple> {
         willSetValueNotifier.observable
     }
     
-    /// 设置完值时发送通知: 元素为旧值
+    /// 设置完值时发送通知
+    /// 注: 只有调用了wrappedValue的setter方法时,此序列才会触发.
+    /// 直接引用relay对象进行双向绑定的情况此序列不调用
     var didSetValue: Observable<ValueTuple> {
         didSetValueNotifier.observable
     }
