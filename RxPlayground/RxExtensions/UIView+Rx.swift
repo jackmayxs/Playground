@@ -68,13 +68,11 @@ extension Reactive where Base: UIView {
             .removeDuplicates
     }
     
-    var isVisible: Infallible<Bool> {
-        let selector = #selector(base.didMoveToWindow)
-        return methodInvoked(selector)
+    var isVisible: Observable<Bool> {
+        methodInvoked(#selector(base.didMoveToWindow))
             .withUnretained(base)
-            .map(\.0.window)
-            .map(\.isValid)
+            .map(\.0.window.isValid)
+            .removeDuplicates
             .observe(on: MainScheduler.instance)
-            .asInfallible(onErrorJustReturn: false)
     }
 }
