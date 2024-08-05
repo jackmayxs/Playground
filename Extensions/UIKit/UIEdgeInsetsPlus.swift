@@ -141,7 +141,7 @@ extension UIEdgeInsets: ExpressibleByArrayLiteral {
     public typealias ArrayLiteralElement = Double
     public init(arrayLiteral literal: Double...) {
         guard literal.count == 4 else {
-            fatalError("No enough element to build a NSDirectionalEdgeInsets")
+            fatalError("UIEdgeInsets needs exact four insets to initialize.")
         }
         self.init(top: literal[0], left: literal[1], bottom: literal[2], right: literal[3])
     }
@@ -165,7 +165,7 @@ extension NSDirectionalEdgeInsets: ExpressibleByArrayLiteral {
     public typealias ArrayLiteralElement = Double
     public init(arrayLiteral literal: Double...) {
         guard literal.count == 4 else {
-            fatalError("No enough element to build a NSDirectionalEdgeInsets")
+            fatalError("NSDirectionalEdgeInsets needs exact four insets to initialize.")
         }
         self.init(top: literal[0], leading: literal[1], bottom: literal[2], trailing: literal[3])
     }
