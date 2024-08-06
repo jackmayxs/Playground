@@ -29,7 +29,7 @@ extension UIApplication {
         
         func didGetNewRelease(_ release: Release?) {
             DispatchQueue.main.async {
-                if release.isVoid && isTesterDebugging {
+                if release.isVoid && isAlphaTest {
                     let release = Release(version: Bundle.main.version.orEmpty + ".1", notes: nil)
                     completed(release)
                     return
