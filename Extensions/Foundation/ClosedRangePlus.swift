@@ -7,6 +7,16 @@
 
 import Foundation
 
+extension ClosedRange where Bound: Codable {
+    
+    /// 转换为JSON二进制
+    var jsonData: Data {
+        get throws {
+            try JSONEncoder.common.encode(self)
+        }
+    }
+}
+
 extension ClosedRange where Bound == CGFloat {
     static let percentRange = CGFloat.percentRange
 }
