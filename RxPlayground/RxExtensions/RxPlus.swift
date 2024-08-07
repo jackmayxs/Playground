@@ -630,6 +630,13 @@ extension ObservableType where Element == Bool {
 	}
 }
 
+extension ObservableType where Element: ObservableConvertibleType {
+    
+    public var switchLatest: Observable<Element.Element> {
+        switchLatest()
+    }
+}
+
 extension Observable {
     
     /// 合并Bool序列值
