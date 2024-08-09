@@ -490,6 +490,14 @@ extension ObservableConvertibleType where Element: Collection {
         }
     }
     
+    var isEmpty: Observable<Bool> {
+        observable.map(\.isEmpty)
+    }
+    
+    var isNotEmpty: Observable<Bool> {
+        observable.map(\.isNotEmpty)
+    }
+    
     /// Emit filled elements only.
     var filled: Observable<Element> {
         asObservable().compactMap(\.filledOrNil)
@@ -639,6 +647,19 @@ extension ObservableType where Element: ObservableConvertibleType {
 
 extension Observable {
     
+    
+    /// 合并Bool序列值 | 任意一个为true时发送true
+    public static func eitherSatisfied<T>(_ observables: T...) -> Observable<T.Element> where T: ObservableConvertibleType, T.Element == Bool {
+        eitherSatisfied(observables)
+    }
+    
+    /// 合并Bool序列值 | 任意一个为true时发送true
+    public static func eitherSatisfied<Collection: Swift.Collection>(_ collection: Collection) -> Observable<Collection.Element.Element> where Collection.Element: ObservableConvertibleType, Collection.Element.Element == Bool {
+        Observable<Collection.Element.Element>.combineLatest(collection.map(\.observable)).map { bools in
+            bools.set.contains(true)
+        }
+    }
+    
     /// 合并Bool序列值
     /// - Parameter observables: Bool序列可变参数
     /// - Returns: Bool序列(全部满足为true时值为true)
@@ -646,18 +667,14 @@ extension Observable {
         allSatisfied(observables)
     }
     
-    /// 合并Bool序列值
-    /// - Parameter collection: Bool序列集合
-    /// - Returns: Bool序列(全部满足为true时值为true)
+    /// 合并Bool序列值 | 全部满足为true时发送true
     public static func allSatisfied<Collection: Swift.Collection>(_ collection: Collection) -> Observable<Collection.Element.Element> where Collection.Element: ObservableConvertibleType, Collection.Element.Element == Bool {
         Observable<Collection.Element.Element>.combineLatest(collection.map(\.observable)).map { bools in
             bools.allSatisfy(\.isTrue)
         }
     }
     
-    /// 合并指定的序列数组
-    /// - Parameter observablesBuilder: 序列数组构建Closure
-    /// - Returns: 所有序列元素合并之后的总序列
+    /// 合并指定的序列数组 | 全部满足为true时发送true
     static func merge<T>(@ArrayBuilder<T> observablesBuilder: () -> [T]) -> Observable<T.Element> where T: ObservableConvertibleType {
         let observables = observablesBuilder()
         return observables.merged
