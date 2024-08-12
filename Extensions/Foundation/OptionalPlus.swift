@@ -140,6 +140,11 @@ extension Optional {
     func or(_ fallback: @autoclosure () -> Wrapped) -> Wrapped {
         self ?? fallback()
     }
+    
+    /// 从左至右连续尝试解包直到返回有效值
+    func or(_ fallback: @autoclosure () -> Wrapped?) -> Wrapped? {
+        self ?? fallback()
+    }
 }
 
 extension Optional where Wrapped: Sequence & ExpressibleByArrayLiteral {
