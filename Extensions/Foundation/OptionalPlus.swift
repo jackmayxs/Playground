@@ -135,7 +135,7 @@ extension Optional {
     }
     
     /// 解包Optional
-    /// - Parameter defaultValue: 自动闭包
+    /// - Parameter fallback: 解包失败使用的默认值
     /// - Returns: Wrapped Value
     func or(_ fallback: @autoclosure () -> Wrapped) -> Wrapped {
         self ?? fallback()
