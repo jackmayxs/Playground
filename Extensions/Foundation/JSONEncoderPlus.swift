@@ -11,4 +11,11 @@ extension JSONEncoder {
     
     /// 通用JSONEncoder
     static let common = JSONEncoder()
+    
+    /// 时间以毫秒解析的Encoder
+    static let millisecondsDateEncodingEncoder: JSONEncoder = {
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .millisecondsSince1970
+        return encoder
+    }()
 }
