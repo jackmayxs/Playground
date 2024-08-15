@@ -208,7 +208,8 @@ extension UIColor {
     
     func hexString(alphaIgnored: Bool) -> String? {
         int(alphaIgnored: alphaIgnored).map { int in
-            "#" + int.hexString
+            /// 注意这里不能使用int.hexString,因为如果碰到解析正绿色的时候,字符串会变成4位:#FF00
+            int.argbColorHexString
         }
     }
     

@@ -73,6 +73,28 @@ extension Int {
     var half: Int {
         self / 2
     }
+    
+    /// 整形 -> 颜色16进制字符串
+    /// 从左至右依次按照ARGB排列. 格式为: #(A)RGB
+    var argbColorHexString: String {
+        let maxRGB = 0xFF_FF_FF
+        let maxARGB = 0xFF_FF_FF_FF
+        switch self {
+        case 0...maxRGB:
+            let red   = (self & 0xFF_00_00) >> 16
+            let green = (self & 0x00_FF_00) >> 8
+            let blue  = (self & 0x00_00_FF) >> 0
+            return String(format: "#%02lX%02lX%02lX", red, green, blue)
+        case maxRGB.number...maxARGB:
+            let alpha   = (self & 0xFF_00_00_00) >> 24
+            let red     = (self & 0x00_FF_00_00) >> 16
+            let green   = (self & 0x00_00_FF_00) >> 8
+            let blue    = (self & 0x00_00_00_FF) >> 0
+            return String(format: "#%02lX%02lX%02lX%02lX", alpha, red, green, blue)
+        default:
+            return ""
+        }
+    }
 }
 
 // MARK: - Int + Calendar
