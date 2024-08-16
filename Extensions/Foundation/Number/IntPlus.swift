@@ -86,10 +86,10 @@ extension Int {
             let blue  = (self & 0x00_00_FF) >> 0
             return String(format: "#%02lX%02lX%02lX", red, green, blue)
         case maxRGB.number...maxARGB:
-            let alpha   = (self & 0xFF_00_00_00) >> 24
-            let red     = (self & 0x00_FF_00_00) >> 16
-            let green   = (self & 0x00_00_FF_00) >> 8
-            let blue    = (self & 0x00_00_00_FF) >> 0
+            let alpha = (self & 0xFF_00_00_00) >> 24
+            let red   = (self & 0x00_FF_00_00) >> 16
+            let green = (self & 0x00_00_FF_00) >> 8
+            let blue  = (self & 0x00_00_00_FF) >> 0
             return String(format: "#%02lX%02lX%02lX%02lX", alpha, red, green, blue)
         default:
             return ""
