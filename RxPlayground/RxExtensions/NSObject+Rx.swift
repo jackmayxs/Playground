@@ -120,6 +120,21 @@ extension Reactive where Base: ActivityTracker {
     }
 }
 
+extension Reactive where Base: ErrorTracker {
+    
+    var errorConsumer: Binder<Error?> {
+        Binder(base, scheduler: MainScheduler.asyncInstance) { weakBase, error in
+            weakBase.trackError(error, isFatal: false)
+        }
+    }
+    
+    var fatalErrorConsumer: Binder<Error?> {
+        Binder(base, scheduler: MainScheduler.asyncInstance) { weakBase, error in
+            weakBase.trackError(error, isFatal: true)
+        }
+    }
+}
+
 // MARK: - 扩展事件类型为<#EventConvertible#>的事件序列
 extension ObservableConvertibleType where Element: EventConvertible {
     
