@@ -17,7 +17,7 @@ extension Reactive where Base == AVPlayer {
         Observable.create { observer in
             let queue = DispatchQueue(label: "com.observing.playback", qos: .userInitiated)
             /// 采样间隔(16ms采样一次,按60fps计算)
-            let interval = CMTimeMakeWithSeconds(16/1000.0, preferredTimescale: NSEC_PER_SEC.int32)
+            let interval = CMTime(value: 16, timescale: 1000)
             /// 观察者
             let timeObserver = base.addPeriodicTimeObserver(forInterval: interval, queue: queue) {
                 [unowned base] cmTime in
