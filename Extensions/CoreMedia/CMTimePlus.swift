@@ -8,8 +8,14 @@
 import CoreMedia
 
 extension CMTime {
-    var stringValue: String {
+    
+    var durationDescription: String {
         guard seconds.isNormal else { return "00:00" }
         return seconds.durationDescription
+    }
+    
+    /// (测试用)打印详情
+    func show() {
+        CMTimeShow(self)
     }
 }

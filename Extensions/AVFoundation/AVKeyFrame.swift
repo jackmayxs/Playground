@@ -19,6 +19,6 @@ struct AVKeyFrame: CustomStringConvertible {
     }
     
     var description: String {
-        "\(currentTime.stringValue)/\(duration.stringValue)"
+        "\(currentTime.durationDescription)/\(duration.durationDescription)"
     }
 }
