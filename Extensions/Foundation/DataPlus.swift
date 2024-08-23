@@ -236,18 +236,16 @@ extension Data {
         }
     }
     
-    private func hex(_ byte: Element) -> String {
-        /// %02hhx: Lower cased
-        String(format: "%02hhX", byte)
-    }
-    
     var utf8String: String {
         String(data: self, encoding: .utf8).orEmpty
     }
     
     /// 2进制转16进制字符串
     var hexString: String {
-        map(hex).joined()
+        reduce(into: "") { hex, nextByte in
+            /// 注: %02hhx: 小写字母
+            hex += String(format: "%02hhX", nextByte)
+        }
     }
     
 	var cfData: CFData {
