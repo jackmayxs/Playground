@@ -25,7 +25,9 @@ extension DisposeBag {
     }
 }
 
-@propertyWrapper class Variable<Wrapped> {
+@propertyWrapper class Variable<Wrapped>: ObservableConvertibleType {
+    /// ObservableConvertibleType序列元素
+    typealias Element = Wrapped
     /// 旧新值元组
     typealias ValueTuple = (oldValue: Wrapped, newValue: Wrapped)
     /// 核心Relay对象
@@ -86,10 +88,6 @@ extension DisposeBag {
         relay.skip(1)
     }
     
-    var observable: Observable<Wrapped> {
-        relay.observable
-    }
-    
     /// 将要设置值时发送通知
     /// 注: 只有调用了wrappedValue的setter方法时,此序列才会触发.
     /// 直接引用relay对象进行双向绑定的情况此序列不调用
@@ -102,6 +100,10 @@ extension DisposeBag {
     /// 直接引用relay对象进行双向绑定的情况此序列不调用
     var didSetValue: Observable<ValueTuple> {
         didSetValueNotifier.observable
+    }
+    
+    func asObservable() -> RxSwift.Observable<Wrapped> {
+        relay.asObservable()
     }
 }
 
@@ -236,33 +238,25 @@ extension ObservableType {
     }
     
     /// 获取非空的上一个元素 和 当前元素
-    var validPreviousAndCurrentElement: Observable<(Element, Element)> {
-        previousAndCurrentElement.compactMap { previous, current in
-            guard let previous else { return nil }
-            return (previous, current)
+    var lastAndLatestBothUnwrapped: Observable<(Element, Element)> {
+        lastAndLatest.compactMap { last, latest in
+            if let last {
+                (last, latest)
+            } else {
+                nil
+            }
         }
     }
     
     /// 获取上一个元素 和 当前元素
-    var previousAndCurrentElement: Observable<(Element?, Element)> {
-        scan(Array<Element>.empty) { array, next in
-            var tempArray = array
-            tempArray.append(next)
-            return tempArray.suffix(2)
+    var lastAndLatest: Observable<(Element?, Element)> {
+        scan(into: [Element].empty) { array, next in
+            array.append(next)
+            array = array.suffix(2)
         }
-        .map { array in
-            (array.count > 1 ? array.first : nil, array.last.unsafelyUnwrapped)
+        .map { lastTwo in
+            (lastTwo.count > 1 ? lastTwo.first : nil, lastTwo.last.unsafelyUnwrapped)
         }
-        
-//        /// 参考的网络上的实现
-//        multicast(PublishSubject.init) { subjectValues -> Observable<(current: Element, previous: Element)> in
-//            /// 合并时间线: 第一个元素 + 当前元素
-//            let previousValues = Observable.merge(subjectValues.take(1), subjectValues)
-//            /// 合并数据: 当前元素 + 上一个元素
-//            return Observable.combineLatest(subjectValues, previousValues) {
-//                ($0.relay, $1.relay)
-//            }
-//        }
     }
     
     /// 订阅完成事件
