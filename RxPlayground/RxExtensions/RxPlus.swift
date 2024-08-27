@@ -285,7 +285,7 @@ extension ObservableType {
         subscribe { _ in
             execute()
         } onError: { error in
-            dprint(error)
+            dprint("Trigger ignored error: \(error)")
         }
     }
     
@@ -299,7 +299,7 @@ extension ObservableType {
                 observer.onNext(nextElement)
             }
         } onError: { error in
-            dprint(error)
+            dprint("Bind ignored error: \(error)")
         }
     }
 
@@ -313,7 +313,7 @@ extension ObservableType {
                 observer.onNext(nextElement)
             }
         } onError: { error in
-            dprint(error)
+            dprint("Bind ignored error: \(error)")
         }
     }
     
@@ -328,7 +328,7 @@ extension ObservableType {
             guard let object else { return }
             onNext(object, nextElement)
         } onError: { error in
-            dprint(error)
+            dprint("Bind ignored error: \(error)")
         }
     }
     
@@ -337,7 +337,7 @@ extension ObservableType {
     /// - Returns: Disposable
     public func bindErrorIgnored(onNext: @escaping (Element) -> Void) -> Disposable {
         subscribe(onNext: onNext) { error in
-            dprint(error)
+            dprint("Bind ignored error: \(error)")
         }
     }
 }
