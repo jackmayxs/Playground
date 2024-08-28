@@ -86,6 +86,12 @@ extension Optional where Wrapped == String {
 // MARK: - __________ StringProtocol __________
 extension StringProtocol {
     
+    
+    /// 转换为NSString
+    var nsString: NSString {
+        NSString(string: String(self))
+    }
+    
     /// 将字符串按照十六进制转换成十进制
     var intFromHex: Int? {
         intFromRadix(16)
