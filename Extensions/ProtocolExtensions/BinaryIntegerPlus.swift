@@ -110,6 +110,11 @@ extension BinaryInteger {
         }
         return String(self, radix: radix, uppercase: uppercase)
     }
+    
+    /// 非零为真
+    var isTrue: Bool { self != 0 }
+    
+    var isFalse: Bool { !isTrue }
 }
 
 extension BinaryInteger {
