@@ -9,6 +9,16 @@ import Foundation
 
 extension FixedWidthInteger {
     
+    /// 生成随机数
+    static var random: Self {
+        random(in: range)
+    }
+    
+    /// 支持的范围
+    static var range: ClosedRange<Self> {
+        min...max
+    }
+    
     /// 二进制
     var data: Data {
         dataInBytes()
