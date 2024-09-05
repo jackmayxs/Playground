@@ -9,9 +9,6 @@ import Foundation
 
 extension BinaryFloatingPoint {
     
-    /// 实时创建的百分比范围, 尽量避免直接使用. 在常用的类型扩展里储存一份静态常量
-    static var hotPercentRange: ClosedRange<Self> { 0...1.0 }
-    
     /// 分割百分比: self必须在0...1.0之间, 返回左右两个百分比
     /// 通常用于滑块百分比分割
     /// 往左, 左侧百分比增大, 右侧百分比为空

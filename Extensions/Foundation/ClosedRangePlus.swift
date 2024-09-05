@@ -145,8 +145,6 @@ extension ClosedRange {
         } catch {
             fatalError("Never happens")
         }
-        /// 另一种实现方法 | 可读性较差
-        /// Swift.min(Swift.max(value, lowerBound), upperBound)
     }
     
     /// 将传入值限制在范围内
@@ -189,6 +187,32 @@ extension ClosedRange where Bound: BinaryFloatingPoint {
     /// - Returns: 范围内的值
     public static func * (lhs: Self, percentage: Bound) -> Bound {
         lhs.lowerBound + lhs.width * (Bound.hotPercentRange << percentage)
+    }
+}
+
+extension ClosedRange where Bound == Double {
+    
+    /// 计算ClosedRange × 进度的结果, 保留相应的小数位, 并按指定规则进位
+    subscript (multiply progress: Double, fractionDigits fractionDigits: Int? = nil, roundingRule rule: FloatingPointRoundingRule? = nil) -> Bound {
+        /// 最终结果
+        var result = self * progress
+        /// 10的n次幂
+        let power = fractionDigits.map { digits in
+            pow(10.0, digits.double)
+        }
+        /// 乘以10的n次幂
+        if let power {
+            result *= power
+        }
+        /// 进位之后
+        if let rule {
+            result.round(rule)
+        }
+        /// 除以10的n次幂
+        if let power {
+            result /= power
+        }
+        return result
     }
 }
 

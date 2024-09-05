@@ -24,20 +24,31 @@ extension Range where Bound: Strideable, Bound.Stride: SignedInteger {
     }
 }
 
-extension Range where Bound: Strideable, Bound.Stride: SignedInteger {
+extension Range where Bound: BinaryInteger, Bound.Stride: SignedInteger {
+    
+    public static func * (lhs: Self, percentage: Bound) -> Bound? {
+        lhs[multiply: percentage.double]
+    }
+    
+    /// 计算一个半开范围 × 进度 -> Bound?类型
+    subscript (multiply progress: Double, roundingRule rule: FloatingPointRoundingRule? = nil) -> Bound? {
+        closedRange.map { closedRange in
+            /// 最终结果
+            var result = closedRange.doubleRange * progress
+            /// 进位之后
+            if let rule {
+                result.round(rule)
+            }
+            return Bound(result)
+        }
+    }
     
     /// 返回一个闭合的范围
     /// 如: 0..<10 -> 0...9 | 如果.isEmpty, 例如: 0..<0, 则返回nil
     /// 用于数组索引范围转换成一个有效的闭合范围
     /// [1,2,3].indexRange -> 0..<3 -> 0...2; 如果数组为空, 则索引范围0..<0 -> nil
     var closedRange: ClosedRange<Bound>? {
-        if isEmpty {
-            return nil
-        } else {
-            let upperBoundIndex = index(endIndex, offsetBy: -1)
-            let upperBound = self[upperBoundIndex]
-            return lowerBound...upperBound
-        }
+        isEmpty ? nil : ClosedRange(self)
     }
     
     /// 循环Index | 如: 利用下标循环访问数组的元素
