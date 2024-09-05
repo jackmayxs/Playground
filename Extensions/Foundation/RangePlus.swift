@@ -26,21 +26,38 @@ extension Range where Bound: Strideable, Bound.Stride: SignedInteger {
 
 extension Range where Bound: BinaryInteger, Bound.Stride: SignedInteger {
     
-    public static func * (lhs: Self, percentage: Bound) -> Bound? {
-        lhs[multiply: percentage.double]
+    public static func * (lhs: Self, rhs: Double) -> Bound? {
+        lhs[multiply: rhs]
     }
     
     /// 计算一个半开范围 × 进度 -> Bound?类型
-    subscript (multiply progress: Double, roundingRule rule: FloatingPointRoundingRule? = nil) -> Bound? {
-        closedRange.map { closedRange in
-            /// 最终结果
-            var result = closedRange.doubleRange * progress
-            /// 进位之后
-            if let rule {
-                result.round(rule)
-            }
-            return Bound(result)
+    /// 如: 数组索引 0..<100 * 0.99 -> 99, 0..<100 * 1.0 -> 99, upperbound不可达
+    subscript (multiply progress: Double, digits digit: Int? = nil, roundingRule rule: FloatingPointRoundingRule? = nil) -> Bound? {
+        /// 最终结果
+        guard var result = doubleRange * progress else { return nil }
+        let power = digit.map { digit in
+            pow(10.0, digit.double)
         }
+        /// 将结果放大
+        if let power {
+            result *= power
+        }
+        /// 进位之后
+        if let rule {
+            result.round(rule)
+        }
+        /// 按精确到小数位缩小
+        if let power {
+            result /= power
+        }
+        /// 最后
+        guard let closedRange else { return nil }
+        /// 按照闭合范围约束结果
+        return closedRange << Bound(result)
+    }
+    
+    var doubleRange: Range<Double> {
+        lowerBound.double..<upperBound.double
     }
     
     /// 返回一个闭合的范围
@@ -93,5 +110,16 @@ extension Range where Bound == Int {
         } else {
             return modIndex
         }
+    }
+}
+
+extension Range where Bound == Double {
+    
+    /// 计算范围 × 进度的结果.
+    /// 如: 0..<100.0 * 0.99 -> 99
+    /// 如: 0..<100.0 * 1.00 -> 100
+    /// 注: Double类型的Bound Range × 进度似乎无太大意义(因为upperbound永远不可达), 但是在Bound为BinaryInteger的Range中计算进度却十分有用
+    public static func * (lhs: Self, rhs: Double) -> Double? {
+        lhs.isEmpty ? nil : lhs.lowerBound + (lhs.upperBound - lhs.lowerBound) * (Double.percentRange << rhs)
     }
 }

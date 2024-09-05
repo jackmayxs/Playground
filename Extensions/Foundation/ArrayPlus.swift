@@ -77,11 +77,7 @@ extension Array {
     }
     
     private func isValidIndex(_ index: Index) -> Bool {
-        indexRange ~= index
-    }
-    
-    public var indexRange: Range<Index> {
-        startIndex..<endIndex
+        indices ~= index
     }
     
     public init(generating elementGenerator: (Int) -> Element, count: Int) {
@@ -90,6 +86,15 @@ extension Array {
     public init(generating elementGenerator: () -> Element, count: Int) {
         self = (0..<count).map { _ in
             elementGenerator()
+        }
+    }
+}
+
+extension Array {
+    
+    public static func * (lhs: Self, rhs: Double) -> Element? {
+        (lhs.indices * rhs).flatMap { index in
+            lhs.itemAt(index)
         }
     }
 }
