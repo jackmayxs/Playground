@@ -176,6 +176,11 @@ extension ClosedRange where Bound: BinaryInteger {
     var doubleRange: ClosedRange<Double> {
         lowerBound.double...upperBound.double
     }
+    
+    /// 转换成Int范围
+    var intRange: ClosedRange<Int> {
+        lowerBound.int...upperBound.int
+    }
 }
 
 extension ClosedRange where Bound: BinaryFloatingPoint {
