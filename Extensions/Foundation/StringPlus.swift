@@ -81,6 +81,11 @@ extension Optional where Wrapped == String {
 	var validStringOrNone: Self {
 		isEmptyString ? .none : unsafelyUnwrapped
 	}
+    
+    /// 转换为字符集
+    var characterSet: CharacterSet {
+        self.or("", map: \.characterSet)
+    }
 }
 
 // MARK: - __________ StringProtocol __________
