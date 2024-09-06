@@ -14,6 +14,11 @@ extension FixedWidthInteger {
         random(in: range)
     }
     
+    /// 支持的Int范围
+    static var intRange: ClosedRange<Int> {
+        range.intRange
+    }
+    
     /// 支持的范围
     static var range: ClosedRange<Self> {
         min...max
