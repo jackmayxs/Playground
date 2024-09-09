@@ -13,6 +13,7 @@ public typealias UUIDArray = Array<UUID>
 public typealias UUIDSet = Set<UUID>
 public typealias IntRange = ClosedRange<Int>
 public typealias IntRanges = Array<IntRange>
+public typealias DoubleRange = ClosedRange<Double>
 public typealias IndexPathSet = Set<IndexPath>
 public typealias SimpleCallback = () -> Void
 public typealias CompletedCallback = (Swift.Error?) -> Void
