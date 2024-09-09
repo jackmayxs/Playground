@@ -46,10 +46,10 @@ extension CharacterSet {
     /// 整数(阿拉伯数字 + 负号)
     static let integer = arabicNumbers.union("-")
     
-    /// 小数 | 阿拉伯数字加小数点
+    /// 小数(正数) | 阿拉伯数字加小数点
     static let decimals = arabicNumbers.union(".")
     
-    /// 实数(小数 + 负号
+    /// 实数(小数 + 负号)
     static let realNumber = decimals.union("-")
 	
 	#if DEBUG
