@@ -180,10 +180,12 @@ extension BinaryFloatingPoint {
         }
     }
     
-    func f(_ fractionDigits: Int) -> String {
+    func f(_ fractionDigits: Int, roundingMode: NumberFormatter.RoundingMode = .down, roundingIncrement: NSNumber = 0) -> String {
         decimalFormatter.configure { make in
             make.minimumFractionDigits = fractionDigits
             make.maximumFractionDigits = fractionDigits
+            make.roundingMode = roundingMode
+            make.roundingIncrement = roundingIncrement
         }.transform { fmt -> String in
             fmt.string(from: nsNumber) ?? ""
         }
