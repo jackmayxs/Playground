@@ -104,7 +104,8 @@ extension BinaryFloatingPoint {
         }
     }
     
-    var percentage: String {
+    /// 0...1.0的小数转换成百分比
+    var percentString: String {
         percentString(fractions: 0) ?? ""
     }
     
