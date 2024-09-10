@@ -17,8 +17,12 @@ extension FloatingPoint {
     ///   - roundingIncrement: 进位精度
     ///   - rule: 进位规则
     /// - Returns: 进位后的结果
-    /// 这里的形参命名借用了NumberFormatter的同名属性, 具体作用在其reset()方法中的属性注释中有详细说明
+    /// 这里的形参命名借用了NumberFormatter的同名属性, 具体作用在NumberFormatterPlus中的reset()方法中的属性注释中有详细说明
     func rounded(_ roundingIncrement: Self, rule: FloatingPointRoundingRule) -> Self {
         roundingIncrement * (self / roundingIncrement).rounded(rule)
+    }
+    
+    mutating func round(_ roundingIncrement: Self, rule: FloatingPointRoundingRule) {
+        self = rounded(roundingIncrement, rule: rule)
     }
 }
