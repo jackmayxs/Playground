@@ -7,6 +7,13 @@
 
 import Foundation
 
+extension ClosedRange: ExpressibleByIntegerLiteral where Bound == Int {
+    public typealias IntegerLiteralType = Bound
+    public init(integerLiteral value: IntegerLiteralType) {
+        self.init(uncheckedBounds: (lower: value, upper: value))
+    }
+}
+
 extension ClosedRange where Bound: Codable {
     
     /// 转换为JSON二进制

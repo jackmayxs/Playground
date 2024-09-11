@@ -104,11 +104,6 @@ extension BinaryFloatingPoint {
         }
     }
     
-    /// 0...1.0的小数转换成百分比
-    var percentString: String {
-        percentString(fractions: 0) ?? ""
-    }
-    
     /// 带符号 | 四舍五入
     var signedR2: String {
         signedDecimalFormatter.configure { make in
@@ -160,35 +155,52 @@ extension BinaryFloatingPoint {
         f(4)
     }
     
-    func percentString(fractions: Int = 0) -> String? {
-        NumberFormatter.shared.configure { formatter in
-            formatter.numberStyle = .percent
-            /// 因为在formatter.shared方法里把这个值重置了, 所以这里要在此设置, 否则百分化会失败
-            formatter.positiveSuffix = "%"
-            formatter.minimumFractionDigits = fractions
-            formatter.maximumFractionDigits = fractions
-        }.transform { formatter in
-            formatter.string(from: nsNumber)
+    /// 0...1.0的小数转换成百分比
+    var percentString: String {
+        percentString(fractions: 0) ?? ""
+    }
+    
+    /// 格式化0...1.0到百分比有问题
+    private func percentString(fractions: Int = 0) -> String? {
+        NumberFormatter.shared.configure { fmt in
+            fmt.numberStyle = .percent
+            fmt.positiveSuffix = "%"
+            fmt.minimumFractionDigits = fractions
+            fmt.maximumFractionDigits = fractions
+        }.transform { fmt in
+            fmt.string(for: self)
         }
     }
     
     func signedF(_ fractionDigits: Int) -> String {
-        signedDecimalFormatter.configure { make in
-            make.minimumFractionDigits = fractionDigits
-            make.maximumFractionDigits = fractionDigits
+        signedDecimalFormatter.configure { fmt in
+            fmt.minimumFractionDigits = fractionDigits
+            fmt.maximumFractionDigits = fractionDigits
         }.transform { fmt -> String in
             fmt.string(from: nsNumber) ?? ""
         }
     }
     
-    func f(_ fractionDigits: Int, roundingMode: NumberFormatter.RoundingMode = .down, roundingIncrement: NSNumber = 0) -> String {
-        decimalFormatter.configure { make in
-            make.minimumFractionDigits = fractionDigits
-            make.maximumFractionDigits = fractionDigits
-            make.roundingMode = roundingMode
-            make.roundingIncrement = roundingIncrement
+    func f(_ fractions: Int, roundingMode: NumberFormatter.RoundingMode = .down, roundingIncrement: NSNumber? = nil) -> String {
+        f(fractions...fractions, roundingMode: roundingMode, roundingIncrement: roundingIncrement)
+    }
+    
+    /// 格式化浮点数
+    /// - Parameters:
+    ///   - fractionsRange: 小数部分长度范围
+    ///   - roundingMode: 进位模式
+    ///   - roundingIncrement: 进位精度
+    /// - Returns: 格式化后的字符串
+    func f(_ fractionsRange: IntRange, roundingMode: NumberFormatter.RoundingMode = .down, roundingIncrement: NSNumber? = nil) -> String {
+        decimalFormatter.configure { fmt in
+            fmt.minimumFractionDigits = fractionsRange.lowerBound
+            fmt.maximumFractionDigits = fractionsRange.upperBound
+            fmt.roundingMode = roundingMode
+            if let roundingIncrement {
+                fmt.roundingIncrement = roundingIncrement
+            }
         }.transform { fmt -> String in
-            fmt.string(from: nsNumber) ?? ""
+            fmt.string(for: self).orEmpty
         }
     }
 }
