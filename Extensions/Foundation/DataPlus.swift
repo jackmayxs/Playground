@@ -258,4 +258,9 @@ extension Data {
 		guard let image = CGImageSourceCreateImageAtIndex(source, 0, .none) else { return .zero }
 		return CGSize(width: image.width, height: image.height)
 	}
+    
+    /// 显示二进制大小: KB, MB...
+    var countDescription: String {
+        ByteCountFormatter.string(fromByteCount: count.int64, countStyle: .file)
+    }
 }
