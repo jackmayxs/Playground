@@ -34,17 +34,6 @@ extension ClosedRange where Bound == Double {
 
 extension ClosedRange where Bound == Int {
     
-    /// 上下边界分别偏移一定的距离
-    /// - Parameter distance: 偏移距离
-    /// - Returns: 新的范围对象
-    public func offseted(by distance: Bound) -> ClosedRange<Bound> {
-        (lowerBound + distance)...(upperBound + distance)
-    }
-    
-    public mutating func offset(by distance: Bound) {
-        self = (lowerBound + distance)...(upperBound + distance)
-    }
-    
     /// 计算一个Range在另一个Range中的索引范围
     /// - Parameter another: 要计算的Range
     /// - Returns: 索引范围
@@ -187,6 +176,33 @@ extension ClosedRange where Bound: BinaryInteger {
     /// 转换成Int范围
     var intRange: ClosedRange<Int> {
         lowerBound.int...upperBound.int
+    }
+}
+
+extension ClosedRange where Bound: Numeric {
+    
+    /// 上下边界分别偏移一定的距离
+    /// - Parameter distance: 偏移距离
+    /// - Returns: 新的范围对象
+    public func offseted(by distance: Bound) -> ClosedRange<Bound> {
+        (lowerBound + distance)...(upperBound + distance)
+    }
+    
+    public mutating func offset(by distance: Bound) {
+        self = (lowerBound + distance)...(upperBound + distance)
+    }
+    
+    /// 放大指定倍数 | 两个边界分别乘以倍数
+    /// - Parameter multiple: 倍数
+    /// - Returns: 放大后的闭合区间
+    public func scaled(by multiple: Bound) -> Self {
+        (lowerBound * multiple)...(upperBound * multiple)
+    }
+    
+    /// 放大指定倍数 | 两个边界分别乘以倍数
+    /// - Parameter multiple: 倍数
+    public mutating func scale(by multiple: Bound) {
+        self = self.scaled(by: multiple)
     }
 }
 
