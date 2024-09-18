@@ -217,3 +217,31 @@ extension ArraySlice {
         Array(self)
     }
 }
+
+// MARK: - 数据交换
+extension Array {
+    /// 交换数组中两个元素的位置
+    /// - Parameters:
+    ///   - index1: 第一个元素的索引
+    ///   - index2: 第二个元素的索引
+    /// - Returns: 交换元素后的新数组
+    func exchangingElements(at index1: Int, with index2: Int) -> [Element] {
+        guard index1 != index2,
+              index1 >= 0, index1 < count,
+              index2 >= 0, index2 < count else {
+            return self
+        }
+        var newArray = self
+        newArray.swapAt(index1, index2)
+        return newArray
+    }
+    
+    /// 交换数组中当前元素与前一个元素的位置（如果是第一个元素，则与最后一个元素交换）
+    /// - Parameter index: 当前元素的索引
+    /// - Returns: 交换元素后的新数组
+    func exchangingWithPrevious(at index: Int) -> [Element] {
+        guard isNotEmpty else { return self }
+        let previousIndex = index == 0 ? count - 1 : index - 1
+        return exchangingElements(at: index, with: previousIndex)
+    }
+}
