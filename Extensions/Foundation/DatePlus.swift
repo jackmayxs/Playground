@@ -23,9 +23,9 @@ extension Date {
         /// 将小数切成整数,小数两个部分
 		let split = timeIntervalSince1970.split
 		/// 转换秒数
-        let second = split.wholeNumber.int
+        let second = split.integerPart.int
 		/// 转换纳秒数
-        let nanoSecond = Int(UInt64(split.fractions * Double(NSEC_PER_SEC)))
+        let nanoSecond = Int(UInt64(split.fractionalPart * Double(NSEC_PER_SEC)))
 		/// 创建timespec结构体
 		let timespec = timespec(tv_sec: second, tv_nsec: nanoSecond)
 		/// 返回绝对时间

@@ -39,7 +39,7 @@ extension Double {
     }
     
     /// 切分成整数和小数两个部分
-    var split: (wholeNumber: Double, fractions: Double) {
+    var split: (integerPart: Double, fractionalPart: Double) {
         /// 创建Double类型的指针
         let pWholeNumber = UnsafeMutablePointer<Double>.allocate(capacity: 1)
         defer {
