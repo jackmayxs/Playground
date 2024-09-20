@@ -22,8 +22,8 @@ enum RangeDirection: CustomStringConvertible {
 /// ClosedRange套壳
 /// 加了一个方向属性,根据此属性在调用(*)运算符乘以百分比时决定最终值的结果
 struct DirectionalRange<Bound>: Equatable where Bound: Comparable {
-    let direction: RangeDirection
-    let range: ClosedRange<Bound>
+    var direction: RangeDirection
+    var range: ClosedRange<Bound>
 }
 
 extension DirectionalRange {
