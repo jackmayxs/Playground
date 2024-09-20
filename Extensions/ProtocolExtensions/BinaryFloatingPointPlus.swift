@@ -25,6 +25,19 @@ extension BinaryFloatingPoint {
         }
     }
     
+    /// 小数部分>=0.999的情况直接进一位
+    var rectifiedInt: Int {
+        rectified.int
+    }
+    
+    /// 小数部分>=0.999的情况直接进一位
+    var rectified: Self {
+        /// 拆分出整数部分和小数部分
+        let modf = modf
+        /// 返回: 整数部分 + 小数部分(1/0)
+        return modf.integerPart + (modf.fractionalPart >= 0.999 ? 1 : modf.fractionalPart)
+    }
+    
     var int: Int {
         Int(self)
     }
