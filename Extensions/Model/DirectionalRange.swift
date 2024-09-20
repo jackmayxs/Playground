@@ -34,6 +34,11 @@ extension DirectionalRange {
         self.range = min(start, end)...max(start, end)
     }
     
+    init(range: ClosedRange<Bound>) {
+        self.direction = .forward
+        self.range = range
+    }
+    
     var isNarrow: Bool {
         range.isNarrow
     }

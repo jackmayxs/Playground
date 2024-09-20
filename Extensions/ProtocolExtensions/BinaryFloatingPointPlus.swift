@@ -75,8 +75,10 @@ extension BinaryFloatingPoint {
     func rectified(_ fractionalPartThreshold: Self) -> Self {
         /// 拆分出整数部分和小数部分
         let modf = modf
-        /// 返回: 整数部分 + 小数部分(如果可能的话进位为1.0)
-        return modf.integerPart + (modf.fractionalPart >= fractionalPartThreshold ? 1.0 : modf.fractionalPart)
+        /// 小数部分(如果可能的话进位为1.0)
+        let fractionalPart = modf.fractionalPart >= fractionalPartThreshold ? 1.0 : modf.fractionalPart
+        /// 返回: 整数部分 + 小数部分
+        return modf.integerPart + fractionalPart
     }
     
     /// 将自己约束在指定范围内
