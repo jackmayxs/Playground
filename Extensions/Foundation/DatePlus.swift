@@ -21,11 +21,11 @@ extension Date {
     /// 转换为GCD使用的绝对时间
 	var dispatchWallTime: DispatchWallTime {
         /// 将小数切成整数,小数两个部分
-		let split = timeIntervalSince1970.split
+		let modf = timeIntervalSince1970.modf
 		/// 转换秒数
-        let second = split.integerPart.int
+        let second = modf.integerPart.int
 		/// 转换纳秒数
-        let nanoSecond = Int(UInt64(split.fractionalPart * Double(NSEC_PER_SEC)))
+        let nanoSecond = Int(UInt64(modf.fractionalPart * Double(NSEC_PER_SEC)))
 		/// 创建timespec结构体
 		let timespec = timespec(tv_sec: second, tv_nsec: nanoSecond)
 		/// 返回绝对时间

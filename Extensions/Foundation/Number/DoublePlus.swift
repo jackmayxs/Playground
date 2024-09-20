@@ -37,18 +37,6 @@ extension Double {
     var milliseconds: Int {
         Int(self * 1000)
     }
-    
-    /// 切分成整数和小数两个部分
-    var split: (integerPart: Double, fractionalPart: Double) {
-        /// 创建Double类型的指针
-        let pWholeNumber = UnsafeMutablePointer<Double>.allocate(capacity: 1)
-        defer {
-            pWholeNumber.deallocate()
-        }
-        /// 执行整数小数分离 | 把整数部分存入指针
-        let fractions = Darwin.modf(self, pWholeNumber)
-        return (pWholeNumber.pointee, fractions)
-    }
 }
 
 // MARK: - __________ Date __________
