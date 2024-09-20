@@ -76,7 +76,14 @@ extension BinaryFloatingPoint {
         /// 拆分出整数部分和小数部分
         let modf = modf
         /// 小数部分(如果可能的话进位为1.0)
-        let fractionalPart = modf.fractionalPart >= fractionalPartThreshold ? 1.0 : modf.fractionalPart
+        let fractionalPart: Self
+        /// 根据符号填充小数部分
+        switch modf.fractionalPart.sign {
+        case .plus:
+            fractionalPart = abs(modf.fractionalPart) >= fractionalPartThreshold ? 1.0 : modf.fractionalPart
+        case .minus:
+            fractionalPart = abs(modf.fractionalPart) >= fractionalPartThreshold ? -1.0 : modf.fractionalPart
+        }
         /// 返回: 整数部分 + 小数部分
         return modf.integerPart + fractionalPart
     }
