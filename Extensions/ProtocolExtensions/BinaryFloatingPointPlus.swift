@@ -32,10 +32,7 @@ extension BinaryFloatingPoint {
     
     /// 小数部分>=0.999的情况直接进一位
     var rectified: Self {
-        /// 拆分出整数部分和小数部分
-        let modf = modf
-        /// 返回: 整数部分 + 小数部分(1/0)
-        return modf.integerPart + (modf.fractionalPart >= 0.999 ? 1 : modf.fractionalPart)
+        rectified(0.999)
     }
     
     var int: Int {
@@ -72,6 +69,14 @@ extension BinaryFloatingPoint {
     
     var decimal: Decimal {
         Decimal(double)
+    }
+    
+    /// 小数部分>=fractionalPartThreshold的情况直接进一位, 否则原样输出
+    func rectified(_ fractionalPartThreshold: Self) -> Self {
+        /// 拆分出整数部分和小数部分
+        let modf = modf
+        /// 返回: 整数部分 + 小数部分(如果可能的话进位为1.0)
+        return modf.integerPart + (modf.fractionalPart >= fractionalPartThreshold ? 1.0 : modf.fractionalPart)
     }
     
     /// 将自己约束在指定范围内

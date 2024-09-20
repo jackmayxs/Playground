@@ -163,6 +163,12 @@ extension ClosedRange where Bound: BinaryInteger {
         Bound(lhs.doubleRange * percentage)
     }
     
+    /// 计算ClosedRange × 进度的结果 | 如果结果的小数位>=fractionalPartThreshold直接进一位
+    subscript (multiply progress: Double, fractionalPartThreshold: Double = 0.999) -> Bound {
+        let doubleBound = (doubleRange * progress).rectified(fractionalPartThreshold)
+        return Bound(doubleBound)
+    }
+    
     /// 转换成CGFloat范围
     var cgFloatRange: ClosedRange<CGFloat> {
         lowerBound.cgFloat...upperBound.cgFloat
