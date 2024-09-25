@@ -66,8 +66,9 @@ extension DirectionalRange where Bound: BinaryFloatingPoint {
     ///   - lhs: 闭合范围
     ///   - rhs: 百分比: 0...1.0
     /// - Returns: 范围内的值
-    static func * (lhs: Self, percentage: Bound) -> Bound {
-        var rectified = Bound.hotPercentRange << percentage
+    static func * (lhs: Bound, rhs: Self) -> Bound { rhs * lhs }
+    static func * (lhs: Self, rhs: Bound) -> Bound {
+        var rectified = Bound.hotPercentRange << rhs
         if case .reverse = lhs.direction {
             rectified = 1.0 - rectified
         }
@@ -82,8 +83,9 @@ extension DirectionalRange where Bound: BinaryInteger {
     ///   - lhs: 闭合范围
     ///   - rhs: 百分比: 0...1.0
     /// - Returns: 范围内的值
-    static func * (lhs: Self, percentage: Double) -> Bound {
-        var rectified = Double.percentRange << percentage
+    static func * (lhs: Double, rhs: Self) -> Bound { rhs * lhs }
+    static func * (lhs: Self, rhs: Double) -> Bound {
+        var rectified = Double.percentRange << rhs
         if case .reverse = lhs.direction {
             rectified = 1.0 - rectified
         }

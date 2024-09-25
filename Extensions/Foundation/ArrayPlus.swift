@@ -92,6 +92,7 @@ extension Array {
 
 extension Array {
     
+    public static func * (lhs: Double, rhs: Self) -> Element? { rhs * lhs }
     public static func * (lhs: Self, rhs: Double) -> Element? {
         (lhs.indices * rhs).flatMap { index in
             lhs.itemAt(index)

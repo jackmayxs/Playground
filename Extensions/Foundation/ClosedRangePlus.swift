@@ -159,8 +159,9 @@ extension ClosedRange {
 
 extension ClosedRange where Bound: BinaryInteger {
     
-    public static func * (lhs: Self, percentage: Double) -> Bound {
-        Bound(lhs.doubleRange * percentage)
+    public static func * (lhs: Double, rhs: Self) -> Bound { rhs * lhs }
+    public static func * (lhs: Self, rhs: Double) -> Bound {
+        Bound(lhs.doubleRange * rhs)
     }
     
     /// 计算ClosedRange × 进度的结果 | 如果结果的小数位>=fractionalPartThreshold直接进一位
@@ -219,6 +220,7 @@ extension ClosedRange where Bound: BinaryFloatingPoint {
     ///   - lhs: 闭合范围
     ///   - rhs: 百分比: 0...1.0
     /// - Returns: 范围内的值
+    public static func * (lhs: Bound, rhs: Self) -> Bound { rhs * lhs }
     public static func * (lhs: Self, percentage: Bound) -> Bound {
         lhs.lowerBound + lhs.width * (Bound.hotPercentRange << percentage)
     }
