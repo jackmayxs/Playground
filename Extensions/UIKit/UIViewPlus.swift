@@ -90,6 +90,7 @@ extension KK where Base: UIView {
 extension UIView {
 	
     enum Associated {
+        static var afterSpacing = UUID()
         static var shadowViewKey = UUID()
         static var backgroundViewKey = UUID()
         static var mournFilterViewKey = UUID()
@@ -122,6 +123,16 @@ extension UIView {
         superview?.convert(frame, to: nil)
     }
     
+    /// 用于设置UIStackView.arrangedSubviews布局
+    var afterSpacing: CGFloat? {
+        get {
+            getAssociatedObject(self, &Associated.afterSpacing) as? CGFloat
+        }
+        set {
+            setAssociatedObject(self, &Associated.afterSpacing, newValue, .OBJC_ASSOCIATION_ASSIGN)
+        }
+    }
+    
     var mournView: UIView? {
         get {
             getAssociatedObject(self, &Associated.mournFilterViewKey) as? UIView
@@ -129,6 +140,14 @@ extension UIView {
         set {
             setAssociatedObject(self, &Associated.mournFilterViewKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
+    }
+    
+    /// 设置用于UIStackView布局的属性之后返回自身
+    /// - Parameter afterSpacing: UIStackView中arrangedSubview的后间距
+    /// - Returns: Self
+    public func afterSpacing(_ afterSpacing: CGFloat?) -> Self {
+        self.afterSpacing = afterSpacing
+        return self
     }
     
     /// 是否变形: 宽高不等于固定尺寸的宽高

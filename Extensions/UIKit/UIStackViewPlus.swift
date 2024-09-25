@@ -42,6 +42,11 @@ extension UIStackView {
         self.distribution = distribution
         self.alignment = alignment
         self.spacing = spacing
+        for subview in arrangedSubviews {
+            if let afterSpacing = subview.afterSpacing {
+                setCustomSpacing(afterSpacing, after: subview)
+            }
+        }
     }
     
     func reArrange(@ArrayBuilder<UIView> _ arrangedSubviews: () -> [UIView]) {
@@ -64,6 +69,9 @@ extension UIStackView {
     func arrange<T>(arrangedSubviews: T) where T: Sequence, T.Element: UIView {
         arrangedSubviews.forEach { subview in
             addArrangedSubview(subview)
+            if let afterSpacing = subview.afterSpacing {
+                setCustomSpacing(afterSpacing, after: subview)
+            }
         }
     }
     
