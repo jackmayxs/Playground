@@ -187,11 +187,20 @@ extension BinaryFloatingPoint {
         percentString(fractions: 0) ?? ""
     }
     
-    /// 格式化0...1.0到百分比有问题
+    /// 格式化0...1.0到百分比
     private func percentString(fractions: Int = 0) -> String? {
         NumberFormatter.shared.configure { fmt in
             fmt.numberStyle = .percent
+            /// 因为shared属性内对复用的Formatter作了重置, 这里改了numberStyle之后要重新设置相关属性
+            /// 可能还在同一个runloop中,设置了numberStyle = .percent之后相关属性还未生效
+            /// 可能这就是苹果为什么推行format新API的原因吧
             fmt.positiveSuffix = "%"
+            /// 数字 -> 字符串转换因子 | 0...1.0的小数乘以这个数, shared属性重置后此值为空
+            /// 所以之前格式化时输出的字符串总是0或1, 就是因为这个值
+            /// 还可以设置它为360, 这样就可以直接格式化色相了666 | 2024年09月25日18:17:30
+            fmt.multiplier = 100.nsNumber
+            /// 这里还同时设置了进位规则
+            fmt.roundingMode = .halfEven
             fmt.minimumFractionDigits = fractions
             fmt.maximumFractionDigits = fractions
         }.transform { fmt in
