@@ -159,11 +159,6 @@ extension ClosedRange {
 
 extension ClosedRange where Bound: BinaryInteger {
     
-    public static func * (lhs: Double, rhs: Self) -> Bound { rhs * lhs }
-    public static func * (lhs: Self, rhs: Double) -> Bound {
-        Bound(lhs.doubleRange * rhs)
-    }
-    
     /// 计算ClosedRange × 进度的结果 | 如果结果的小数位>=fractionalPartThreshold直接进一位
     subscript (multiply progress: Double, fractionalPartThreshold: Double = 0.999) -> Bound {
         let doubleBound = (doubleRange * progress).rectified(fractionalPartThreshold)
@@ -183,6 +178,25 @@ extension ClosedRange where Bound: BinaryInteger {
     /// 转换成Int范围
     var intRange: ClosedRange<Int> {
         lowerBound.int...upperBound.int
+    }
+    
+    public static func * (lhs: Double, rhs: Self) -> Bound { rhs * lhs }
+    public static func * (lhs: Self, rhs: Double) -> Bound {
+        Bound(lhs.doubleRange * rhs)
+    }
+}
+
+extension ClosedRange where Bound: BinaryFloatingPoint {
+    public static func * (lhs: Bound, rhs: Self) -> Bound { rhs * lhs }
+    public static func * (lhs: Self, percentage: Bound) -> Bound {
+        lhs.lowerBound + lhs.width * (Bound.hotPercentRange << percentage)
+    }
+}
+
+extension ClosedRange where Bound == Decimal {
+    public static func * (lhs: Bound, rhs: Self) -> Bound { rhs * lhs }
+    public static func * (lhs: Self, percentage: Bound) -> Bound {
+        lhs.lowerBound + lhs.width * (Bound.percentRange << percentage)
     }
 }
 
@@ -210,19 +224,6 @@ extension ClosedRange where Bound: Numeric {
     /// - Parameter multiple: 倍数
     public mutating func scale(by multiple: Bound) {
         self = self.scaled(by: multiple)
-    }
-}
-
-extension ClosedRange where Bound: BinaryFloatingPoint {
-    
-    /// 计算范围和百分比相乘之后得出范围内的值
-    /// - Parameters:
-    ///   - lhs: 闭合范围
-    ///   - rhs: 百分比: 0...1.0
-    /// - Returns: 范围内的值
-    public static func * (lhs: Bound, rhs: Self) -> Bound { rhs * lhs }
-    public static func * (lhs: Self, percentage: Bound) -> Bound {
-        lhs.lowerBound + lhs.width * (Bound.hotPercentRange << percentage)
     }
 }
 

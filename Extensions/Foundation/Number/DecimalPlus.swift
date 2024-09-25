@@ -8,6 +8,8 @@ import Foundation
 
 extension Decimal {
     
+    static let percentRange: ClosedRange<Decimal> = 0...1
+    
     /// 获取小数位数, 即小数精确位数
     /// 0.0001 -> 4; 0.03500 -> 3
     /// 经过测试, 最多可取38位小数位
