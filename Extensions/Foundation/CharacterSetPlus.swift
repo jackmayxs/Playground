@@ -43,11 +43,14 @@ extension CharacterSet {
 	/// 阿拉伯数字
 	static let arabicNumbers = CharacterSet(charactersIn: "0123456789")
     
+    /// 点
+    static let dot = CharacterSet(charactersIn: ".")
+    
     /// 整数(阿拉伯数字 + 负号)
     static let integer = arabicNumbers.union("-")
     
     /// 小数(正数) | 阿拉伯数字加小数点
-    static let decimals = arabicNumbers.union(".")
+    static let decimals = arabicNumbers.union(.dot)
     
     /// 实数(小数 + 负号)
     static let realNumber = decimals.union("-")
