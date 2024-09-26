@@ -32,3 +32,31 @@ extension UILabel {
 			self.font = font
 		}
 }
+
+//MARK: -- 设置UILabel的行间距和字间距
+extension UILabel {
+    
+    /// 设置UILabel的行间距和字间距
+    /// - Parameters:
+    ///   - lineSpacing: 行间距
+    ///   - letterSpacing: 字间距
+    func setLineSpacing(_ lineSpacing: CGFloat, letterSpacing: CGFloat = 0) {
+        guard let text = self.text else { return }
+        let attributedString = NSMutableAttributedString(string: text)
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = lineSpacing
+        
+        attributedString.addAttribute(
+            .paragraphStyle,
+            value: paragraphStyle,
+            range: NSRange(location: 0, length: attributedString.length)
+        )
+        
+        attributedString.addAttribute(
+            .kern,
+            value: letterSpacing,
+            range: NSRange(location: 0, length: attributedString.length)
+        )
+        self.attributedText = attributedString
+    }
+}
