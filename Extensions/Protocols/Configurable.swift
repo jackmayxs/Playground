@@ -58,3 +58,4 @@ extension ClassNewInstanceConfigurable {
 }
 
 extension NSObject: ClassNewInstanceConfigurable {}
+extension NSObject: SimpleInitializer {}
