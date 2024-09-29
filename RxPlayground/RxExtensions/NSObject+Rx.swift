@@ -45,7 +45,7 @@ public extension Reactive where Base: AnyObject {
     /// 通用的任意类型数据更新的BehaviorRelay | 包含初始值
     var anyUpdateRelay: BehaviorRelay<Any> {
         synchronized(lock: base) {
-            guard let existedRelay = getAssociatedObject(base, &anyUpdateRelayContext) as? BehaviorRelay<Any> else {
+            guard let existedRelay = associated(BehaviorRelay<Any>.self, base, &anyUpdateRelayContext) else {
                 /// 创建Relay | 起始值为Void
                 let newRelay = BehaviorRelay<Any>(value: ())
                 setAssociatedObject(base, &anyUpdateRelayContext, newRelay, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
@@ -59,7 +59,7 @@ public extension Reactive where Base: AnyObject {
     var disposeBag: DisposeBag {
         get {
             synchronized(lock: base) {
-                guard let existedBag = getAssociatedObject(base, &disposeBagContext) as? DisposeBag else {
+                guard let existedBag = associated(DisposeBag.self, base, &disposeBagContext) else {
                     let newBag = DisposeBag()
                     setAssociatedObject(base, &disposeBagContext, newBag, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
                     return newBag
@@ -104,7 +104,7 @@ fileprivate var activityIndicatorKey = UUID()
 extension Reactive where Base: ActivityTracker {
     var activity: ActivityIndicator {
         synchronized(lock: base) {
-            if let indicator = getAssociatedObject(base, &activityIndicatorKey) as? ActivityIndicator {
+            if let indicator = associated(ActivityIndicator.self, base, &activityIndicatorKey) {
                 return indicator
             } else {
                 let indicator = ActivityIndicator()

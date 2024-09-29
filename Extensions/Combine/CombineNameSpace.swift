@@ -61,7 +61,7 @@ public extension CB where Base: AnyObject {
     var disposeSet: Set<AnyCancellable> {
         get {
             synchronized(lock: base) {
-                if let disposeSet = getAssociatedObject(base, &disposeSetContext) as? Set<AnyCancellable> {
+                if let disposeSet = associated(Set<AnyCancellable>.self, base, &disposeSetContext) {
                     return disposeSet
                 }
                 let disposeSet = Set<AnyCancellable>()

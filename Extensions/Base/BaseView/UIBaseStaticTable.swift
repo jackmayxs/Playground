@@ -214,7 +214,7 @@ extension UITableViewCell {
     }
     
     func row(preferredHeight: CGFloat) -> StaticRow {
-        if let row = getAssociatedObject(self, &Self.associatedRow) as? StaticRow {
+        if let row = associated(StaticRow.self, self, &Self.associatedRow) {
             return row
         } else {
             let row = StaticRow(cell: self, preferredHeight: preferredHeight)

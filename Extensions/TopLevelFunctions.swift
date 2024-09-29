@@ -113,6 +113,10 @@ func dismissKeyboard() {
     UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
 }
 
+func associated<Key, T>(_ type: T.Type, _ object: Any, _ key: inout Key) -> T? {
+    getAssociatedObject(object, &key) as? T
+}
+
 func getAssociatedObject<T>(_ object: Any, _ key: inout T) -> Any? {
     objc_getAssociatedObject(object, &key)
 }

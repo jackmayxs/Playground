@@ -27,7 +27,7 @@ extension UICollectionReusableView {
     }
     
     func collectionView<T>(_ type: T.Type) -> T? where T: UICollectionView {
-        if let existedCollectionView = getAssociatedObject(self, &Associated.collectionView) as? T {
+        if let existedCollectionView = associated(T.self, self, &Associated.collectionView) {
             return existedCollectionView
         }
         let fetchCollectionView = superview(type)

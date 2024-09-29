@@ -18,7 +18,7 @@ extension KK where Base: UITextField {
     public var placeholderColor: UIColor? {
         
         get {
-            getAssociatedObject(self, &UITextField.Associated.placeholderColor) as? UIColor
+            associated(UIColor.self, self, &UITextField.Associated.placeholderColor)
         }
         
         nonmutating set {

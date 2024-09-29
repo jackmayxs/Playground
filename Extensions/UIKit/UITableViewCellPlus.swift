@@ -27,7 +27,7 @@ extension UITableViewCell {
     }
     
     func tableView<T>(_ type: T.Type) -> T? where T: UITableView {
-        if let existedTableView = getAssociatedObject(self, &Associated.tableView) as? T {
+        if let existedTableView = associated(T.self, self, &Associated.tableView) {
             return existedTableView
         }
         let fetchTableView = superview(type)

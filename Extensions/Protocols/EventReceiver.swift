@@ -20,7 +20,7 @@ extension UIControl: EventReceiver {
     
     /// 用于保存添加的target(ClosureSleeve)
     fileprivate var targets: NSMutableArray {
-        if let array = getAssociatedObject(self, &Associated.targetsArray) as? NSMutableArray {
+        if let array = associated(NSMutableArray.self, self, &Associated.targetsArray) {
             return array
         } else {
             let array = NSMutableArray()

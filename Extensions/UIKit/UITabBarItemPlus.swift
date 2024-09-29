@@ -28,7 +28,7 @@ extension UITabBarItem {
 	}
 	
 	private var badgeView: UIView? {
-		guard let badge = getAssociatedObject(self, &Self.badgeKey) as? UIView else {
+        guard let badge = associated(UIView.self, self, &Self.badgeKey) else {
 			guard let imageView = imageView else { return nil }
 			let badgeSize: CGFloat = 10
 			let x = imageView.frame.origin.x + imageView.bounds.size.width + 1
