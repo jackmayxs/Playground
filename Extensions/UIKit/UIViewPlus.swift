@@ -77,22 +77,19 @@ extension KK where Base: UIView {
     /// 使用命名空间,避免和UICollectionView,UITableView的属性名冲突
     var backgroundView: UIView? {
         get {
-            associated(UIView.self, base, &Associated.backgroundViewKey)
+            associated(UIView.self, base, UIView.backgroundViewKey)
         }
         nonmutating set {
             backgroundView?.removeFromSuperview()
-            setAssociatedObject(base, &Associated.backgroundViewKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            setAssociatedObject(base, UIView.backgroundViewKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
 }
 extension UIView {
-	
-    enum Associated {
-        static var afterSpacing = UUID()
-        static var shadowViewKey = UUID()
-        static var backgroundViewKey = UUID()
-        static var mournFilterViewKey = UUID()
-    }
+    @UniqueAddress fileprivate static var afterSpacingKey
+    @UniqueAddress fileprivate static var shadowViewKey
+    @UniqueAddress fileprivate static var backgroundViewKey
+    @UniqueAddress fileprivate static var mournFilterViewKey
     
     /// 返回在Window中的frame
     var frameInWindow: CGRect {
@@ -124,19 +121,19 @@ extension UIView {
     /// 用于设置UIStackView.arrangedSubviews布局
     var afterSpacing: CGFloat? {
         get {
-            associated(CGFloat.self, self, &Associated.afterSpacing)
+            associated(CGFloat.self, self, UIView.afterSpacingKey)
         }
         set {
-            setAssociatedObject(self, &Associated.afterSpacing, newValue, .OBJC_ASSOCIATION_ASSIGN)
+            setAssociatedObject(self, UIView.afterSpacingKey, newValue, .OBJC_ASSOCIATION_ASSIGN)
         }
     }
     
     var mournView: UIView? {
         get {
-            associated(UIView.self, self, &Associated.mournFilterViewKey)
+            associated(UIView.self, self, UIView.mournFilterViewKey)
         }
         set {
-            setAssociatedObject(self, &Associated.mournFilterViewKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            setAssociatedObject(self, UIView.mournFilterViewKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
     
@@ -746,7 +743,7 @@ extension UIView {
 	// MARK: - __________ 圆角 + 阴影 __________
 	final class _UIShadowView: UIView { }
 	var shadowView: _UIShadowView {
-        guard let shadow = associated(_UIShadowView.self, self, &Associated.shadowViewKey) else {
+        guard let shadow = associated(_UIShadowView.self, self, UIView.shadowViewKey) else {
 			let shadow = _UIShadowView(frame: bounds)
 			shadow.isUserInteractionEnabled = false
 			shadow.backgroundColor = .clear
@@ -757,7 +754,7 @@ extension UIView {
 				.flexibleWidth,
 				.flexibleHeight
 			]
-			setAssociatedObject(self, &Associated.shadowViewKey, shadow, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+			setAssociatedObject(self, UIView.shadowViewKey, shadow, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
 			return shadow
 		}
 		return shadow
