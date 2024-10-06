@@ -15,18 +15,7 @@ protocol EventReceiver {
 extension UIControl: EventReceiver {
     
     enum Associated {
-        static var targetsArray = UUID()
-    }
-    
-    /// 用于保存添加的target(ClosureSleeve)
-    fileprivate var targets: NSMutableArray {
-        if let array = associated(NSMutableArray.self, self, &Associated.targetsArray) {
-            return array
-        } else {
-            let array = NSMutableArray()
-            setAssociatedObject(self, &Associated.targetsArray, array, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-            return array
-        }
+        @UniqueAddress static var blockIsSelectedEvent
     }
 }
 

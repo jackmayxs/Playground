@@ -124,19 +124,3 @@ func getAssociatedObject(_ object: Any, _ key: UnsafeRawPointer) -> Any? {
 func setAssociatedObject(_ object: Any, _ key: UnsafeRawPointer, _ value: Any?, _ policy: objc_AssociationPolicy) {
     objc_setAssociatedObject(object, key, value, policy)
 }
-
-func associated<Key, T>(_ type: T.Type, _ object: Any, _ key: inout Key) -> T? {
-    getAssociatedObject(object, &key) as? T
-}
-
-func getAssociatedObject<T>(_ object: Any, _ key: inout T) -> Any? {
-    withUnsafePointer(to: key) {
-        objc_getAssociatedObject(object, $0)
-    }
-}
-
-func setAssociatedObject<T>(_ object: Any, _ key: inout T, _ value: Any?, _ policy: objc_AssociationPolicy) {
-    withUnsafePointer(to: key) {
-        objc_setAssociatedObject(object, $0, value, policy)
-    }
-}

@@ -9,8 +9,11 @@ import RxSwift
 import RxCocoa
 import ObjectiveC
 
-fileprivate var disposeBagContext: UInt8 = 0
-fileprivate var anyUpdateRelayContext: UInt8 = 0
+enum Rx {
+    @UniqueAddress static var disposeBag
+    @UniqueAddress static var anyUpdateRelay
+    @UniqueAddress static var activityIndicator
+}
 
 public extension Reactive where Base: AnyObject {
     
@@ -45,10 +48,10 @@ public extension Reactive where Base: AnyObject {
     /// 通用的任意类型数据更新的BehaviorRelay | 包含初始值
     var anyUpdateRelay: BehaviorRelay<Any> {
         synchronized(lock: base) {
-            guard let existedRelay = associated(BehaviorRelay<Any>.self, base, &anyUpdateRelayContext) else {
+            guard let existedRelay = associated(BehaviorRelay<Any>.self, base, Rx.anyUpdateRelay) else {
                 /// 创建Relay | 起始值为Void
                 let newRelay = BehaviorRelay<Any>(value: ())
-                setAssociatedObject(base, &anyUpdateRelayContext, newRelay, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                setAssociatedObject(base, Rx.anyUpdateRelay, newRelay, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
                 return newRelay
             }
             return existedRelay
@@ -59,9 +62,9 @@ public extension Reactive where Base: AnyObject {
     var disposeBag: DisposeBag {
         get {
             synchronized(lock: base) {
-                guard let existedBag = associated(DisposeBag.self, base, &disposeBagContext) else {
+                guard let existedBag = associated(DisposeBag.self, base, Rx.disposeBag) else {
                     let newBag = DisposeBag()
-                    setAssociatedObject(base, &disposeBagContext, newBag, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                    setAssociatedObject(base, Rx.disposeBag, newBag, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
                     return newBag
                 }
                 return existedBag
@@ -70,7 +73,7 @@ public extension Reactive where Base: AnyObject {
         
         nonmutating set(newBag) {
             synchronized(lock: base) {
-                setAssociatedObject(base, &disposeBagContext, newBag, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                setAssociatedObject(base, Rx.disposeBag, newBag, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             }
         }
     }
@@ -99,12 +102,10 @@ protocol ActivityTracker: NSObject {
     func trackActivity(_ isProcessing: Bool)
 }
 
-fileprivate var activityIndicatorKey = UUID()
-
 extension Reactive where Base: ActivityTracker {
     var activity: ActivityIndicator {
         synchronized(lock: base) {
-            if let indicator = associated(ActivityIndicator.self, base, &activityIndicatorKey) {
+            if let indicator = associated(ActivityIndicator.self, base, Rx.activityIndicator) {
                 return indicator
             } else {
                 let indicator = ActivityIndicator()
@@ -113,7 +114,7 @@ extension Reactive where Base: ActivityTracker {
                         weakBase.trackActivity(processing)
                     }
                 }
-                setAssociatedObject(base, &activityIndicatorKey, indicator, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                setAssociatedObject(base, Rx.activityIndicator, indicator, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
                 return indicator
             }
         }

@@ -52,6 +52,6 @@ extension Double {
             assertionFailure("\(component)'s time interval may vary in current date: \(now)")
             return 0.0
         }
-        return Calendar.gregorian.dateInterval(of: component, for: now)?.duration ?? 0.0
+        return Calendar.gregorian.dateInterval(of: component, for: now).map(\.duration) ?? 0.0
     }
 }

@@ -10,7 +10,7 @@ import UIKit
 extension UICollectionReusableView {
     
     enum Associated {
-        static var collectionView = UUID()
+        @UniqueAddress static var collectionView
     }
     
     var inferredIndexPath: IndexPath? {
@@ -22,16 +22,16 @@ extension UICollectionReusableView {
             collectionView(UICollectionView.self)
         }
         set {
-            setAssociatedObject(self, &Associated.collectionView, newValue, .OBJC_ASSOCIATION_ASSIGN)
+            setAssociatedObject(self, Associated.collectionView, newValue, .OBJC_ASSOCIATION_ASSIGN)
         }
     }
     
     func collectionView<T>(_ type: T.Type) -> T? where T: UICollectionView {
-        if let existedCollectionView = associated(T.self, self, &Associated.collectionView) {
+        if let existedCollectionView = associated(T.self, self, Associated.collectionView) {
             return existedCollectionView
         }
         let fetchCollectionView = superview(type)
-        setAssociatedObject(self, &Associated.collectionView, fetchCollectionView, .OBJC_ASSOCIATION_ASSIGN)
+        setAssociatedObject(self, Associated.collectionView, fetchCollectionView, .OBJC_ASSOCIATION_ASSIGN)
         return fetchCollectionView
     }
 }

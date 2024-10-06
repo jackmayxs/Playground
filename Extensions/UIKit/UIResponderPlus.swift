@@ -12,7 +12,7 @@ fileprivate typealias FirstResponderHandoff = (UIResponder) -> Void
 
 extension UIResponder {
     enum Associated {
-        static var parentController = UUID()
+        @UniqueAddress static var parentController
     }
 }
 
@@ -26,11 +26,11 @@ extension UIResponder {
     /// - Parameter controllerType: 控制器类型
     /// - Returns: 关联的控制器
     func associatedParentController<Controller: UIViewController>(_ controllerType: Controller.Type) -> Controller? {
-        if let controller = associated(Controller.self, self, &Associated.parentController) {
+        if let controller = associated(Controller.self, self, Associated.parentController) {
             return controller
         }
         let fetchedController = parentController(controllerType)
-        setAssociatedObject(self, &Associated.parentController, fetchedController, .OBJC_ASSOCIATION_ASSIGN)
+        setAssociatedObject(self, Associated.parentController, fetchedController, .OBJC_ASSOCIATION_ASSIGN)
         return fetchedController
     }
     

@@ -15,14 +15,13 @@ protocol Tapable {
 }
 
 extension UIView: Tapable {
-    fileprivate static var targetsArrayKey = UUID()
-    fileprivate static var tappedClosureKey = UUID()
-    fileprivate var targets: NSMutableArray {
-        if let array = associated(NSMutableArray.self, self, &Self.targetsArrayKey) {
+    
+    var targets: NSMutableArray {
+        if let array = associated(NSMutableArray.self, self, Associated.targets) {
             return array
         } else {
             let array = NSMutableArray()
-            setAssociatedObject(self, &Self.targetsArrayKey, array, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            setAssociatedObject(self, Associated.targets, array, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             return array
         }
     }
@@ -32,17 +31,17 @@ extension Tapable where Self: UIView {
     
     var tapped: ((Self) -> Void)? {
         get {
-            associated(ClosureSleeve<Self>.self, self, &Self.tappedClosureKey).flatMap(\.actionCallback)
+            associated(ClosureSleeve<Self>.self, self, Associated.tappedClosure).flatMap(\.actionCallback)
         }
         set {
             isUserInteractionEnabled = true
-            if let target = associated(ClosureSleeve<Self>.self, self, &Self.tappedClosureKey) {
+            if let target = associated(ClosureSleeve<Self>.self, self, Associated.tappedClosure) {
                 target.actionCallback = newValue
             } else {
                 let target = ClosureSleeve(sender: self, newValue)
                 let tapGesture = UITapGestureRecognizer(target: target, action: #selector(target.action))
                 addGestureRecognizer(tapGesture)
-                setAssociatedObject(self, &Self.tappedClosureKey, target, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                setAssociatedObject(self, Associated.tappedClosure, target, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             }
         }
     }
@@ -77,19 +76,24 @@ extension KK where Base: UIView {
     /// 使用命名空间,避免和UICollectionView,UITableView的属性名冲突
     var backgroundView: UIView? {
         get {
-            associated(UIView.self, base, UIView.backgroundViewKey)
+            associated(UIView.self, base, UIView.Associated.backgroundView)
         }
         nonmutating set {
             backgroundView?.removeFromSuperview()
-            setAssociatedObject(base, UIView.backgroundViewKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            setAssociatedObject(base, UIView.Associated.backgroundView, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
 }
 extension UIView {
-    @UniqueAddress fileprivate static var afterSpacingKey
-    @UniqueAddress fileprivate static var shadowViewKey
-    @UniqueAddress fileprivate static var backgroundViewKey
-    @UniqueAddress fileprivate static var mournFilterViewKey
+    
+    enum Associated {
+        @UniqueAddress static var afterSpacing
+        @UniqueAddress static var shadowView
+        @UniqueAddress static var backgroundView
+        @UniqueAddress static var mournFilterView
+        @UniqueAddress static var targets
+        @UniqueAddress static var tappedClosure
+    }
     
     /// 返回在Window中的frame
     var frameInWindow: CGRect {
@@ -121,19 +125,19 @@ extension UIView {
     /// 用于设置UIStackView.arrangedSubviews布局
     var afterSpacing: CGFloat? {
         get {
-            associated(CGFloat.self, self, UIView.afterSpacingKey)
+            associated(CGFloat.self, self, Associated.afterSpacing)
         }
         set {
-            setAssociatedObject(self, UIView.afterSpacingKey, newValue, .OBJC_ASSOCIATION_ASSIGN)
+            setAssociatedObject(self, Associated.afterSpacing, newValue, .OBJC_ASSOCIATION_ASSIGN)
         }
     }
     
     var mournView: UIView? {
         get {
-            associated(UIView.self, self, UIView.mournFilterViewKey)
+            associated(UIView.self, self, Associated.mournFilterView)
         }
         set {
-            setAssociatedObject(self, UIView.mournFilterViewKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            setAssociatedObject(self, Associated.mournFilterView, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
     
@@ -743,7 +747,7 @@ extension UIView {
 	// MARK: - __________ 圆角 + 阴影 __________
 	final class _UIShadowView: UIView { }
 	var shadowView: _UIShadowView {
-        guard let shadow = associated(_UIShadowView.self, self, UIView.shadowViewKey) else {
+        guard let shadow = associated(_UIShadowView.self, self, UIView.Associated.shadowView) else {
 			let shadow = _UIShadowView(frame: bounds)
 			shadow.isUserInteractionEnabled = false
 			shadow.backgroundColor = .clear
@@ -754,7 +758,7 @@ extension UIView {
 				.flexibleWidth,
 				.flexibleHeight
 			]
-			setAssociatedObject(self, UIView.shadowViewKey, shadow, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            setAssociatedObject(self, UIView.Associated.shadowView, shadow, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
 			return shadow
 		}
 		return shadow

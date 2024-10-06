@@ -10,7 +10,9 @@ import UIKit
 
 extension UITabBarItem {
 	
-	private static var badgeKey = UUID()
+    enum Associated {
+        @UniqueAddress static var badgeView
+    }
 	
 	private var container: UIView? {
 		value(forKey: "_view") as? UIView // UITabbarButton
@@ -28,7 +30,7 @@ extension UITabBarItem {
 	}
 	
 	private var badgeView: UIView? {
-        guard let badge = associated(UIView.self, self, &Self.badgeKey) else {
+        guard let badge = associated(UIView.self, self, Associated.badgeView) else {
 			guard let imageView = imageView else { return nil }
 			let badgeSize: CGFloat = 10
 			let x = imageView.frame.origin.x + imageView.bounds.size.width + 1
@@ -38,7 +40,7 @@ extension UITabBarItem {
 			badge.backgroundColor = .systemRed
 			container?.addSubview(badge)
 			
-			setAssociatedObject(self, &Self.badgeKey, badge, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            setAssociatedObject(self, Associated.badgeView, badge, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
 			return badge
 		}
 		return badge

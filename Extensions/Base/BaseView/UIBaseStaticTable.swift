@@ -207,18 +207,16 @@ extension UIBaseStaticTable {
 // MARK: - 相关扩展
 extension UITableViewCell {
     
-    private static var associatedRow = UUID()
-    
     var row: StaticRow {
         row(preferredHeight: UITableView.automaticDimension)
     }
     
     func row(preferredHeight: CGFloat) -> StaticRow {
-        if let row = associated(StaticRow.self, self, &Self.associatedRow) {
+        if let row = associated(StaticRow.self, self, Associated.row) {
             return row
         } else {
             let row = StaticRow(cell: self, preferredHeight: preferredHeight)
-            setAssociatedObject(self, &Self.associatedRow, row, .OBJC_ASSOCIATION_RETAIN)
+            setAssociatedObject(self, Associated.row, row, .OBJC_ASSOCIATION_RETAIN)
             return row
         }
     }
