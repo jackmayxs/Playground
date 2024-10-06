@@ -118,9 +118,13 @@ func associated<Key, T>(_ type: T.Type, _ object: Any, _ key: inout Key) -> T? {
 }
 
 func getAssociatedObject<T>(_ object: Any, _ key: inout T) -> Any? {
-    objc_getAssociatedObject(object, &key)
+    withUnsafePointer(to: key) {
+        objc_getAssociatedObject(object, $0)
+    }
 }
 
 func setAssociatedObject<T>(_ object: Any, _ key: inout T, _ value: Any?, _ policy: objc_AssociationPolicy) {
-    objc_setAssociatedObject(object, &key, value, policy)
+    withUnsafePointer(to: key) {
+        objc_setAssociatedObject(object, $0, value, policy)
+    }
 }
