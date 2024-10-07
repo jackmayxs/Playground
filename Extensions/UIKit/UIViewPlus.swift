@@ -31,26 +31,30 @@ extension Tapable where Self: UIView {
     
     var tapped: ((Self) -> Void)? {
         get {
-            associated(ClosureSleeve<Self>.self, self, Associated.tappedClosure).flatMap(\.actionCallback)
+            associated(ClosureWrapper<Self>.self, self, Associated.tappedClosure).flatMap(\.callback)
         }
         set {
             isUserInteractionEnabled = true
-            if let target = associated(ClosureSleeve<Self>.self, self, Associated.tappedClosure) {
-                target.actionCallback = newValue
+            if let wrapper = associated(ClosureWrapper<Self>.self, self, Associated.tappedClosure) {
+                if let newValue {
+                    wrapper.callback = newValue
+                } else {
+                    wrapper.callback = nil
+                }
             } else {
-                let target = ClosureSleeve(sender: self, newValue)
-                let tapGesture = UITapGestureRecognizer(target: target, action: #selector(target.action))
+                let target = ClosureWrapper(newValue)
+                let tapGesture = UITapGestureRecognizer(target: target, action: #selector(target.trigger))
                 addGestureRecognizer(tapGesture)
                 setAssociatedObject(self, Associated.tappedClosure, target, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             }
         }
     }
     
-    func addTappedExecution(_ execute: ((Self) -> Void)?) {
-        let target = ClosureSleeve(sender: self, execute)
-        let tapGesture = UITapGestureRecognizer(target: target, action: #selector(target.action))
+    func addTappedExecution(_ callback: ((Self) -> Void)?) {
+        let wrapper = ClosureWrapper(callback)
+        let tapGesture = UITapGestureRecognizer(target: wrapper, action: #selector(wrapper.trigger))
         addGestureRecognizer(tapGesture)
-        targets.add(target)
+        targets.add(wrapper)
     }
 }
 
