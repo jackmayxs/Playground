@@ -6,8 +6,8 @@
 //
 // 源代码: https://github.com/KyoheiG3/RxDisplayLink
 
+import UIKit
 import RxSwift
-import QuartzCore
 
 public extension Reactive where Base: CADisplayLink {
     /**
