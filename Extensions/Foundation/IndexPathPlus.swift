@@ -11,39 +11,29 @@ extension IndexPath {
     
     /// section转换成IndexSet
     var sectionIndexSet: IndexSet {
-        guard count == 2 else {
-            assertionFailure("只处理两层深的IndexPath. 单个Index不多见. 多个Path的情况需要特殊处理")
-            return .empty
-        }
+        guard count >= 1 else { return .empty }
         return IndexSet(integer: section)
+    }
+    
+    /// row转换成IndexSet
+    var rowIndexSet: IndexSet {
+        guard count >= 2 else { return .empty }
+        return IndexSet(integer: row)
     }
     
     /// item转换成IndexSet
     var itemIndexSet: IndexSet {
-        guard count == 2 else {
-            assertionFailure("只处理两层深的IndexPath. 单个Index不多见. 多个Path的情况需要特殊处理")
-            return .empty
-        }
+        guard count >= 2 else { return .empty }
         return IndexSet(integer: item)
-    }
-    
-    /// 在自身的基础上对item/row进行偏移
-    func offset(_ offset: Int) -> IndexPath {
-        guard offset >= 0 else { return self }
-        return IndexPath(item: item + offset, section: section)
-    }
-    
-    static func +(lhs: IndexPath, rhs: Int) -> IndexPath {
-        lhs.offset(rhs)
     }
 }
 
 extension IndexPath: ExpressibleByIntegerLiteral {
     
     /// 通过整型字面量创建IndexPath
-    /// 另外还可以通过数组字面量创建IndexPath: [0, 1] 注: 只能是两个整型元素, 表示第0组第1个
-    public init(integerLiteral literal: IntegerLiteralType) {
-        self.init(row: literal, section: 0)
+    public init(integerLiteral path: IntegerLiteralType) {
+        /// 通过数组字面量创建IndexPath: [0, 1] 注: 只能是两个整型元素, 表示第0组第1个
+        self.init(arrayLiteral: 0, path)
     }
 }
 
@@ -52,11 +42,8 @@ extension Sequence where Element == IndexPath {
     /// 将所有IndexPath的section放入IndexSet
     var sectionIndexSet: IndexSet {
         reduce(into: IndexSet.empty) { accumulation, next in
-            guard next.count == 2 else {
-                assertionFailure("只处理两层深的IndexPath. 单个Index不多见. 多个Path的情况需要特殊处理")
-                return
-            }
-            accumulation.insert(next.section)
+            guard let section = next.first else { return }
+            accumulation.insert(section)
         }
     }
     
@@ -65,9 +52,8 @@ extension Sequence where Element == IndexPath {
         do {
             var sectionSet = Set<Int>.empty
             return try reduce(into: IndexSet.empty) { accumulation, next in
-                guard next.count == 2 else {
-                    assertionFailure("只处理两层深的IndexPath. 单个Index不多见. 多个Path的情况需要特殊处理")
-                    return
+                guard next.count >= 2 else {
+                    return dprint("Path深度不足")
                 }
                 sectionSet.insert(next.section)
                 if sectionSet.count > 1 {
