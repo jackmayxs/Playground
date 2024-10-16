@@ -118,7 +118,8 @@ extension Array where Element: UIButton {
     
     /// 合并所有按钮的点击事件 | 按钮点击之后发送按钮对象自己
     public var tapButton: Observable<Element> {
-        let buttonObservables = map { $0.rx.tapButton }
-        return Observable.from(buttonObservables).merge()
+        /// 写成map(\.rx.tapButton)这种形式编译出错(2024年10月16日14:11:19)
+        let tappedButtonSequences = map { $0.rx.tapButton }
+        return Observable.from(tappedButtonSequences).merge()
     }
 }
