@@ -15,14 +15,13 @@ protocol Tapable {
 }
 
 extension UIView: Tapable {
-    fileprivate static var targetsArrayKey = UUID()
-    fileprivate static var tappedClosureKey = UUID()
-    fileprivate var targets: NSMutableArray {
-        if let array = getAssociatedObject(self, &Self.targetsArrayKey) as? NSMutableArray {
+    
+    var targets: NSMutableArray {
+        if let array = associated(NSMutableArray.self, self, Associated.targets) {
             return array
         } else {
             let array = NSMutableArray()
-            setAssociatedObject(self, &Self.targetsArrayKey, array, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            setAssociatedObject(self, Associated.targets, array, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             return array
         }
     }
@@ -32,30 +31,30 @@ extension Tapable where Self: UIView {
     
     var tapped: ((Self) -> Void)? {
         get {
-            if let target = getAssociatedObject(self, &Self.tappedClosureKey) as? ClosureSleeve<Self> {
-                return target.actionCallback
-            } else {
-                return nil
-            }
+            associated(ClosureWrapper<Self>.self, self, Associated.tappedClosure).flatMap(\.callback)
         }
         set {
             isUserInteractionEnabled = true
-            if let target = getAssociatedObject(self, &Self.tappedClosureKey) as? ClosureSleeve<Self> {
-                target.actionCallback = newValue
+            if let wrapper = associated(ClosureWrapper<Self>.self, self, Associated.tappedClosure) {
+                if let newValue {
+                    wrapper.callback = newValue
+                } else {
+                    wrapper.callback = nil
+                }
             } else {
-                let target = ClosureSleeve(sender: self, newValue)
-                let tapGesture = UITapGestureRecognizer(target: target, action: #selector(target.action))
+                let target = ClosureWrapper(newValue)
+                let tapGesture = UITapGestureRecognizer(target: target, action: #selector(target.trigger))
                 addGestureRecognizer(tapGesture)
-                setAssociatedObject(self, &Self.tappedClosureKey, target, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                setAssociatedObject(self, Associated.tappedClosure, target, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             }
         }
     }
     
-    func addTappedExecution(_ execute: ((Self) -> Void)?) {
-        let target = ClosureSleeve(sender: self, execute)
-        let tapGesture = UITapGestureRecognizer(target: target, action: #selector(target.action))
+    func addTappedExecution(_ callback: ((Self) -> Void)?) {
+        let wrapper = ClosureWrapper(callback)
+        let tapGesture = UITapGestureRecognizer(target: wrapper, action: #selector(wrapper.trigger))
         addGestureRecognizer(tapGesture)
-        targets.add(target)
+        targets.add(wrapper)
     }
 }
 
@@ -80,20 +79,24 @@ extension KK where Base: UIView {
     
     /// 使用命名空间,避免和UICollectionView,UITableView的属性名冲突
     var backgroundView: UIView? {
-        get { getAssociatedObject(base, &Associated.backgroundViewKey) as? UIView }
+        get {
+            associated(UIView.self, base, UIView.Associated.backgroundView)
+        }
         nonmutating set {
             backgroundView?.removeFromSuperview()
-            setAssociatedObject(base, &Associated.backgroundViewKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            setAssociatedObject(base, UIView.Associated.backgroundView, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
 }
 extension UIView {
-	
+    
     enum Associated {
-        static var afterSpacing = UUID()
-        static var shadowViewKey = UUID()
-        static var backgroundViewKey = UUID()
-        static var mournFilterViewKey = UUID()
+        @UniqueAddress static var afterSpacing
+        @UniqueAddress static var shadowView
+        @UniqueAddress static var backgroundView
+        @UniqueAddress static var mournFilterView
+        @UniqueAddress static var targets
+        @UniqueAddress static var tappedClosure
     }
     
     /// 返回在Window中的frame
@@ -126,19 +129,19 @@ extension UIView {
     /// 用于设置UIStackView.arrangedSubviews布局
     var afterSpacing: CGFloat? {
         get {
-            getAssociatedObject(self, &Associated.afterSpacing) as? CGFloat
+            associated(CGFloat.self, self, Associated.afterSpacing)
         }
         set {
-            setAssociatedObject(self, &Associated.afterSpacing, newValue, .OBJC_ASSOCIATION_ASSIGN)
+            setAssociatedObject(self, Associated.afterSpacing, newValue, .OBJC_ASSOCIATION_ASSIGN)
         }
     }
     
     var mournView: UIView? {
         get {
-            getAssociatedObject(self, &Associated.mournFilterViewKey) as? UIView
+            associated(UIView.self, self, Associated.mournFilterView)
         }
         set {
-            setAssociatedObject(self, &Associated.mournFilterViewKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            setAssociatedObject(self, Associated.mournFilterView, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
     
@@ -748,7 +751,7 @@ extension UIView {
 	// MARK: - __________ 圆角 + 阴影 __________
 	final class _UIShadowView: UIView { }
 	var shadowView: _UIShadowView {
-		guard let shadow = getAssociatedObject(self, &Associated.shadowViewKey) as? _UIShadowView else {
+        guard let shadow = associated(_UIShadowView.self, self, UIView.Associated.shadowView) else {
 			let shadow = _UIShadowView(frame: bounds)
 			shadow.isUserInteractionEnabled = false
 			shadow.backgroundColor = .clear
@@ -759,7 +762,7 @@ extension UIView {
 				.flexibleWidth,
 				.flexibleHeight
 			]
-			setAssociatedObject(self, &Associated.shadowViewKey, shadow, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            setAssociatedObject(self, UIView.Associated.shadowView, shadow, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
 			return shadow
 		}
 		return shadow

@@ -563,12 +563,6 @@ extension String {
     }
 }
 
-//MARK: -- 空字符串
-extension String {
-    
-    static var empty: String { "" }
-}
-
 //MARK: -- 字符串时间格式转换
 extension String {
 	/// 字符串时间格式转换

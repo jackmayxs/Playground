@@ -69,6 +69,8 @@ extension UIStackView {
     func arrange<T>(arrangedSubviews: T) where T: Sequence, T.Element: UIView {
         arrangedSubviews.forEach { subview in
             addArrangedSubview(subview)
+            /// Tip: 如果后面还有别的arrangedSubview的时候，customSpacing才有效
+            /// 如果后面没有别的arrangedSubview则最后一个子视图后面使用contentInsets作为内边距
             if let afterSpacing = subview.afterSpacing {
                 setCustomSpacing(afterSpacing, after: subview)
             }

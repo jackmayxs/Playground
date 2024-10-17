@@ -56,18 +56,14 @@ extension Reactive where Base: UIControl {
     }
 }
 
-extension UIControl.Associated {
-    fileprivate static var blockIsSelectedEvent = UUID()
-}
-
 extension UIControl {
     
     fileprivate var blockIsSelectedEvent: Bool {
         get {
-            getAssociatedObject(self, &Associated.blockIsSelectedEvent).as(Bool.self).or(false)
+            associated(Bool.self, self, Associated.blockIsSelectedEvent).or(false)
         }
         set {
-            setAssociatedObject(self, &Associated.blockIsSelectedEvent, newValue, .OBJC_ASSOCIATION_ASSIGN)
+            setAssociatedObject(self, Associated.blockIsSelectedEvent, newValue, .OBJC_ASSOCIATION_ASSIGN)
         }
     }
 }

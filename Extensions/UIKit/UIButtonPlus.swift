@@ -26,10 +26,10 @@ extension UIButton {
 		}
 	}
 	
-	private enum Key {
-		static var imagePlacement = UUID()
-		static var imagePadding = UUID()
-		static var useBackgroundImageSize = UUID()
+	enum Associated {
+		@UniqueAddress static var imagePlacement
+		@UniqueAddress static var imagePadding
+		@UniqueAddress static var useBackgroundImageSize
 	}
 }
 
@@ -66,9 +66,11 @@ extension UIButton {
 	
 	/// 是否使用背景图片尺寸作为按钮固有尺寸
 	var useBackgroundImageSize: Bool {
-		get { getAssociatedObject(self, &Key.useBackgroundImageSize) as? Bool ?? false }
+        get {
+            associated(Bool.self, self, Associated.useBackgroundImageSize).or(false)
+        }
 		set {
-			setAssociatedObject(self, &Key.useBackgroundImageSize, newValue, .OBJC_ASSOCIATION_ASSIGN)
+			setAssociatedObject(self, Associated.useBackgroundImageSize, newValue, .OBJC_ASSOCIATION_ASSIGN)
 			invalidateIntrinsicContentSize()
 		}
 	}
@@ -76,33 +78,30 @@ extension UIButton {
 	/// 图片位置
 	var imagePlacement: ImagePlacement {
 		get {
-			guard let rawValue = getAssociatedObject(self, &Key.imagePlacement) as? Int else {
-				return .left
-			}
-			return ImagePlacement(rawValue: rawValue).unsafelyUnwrapped
+            associated(Int.self, self, Associated.imagePlacement).flatMap(ImagePlacement.init, fallback: .left)
 		}
 		set {
-			setAssociatedObject(self, &Key.imagePlacement, newValue.rawValue, .OBJC_ASSOCIATION_ASSIGN)
+			setAssociatedObject(self, Associated.imagePlacement, newValue.rawValue, .OBJC_ASSOCIATION_ASSIGN)
 			setupImageTitleEdgeInsets()
 		}
 	}
 	
 	/// Image-Title间距(大于等于0; 最好是偶数,否则按钮显示可能会有小小误差<iOS中像素对齐导致的问题>)
 	var imagePadding: CGFloat {
-		get { getAssociatedObject(self, &Key.imagePadding) as? CGFloat ?? 0 }
+        get {
+            associated(CGFloat.self, self, Associated.imagePadding).or(0.0)
+        }
 		set {
-			assert(newValue >= 0, "A sane person will never do that🤪,right?")
-			setAssociatedObject(self, &Key.imagePadding, newValue, .OBJC_ASSOCIATION_ASSIGN)
+			assert(newValue >= 0, "A sane person would never do that.")
+			setAssociatedObject(self, Associated.imagePadding, newValue, .OBJC_ASSOCIATION_ASSIGN)
 			setupImageTitleEdgeInsets()
 		}
 	}
 	
 	var backgroundImageView: UIImageView? {
-		subviews
-			.compactMap { $0 as? UIImageView }
-			.first {
-				$0.image == currentBackgroundImage
-			}
+        subviews.lazy.as(UIImageView.self).first { imgView in
+            imgView.image == currentBackgroundImage
+        }
 	}
 	
 	var titleFont: UIFont? {

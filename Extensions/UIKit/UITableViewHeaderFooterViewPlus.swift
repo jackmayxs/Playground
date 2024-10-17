@@ -10,7 +10,7 @@ import UIKit
 extension UITableViewHeaderFooterView {
     
     enum Associated {
-        static var tableView = UUID()
+        @UniqueAddress static var tableView
     }
     
     var tableView: UITableView? {
@@ -18,16 +18,16 @@ extension UITableViewHeaderFooterView {
             tableView(UITableView.self)
         }
         set {
-            setAssociatedObject(self, &Associated.tableView, newValue, .OBJC_ASSOCIATION_ASSIGN)
+            setAssociatedObject(self, Associated.tableView, newValue, .OBJC_ASSOCIATION_ASSIGN)
         }
     }
     
     func tableView<T>(_ type: T.Type) -> T? where T: UITableView {
-        if let existedTableView = getAssociatedObject(self, &Associated.tableView) as? T {
+        if let existedTableView = associated(T.self, self, Associated.tableView) {
             return existedTableView
         }
         let fetchTableView = superview(type)
-        setAssociatedObject(self, &Associated.tableView, fetchTableView, .OBJC_ASSOCIATION_ASSIGN)
+        setAssociatedObject(self, Associated.tableView, fetchTableView, .OBJC_ASSOCIATION_ASSIGN)
         return fetchTableView
     }
 }

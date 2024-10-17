@@ -15,18 +15,7 @@ protocol EventReceiver {
 extension UIControl: EventReceiver {
     
     enum Associated {
-        static var targetsArray = UUID()
-    }
-    
-    /// 用于保存添加的target(ClosureSleeve)
-    fileprivate var targets: NSMutableArray {
-        if let array = getAssociatedObject(self, &Associated.targetsArray) as? NSMutableArray {
-            return array
-        } else {
-            let array = NSMutableArray()
-            setAssociatedObject(self, &Associated.targetsArray, array, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-            return array
-        }
+        @UniqueAddress static var blockIsSelectedEvent
     }
 }
 
@@ -38,7 +27,7 @@ extension EventReceiver where Self: UIControl {
     /// - Parameters:
     ///   - events: 触发的事件集合
     ///   - callback: 回调Closure
-    /// - Returns: 标记Action/ClosureSleeve的Identifier, 用于后续移除操作
+    /// - Returns: 标记Action/ClosureWrapper的Identifier, 用于后续移除操作
     func addEvents(_ events: UIControl.Event = .touchUpInside, _ callback: ((Self) -> Void)?) -> String {
         if #available(iOS 14, *) {
             let action = UIAction { action in
@@ -48,10 +37,11 @@ extension EventReceiver where Self: UIControl {
             addAction(action, for: events)
             return action.identifier.rawValue
         } else {
-            let target = ClosureSleeve(sender: self, callback)
-            addTarget(target, action: #selector(target.action), for: events)
-            targets.add(target)
-            return target.identifier
+            let wrapper = ClosureWrapper(callback)
+            addTarget(wrapper, action: #selector(wrapper.trigger), for: events)
+            /// 因为addTarget不强引用wrapper,所以这里需要强引用
+            targets.add(wrapper)
+            return wrapper.identifier
         }
     }
     
@@ -63,34 +53,34 @@ extension EventReceiver where Self: UIControl {
         if #available(iOS 14.0, *) {
             removeAction(identifiedBy: UIAction.Identifier(identifier), for: events)
         } else {
-            let foundSleeve = targets.as(ClosureSleeve<Self>.self).first { sleeve in
-                sleeve.identifier == identifier
+            let foundWrapper = targets.as(ClosureWrapper<Self>.self).first { wrapper in
+                wrapper.identifier == identifier
             }
-            if let foundSleeve {
-                removeTarget(foundSleeve, action: #selector(foundSleeve.action), for: events)
-                targets.remove(foundSleeve)
+            if let foundWrapper {
+                removeTarget(foundWrapper, action: #selector(foundWrapper.trigger), for: events)
+                targets.remove(foundWrapper)
             }
         }
     }
 }
 
 // MARK: - 相关类型
-final class ClosureSleeve<T> where T: AnyObject {
-    
-    weak var sender: T!
-    
-    var actionCallback: ((T) -> Void)?
-    
+final class ClosureWrapper<T> where T: AnyObject {
+    /// 标识符
     let identifier = String.random
+    /// 回调
+    var callback: ((T) -> Void)?
     
-    init(sender: T, _ closure: ((T) -> Void)?) {
-        self.sender = sender
-        self.actionCallback = closure
+    /// 初始化方法
+    /// - Parameter callback: 回调Closure
+    init(_ callback: ((T) -> Void)?) {
+        self.callback = callback
     }
     
-    @objc func action() {
-        actionCallback.unwrap { actionCallback in
-            actionCallback(sender)
-        }
+    /// 触发方法
+    @objc func trigger(_ sender: AnyObject) {
+        guard let callback else { return }
+        guard let target = sender as? T else { return }
+        callback(target)
     }
 }

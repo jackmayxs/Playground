@@ -8,8 +8,8 @@ import UIKit
 
 extension UITextField {
     
-    struct Associated {
-        static var placeholderColor = UUID()
+    enum Associated {
+        @UniqueAddress static var placeholderColor
     }
 }
 
@@ -18,12 +18,12 @@ extension KK where Base: UITextField {
     public var placeholderColor: UIColor? {
         
         get {
-            getAssociatedObject(self, &UITextField.Associated.placeholderColor) as? UIColor
+            associated(UIColor.self, self, UITextField.Associated.placeholderColor)
         }
         
         nonmutating set {
             guard let newValue else { return }
-            setAssociatedObject(self, &UITextField.Associated.placeholderColor, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            setAssociatedObject(self, UITextField.Associated.placeholderColor, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             let attributes: [NSAttributedString.Key: Any] = [
                 .foregroundColor: newValue,
                 .font: base.font ?? .systemFont(ofSize: 12)
