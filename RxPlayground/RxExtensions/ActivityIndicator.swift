@@ -37,15 +37,17 @@ public class ActivityIndicator : SharedSequenceConvertibleType {
     public typealias Element = Bool
     public typealias SharingStrategy = DriverSharingStrategy
 
-    private let _lock = NSRecursiveLock()
-    private let _relay = BehaviorRelay(value: 0)
-    private let _loading: SharedSequence<SharingStrategy, Bool>
+    private let subscriptionDelay: RxTimeInterval
+    private let recursiveLock = NSRecursiveLock()
+    private let relay = BehaviorRelay(value: 0)
+    private let isLoading: SharedSequence<SharingStrategy, Bool>
 
-    public init() {
-        _loading = _relay
-            .asDriver()
-            .map { $0 > 0 }
-            .distinctUntilChanged()
+    public init(delayed timeInterval: RxTimeInterval = 0) {
+        subscriptionDelay = timeInterval
+        isLoading = relay
+            .map(\.isPositive)
+            .removeDuplicates
+            .asDriver(onErrorJustReturn: false)
     }
     
     fileprivate func trackActivityOfObservable<Source: ObservableConvertibleType>(_ source: Source) -> Observable<Source.Element> {
@@ -58,19 +60,21 @@ public class ActivityIndicator : SharedSequenceConvertibleType {
     }
 
     private func increment(_ value: Int = 1) {
-        _lock.lock()
-        _relay.accept(_relay.value + value)
-        _lock.unlock()
+        recursiveLock.lock()
+        relay.accept(relay.value + value)
+        recursiveLock.unlock()
     }
 
     private func decrement() {
-        _lock.lock()
-        _relay.accept(_relay.value - 1)
-        _lock.unlock()
+        recursiveLock.lock()
+        relay.accept(relay.value - 1)
+        recursiveLock.unlock()
     }
-
+    
     public func asSharedSequence() -> SharedSequence<SharingStrategy, Element> {
-        _loading
+        isLoading.observable
+            .delaySubscription(subscriptionDelay, scheduler: MainScheduler.instance)
+            .asDriver(onErrorJustReturn: false)
     }
 }
 

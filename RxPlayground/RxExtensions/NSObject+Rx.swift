@@ -11,6 +11,7 @@ import ObjectiveC
 
 enum Rx {
     @UniqueAddress static var disposeBag
+    @UniqueAddress static var activityTrackingDisposeBag
     @UniqueAddress static var anyUpdateRelay
     @UniqueAddress static var activityIndicator
 }
@@ -78,6 +79,25 @@ public extension Reactive where Base: AnyObject {
         }
     }
     
+    var activityTrackingDisposebag: DisposeBag {
+        get {
+            synchronized(lock: base) {
+                guard let existedBag = associated(DisposeBag.self, base, Rx.activityTrackingDisposeBag) else {
+                    let newBag = DisposeBag()
+                    setAssociatedObject(base, Rx.activityTrackingDisposeBag, newBag, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                    return newBag
+                }
+                return existedBag
+            }
+        }
+        
+        nonmutating set(newBag) {
+            synchronized(lock: base) {
+                setAssociatedObject(base, Rx.activityTrackingDisposeBag, newBag, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            }
+        }
+    }
+    
     /// disposeBag置空 | 清空之前所有的订阅
     func clearDisposeBag() {
         disposeBag = DisposeBag()
@@ -103,20 +123,30 @@ protocol ActivityTracker: NSObject {
 }
 
 extension Reactive where Base: ActivityTracker {
+    
     var activity: ActivityIndicator {
+        activity(delayed: .seconds(0))
+    }
+    
+    /// 延迟跟踪的ActivityIndicator
+    /// - Parameter timeInterval: 延迟多长时间开始追踪
+    func activity(delayed timeInterval: RxTimeInterval) -> ActivityIndicator {
         synchronized(lock: base) {
-            if let indicator = associated(ActivityIndicator.self, base, Rx.activityIndicator) {
-                return indicator
-            } else {
-                let indicator = ActivityIndicator()
-                disposeBag.insert {
-                    indicator.drive(with: base) { weakBase, processing in
-                        weakBase.trackActivity(processing)
-                    }
-                }
+            /// 创建一个ActivityIndicator
+            var newIndicator: ActivityIndicator {
+                let indicator = ActivityIndicator(delayed: timeInterval)
                 setAssociatedObject(base, Rx.activityIndicator, indicator, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
                 return indicator
             }
+            /// 活动指示器
+            let indicator = associated(ActivityIndicator.self, base, Rx.activityIndicator).or(newIndicator)
+            /// 每次都重新跟踪活动序列
+            activityTrackingDisposebag = DisposeBag {
+                indicator.drive(with: base) { weakBase, processing in
+                    weakBase.trackActivity(processing)
+                }
+            }
+            return indicator
         }
     }
 }
