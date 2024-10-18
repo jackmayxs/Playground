@@ -26,6 +26,13 @@ extension String {
         guard #available(iOS 13.0, *) else { return nil }
         return UIImage(systemName: self)
 	}
+    
+    /// 返回SF Symbol图片
+    func systemImage(pointSize: CGFloat, weight: UIImage.SymbolWeight = .regular, scale: UIImage.SymbolScale = .default) -> UIImage? {
+        guard #available(iOS 13.0, *) else { return nil }
+        let config = UIImage.SymbolConfiguration(pointSize: pointSize, weight: weight, scale: scale)
+        return UIImage(systemName: self, withConfiguration: config)
+    }
 	
 	/// 生成图片
 	var uiImage: UIImage? {
