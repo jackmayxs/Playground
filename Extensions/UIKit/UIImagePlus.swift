@@ -12,6 +12,24 @@ import SpriteKit
 
 extension UIImage {
     
+    convenience init?(qrContent: String?, size: CGFloat = 300.0) {
+        guard let qrContent else { return nil }
+        let data = qrContent.data(using: .utf8)
+        guard let filter = CIFilter(name: "CIQRCodeGenerator") else { return nil }
+        /// 设置数据
+        filter.setValue(data, forKey: "inputMessage")
+        /// 设置容错率 (L: 7%, M: 15%, Q: 25%, H: 30%).
+        filter.setValue("H", forKey: "inputCorrectionLevel")
+        /// 生成图片
+        guard let ciImage = filter.outputImage else { return nil }
+        /// 调整大小
+        let scaleX = size / ciImage.extent.size.width
+        let scaleY = size / ciImage.extent.size.height
+        let transform = CGAffineTransform(scaleX: scaleX,y: scaleY)
+        let transformed = ciImage.transformed(by: transform)
+        self.init(ciImage: transformed)
+    }
+    
     /// SwifterSwift: Create UIImage from color and size.
     /// 
     /// - Parameters:
