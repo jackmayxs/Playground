@@ -90,14 +90,14 @@ struct ControllerPresentor {
         slideIn(controller)
     }
     
-    func slideIn(_ controller: PresentedControllerType, contentSize: CGSize? = nil, cornerRadius: CGFloat? = nil, alignment: PresentationAlignment = PresentationAlignment(vertical: .center, horizontal: .right), from direction: Direction) {
+    func slideIn(_ controller: PresentedControllerType, contentSize: CGSize? = nil, cornerRadius: CGFloat? = nil, alignment: PresentationAlignment = PresentationAlignment(vertical: .center, horizontal: .right), from direction: Direction, tapToDismiss: Bool = true) {
         let presentation = CoverPresentation(
             directionShow: direction,
             directionDismiss: direction,
             uiConfiguration: PresentationUIConfiguration(
                 cornerRadius: cornerRadius.or(0),
                 backgroundStyle: .dimmed(alpha: 0.7),
-                isTapBackgroundToDismissEnabled: true
+                isTapBackgroundToDismissEnabled: tapToDismiss
             ),
             size: contentSize.or(controller.preferredContentSize).presentationSize,
             alignment: alignment,

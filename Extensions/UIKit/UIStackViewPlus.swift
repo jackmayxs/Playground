@@ -11,26 +11,29 @@ import UIKit
 extension UIStackView {
 
 	convenience init(
+        insets: UIEdgeInsets = .zero,
 		axis: NSLayoutConstraint.Axis = .vertical,
 		distribution: UIStackView.Distribution = .fill,
 		alignment: UIStackView.Alignment = .leading,
 		spacing: CGFloat = 0.0,
 		@ArrayBuilder<UIView> arrangedSubviews: () -> [UIView] = { [] }
 	) {
-        self.init(axis: axis, distribution: distribution, alignment: alignment, spacing: spacing, arrangedSubviews: arrangedSubviews())
+        self.init(insets: insets, axis: axis, distribution: distribution, alignment: alignment, spacing: spacing, arrangedSubviews: arrangedSubviews())
 	}
     
     convenience init(
+        insets: UIEdgeInsets = .zero,
         axis: NSLayoutConstraint.Axis = .vertical,
         distribution: UIStackView.Distribution = .fill,
         alignment: UIStackView.Alignment = .leading,
         spacing: CGFloat = 0.0,
         arrangedSubviews: UIView...
     ) {
-        self.init(axis: axis, distribution: distribution, alignment: alignment, spacing: spacing, arrangedSubviews: arrangedSubviews)
+        self.init(insets: insets, axis: axis, distribution: distribution, alignment: alignment, spacing: spacing, arrangedSubviews: arrangedSubviews)
     }
     
     convenience init(
+        insets: UIEdgeInsets = .zero,
         axis: NSLayoutConstraint.Axis = .vertical,
         distribution: UIStackView.Distribution = .fill,
         alignment: UIStackView.Alignment = .leading,
@@ -38,6 +41,7 @@ extension UIStackView {
         arrangedSubviews: [UIView]
     ) {
         self.init(arrangedSubviews: arrangedSubviews)
+        self.contentInsets = insets
         self.axis = axis
         self.distribution = distribution
         self.alignment = alignment
