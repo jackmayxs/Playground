@@ -27,7 +27,14 @@ extension UIImage {
         let scaleY = size / ciImage.extent.size.height
         let transform = CGAffineTransform(scaleX: scaleX,y: scaleY)
         let transformed = ciImage.transformed(by: transform)
-        self.init(ciImage: transformed)
+        /// 这里必须转换一下否则无法保存到相册
+        if #available(iOS 17.0, *) {
+            guard let heicData = UIImage(ciImage: transformed).heicData() else { return nil }
+            self.init(data: heicData)
+        } else {
+            guard let pngData = UIImage(ciImage: transformed).pngData() else { return nil }
+            self.init(data: pngData)
+        }
     }
     
     /// SwifterSwift: Create UIImage from color and size.
