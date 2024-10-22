@@ -394,21 +394,60 @@ extension UIView {
 		scrollView.removeFromSuperview()
 		return image
 	}
-
+    
+    /// 截图指定区域
+    func snapshot(frame: CGRect) -> UIImage? {
+        guard let snapshot else { return nil }
+        guard let cgImage = snapshot.cgImage else { return nil }
+        let scale = UIScreen.main.scale
+        let transform = CGAffineTransformMakeScale(scale, scale)
+        let scaledRect = CGRectApplyAffineTransform(frame, transform)
+        guard let scaledCGImage = cgImage.cropping(to: scaledRect) else { return nil }
+        return UIImage(cgImage: scaledCGImage)
+    }
+    
+    /// 注1: 必须要有父视图或window非空的情况下才可以截图成功
+    /// 注2: width或height有一个为空(或近似为0, 如:0.1), drawHierarchy就会crash
+    /// https://stackoverflow.com/questions/21722508/ios-drawviewhierarchyinrect-crash-exc-breakpoint-unknown
 	var snapshot: UIImage? {
-		switch self {
-			case let unwrapped where unwrapped is UITableView:
-				let tableView = unwrapped as! UITableView
-				return getTableViewScreenshot(tableView: tableView, whereView: superview!)
-			default:
-				// 参数①：截屏区域  参数②：是否透明  参数③：清晰度
-				UIGraphicsBeginImageContextWithOptions(frame.size, true, UIScreen.main.scale)
-				layer.render(in: UIGraphicsGetCurrentContext()!)
-				let image = UIGraphicsGetImageFromCurrentImageContext()
-
-				UIGraphicsEndImageContext()
-				return image
-		}
+        guard window.isValid else {
+            assertionFailure("对不可见的视图截图会导致崩溃")
+            return nil
+        }
+        switch self {
+        case let unwrapped where unwrapped is UITableView:
+            let tableView = unwrapped as! UITableView
+            return getTableViewScreenshot(tableView: tableView, whereView: superview!)
+        default:
+            /// 屏幕scale
+            let scale = UIScreen.main.scale
+            /// 是否不透明
+            let isOpaque = false
+            /// 渲染图片
+            if #available(iOS 10.0, *) {
+                let format = UIGraphicsImageRendererFormat()
+                format.scale = scale
+                format.opaque = isOpaque
+                /// 创建绘图渲染器
+                let renderer = UIGraphicsImageRenderer(size: bounds.size, format: format)
+                /// 使用PNG图片格式
+                let pngData = renderer.pngData { context in
+                    drawHierarchy(in: bounds, afterScreenUpdates: true)
+                }
+                /// 或者使用JPEG图片
+                let _ = renderer.jpegData(withCompressionQuality: 1.0) { context in
+                    
+                }
+                return UIImage(data: pngData)
+            } else {
+                UIGraphicsBeginImageContextWithOptions(bounds.size, isOpaque, scale)
+                defer {
+                    UIGraphicsEndImageContext()
+                }
+                guard drawHierarchy(in: bounds, afterScreenUpdates: true) else { return nil }
+                return UIGraphicsGetImageFromCurrentImageContext()
+            }
+        }
 	}
     
     /// 用于调整父视图为ScrollView子类时, 其子视图被自身遮挡的问题
