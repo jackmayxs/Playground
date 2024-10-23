@@ -15,7 +15,7 @@ extension Task where Success == Never, Failure == Never {
         }
         let nanoseconds = UInt64(seconds * NSEC_PER_SEC.double)
         if #available(iOS 16.0, *) {
-            try await Task.sleep(for: .nanoseconds(nanoseconds), tolerance: .seconds(2))
+            try await Task.sleep(for: .nanoseconds(nanoseconds), tolerance: .milliseconds(200))
         } else {
             try await Task.sleep(nanoseconds: nanoseconds)
         }
