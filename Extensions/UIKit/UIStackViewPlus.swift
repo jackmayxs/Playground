@@ -11,7 +11,7 @@ import UIKit
 extension UIStackView {
     
     convenience init(
-        insets: UIEdgeInsets = .zero,
+        insets: UIEdgeInsets? = nil,
         axis: NSLayoutConstraint.Axis = .vertical,
         distribution: UIStackView.Distribution = .fill,
         alignment: UIStackView.Alignment = .leading,
@@ -27,7 +27,7 @@ extension UIStackView {
     }
     
     convenience init(
-        insets: UIEdgeInsets = .zero,
+        insets: UIEdgeInsets? = nil,
         axis: NSLayoutConstraint.Axis = .vertical,
         distribution: UIStackView.Distribution = .fill,
         alignment: UIStackView.Alignment = .leading,
@@ -43,7 +43,7 @@ extension UIStackView {
     }
     
     convenience init(
-        insets: UIEdgeInsets = .zero,
+        insets: UIEdgeInsets? = nil,
         axis: NSLayoutConstraint.Axis = .vertical,
         distribution: UIStackView.Distribution = .fill,
         alignment: UIStackView.Alignment = .leading,
@@ -128,12 +128,9 @@ extension UIStackView {
                 return layoutMargins
             }
         }
-        set {
-            guard let insets = newValue else {
-                isLayoutMarginsRelativeArrangement = false
-                return
-            }
-            isLayoutMarginsRelativeArrangement = true
+        set(insets) {
+            isLayoutMarginsRelativeArrangement = insets.isValid
+            guard let insets else { return }
             if #available(iOS 11, *) {
                 directionalLayoutMargins = insets.directionalEdgeInsets
             } else {
@@ -144,8 +141,8 @@ extension UIStackView {
     
     var horizontalInsets: UIEdgeInsets? {
         get { contentInsets }
-        set {
-            guard var insets = newValue else { return }
+        set(insets) {
+            guard var insets else { return }
             insets.top = 0
             insets.bottom = 0
             contentInsets = insets
@@ -154,8 +151,8 @@ extension UIStackView {
     
     var verticalInsets: UIEdgeInsets? {
         get { contentInsets }
-        set {
-            guard var insets = newValue else { return }
+        set(insets) {
+            guard var insets else { return }
             insets.left = 0
             insets.right = 0
             contentInsets = insets
