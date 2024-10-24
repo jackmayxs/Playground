@@ -42,12 +42,15 @@ public class ActivityIndicator : SharedSequenceConvertibleType {
     private let relay = BehaviorRelay(value: 0)
     private let isLoading: SharedSequence<SharingStrategy, Bool>
 
-    public init(delayed timeInterval: RxTimeInterval = 0) {
-        subscriptionDelay = timeInterval
-        isLoading = relay
+    public init(delayed subscriptionDelay: RxTimeInterval = 0, isProcessing: Bool = false) {
+        self.subscriptionDelay = subscriptionDelay
+        self.isLoading = relay
             .map(\.isPositive)
             .removeDuplicates
             .asDriver(onErrorJustReturn: false)
+        if isProcessing {
+            increment(1)
+        }
     }
     
     fileprivate func trackActivityOfObservable<Source: ObservableConvertibleType>(_ source: Source) -> Observable<Source.Element> {
@@ -68,6 +71,12 @@ public class ActivityIndicator : SharedSequenceConvertibleType {
     private func decrement() {
         recursiveLock.lock()
         relay.accept(relay.value - 1)
+        recursiveLock.unlock()
+    }
+    
+    func reset() {
+        recursiveLock.lock()
+        relay.accept(0)
         recursiveLock.unlock()
     }
     
