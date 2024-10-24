@@ -9,17 +9,6 @@
 import UIKit
 
 extension UIStackView {
-
-	convenience init(
-        insets: UIEdgeInsets = .zero,
-		axis: NSLayoutConstraint.Axis = .vertical,
-		distribution: UIStackView.Distribution = .fill,
-		alignment: UIStackView.Alignment = .leading,
-		spacing: CGFloat = 0.0,
-		@ArrayBuilder<UIView> arrangedSubviews: () -> [UIView] = { [] }
-	) {
-        self.init(insets: insets, axis: axis, distribution: distribution, alignment: alignment, spacing: spacing, arrangedSubviews: arrangedSubviews())
-	}
     
     convenience init(
         insets: UIEdgeInsets = .zero,
@@ -27,9 +16,14 @@ extension UIStackView {
         distribution: UIStackView.Distribution = .fill,
         alignment: UIStackView.Alignment = .leading,
         spacing: CGFloat = 0.0,
-        arrangedSubviews: UIView...
-    ) {
-        self.init(insets: insets, axis: axis, distribution: distribution, alignment: alignment, spacing: spacing, arrangedSubviews: arrangedSubviews)
+        @ArrayBuilder<UIView> arrangedSubviews: () -> [UIView] = { [] })
+    {
+        self.init(insets: insets,
+                  axis: axis,
+                  distribution: distribution,
+                  alignment: alignment,
+                  spacing: spacing,
+                  arrangedSubviews: arrangedSubviews())
     }
     
     convenience init(
@@ -38,19 +32,44 @@ extension UIStackView {
         distribution: UIStackView.Distribution = .fill,
         alignment: UIStackView.Alignment = .leading,
         spacing: CGFloat = 0.0,
-        arrangedSubviews: [UIView]
-    ) {
+        arrangedSubviews: UIView...)
+    {
+        self.init(insets: insets,
+                  axis: axis,
+                  distribution: distribution,
+                  alignment: alignment,
+                  spacing: spacing,
+                  arrangedSubviews: arrangedSubviews)
+    }
+    
+    convenience init(
+        insets: UIEdgeInsets = .zero,
+        axis: NSLayoutConstraint.Axis = .vertical,
+        distribution: UIStackView.Distribution = .fill,
+        alignment: UIStackView.Alignment = .leading,
+        spacing: CGFloat = 0.0,
+        arrangedSubviews: [UIView])
+    {
         self.init(arrangedSubviews: arrangedSubviews)
         self.contentInsets = insets
         self.axis = axis
         self.distribution = distribution
         self.alignment = alignment
         self.spacing = spacing
-        for subview in arrangedSubviews {
-            if let afterSpacing = subview.afterSpacing {
-                setCustomSpacing(afterSpacing, after: subview)
-            }
+        self.arrangedSubviews.forEach { subview in
+            guard let afterSpacing = subview.afterSpacing else { return }
+            setCustomSpacing(afterSpacing, after: subview)
         }
+    }
+    
+    @objc func addArrangedSubview(_ view: UIView, afterSpacing: CGFloat) {
+        addArrangedSubview(view)
+        setCustomSpacing(afterSpacing, after: view)
+    }
+    
+    @objc func insertArrangedSubview(_ view: UIView, at stackIndex: Int, afterSpacing: CGFloat) {
+        insertArrangedSubview(view, at: stackIndex)
+        setCustomSpacing(afterSpacing, after: view)
     }
     
     func reArrange(@ArrayBuilder<UIView> _ arrangedSubviews: () -> [UIView]) {
@@ -75,9 +94,9 @@ extension UIStackView {
             addArrangedSubview(subview)
             /// Tip: 如果后面还有别的arrangedSubview的时候，customSpacing才有效
             /// 如果后面没有别的arrangedSubview则最后一个子视图后面使用contentInsets作为内边距
-            if let afterSpacing = subview.afterSpacing {
-                setCustomSpacing(afterSpacing, after: subview)
-            }
+            /// 注1: 设置后间距为 UIStackView.spacingUseDefault 可以取消之前设置的自定义后间距, 恢复默认的spacing间距
+            /// 注2: (不常用)初始化UIStackView的时候设置 spacing 为UIStackView.spacingUseSystem会给UIStackView一个默认 8pt 的 spacing
+            setCustomSpacing(subview.afterSpacing ?? UIStackView.spacingUseDefault, after: subview)
         }
     }
     
@@ -92,7 +111,7 @@ extension UIStackView {
         removeArrangedSubview(view)
         view.removeFromSuperview()
     }
-	
+    
     var reArrangedSubviews: [UIView] {
         get { arrangedSubviews }
         set {
@@ -100,44 +119,46 @@ extension UIStackView {
         }
     }
     
-	/// 内部控件边距
-	var contentInsets: UIEdgeInsets? {
-		get {
-			if #available(iOS 11, *) {
-				return directionalLayoutMargins.uiEdgeInsets
-			} else {
+    /// 内部控件边距
+    var contentInsets: UIEdgeInsets? {
+        get {
+            if #available(iOS 11, *) {
+                return directionalLayoutMargins.uiEdgeInsets
+            } else {
                 return layoutMargins
-			}
-		}
-		set {
-			guard let insets = newValue else {
-				isLayoutMarginsRelativeArrangement = false
-				return
-			}
-			isLayoutMarginsRelativeArrangement = true
-			if #available(iOS 11, *) {
-				directionalLayoutMargins = insets.directionalEdgeInsets
-			} else {
-				layoutMargins = insets
-			}
-		}
-	}
-	var horizontalInsets: UIEdgeInsets? {
-		get { contentInsets }
-		set {
-			guard var insets = newValue else { return }
-			insets.top = 0
-			insets.bottom = 0
-			contentInsets = insets
-		}
-	}
-	var verticalInsets: UIEdgeInsets? {
-		get { contentInsets }
-		set {
-			guard var insets = newValue else { return }
-			insets.left = 0
-			insets.right = 0
-			contentInsets = insets
-		}
-	}
+            }
+        }
+        set {
+            guard let insets = newValue else {
+                isLayoutMarginsRelativeArrangement = false
+                return
+            }
+            isLayoutMarginsRelativeArrangement = true
+            if #available(iOS 11, *) {
+                directionalLayoutMargins = insets.directionalEdgeInsets
+            } else {
+                layoutMargins = insets
+            }
+        }
+    }
+    
+    var horizontalInsets: UIEdgeInsets? {
+        get { contentInsets }
+        set {
+            guard var insets = newValue else { return }
+            insets.top = 0
+            insets.bottom = 0
+            contentInsets = insets
+        }
+    }
+    
+    var verticalInsets: UIEdgeInsets? {
+        get { contentInsets }
+        set {
+            guard var insets = newValue else { return }
+            insets.left = 0
+            insets.right = 0
+            contentInsets = insets
+        }
+    }
 }
