@@ -62,12 +62,12 @@ extension UIStackView {
         }
     }
     
-    @objc func addArrangedSubview(_ view: UIView, afterSpacing: CGFloat) {
+    func addArrangedSubview(_ view: UIView, afterSpacing: CGFloat) {
         addArrangedSubview(view)
         setCustomSpacing(afterSpacing, after: view)
     }
     
-    @objc func insertArrangedSubview(_ view: UIView, at stackIndex: Int, afterSpacing: CGFloat) {
+    func insertArrangedSubview(_ view: UIView, at stackIndex: Int, afterSpacing: CGFloat) {
         insertArrangedSubview(view, at: stackIndex)
         setCustomSpacing(afterSpacing, after: view)
     }
