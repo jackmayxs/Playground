@@ -25,7 +25,7 @@ extension DisposeBag {
     }
 }
 
-@propertyWrapper class Variable<Wrapped>: ObservableConvertibleType {
+@propertyWrapper class Variable<Wrapped>: ObservableType {
     /// ObservableConvertibleType序列元素
     typealias Element = Wrapped
     /// 旧新值元组
@@ -104,6 +104,10 @@ extension DisposeBag {
     
     func asObservable() -> RxSwift.Observable<Wrapped> {
         relay.asObservable()
+    }
+    
+    func subscribe<Observer>(_ observer: Observer) -> any Disposable where Observer : ObserverType, Wrapped == Observer.Element {
+        asObservable().subscribe(observer)
     }
 }
 
