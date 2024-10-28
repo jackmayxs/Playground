@@ -190,35 +190,39 @@ extension ObservableConvertibleType {
     ///   - respondDepth: 响应深度 | nextResponder的深度, 如UIView的父视图
     /// - Returns: 观察序列
     func trackError(_ tracker: ErrorTracker?, isFatal: Bool = true, respondDepth: Int = 0) -> Observable<Element> {
-        asObservable()
-            .do { _ in
-                
-            } onError: {
-                [weak tracker] error in
-                var responder = tracker
-                for _ in 0 ..< respondDepth {
-                    if let nextTracker = responder?.next as? ErrorTracker {
-                        responder = nextTracker
-                    }
-                }
+        observable.do { _ in
+            
+        } onError: {
+            [weak tracker] error in
+            /// 初值设置为tracker
+            var responder = tracker
+            /// 确保传入参数(响应深度)合法
+            guard respondDepth >= 0 else {
                 responder?.trackError(error, isFatal: isFatal)
+                return
             }
+            for _ in 0 ..< respondDepth {
+                if let nextTracker = responder.flatMap(\.next) as? ErrorTracker {
+                    responder = nextTracker
+                }
+            }
+            responder?.trackError(error, isFatal: isFatal)
+        }
     }
 }
 
 extension ObservableConvertibleType where Element: ProgressTrackable {
     
     func trackProgress(_ tracker: any ProgressTracker) -> Observable<Element> {
-        asObservable()
-            .do {
-                [weak tracker] element in
-                tracker?.trackProgress(element.progress)
-            } onError: {
-                [weak tracker] _ in
-                tracker?.trackProgress(.none)
-            } onCompleted: {
-                [weak tracker] in
-                tracker?.trackProgress(1.0)
-            }
+        observable.do {
+            [weak tracker] element in
+            tracker?.trackProgress(element.progress)
+        } onError: {
+            [weak tracker] _ in
+            tracker?.trackProgress(.none)
+        } onCompleted: {
+            [weak tracker] in
+            tracker?.trackProgress(1.0)
+        }
     }
 }
