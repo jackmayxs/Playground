@@ -523,7 +523,7 @@ extension UIView {
     /// 固定宽高
     /// - Returns: 自己
     @discardableResult func fix(width: CGFloat? = nil, height: CGFloat? = nil) -> Self {
-        fix(widthConstraint: width?.constraint, heightConstraint: height?.constraint)
+        fix(widthConstraint: width.map(\.constraint), heightConstraint: height.map(\.constraint))
     }
     
     @discardableResult func fix(widthConstraint: UILayoutConstraint? = nil, heightConstraint: UILayoutConstraint? = nil) -> Self {
@@ -581,17 +581,17 @@ extension UIView {
     }
     
     @discardableResult func limit(widthRange: ClosedRange<CGFloat>? = nil, heightRange: ClosedRange<CGFloat>? = nil) -> Self {
-        limit(minWidth: widthRange?.lowerBound,
-              maxWidth: widthRange?.upperBound,
-              minHeight: heightRange?.lowerBound,
-              maxHeight: heightRange?.upperBound)
+        limit(minWidth: widthRange.map(\.lowerBound),
+              maxWidth: widthRange.map(\.upperBound),
+              minHeight: heightRange.map(\.lowerBound),
+              maxHeight: heightRange.map(\.upperBound))
     }
     
     @discardableResult func limit(minWidth: CGFloat? = nil, maxWidth: CGFloat? = nil, minHeight: CGFloat? = nil, maxHeight: CGFloat? = nil) -> Self {
-        limit(minWidth: minWidth?.constraint,
-              maxWidth: maxWidth?.constraint,
-              minHeight: minHeight?.constraint,
-              maxHeight: maxHeight?.constraint)
+        limit(minWidth: minWidth.map(\.constraint),
+              maxWidth: maxWidth.map(\.constraint),
+              minHeight: minHeight.map(\.constraint),
+              maxHeight: maxHeight.map(\.constraint))
     }
     
     @discardableResult func limit(minWidth: UILayoutConstraint? = nil, maxWidth: UILayoutConstraint? = nil, minHeight: UILayoutConstraint? = nil, maxHeight: UILayoutConstraint? = nil) -> Self {
