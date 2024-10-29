@@ -24,7 +24,7 @@ extension Int {
         case -85..<(-75) : return 1
         case    ..<(-85) : return 0
         default:
-            assertionFailure("WRONG RSSI: (\(self)), CHECK YOUR SOURCE.")
+            dprint("WRONG RSSI: (\(self)), CHECK YOUR SOURCE.")
             return 0
         }
     }
