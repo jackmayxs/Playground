@@ -19,7 +19,7 @@ extension UIImage {
         /// 设置数据
         filter.setValue(data, forKey: "inputMessage")
         /// 设置容错率 (L: 7%, M: 15%, Q: 25%, H: 30%).
-        filter.setValue("H", forKey: "inputCorrectionLevel")
+        filter.setValue("M", forKey: "inputCorrectionLevel")
         /// 生成图片
         guard let ciImage = filter.outputImage else { return nil }
         /// 调整大小
