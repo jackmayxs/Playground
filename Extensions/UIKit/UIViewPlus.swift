@@ -296,7 +296,7 @@ extension UIView {
                            borderWidth: CGFloat? = nil,
                            borderColor: UIColor? = nil)
     {
-        let background = _BackgroundView(color: backgroundColor)
+        let background = _BackgroundView(color: color)
         background.layer.maskedCorners = maskedCorners
         background.layer.cornerRadius = cornerRadius.or(0)
         background.layer.borderColor = borderColor.map(\.cgColor)
