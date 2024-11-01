@@ -98,6 +98,21 @@ extension Optional where Wrapped == String {
 // MARK: - __________ StringProtocol __________
 extension StringProtocol {
     
+    /// 计算文字尺寸
+    func boundingRect(in containerSize: CGSize, fontSize: CGFloat? = nil, fontWeight: UIFont.Weight = .regular) -> CGRect {
+        let font = fontSize.map {
+            UIFont.systemFont(ofSize: $0, weight: fontWeight)
+        }
+        return boundingRect(in: containerSize, font: font)
+    }
+    
+    /// 计算文字尺寸
+    func boundingRect(in containerSize: CGSize, font: UIFont? = nil) -> CGRect {
+        let options: NSStringDrawingOptions = [.usesFontLeading, .usesLineFragmentOrigin]
+        var attributes: [NSAttributedString.Key: Any] = .empty
+        attributes[.font] = font
+        return nsString.boundingRect(with: containerSize, options: options, attributes: attributes, context: nil)
+    }
     
     /// 转换为NSString
     var nsString: NSString {
