@@ -67,7 +67,7 @@ extension EventReceiver where Self: UIControl {
 // MARK: - 相关类型
 final class ClosureWrapper<T> where T: AnyObject {
     /// 标识符
-    let identifier = String.random
+    let identifier = String.randomUUID
     /// 回调
     var callback: ((T) -> Void)?
     

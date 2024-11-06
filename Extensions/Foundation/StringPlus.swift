@@ -208,7 +208,7 @@ extension String {
             return identifier
         } catch KeychainError.noPassword {
             do {
-                let newIdentifier = String.random
+                let newIdentifier = String.randomUUID
                 _deviceIdentifier = newIdentifier
                 try item.save(newIdentifier)
                 return newIdentifier
@@ -402,7 +402,7 @@ extension String {
         stringType.evaluate(self)
     }
     
-	static var random: String {
+	static var randomUUID: String {
 		UUID().uuidString
 	}
 	
