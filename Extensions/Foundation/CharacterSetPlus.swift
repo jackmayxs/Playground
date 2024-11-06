@@ -40,6 +40,9 @@ extension CharacterSet {
         character.unicodeScalars.allSatisfy(contains)
     }
     
+    /// 十六进制字符
+    static let hexadecimal = CharacterSet(charactersIn: "0123456789abcdefABCDEF")
+    
 	/// 阿拉伯数字
 	static let arabicNumbers = CharacterSet(charactersIn: "0123456789")
     
