@@ -40,6 +40,9 @@ extension CharacterSet {
         character.unicodeScalars.allSatisfy(contains)
     }
     
+    /// 可打印的ASCII字符集
+    static let printableASCII = CharacterSet(charactersIn: 32..<127)
+    
     /// 十六进制字符集(包含大小写)
     static let hexadecimal = hexadecimalUppercase + hexadecimalLowercase
     
@@ -104,4 +107,10 @@ extension CharacterSet {
 	]
 	*/
 	#endif
+}
+
+extension Unicode.Scalar: ExpressibleByIntegerLiteral {
+    public init(integerLiteral value: UInt8) {
+        self.init(value)
+    }
 }
