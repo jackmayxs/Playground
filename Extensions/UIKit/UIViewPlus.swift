@@ -83,13 +83,21 @@ extension KK where Base: UIView {
             associated(UIView.self, base, UIView.Associated.backgroundView)
         }
         nonmutating set {
-            backgroundView?.removeFromSuperview()
+            /// 移除旧背景(如果存在)
+            if let oldBackground = backgroundView {
+                oldBackground.removeFromSuperview()
+            }
+            /// 保存新背景
             setAssociatedObject(base, UIView.Associated.backgroundView, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
 }
 extension UIView {
-    
+    /// 背景View
+    final class _BackgroundView: UIView {}
+    /// 阴影View
+    final class _ShadowView: UIView {}
+    /// 关联值
     enum Associated {
         @UniqueAddress static var afterSpacing
         @UniqueAddress static var shadowView
@@ -273,61 +281,54 @@ extension UIView {
     
     /// 添加背景色
     /// - Parameter backgroundColor: 背景颜色
-    func add(backgroundColor: UIColor) {
+    func addBackgroundColor(_ backgroundColor: UIColor) {
         let background = UIView(frame: bounds)
         background.backgroundColor = backgroundColor
-        add(backgroundView: background)
+        addBackgroundView(background)
     }
     
-    /// 添加圆角背景子视图
+    
+    /// 添加背景
+    func addBackgroundView(color: UIColor,
+                           insets: UIEdgeInsets = .zero,
+                           cornerRadius: CGFloat?,
+                           maskedCorners: CACornerMask = .allCorners,
+                           borderWidth: CGFloat? = nil,
+                           borderColor: UIColor? = nil)
+    {
+        let background = _BackgroundView(color: color)
+        background.layer.maskedCorners = maskedCorners
+        background.layer.cornerRadius = cornerRadius.or(0)
+        background.layer.borderColor = borderColor.map(\.cgColor)
+        background.layer.borderWidth = borderWidth.or(0)
+        addBackgroundView(background, insets: insets)
+    }
+    
+    /// 添加背景
     /// - Parameters:
-    ///   - cornerRadius: 圆角
-    ///   - insets: 缩进
-    ///   - maskedCorners: 圆角位置
-    ///   - backgroundColor: 圆角背景色
-    func add(cornerRadius: CGFloat, insets: UIEdgeInsets = .zero, maskedCorners: CACornerMask = .allCorners, backgroundColor: UIColor, borderWidth: CGFloat? = nil, borderColor: UIColor? = nil) {
-        let bgView = UIView(color: backgroundColor)
-        bgView.layer.maskedCorners = maskedCorners
-        bgView.layer.cornerRadius = cornerRadius
-        if let borderWidth, borderWidth > 0 {
-            bgView.layer.borderWidth = borderWidth
-            bgView.layer.borderColor = borderColor?.cgColor
-        }
-        add(backgroundView: bgView, insets: insets)
-    }
-    
-    /// 添加覆盖层
-    /// - Parameter overlay: 顶层子视图
-    func add(overlay: UIView) {
-        add(backgroundView: overlay)
-        bringSubviewToFront(overlay)
-    }
-    
-    /// 添加背景子视图
-    /// - Parameters:
-    ///   - backgroundView: 背景子视图
+    ///   - background: 背景子视图
     ///   - insets: 缩进边距
     ///   - configure: 其他设置
-    func add(backgroundView: UIView, insets: UIEdgeInsets = .zero, configure: ((UIView) -> Void)? = nil) {
+    func addBackgroundView(_ background: UIView, insets: UIEdgeInsets = 0, configure: ((UIView) -> Void)? = nil) {
         /// 按Bounds缩进
         let frame = bounds.inset(by: insets)
         /// 其他配置
         if let configure {
-            configure(backgroundView)
+            configure(background)
         }
         /// 添加背景图
-        add(backgroundView: backgroundView, frame: frame)
+        addBackgroundView(background, frame: frame)
     }
     
     /// 添加背景子视图
     /// - Parameters:
-    ///   - backgroundView: 背景子视图
+    ///   - background: 背景子视图
     ///   - frame: 背景图位置
-    func add(backgroundView: UIView, frame: CGRect) {
-        backgroundView.frame = frame
-        backgroundView.autoresizingMask = .autoResize
-        insertSubview(backgroundView, at: 0)
-        kk.backgroundView = backgroundView
+    func addBackgroundView(_ background: UIView, frame: CGRect) {
+        background.frame = frame
+        background.autoresizingMask = .autoResize
+        insertSubview(background, at: 0)
+        kk.backgroundView = background
     }
     
 	func snapshotScreen(scrollView: UIScrollView) -> UIImage?{
@@ -394,21 +395,60 @@ extension UIView {
 		scrollView.removeFromSuperview()
 		return image
 	}
-
+    
+    /// 截图指定区域
+    func snapshot(frame: CGRect) -> UIImage? {
+        guard let snapshot else { return nil }
+        guard let cgImage = snapshot.cgImage else { return nil }
+        let scale = UIScreen.main.scale
+        let transform = CGAffineTransformMakeScale(scale, scale)
+        let scaledRect = CGRectApplyAffineTransform(frame, transform)
+        guard let scaledCGImage = cgImage.cropping(to: scaledRect) else { return nil }
+        return UIImage(cgImage: scaledCGImage)
+    }
+    
+    /// 注1: 必须要有父视图或window非空的情况下才可以截图成功
+    /// 注2: width或height有一个为空(或近似为0, 如:0.1), drawHierarchy就会crash
+    /// https://stackoverflow.com/questions/21722508/ios-drawviewhierarchyinrect-crash-exc-breakpoint-unknown
 	var snapshot: UIImage? {
-		switch self {
-			case let unwrapped where unwrapped is UITableView:
-				let tableView = unwrapped as! UITableView
-				return getTableViewScreenshot(tableView: tableView, whereView: superview!)
-			default:
-				// 参数①：截屏区域  参数②：是否透明  参数③：清晰度
-				UIGraphicsBeginImageContextWithOptions(frame.size, true, UIScreen.main.scale)
-				layer.render(in: UIGraphicsGetCurrentContext()!)
-				let image = UIGraphicsGetImageFromCurrentImageContext()
-
-				UIGraphicsEndImageContext()
-				return image
-		}
+        guard window.isValid else {
+            assertionFailure("对不可见的视图截图会导致崩溃")
+            return nil
+        }
+        switch self {
+        case let unwrapped where unwrapped is UITableView:
+            let tableView = unwrapped as! UITableView
+            return getTableViewScreenshot(tableView: tableView, whereView: superview!)
+        default:
+            /// 屏幕scale
+            let scale = UIScreen.main.scale
+            /// 是否不透明
+            let isOpaque = false
+            /// 渲染图片
+            if #available(iOS 10.0, *) {
+                let format = UIGraphicsImageRendererFormat()
+                format.scale = scale
+                format.opaque = isOpaque
+                /// 创建绘图渲染器
+                let renderer = UIGraphicsImageRenderer(size: bounds.size, format: format)
+                /// 使用PNG图片格式
+                let pngData = renderer.pngData { context in
+                    drawHierarchy(in: bounds, afterScreenUpdates: true)
+                }
+                /// 或者使用JPEG图片
+                let _ = renderer.jpegData(withCompressionQuality: 1.0) { context in
+                    
+                }
+                return UIImage(data: pngData)
+            } else {
+                UIGraphicsBeginImageContextWithOptions(bounds.size, isOpaque, scale)
+                defer {
+                    UIGraphicsEndImageContext()
+                }
+                guard drawHierarchy(in: bounds, afterScreenUpdates: true) else { return nil }
+                return UIGraphicsGetImageFromCurrentImageContext()
+            }
+        }
 	}
     
     /// 用于调整父视图为ScrollView子类时, 其子视图被自身遮挡的问题
@@ -483,7 +523,7 @@ extension UIView {
     /// 固定宽高
     /// - Returns: 自己
     @discardableResult func fix(width: CGFloat? = nil, height: CGFloat? = nil) -> Self {
-        fix(widthConstraint: width?.constraint, heightConstraint: height?.constraint)
+        fix(widthConstraint: width.map(\.constraint), heightConstraint: height.map(\.constraint))
     }
     
     @discardableResult func fix(widthConstraint: UILayoutConstraint? = nil, heightConstraint: UILayoutConstraint? = nil) -> Self {
@@ -541,17 +581,17 @@ extension UIView {
     }
     
     @discardableResult func limit(widthRange: ClosedRange<CGFloat>? = nil, heightRange: ClosedRange<CGFloat>? = nil) -> Self {
-        limit(minWidth: widthRange?.lowerBound,
-              maxWidth: widthRange?.upperBound,
-              minHeight: heightRange?.lowerBound,
-              maxHeight: heightRange?.upperBound)
+        limit(minWidth: widthRange.map(\.lowerBound),
+              maxWidth: widthRange.map(\.upperBound),
+              minHeight: heightRange.map(\.lowerBound),
+              maxHeight: heightRange.map(\.upperBound))
     }
     
     @discardableResult func limit(minWidth: CGFloat? = nil, maxWidth: CGFloat? = nil, minHeight: CGFloat? = nil, maxHeight: CGFloat? = nil) -> Self {
-        limit(minWidth: minWidth?.constraint,
-              maxWidth: maxWidth?.constraint,
-              minHeight: minHeight?.constraint,
-              maxHeight: maxHeight?.constraint)
+        limit(minWidth: minWidth.map(\.constraint),
+              maxWidth: maxWidth.map(\.constraint),
+              minHeight: minHeight.map(\.constraint),
+              maxHeight: maxHeight.map(\.constraint))
     }
     
     @discardableResult func limit(minWidth: UILayoutConstraint? = nil, maxWidth: UILayoutConstraint? = nil, minHeight: UILayoutConstraint? = nil, maxHeight: UILayoutConstraint? = nil) -> Self {
@@ -749,10 +789,9 @@ extension UIView {
 	}
 	
 	// MARK: - __________ 圆角 + 阴影 __________
-	final class _UIShadowView: UIView { }
-	var shadowView: _UIShadowView {
-        guard let shadow = associated(_UIShadowView.self, self, UIView.Associated.shadowView) else {
-			let shadow = _UIShadowView(frame: bounds)
+	var shadowView: _ShadowView {
+        guard let shadow = associated(_ShadowView.self, self, Associated.shadowView) else {
+			let shadow = _ShadowView(frame: bounds)
 			shadow.isUserInteractionEnabled = false
 			shadow.backgroundColor = .clear
 			shadow.layer.masksToBounds = false
@@ -762,7 +801,7 @@ extension UIView {
 				.flexibleWidth,
 				.flexibleHeight
 			]
-            setAssociatedObject(self, UIView.Associated.shadowView, shadow, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            setAssociatedObject(self, Associated.shadowView, shadow, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
 			return shadow
 		}
 		return shadow

@@ -79,24 +79,24 @@ extension Data {
         return Data.mimeTypeSignatures[c] ?? "application/octet-stream"
     }
     
-    var fileExtension: String {
+    var fileExtension: String? {
         switch mimeType {
         case "image/jpeg":
-            return "jpeg"
+            "jpeg"
         case "image/png":
-            return "png"
+            "png"
         case "image/gif":
-            return "gif"
+            "gif"
         case "image/tiff":
-            return "tiff"
+            "tiff"
         case "application/pdf":
-            return "pdf"
+            "pdf"
         case "application/vnd":
-            return "vnd"
+            "vnd"
         case "text/plain":
-            return "txt"
+            "txt"
         default:
-            return "uknown"
+            nil
         }
     }
 }

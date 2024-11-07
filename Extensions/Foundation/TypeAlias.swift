@@ -6,8 +6,9 @@
 //  Copyright © 2022 Choi. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
+public typealias UIViewArray = [UIView]
 public typealias Byte = UInt8
 public typealias UUIDArray = Array<UUID>
 public typealias UUIDSet = Set<UUID>

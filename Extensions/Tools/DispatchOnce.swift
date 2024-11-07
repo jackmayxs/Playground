@@ -34,7 +34,7 @@ struct Dispatch {
         if UserDefaults.standard.value(forKey: userDefaultKey).isValid {
             return
         }
-        UserDefaults.standard.setValue(String.random, forKey: userDefaultKey)
+        UserDefaults.standard.setValue(String.randomUUID, forKey: userDefaultKey)
         once(token: userDefaultKey, execute: execute)
     }
 }

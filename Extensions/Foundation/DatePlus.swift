@@ -17,7 +17,16 @@ extension DateInterval {
 }
 
 extension Date {
-	
+    
+    /// 从毫秒数创建日期
+    init(millisecondsSince1970: Int) {
+        self.init(millisecondsSince1970: millisecondsSince1970.double)
+    }
+    
+    init(millisecondsSince1970: Double) {
+        self.init(timeIntervalSince1970: millisecondsSince1970 / 1000.0)
+    }
+    
     /// 转换为GCD使用的绝对时间
 	var dispatchWallTime: DispatchWallTime {
         /// 将小数切成整数,小数两个部分

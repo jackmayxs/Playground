@@ -12,6 +12,31 @@ import SpriteKit
 
 extension UIImage {
     
+    convenience init?(qrContent: String?, size: CGFloat = 300.0) {
+        guard let qrContent else { return nil }
+        let data = qrContent.data(using: .utf8)
+        guard let filter = CIFilter(name: "CIQRCodeGenerator") else { return nil }
+        /// 设置数据
+        filter.setValue(data, forKey: "inputMessage")
+        /// 设置容错率 (L: 7%, M: 15%, Q: 25%, H: 30%).
+        filter.setValue("M", forKey: "inputCorrectionLevel")
+        /// 生成图片
+        guard let ciImage = filter.outputImage else { return nil }
+        /// 调整大小
+        let scaleX = size / ciImage.extent.size.width
+        let scaleY = size / ciImage.extent.size.height
+        let transform = CGAffineTransform(scaleX: scaleX,y: scaleY)
+        let transformed = ciImage.transformed(by: transform)
+        /// 这里必须转换一下否则无法保存到相册
+        if #available(iOS 17.0, *) {
+            guard let heicData = UIImage(ciImage: transformed).heicData() else { return nil }
+            self.init(data: heicData)
+        } else {
+            guard let pngData = UIImage(ciImage: transformed).pngData() else { return nil }
+            self.init(data: pngData)
+        }
+    }
+    
     /// SwifterSwift: Create UIImage from color and size.
     /// 
     /// - Parameters:
@@ -165,30 +190,50 @@ extension UIImage {
 		}
 	}
 	
-	/// 圆角图片
+	/// 圆角图片(圆角
 	var roundImage: UIImage? {
-		UIGraphicsBeginImageContextWithOptions(size, false, UIScreen.main.scale)
-		defer { UIGraphicsEndImageContext() }
-		guard let ctx = UIGraphicsGetCurrentContext() else { return nil }
-		let rect = CGRect(origin: .zero, size: size)
-		ctx.addEllipse(in: rect)
-		ctx.clip()
-		draw(in: rect)
-		return UIGraphicsGetImageFromCurrentImageContext()
+        roundImage(clipCorners: .allCorners, cornerRadius: nil)
 	}
 	
-	/// 圆角图片(用贝塞尔曲线)创建
-	func roundImage(clip roundingCorners: UIRectCorner = .allCorners,
-					cornerRadii: CGFloat? = nil) -> UIImage? {
-		UIGraphicsBeginImageContextWithOptions(size, false, UIScreen.main.scale)
-		defer { UIGraphicsEndImageContext() }
-		let rect = CGRect(origin: .zero, size: size)
-		let defaultRadii = cornerRadii ?? size.height/2
-		let cornerSize = CGSize(width: defaultRadii, height: defaultRadii)
-		UIBezierPath(roundedRect: rect,
-					 byRoundingCorners: roundingCorners,
-					 cornerRadii: cornerSize).addClip()
-		draw(in: rect)
-		return UIGraphicsGetImageFromCurrentImageContext()
+	/// 给图片加圆角
+	func roundImage(clipCorners: UIRectCorner = .allCorners, cornerRadius: CGFloat? = nil) -> UIImage? {
+        let scale = UIScreen.main.scale
+        let isOpaque = false
+        let maxCornerRadius = min(size.width, size.height) / 2.0
+        let finalCornerRadius: CGFloat
+        if let cornerRadius, cornerRadius > 0 && cornerRadius <= maxCornerRadius {
+            finalCornerRadius = cornerRadius
+        } else {
+            finalCornerRadius = maxCornerRadius
+        }
+        if #available(iOS 10.0, *) {
+            let format = UIGraphicsImageRendererFormat()
+            format.scale = scale
+            format.opaque = isOpaque
+            /// 创建绘图渲染器
+            let renderer = UIGraphicsImageRenderer(size: size, format: format)
+            /// 使用PNG图片格式
+            let pngData = renderer.pngData { context in
+                let rect = CGRect(origin: .zero, size: self.size)
+                let cornerSize = CGSize(width: finalCornerRadius, height: finalCornerRadius)
+                UIBezierPath(roundedRect: rect, byRoundingCorners: clipCorners, cornerRadii: cornerSize).addClip()
+                self.draw(in: rect)
+            }
+            /// 或者使用JPEG图片
+            let _ = renderer.jpegData(withCompressionQuality: 1.0) { context in
+                
+            }
+            return UIImage(data: pngData)
+        } else {
+            UIGraphicsBeginImageContextWithOptions(size, isOpaque, scale)
+            defer {
+                UIGraphicsEndImageContext()
+            }
+            let rect = CGRect(origin: .zero, size: size)
+            let cornerSize = CGSize(width: finalCornerRadius, height: finalCornerRadius)
+            UIBezierPath(roundedRect: rect, byRoundingCorners: clipCorners, cornerRadii: cornerSize).addClip()
+            draw(in: rect)
+            return UIGraphicsGetImageFromCurrentImageContext()
+        }
 	}
 }

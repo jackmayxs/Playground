@@ -33,6 +33,18 @@ var isDebugging: Bool {
 #endif
 }
 
+/// 是否为真机环境
+var isRealDevice: Bool { !isSimulator }
+
+/// 是否为模拟器环境
+var isSimulator: Bool {
+#if targetEnvironment(simulator)
+    true
+#else
+    false
+#endif
+}
+
 /// 判断是否是主队列
 fileprivate let mainQueueSpecificKey = DispatchSpecificKey<UUID>()
 fileprivate let mainQueueID = UUID()

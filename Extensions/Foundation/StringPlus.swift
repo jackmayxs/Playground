@@ -26,6 +26,13 @@ extension String {
         guard #available(iOS 13.0, *) else { return nil }
         return UIImage(systemName: self)
 	}
+    
+    /// 返回SF Symbol图片
+    func systemImage(pointSize: CGFloat, weight: UIImage.SymbolWeight = .regular, scale: UIImage.SymbolScale = .default) -> UIImage? {
+        guard #available(iOS 13.0, *) else { return nil }
+        let config = UIImage.SymbolConfiguration(pointSize: pointSize, weight: weight, scale: scale)
+        return UIImage(systemName: self, withConfiguration: config)
+    }
 	
 	/// 生成图片
 	var uiImage: UIImage? {
@@ -91,6 +98,21 @@ extension Optional where Wrapped == String {
 // MARK: - __________ StringProtocol __________
 extension StringProtocol {
     
+    /// 计算文字尺寸
+    func boundingRect(in containerSize: CGSize, fontSize: CGFloat? = nil, fontWeight: UIFont.Weight = .regular) -> CGRect {
+        let font = fontSize.map {
+            UIFont.systemFont(ofSize: $0, weight: fontWeight)
+        }
+        return boundingRect(in: containerSize, font: font)
+    }
+    
+    /// 计算文字尺寸
+    func boundingRect(in containerSize: CGSize, font: UIFont? = nil) -> CGRect {
+        let options: NSStringDrawingOptions = [.usesFontLeading, .usesLineFragmentOrigin]
+        var attributes: [NSAttributedString.Key: Any] = .empty
+        attributes[.font] = font
+        return nsString.boundingRect(with: containerSize, options: options, attributes: attributes, context: nil)
+    }
     
     /// 转换为NSString
     var nsString: NSString {
@@ -186,7 +208,7 @@ extension String {
             return identifier
         } catch KeychainError.noPassword {
             do {
-                let newIdentifier = String.random
+                let newIdentifier = String.randomUUID
                 _deviceIdentifier = newIdentifier
                 try item.save(newIdentifier)
                 return newIdentifier
@@ -380,7 +402,7 @@ extension String {
         stringType.evaluate(self)
     }
     
-	static var random: String {
+	static var randomUUID: String {
 		UUID().uuidString
 	}
 	

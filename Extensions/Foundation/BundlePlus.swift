@@ -4,9 +4,20 @@
 //  Created by Choi on 2022/9/2.
 //
 
-import Foundation
+import UIKit
 
 extension Bundle {
+    
+    /// 应用图标Image对象
+    var appIcon: UIImage? {
+        infoDictionary.flatMap { info in
+            guard let icons = info["CFBundleIcons"] as? [String: Any] else { return nil }
+            guard let primary = icons["CFBundlePrimaryIcon"] as? [String: Any] else { return nil }
+            guard let files = primary["CFBundleIconFiles"] as? [String] else { return nil }
+            guard let iconName = files.last else { return nil }
+            return UIImage(named: iconName)
+        }
+    }
     
     /// 显示名称
     var displayName: String? {
