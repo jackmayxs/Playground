@@ -5,7 +5,7 @@
 //  Created by Choi on 2023/6/13.
 //
 
-import Foundation
+import UIKit
 
 extension IndexPath {
     
@@ -25,6 +25,22 @@ extension IndexPath {
     var itemIndexSet: IndexSet {
         guard count >= 2 else { return .empty }
         return IndexSet(integer: item)
+    }
+    
+    /// 验证IndexPath在指定TableView中是否有效
+    /// - Returns: 有效的IndexPath
+    func validIndexPath(for tableView: UITableView) -> IndexPath? {
+        guard section >= 0, row >= 0 else { return nil }
+        guard section < tableView.numberOfSections, row < tableView.numberOfRows(inSection: section) else { return nil }
+        return self
+    }
+    
+    /// 验证IndexPath在指定CollectionView中是否有效
+    /// - Returns: 有效的IndexPath
+    func validIndexPath(for collectionView: UICollectionView) -> IndexPath? {
+        guard section >= 0, item >= 0 else { return nil }
+        guard section < collectionView.numberOfSections, item < collectionView.numberOfItems(inSection: section) else { return nil }
+        return self
     }
 }
 
