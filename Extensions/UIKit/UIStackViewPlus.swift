@@ -10,6 +10,10 @@ import UIKit
 
 extension UIStackView {
     
+    convenience init(arrangedSubviews: UIView...) {
+        self.init(arrangedSubviews: arrangedSubviews)
+    }
+    
     convenience init(
         insets: UIEdgeInsets? = nil,
         axis: NSLayoutConstraint.Axis = .vertical,
